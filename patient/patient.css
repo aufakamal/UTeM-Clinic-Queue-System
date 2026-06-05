@@ -533,102 +533,129 @@ label {
 }
 
 /* =========================
-   MEDICAL RECORD TABLES
+   APPOINTMENT TABS
 ========================= */
-.recordTables {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-
-    margin-top: 24px;
-}
-
-.recordTables table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-
-    background-color: #FFFFFF;
-    border: 1px solid #D7E3EA;
-    border-radius: 14px;
-    overflow: hidden;
-
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
-}
-
-.recordTables th {
-    background-color: #E0F2FE;
-    color: #075985;
-
-    padding: 16px 18px;
-    text-align: left;
-
-    font-size: 15px;
-    font-weight: 700;
-
-    border-bottom: 1px solid #BAE6FD;
-}
-
-.recordTables td {
-    padding: 14px 18px;
-    border-bottom: 1px solid #E2E8F0;
-
-    color: #334155;
-    font-size: 14px;
-}
-
-.recordTables tr:last-child th,
-.recordTables tr:last-child td {
-    border-bottom: none;
-}
-
-.recordTables table:nth-child(2) th {
-    width: 240px;
-}
-
-/* =========================
-   RECORD TABS
-========================= */
-.recordTabs {
+.appointmentTabs {
     display: flex;
     gap: 10px;
-
     width: fit-content;
-
     background-color: #E0F2FE;
     border: 1px solid #BAE6FD;
     border-radius: 999px;
-
     padding: 6px;
     margin: 24px 0 28px;
-
     box-shadow: 0 6px 16px rgba(2, 132, 199, 0.12);
 }
 
-.recordTabs a {
+.appointmentTabs button {
     display: block;
-
     padding: 10px 20px;
     border-radius: 999px;
-
+    border: none;
+    background-color: transparent;
     color: #0369A1;
-    text-decoration: none;
-
     font-size: 14px;
     font-weight: 600;
-
+    font-family: Arial, sans-serif;
+    cursor: pointer;
     transition: 0.25s ease;
 }
 
-.recordTabs a:hover {
+.appointmentTabs button:hover {
     background-color: #BAE6FD;
     color: #075985;
 }
 
-.recordTabs .activeTab {
+.appointmentTabs button.activeTab {
     background-color: #0284C7;
     color: #FFFFFF;
     box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+}
+
+/* =========================
+   APPOINTMENT RECORD TABLE
+========================= */
+.appointmentRecordTable {
+    margin-top: 20px;
+}
+
+.appointmentRecordTable table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.appointmentRecordTable th {
+    background-color: #E0F2FE;
+    color: #075985;
+    padding: 16px 18px;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 700;
+    border-bottom: 1px solid #BAE6FD;
+}
+
+.appointmentRecordTable td {
+    padding: 14px 18px;
+    border-bottom: 1px solid #E2E8F0;
+    color: #334155;
+    font-size: 14px;
+}
+
+.appointmentRecordTable tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================
+   MEDICAL RECORD TABLES
+========================= */
+.medicalRecordTables {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.medicalRecordTables table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.medicalRecordTables th {
+    background-color: #E0F2FE;
+    color: #075985;
+    padding: 16px 18px;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 700;
+    border-bottom: 1px solid #BAE6FD;
+}
+
+.medicalRecordTables td {
+    padding: 14px 18px;
+    border-bottom: 1px solid #E2E8F0;
+    color: #334155;
+    font-size: 14px;
+}
+
+.medicalRecordTables tr:last-child th,
+.medicalRecordTables tr:last-child td {
+    border-bottom: none;
+}
+
+.medicalRecordTables table:nth-child(2) th {
+    width: 240px;
 }
 
 /* =========================
@@ -741,6 +768,19 @@ footer .icon {
 }
 
 /* =========================
+   JAVASCRIPT
+========================= */
+
+.hidden {
+    display: none;
+}
+
+.activeCard {
+    border: 2px solid #2563EB;
+    background-color: #EFF6FF;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 @media (max-width: 1100px) {
@@ -799,6 +839,11 @@ footer .icon {
     nav > ul {
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    .articleGrid {
+        grid-template-columns: 1fr;
+        gap: 18px;
     }
 
     .footerGrid {
