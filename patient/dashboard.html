@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="patient.css">
     <title>UTeM Clinic Queue System</title>
 </head>
 
@@ -12,7 +12,7 @@
     <div id="header">
         <div id="leftSection">
             <button class="iconBtn">
-                <img class="icon" src="../images/backIconDark.png">
+                <img class="icon" src="../images/backIconDark.png" alt="Back Button">
             </button>
 
             <h1>UTeM Clinic Queue System</h1>
@@ -21,6 +21,7 @@
         <nav>
             <ul>
                 <li class="active"><a href="dashboard.html">Dashboard</a></li>
+
                 <li class="dropdown">
                     Appointment
                     <ul class="submenu">
@@ -28,6 +29,7 @@
                         <li><a href="appointmentRecord.html">Appointment Record</a></li>
                     </ul>
                 </li>
+
                 <li><a href="medicalRecord.html">Medical Record</a></li>
                 <li><a href="selfAssessment.html">Self-Assessment</a></li>
             </ul>
@@ -37,7 +39,7 @@
             <h1>Welcome, Student!</h1>
 
             <button class="iconBtn">
-                <img class="icon" id="profileIcon" src="../images/profileIconDark.png">
+                <img class="icon" id="profileIcon" src="../images/profileIconDark.png" alt="Profile Icon">
             </button>
         </div>
     </div>
@@ -53,216 +55,199 @@
             </article>
         </div>
 
-    <article>
-        <h2>Pusat Kesihatan UTeM Operation Hours (MAIN CAMPUS)</h2>
+        <article>
+            <h2>Pusat Kesihatan UTeM Operation Hours (MAIN CAMPUS)</h2>
 
-        <div class="tableGrid">
-            <table>
-                <tr>
-                    <th colspan="2">Academic Week</th>
-                </tr>
-                <tr>
-                    <td>Monday</td>
-                    <td>8 AM - 7 PM</td>
-                </tr>
-                <tr>
-                    <td>Tuesday</td>
-                    <td>8 AM - 7 PM</td>
-                </tr>
-                <tr>
-                    <td>Wednesday</td>
-                    <td>8 AM - 7 PM</td>
-                </tr>
-                <tr>
-                    <td>Thursday</td>
-                    <td>8 AM - 7 PM</td>
-                </tr>
-                <tr>
-                    <td>Friday</td>
-                    <td>8 AM - 7 PM</td>
-                </tr>
-                <tr>
-                    <td>Saturday</td>
-                    <td>Closed</td>
-                </tr>
-                <tr>
-                    <td>Sunday</td>
-                    <td>Closed</td>
-                </tr>
-            </table>
+            <div class="tableGrid">
+                <table>
+                    <tr>
+                        <th colspan="2">Academic Week</th>
+                    </tr>
+                    <tr>
+                        <td>Monday</td>
+                        <td>8 AM - 7 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Tuesday</td>
+                        <td>8 AM - 7 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Wednesday</td>
+                        <td>8 AM - 7 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Thursday</td>
+                        <td>8 AM - 7 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Friday</td>
+                        <td>8 AM - 7 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Saturday</td>
+                        <td>Closed</td>
+                    </tr>
+                    <tr>
+                        <td>Sunday</td>
+                        <td>Closed</td>
+                    </tr>
+                </table>
 
-            <table>
-                <tr>
-                    <th colspan="2">Semester Break</th>
-                </tr>
-                <tr>
-                    <td>Monday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-                <tr>
-                    <td>Tuesday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-                <tr>
-                    <td>Wednesday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-                <tr>
-                    <td>Thursday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-                <tr>
-                    <td>Friday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-                <tr>
-                    <td>Saturday</td>
-                    <td>Closed</td>
-                </tr>
-                <tr>
-                    <td>Sunday</td>
-                    <td>Closed</td>
-                </tr>
-            </table>
+                <table>
+                    <tr>
+                        <th colspan="2">Semester Break</th>
+                    </tr>
+                    <tr>
+                        <td>Monday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Tuesday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Wednesday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Thursday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Friday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Saturday</td>
+                        <td>Closed</td>
+                    </tr>
+                    <tr>
+                        <td>Sunday</td>
+                        <td>Closed</td>
+                    </tr>
+                </table>
 
-            <table>
-                <tr>
-                    <th colspan="2">Lunch Break</th>
-                </tr>
-                <tr>
-                    <td>Monday - Thursday</td>
-                    <td>1 PM - 2 PM</td>
-                </tr>
-                <tr>
-                    <td>Friday</td>
-                    <td>12.15 PM - 2.45 PM</td>
-                </tr>
-            </table>
+                <table>
+                    <tr>
+                        <th colspan="2">Lunch Break</th>
+                    </tr>
+                    <tr>
+                        <td>Monday - Thursday</td>
+                        <td>1 PM - 2 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Friday</td>
+                        <td>12.15 PM - 2.45 PM</td>
+                    </tr>
+                </table>
 
-            <table>
-                <tr>
-                    <th>Public Holiday</th>
-                </tr>
-                <tr>
-                    <td>Closed</td>
-                </tr>
-            </table>
-        </div>
-    </article>
-        
-    <article>
-        <h2>Pusat Kesihatan UTeM Operation Hours (CAMPUS TECHNOLOGY)</h2>
+                <table>
+                    <tr>
+                        <th>Public Holiday</th>
+                    </tr>
+                    <tr>
+                        <td>Closed</td>
+                    </tr>
+                </table>
+            </div>
+        </article>
 
-        <div class="tableGrid">
-            <table>
-                <tr>
-                    <th colspan="2">Academic Week</th>
-                </tr>
+        <article>
+            <h2>Pusat Kesihatan UTeM Operation Hours (CAMPUS TECHNOLOGY)</h2>
 
-                <tr>
-                    <td>Monday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
+            <div class="tableGrid">
+                <table>
+                    <tr>
+                        <th colspan="2">Academic Week</th>
+                    </tr>
+                    <tr>
+                        <td>Monday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Tuesday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Wednesday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Thursday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Friday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Saturday</td>
+                        <td>Closed</td>
+                    </tr>
+                    <tr>
+                        <td>Sunday</td>
+                        <td>Closed</td>
+                    </tr>
+                </table>
 
-                <tr>
-                    <td>Tuesday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
+                <table>
+                    <tr>
+                        <th colspan="2">Semester Break</th>
+                    </tr>
+                    <tr>
+                        <td>Monday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Tuesday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Wednesday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Thursday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Friday</td>
+                        <td>8 AM - 5 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Saturday</td>
+                        <td>Closed</td>
+                    </tr>
+                    <tr>
+                        <td>Sunday</td>
+                        <td>Closed</td>
+                    </tr>
+                </table>
 
-                <tr>
-                    <td>Wednesday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
+                <table>
+                    <tr>
+                        <th colspan="2">Lunch Break</th>
+                    </tr>
+                    <tr>
+                        <td>Monday - Thursday</td>
+                        <td>1 PM - 2 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Friday</td>
+                        <td>12.15 PM - 2.45 PM</td>
+                    </tr>
+                </table>
 
-                <tr>
-                    <td>Thursday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-
-                <tr>
-                    <td>Friday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-
-                <tr>
-                    <td>Saturday</td>
-                    <td>Closed</td>
-                </tr>
-
-                <tr>
-                    <td>Sunday</td>
-                    <td>Closed</td>
-                </tr>
-            </table>
-
-            <table>
-                <tr>
-                    <th colspan="2">Semester Break</th>
-                </tr>
-
-                <tr>
-                    <td>Monday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-
-                <tr>
-                    <td>Tuesday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-
-                <tr>
-                    <td>Wednesday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-
-                <tr>
-                    <td>Thursday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-
-                <tr>
-                    <td>Friday</td>
-                    <td>8 AM - 5 PM</td>
-                </tr>
-
-                <tr>
-                    <td>Saturday</td>
-                    <td>Closed</td>
-                </tr>
-
-                <tr>
-                    <td>Sunday</td>
-                    <td>Closed</td>
-                </tr>
-            </table>
-
-            <table>
-                <tr>
-                    <th colspan="2">Lunch Break</th>
-                </tr>
-
-                <tr>
-                    <td>Monday - Thursday</td>
-                    <td>1 PM - 2 PM</td>
-                </tr>
-
-                <tr>
-                    <td>Friday</td>
-                    <td>12.15 PM - 2.45 PM</td>
-                </tr>
-            </table>
-
-            <table>
-                <tr>
-                    <th>Public Holiday</th>
-                </tr>
-
-                <tr>
-                    <td>Closed</td>
-                </tr>
-            </table>
-        </div>
-    </article>
+                <table>
+                    <tr>
+                        <th>Public Holiday</th>
+                    </tr>
+                    <tr>
+                        <td>Closed</td>
+                    </tr>
+                </table>
+            </div>
+        </article>
     </section>
 
     <footer>
@@ -310,5 +295,6 @@
             Copyright &copy; 2026 PROJECT SYSTEM DEVELOPMENT WORKSHOP S1G2
         </p>
     </footer>
+
 </body>
 </html>

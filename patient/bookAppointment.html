@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="patient.css">
     <title>UTeM Clinic Queue System</title>
 </head>
 
@@ -12,7 +12,7 @@
     <div id="header">
         <div id="leftSection">
             <button class="iconBtn">
-                <img class="icon" src="../images/backIconDark.png">
+                <img class="icon" src="../images/backIconDark.png" alt="Back Button">
             </button>
 
             <h1>UTeM Clinic Queue System</h1>
@@ -21,6 +21,7 @@
         <nav>
             <ul>
                 <li><a href="dashboard.html">Dashboard</a></li>
+
                 <li class="dropdown active">
                     Appointment
                     <ul class="submenu">
@@ -28,6 +29,7 @@
                         <li><a href="appointmentRecord.html">Appointment Record</a></li>
                     </ul>
                 </li>
+
                 <li><a href="medicalRecord.html">Medical Record</a></li>
                 <li><a href="selfAssessment.html">Self-Assessment</a></li>
             </ul>
@@ -37,54 +39,86 @@
             <h1>Welcome, Student!</h1>
 
             <button class="iconBtn">
-                <img class="icon" id="profileIcon" src="../images/profileIconDark.png">
+                <img class="icon" id="profileIcon" src="../images/profileIconDark.png" alt="Profile Icon">
             </button>
         </div>
     </div>
 
-    <section>
-        <h2>Book Appointment</h2>
-        <p>Select the type of Appointment:</p>
-        <article>
+    <div class="bookAppointmentPage">
+
+        <section>
+            <h2>Book Appointment</h2>
+            <p>Select the type of appointment:</p>
+
+            <div class="topCards">
+                <button class="cardBtn">
+                    <h2>Same-Day Consultation</h2>
+                    <h3>Same-day consultation for medicine and MC</h3>
+                    <p>Click to book now</p>
+                </button>
+
+                <button class="cardBtn">
+                    <h2>Scheduled Consultation</h2>
+                    <h3>Non-urgent, routine health evaluation for early detection</h3>
+                    <p>Click to book now</p>
+                </button>
+            </div>
+        </section>
+
+        <section>
             <h2>Same-Day Consultation</h2>
-            <h3>Same-day consultation for medicine and MC</h3>
-            <p>Click to book now</p>
-        </article>
+            <p>Choose your preferred session for today.</p>
 
-        <article>
+            <div class="topCards">
+                <button class="cardBtn">
+                    <h2>Morning Session</h2>
+                    <h3>8:00 AM - 12:00 PM</h3>
+                    <p>Any time within these hours is acceptable.</p>
+                </button>
+
+                <button class="cardBtn">
+                    <h2>Afternoon Session</h2>
+                    <h3>12:00 PM - 7:00 PM</h3>
+                    <p>Any time within these hours is acceptable.</p>
+                </button>
+            </div>
+        </section>
+
+        <section>
             <h2>Scheduled Consultation</h2>
-            <h3>Non-urgent, routine health evaluation for early detection</h3>
-            <p>Click to book now</p>
-        </article>
-    </section>
-        
-    <section>
-        <h2>Same-Day Consultation</h2>
-        <p>Choose your preferred session for today (DD/MM/YYYY)</p>
-        <article>
-            <h2>Morning Session</h2>
-            <h2>(8:00 AM - 12:00 AM)</h2>
-            <h3>Any time within these hours is acceptable.</h3>
-            <p>Click to book now</p>
-        </article>
-        <article>
-            <h2>Morning Session</h2>
-            <h2>(12:00 PM - 7:00 PM)</h2>
-            <h3>Any time within these hours is acceptable.</h3>
-            <p>Click to book now</p>
-        </article>
-    </section>
+            <p>Select a preferred date and available time slot for your checkup.</p>
 
-    <section>
-        <h2>Summary</h2>
-        <p>Selected Date: Today</p>
-        <p>Selected Session: Morning Session</p>
-        <P>Time Range: 8:00 AM = 12:00 PM</P>
-        <p>Appointment Type: General Consultation</p>
-    </section>
+            <div class="topCards">
+                <article>
+                    <h2>Select Date</h2>
+                    <h3>8:00 AM - 12:00 PM</h3>
+                    <p>Any time within these hours is acceptable.</p>
+                </article>
 
-    <button>Confirm Booking</button>
+                <article>
+                    <h2>Available Time Slot</h2>
+                    <h3>12:00 PM - 7:00 PM</h3>
+                    <p>Any time within these hours is acceptable.</p>
+                </article>
+            </div>
+        </section>
 
+        <section class="summaryBox">
+            <h2>Summary</h2>
+
+            <div class="summaryGrid">
+                <p><strong>Selected Date:</strong> Today</p>
+                <p><strong>Selected Session:</strong> Morning Session</p>
+                <p><strong>Time Range:</strong> 8:00 AM - 12:00 PM</p>
+                <p><strong>Appointment Type:</strong> Same-Day Consultation</p>
+            </div>
+
+            <button class="submitBtn">Confirm Booking</button>
+            <p>ⓘ You have booked an appointment. Go to Appointment>Appointment Record to get more information.</p>
+        </section>
+
+    </div>
+    
     <footer>
         <h2>Contact Us</h2>
 
@@ -130,5 +164,6 @@
             Copyright &copy; 2026 PROJECT SYSTEM DEVELOPMENT WORKSHOP S1G2
         </p>
     </footer>
+
 </body>
 </html>
