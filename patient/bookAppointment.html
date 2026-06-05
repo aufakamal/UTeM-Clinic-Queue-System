@@ -51,13 +51,13 @@
             <p>Select the type of appointment:</p>
 
             <div class="topCards">
-                <button class="cardBtn">
+                <button id="sameDayBtn" class="cardBtn">
                     <h2>Same-Day Consultation</h2>
                     <h3>Same-day consultation for medicine and MC</h3>
                     <p>Click to book now</p>
                 </button>
 
-                <button class="cardBtn">
+                <button id="scheduledBtn" class="cardBtn">
                     <h2>Scheduled Consultation</h2>
                     <h3>Non-urgent, routine health evaluation for early detection</h3>
                     <p>Click to book now</p>
@@ -65,18 +65,18 @@
             </div>
         </section>
 
-        <section>
+        <section id="sameDayCard" class="hidden">
             <h2>Same-Day Consultation</h2>
             <p>Choose your preferred session for today.</p>
 
             <div class="topCards">
-                <button class="cardBtn">
+                <button id="morningBtn" class="cardBtn">
                     <h2>Morning Session</h2>
                     <h3>8:00 AM - 12:00 PM</h3>
                     <p>Any time within these hours is acceptable.</p>
                 </button>
 
-                <button class="cardBtn">
+                <button id="afternoonBtn" class="cardBtn">
                     <h2>Afternoon Session</h2>
                     <h3>12:00 PM - 7:00 PM</h3>
                     <p>Any time within these hours is acceptable.</p>
@@ -84,22 +84,22 @@
             </div>
         </section>
 
-        <section>
+        <section id="scheduledCard" class="hidden">
             <h2>Scheduled Consultation</h2>
             <p>Select a preferred date and available time slot for your checkup.</p>
 
             <div class="topCards">
-                <article>
+                <button id="dateBtn" class="cardBtn">
                     <h2>Select Date</h2>
-                    <h3>8:00 AM - 12:00 PM</h3>
-                    <p>Any time within these hours is acceptable.</p>
-                </article>
+                    <h3>Choose your preferred appointment date</h3>
+                    <p>Click to select a date.</p>
+                </button>
 
-                <article>
+                <button id="timeSlotBtn" class="cardBtn">
                     <h2>Available Time Slot</h2>
-                    <h3>12:00 PM - 7:00 PM</h3>
-                    <p>Any time within these hours is acceptable.</p>
-                </article>
+                    <h3>Choose an available time slot</h3>
+                    <p>Click to select a time slot.</p>
+                </button>
             </div>
         </section>
 
@@ -107,14 +107,14 @@
             <h2>Summary</h2>
 
             <div class="summaryGrid">
-                <p><strong>Selected Date:</strong> Today</p>
-                <p><strong>Selected Session:</strong> Morning Session</p>
-                <p><strong>Time Range:</strong> 8:00 AM - 12:00 PM</p>
-                <p><strong>Appointment Type:</strong> Same-Day Consultation</p>
+                <p id="selectedDate"><strong>Selected Date:</strong> Today</p>
+                <p id="appointmentType"><strong>Appointment Type:</strong> Same-Day Consultation</p>
+                <p id="selectedSession"><strong>Selected Session:</strong> Session</p>
+                <p id="timeSlot"><strong>Time Slot:</strong> 8:00 AM - 12:00 PM</p>
             </div>
 
-            <button class="submitBtn">Confirm Booking</button>
-            <p>ⓘ You have booked an appointment. Go to Appointment>Appointment Record to get more information.</p>
+            <button id="confirmBtn" class="submitBtn">Confirm Booking</button>
+            <p class="info hidden">ⓘ You have booked an appointment. Go to Appointment>Appointment Record to get more information.</p>
         </section>
 
     </div>
@@ -164,6 +164,6 @@
             Copyright &copy; 2026 PROJECT SYSTEM DEVELOPMENT WORKSHOP S1G2
         </p>
     </footer>
-
+<script src="patient.js"></script>
 </body>
 </html>

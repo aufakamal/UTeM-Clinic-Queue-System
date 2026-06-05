@@ -48,26 +48,26 @@
         <h2>Appointment Record</h2>
         <p>Track your upcoming visits and review previous bookings.</p>
 
-        <div class="recordTabs">
-            <a href="#upcoming" class="activeTab">Upcoming</a>
-            <a href="#previous">Previous</a>
+        <div class="appointmentTabs">
+            <button type="button" id="upcomingTab" class="activeTab">Upcoming</button>
+            <button type="button" id="previousTab">Previous</button>
         </div>
 
-        <article id="upcoming">
-            <h2>Upcoming Appointment</h2>
+        <article id="upcomingRecords">
+            <h2>Date DD/MM/YY</h2>
             <p>Appointment Status: Ongoing</p>
 
             <div class="singleTable">
                 <table>
                     <tr>
-                        <th>Date</th>
+                        <th>Appointment Type</th>
                         <th>Time Slot</th>
                         <th>Queue Number</th>
                         <th>Queue Status</th>
                         <th>Room Number</th>
                     </tr>
                     <tr>
-                        <td>DD/MM/YY</td>
+                        <td>Appointment</td>
                         <td>11:00 AM - 12:00 PM</td>
                         <td>S34</td>
                         <td>Waiting</td>
@@ -77,7 +77,7 @@
             </div>
         </article>
 
-        <article id="previous">
+        <article id="previousRecords" class="hidden">
             <h2>Previous Appointment</h2>
             <p>Appointment Status: Cancelled / No-Show / Completed</p>
 
@@ -94,7 +94,7 @@
                         <td>DD/MM/YY</td>
                         <td>11:00 AM - 12:00 PM</td>
                         <td>S34</td>
-                        <td>Waiting</td>
+                        <td>Completed</td>
                         <td>Room 3</td>
                     </tr>
                 </table>
@@ -148,5 +148,6 @@
         </p>
     </footer>
 
+    <script src="patient.js"></script>
 </body>
 </html>
