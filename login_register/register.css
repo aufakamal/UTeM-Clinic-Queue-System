@@ -1,0 +1,165 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #F8FAFC;
+    color: #1E293B;
+}
+
+.container {
+    width: 900px;
+    height: 520px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    border: 1px solid #D7E3EA;
+}
+
+.header {
+    height: 75px;
+    background-color: #1E3A8A;
+    border-bottom: 1px solid #D7E3EA;
+
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+}
+
+.logo-box {
+    background-color: white;
+    width: 90px;
+    height: 55px;
+    margin-right: 20px;
+}
+
+.logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.title {
+    flex: 1;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.icons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.icons img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.main {
+    display: flex;
+    height: 600px;
+    background-color: #EFF6FF;
+}
+
+.left-sec {
+    width: 50%;
+    border-right: 1px solid #D7E3EA;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.back {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+}
+
+.back img {
+    width: 20px;
+    height: 20px;
+}
+
+.left-sec h2 {
+    font-size: 32px;
+    font-weight: 400;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.right-sec {
+    width: 50%;
+    padding-top: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.right-sec h1 {
+    font-size: 38px;
+    font-weight: 400;
+    margin: 0 0 25px;
+}
+
+form {
+    width: 300px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+input,
+select {
+    width: 100%;
+    height: 28px;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    background-color: white;
+    padding-left: 8px;
+    font-size: 13px;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #2563EB;
+}
+
+.submit-button {
+    display: block;
+    width: 90px;
+    height: 30px;
+    margin: 28px auto 12px;
+    background-color: #2563EB;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.submit-button:hover {
+    background-color: #0f3cb6;
+}
+
+p {
+    text-align: center;
+    font-size: 11px;
+}
+
+p a {
+    color: #0369A1;
+    text-decoration: none;
+}
