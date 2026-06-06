@@ -472,3 +472,183 @@ section {
     }
 
 }
+
+/* =========================
+   PHARMACIST REPORT
+========================= */
+
+.reportPage {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.reportHeader,
+.reportCard,
+.reportBox,
+.recordBox {
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+}
+
+.reportHeader h2,
+.reportBox h2,
+.recordBox h2 {
+    margin-top: 0;
+    color: #0F172A;
+}
+
+.reportHeader p {
+    color: #64748B;
+}
+
+.reportSummary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.reportCard h3 {
+    margin-top: 0;
+    color: #475569;
+}
+
+.reportCard p {
+    margin: 12px 0;
+    color: #0284C7;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.reportCard span {
+    color: #64748B;
+    font-size: 14px;
+}
+
+.reportMiddle {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    gap: 24px;
+}
+
+.statusRow {
+    display: grid;
+    grid-template-columns: 120px 1fr 45px;
+    align-items: center;
+    gap: 14px;
+    margin: 20px 0;
+}
+
+.statusRow p {
+    margin: 0;
+    color: #334155;
+    font-weight: 600;
+}
+
+.statusBar {
+    height: 14px;
+    background-color: #E2E8F0;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.statusFill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+.dispensedFill {
+    width: 75%;
+    background-color: #0284C7;
+}
+
+.returnedFill {
+    width: 15%;
+    background-color: #F59E0B;
+}
+
+.pendingFill {
+    width: 10%;
+    background-color: #64748B;
+}
+
+.reportBox label {
+    display: block;
+    margin: 14px 0 6px;
+    color: #334155;
+    font-weight: 600;
+}
+
+.reportBox input,
+.reportBox select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+}
+
+.searchReportBtn {
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px;
+    background-color: #0284C7;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.recordBox table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.recordBox th {
+    background-color: #E0F2FE;
+    color: #075985;
+    padding: 14px;
+    text-align: left;
+}
+
+.recordBox td {
+    padding: 14px;
+    border-bottom: 1px solid #E2E8F0;
+    color: #334155;
+}
+
+.doneStatus,
+.returnStatus,
+.pendingStatus {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.doneStatus {
+    background-color: #DCFCE7;
+    color: #166534;
+}
+
+.returnStatus {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.pendingStatus {
+    background-color: #E2E8F0;
+    color: #334155;
+}
+
+@media (max-width: 900px) {
+    .reportSummary,
+    .reportMiddle {
+        grid-template-columns: 1fr;
+    }
+}
