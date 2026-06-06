@@ -1,7 +1,9 @@
 let selectedQueue = "";
 
-const patients = {
-    A102: {
+const patients = 
+{
+    A102: 
+    {
         name: "Nur Aisyah",
         queue: "A102",
         doctor: "Dr. Amir",
@@ -9,7 +11,8 @@ const patients = {
         prescription: "Paracetamol 500mg<br>Dosage: 3 times daily for 5 days<br>Doctor Note: After food"
     },
 
-    A103: {
+    A103: 
+    {
         name: "Ahmad Ali",
         queue: "A103",
         doctor: "Dr. Siti",
@@ -45,8 +48,10 @@ const messagePopup = document.querySelector(".messagePopup");
 const messageText = document.querySelector(".messageText");
 const okBtn = document.querySelector(".okBtn");
 
-viewButtons.forEach((button) => {
-    button.addEventListener("click", () => {
+viewButtons.forEach((button) => 
+{
+    button.addEventListener("click", () => 
+    {
         const queue = button.dataset.queue;
         selectedQueue = queue;
 
@@ -59,7 +64,8 @@ viewButtons.forEach((button) => {
         allergyInfo.textContent = patients[queue].allergy;
         prescriptionInfo.innerHTML = patients[queue].prescription;
 
-        safetyChecks.forEach((check) => {
+        safetyChecks.forEach((check) => 
+        {
             check.checked = false;
         });
 
@@ -67,8 +73,10 @@ viewButtons.forEach((button) => {
     });
 });
 
-issueBtn.addEventListener("click", () => {
-    if (selectedQueue === "") {
+issueBtn.addEventListener("click", () => 
+{
+    if (selectedQueue === "") 
+    {
         alert("Please select a patient first.");
         return;
     }
@@ -76,11 +84,13 @@ issueBtn.addEventListener("click", () => {
     issuePopup.style.display = "flex";
 });
 
-cancelBtn.addEventListener("click", () => {
+cancelBtn.addEventListener("click", () => 
+{
     issuePopup.style.display = "none";
 });
 
-sendDoctorBtn.addEventListener("click", () => {
+sendDoctorBtn.addEventListener("click", () => 
+{
     issuePopup.style.display = "none";
 
     returnedRecord.innerHTML = `
@@ -95,8 +105,10 @@ sendDoctorBtn.addEventListener("click", () => {
     messagePopup.style.display = "block";
 });
 
-dispenseBtn.addEventListener("click", () => {
-    if (selectedQueue === "") {
+dispenseBtn.addEventListener("click", () => 
+{
+    if (selectedQueue === "") 
+    {
         alert("Please select a patient first.");
         return;
     }
@@ -113,6 +125,7 @@ dispenseBtn.addEventListener("click", () => {
     messagePopup.style.display = "block";
 });
 
-okBtn.addEventListener("click", () => {
+okBtn.addEventListener("click", () => 
+{
     messagePopup.style.display = "none";
 });
