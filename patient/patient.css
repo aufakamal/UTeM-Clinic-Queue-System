@@ -86,6 +86,49 @@ body {
 }
 
 /* =========================
+   PROFILE 
+========================= */
+.profileContainer {
+    position: relative;
+}
+
+#profileDropdown {
+    display: none;
+    position: absolute;
+    top: 55px;
+    right: 0;
+    min-width: 150px;
+
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+    z-index: 999;
+    overflow: hidden;
+}
+
+#profileDropdown.showDropdown {
+    display: block;
+}
+
+#profileDropdown a {
+    display: block;
+    padding: 12px 16px;
+
+    color: #334155;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#profileDropdown a:hover {
+    background-color: #E0F2FE;
+    color: #0284C7;
+}
+
+/* =========================
    NAVBAR
 ========================= */
 nav {
