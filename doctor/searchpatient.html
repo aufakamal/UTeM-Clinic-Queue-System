@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="patient.css">
+    <link rel="stylesheet" href="doctor.css">
+    <title>Search Patient | UTeM PKU</title>
+</head>
+<body>
+
+<header id="header">
+    <div id="leftSection">
+        <button class="backBtn">
+            <img src="../images/backIconDark.png" alt="Back" class="smallIcon">
+        </button>
+        <h1>UTeM PKU</h1>
+    </div>
+
+    <nav class="navBox">
+        <ul>
+            <li class="active"><a href="dashboard.html">Workspace</a></li>
+            <li><a href="reports.html">Reports</a></li>
+        </ul>
+    </nav>
+
+    <div id="rightSection">
+        <h1>Dr. Anis | Room 3</h1>
+        <img src="../images/profileIconLight.png" alt="Profile" class="profile-img">
+    </div>
+</header>
+
+    <section class="dashboard-grid">
+        
+        <aside class="sidebar">
+    <article class="card">
+        <h3>CURRENT CONSULTATIONS</h3>
+        <p><strong>Queue :</strong> #F34</p>
+        <p><strong>Name:</strong> Ali bin Abu</p>
+        <p><strong>Type of Appointment:</strong> Medical Checkup</p>
+        <button class="btn">START SESSION</button>
+    </article>
+
+    <article class="card">
+        <h3>PHARMACY UPDATES</h3>
+        <p>Queue A098 - Ahmad Ali</p>
+        <p>Issue found : Dosage Unclear</p>
+        <button class="btn">VIEW</button>
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #E2E8F0;">
+        <p>Queue A091 - Siti Nur haliza</p>
+        <p>Issue found : Allergy Check [Review]</p>
+        <button class="btn">VIEW</button>
+    </article>
+
+    <article class="card">
+        <h3>SEARCH PATIENT</h3>
+        <button class="btn">Search by name, IC, ID</button>
+        <div style="margin-top: 15px;">
+            <p><strong>Recent Search :</strong></p>
+            <ul style="padding-left: 20px; color: #475569; font-size: 14px;">
+                <li>Amir bin Amar</li>
+                <li>D514698002</li>
+                <li>070502132567</li>
+            </ul>
+        </div>
+    </article>
+</aside>
+
+        <main class="main-panel">
+            <h2>SEARCH PATIENT</h2>
+            <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+                <input type="text" placeholder="Search by name, IC, ID...">
+                <button class="btn">SEARCH</button>
+            </div>
+
+            <div class="patient-details">
+                <p><strong>Patient Name:</strong> Amir bin Amar</p>
+                <p><strong>Student ID:</strong> D514698002</p>
+                <p><strong>IC Number:</strong> 070502132567</p>
+                <p><strong>Age / Gender:</strong> 21 / Male</p>
+            </div>
+
+            <div class="medicalRecordTables">
+            <h3>Medical History</h3>
+            <table class="medicalTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Condition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Asthma</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Gastric</td>
+            </tr>
+            </tbody>
+</table>
+
+<h3>Allergy</h3>
+<table class="medicalTable">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Allergy Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Seafoods</td>
+        </tr>
+    </tbody>
+</table>
+            </div>
+        </main>
+    </section>
+
+  <footer>
+        <h2>Contact Us</h2>
+
+        <div class="footerGrid">
+            <div class="socialItem">
+                <a href="https://www.instagram.com/pusatkesihatanutem/?hl=en">
+                    <img class="icon" src="../images/instagramIcon.png" alt="Instagram Icon">
+                    <span>Instagram</span>
+                </a>
+            </div>
+
+            <div class="contactItem">
+                <img class="icon" src="../images/phoneIcon.png" alt="Phone Icon">
+                <span>06-2292308</span>
+            </div>
+
+            <div class="socialItem">
+                <a href="https://www.facebook.com/PusatKesihatanUTeM/">
+                    <img class="icon" src="../images/facebookIcon.png" alt="Facebook Icon">
+                    <span>Facebook</span>
+                </a>
+            </div>
+
+            <div class="contactItem">
+                <img class="icon" src="../images/emailIcon.png" alt="Email Icon">
+                <a href="mailto:pusatkesihatanutem@utem.edu.my">pusatkesihatanutem@utem.edu.my</a>
+            </div>
+
+            <div class="socialItem">
+                <a href="https://www.tiktok.com/@utempku">
+                    <img class="icon" src="../images/tiktokIcon.png" alt="TikTok Icon">
+                    <span>TikTok</span>
+                </a>
+            </div>
+
+            <div class="contactItem">
+                <img class="icon" src="../images/LocationIcon.png" alt="Location Icon">
+                <span>Universiti Teknikal Malaysia Melaka, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka.</span>
+            </div>
+        </div>
+
+        <p class="copyright">
+            Copyright &copy; 2026 PROJECT SYSTEM DEVELOPMENT WORKSHOP S1G2
+        </p>
+    </footer>
+</body>
+</html>

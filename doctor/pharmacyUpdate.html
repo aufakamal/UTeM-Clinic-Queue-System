@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    meta charset="UTF-8">
+    <link rel="stylesheet" href="patient.css">
+    <link rel="stylesheet" href="doctor.css">
+    <title>Workspace | Doctor Dashboard</title>
+</head>
+ <header id="header">
+    <div id="leftSection">
+        <button class="backBtn">
+            <img src="../images/backIconDark.png" alt="Back" class="smallIcon">
+        </button>
+        <h1>UTeM PKU</h1>
+    </div>
+
+    <nav class="navBox">
+        <ul>
+            <li class="active"><a href="dashboard.html">Workspace</a></li>
+            <li><a href="reports.html">Reports</a></li>
+        </ul>
+    </nav>
+
+    <div id="rightSection">
+        <h1>Dr. Anis | Room 3</h1>
+        <img src="../images/profileIconLight.png" alt="Profile" class="profile-img">
+    </div>
+</header>
+
+    <section class="dashboard-grid">
+        <aside class="sidebar">
+    <article class="card">
+        <h3>CURRENT CONSULTATIONS</h3>
+        <p><strong>Queue :</strong> #F34</p>
+        <p><strong>Name:</strong> Ali bin Abu</p>
+        <p><strong>Type of Appointment:</strong> Medical Checkup</p>
+        <button class="btn">START SESSION</button>
+    </article>
+
+    <article class="card">
+        <h3>PHARMACY UPDATES</h3>
+        <p>Queue A098 - Ahmad Ali</p>
+        <p>Issue found : Dosage Unclear</p>
+        <button class="btn">VIEW</button>
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #E2E8F0;">
+        <p>Queue A091 - Siti Nur haliza</p>
+        <p>Issue found : Allergy Check [Review]</p>
+        <button class="btn">VIEW</button>
+    </article>
+
+    <article class="card">
+        <h3>SEARCH PATIENT</h3>
+        <button class="btn">Search by name, IC, ID</button>
+        <div style="margin-top: 15px;">
+            <p><strong>Recent Search :</strong></p>
+            <ul style="padding-left: 20px; color: #475569; font-size: 14px;">
+                <li>Amir bin Amar</li>
+                <li>D514698002</li>
+                <li>070502132567</li>
+            </ul>
+        </div>
+    </article>
+</aside>
+
+<section class="dashboard-grid">
+    <aside class="sidebar">
+        </aside>
+
+    <main class="main-panel" style="position: relative;">
+        <button class="close-btn" style="position: absolute; top: 20px; right: 20px;">X</button>
+        
+        <h2>PHARMACY UPDATES</h2>
+        
+        <div class="pharmacy-content" style="margin-top: 20px;">
+            <p><strong>Queue No :</strong> A098</p>
+            <p><strong>Patient Name :</strong> Ahmad Ali</p>
+            
+            <p style="margin-top: 20px;"><strong>Prescription:</strong></p>
+            <p>- Amoxicillin 500mg</p>
+            
+            <p style="margin-top: 20px;"><strong>Issue Raised by Pharmacy:</strong></p>
+            <p style="color: #B91C1C;">⚠️ Dosage unclear</p>
+            
+            <p style="margin-top: 20px;"><strong>Pharmacist Note:</strong></p>
+            <p>"Please confirm once daily / twice daily?"</p>
+            
+            <div class="doctor-actions" style="margin-top: 30px;">
+                <p><strong>Doctor Action:</strong></p>
+                <a href="#">[ Edit Prescription ]</a><br>
+                <a href="#">[ Add Notes ]</a>
+                
+                <p style="margin-top: 20px;"><strong>Doctor Response:</strong></p>
+                <textarea rows="3" style="width: 100%; border: 1px solid #CBD5E1; border-radius: 8px;"></textarea>
+            </div>
+        </div>
+
+        <button class="btn-green" style="margin-top: 30px; background-color: #00FF80; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+            Confirm & Resend to Pharmacy
+        </button>
+    </main>
+
+</section>
+<footer>
+        <h2>Contact Us</h2>
+
+        <div class="footerGrid">
+            <div class="socialItem">
+                <a href="https://www.instagram.com/pusatkesihatanutem/?hl=en">
+                    <img class="icon" src="../images/instagramIcon.png" alt="Instagram Icon">
+                    <span>Instagram</span>
+                </a>
+            </div>
+
+            <div class="contactItem">
+                <img class="icon" src="../images/phoneIcon.png" alt="Phone Icon">
+                <span>06-2292308</span>
+            </div>
+
+            <div class="socialItem">
+                <a href="https://www.facebook.com/PusatKesihatanUTeM/">
+                    <img class="icon" src="../images/facebookIcon.png" alt="Facebook Icon">
+                    <span>Facebook</span>
+                </a>
+            </div>
+
+            <div class="contactItem">
+                <img class="icon" src="../images/emailIcon.png" alt="Email Icon">
+                <a href="mailto:pusatkesihatanutem@utem.edu.my">pusatkesihatanutem@utem.edu.my</a>
+            </div>
+
+            <div class="socialItem">
+                <a href="https://www.tiktok.com/@utempku">
+                    <img class="icon" src="../images/tiktokIcon.png" alt="TikTok Icon">
+                    <span>TikTok</span>
+                </a>
+            </div>
+
+            <div class="contactItem">
+                <img class="icon" src="../images/LocationIcon.png" alt="Location Icon">
+                <span>Universiti Teknikal Malaysia Melaka, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka.</span>
+            </div>
+        </div>
+
+        <p class="copyright">
+            Copyright &copy; 2026 PROJECT SYSTEM DEVELOPMENT WORKSHOP S1G2
+        </p>
+    </footer>
+</body>
+</html>
