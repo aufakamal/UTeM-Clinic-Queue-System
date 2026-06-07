@@ -1,0 +1,303 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f4f7fb;
+    font-family: Arial, sans-serif;
+    color: #111827;
+    font-weight: 700;
+}
+
+header {
+    height: 74px;
+    background: white;
+    border-bottom: 3px solid #e5ebf2;
+    display: flex;
+    align-items: center;
+    padding: 0 26px;
+    gap: 22px;
+}
+
+.back {
+    border: 0;
+    background: white;
+    font-size: 34px;
+    cursor: pointer;
+}
+
+h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.profile {
+    margin-left: auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #d9d9d9;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+}
+
+main {
+    width: 84%;
+    min-height: 560px;
+    background: white;
+    margin: 12px auto;
+    border-radius: 10px;
+    padding-bottom: 30px;
+}
+
+nav {
+    width: 84%;
+    height: 52px;
+    background: #d9d9d9;
+    border-radius: 0 9px 9px 0;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 2fr 1fr 1fr;
+    align-items: center;
+}
+
+.tab,
+.sub,
+.actions button {
+    border: 0;
+    background: transparent;
+    padding: 11px 14px;
+    border-radius: 10px;
+    font: inherit;
+    cursor: pointer;
+}
+
+.tab.active,
+.sub.active,
+.actions button.active {
+    background: #129bf3;
+    color: white;
+}
+
+.page {
+    display: none;
+    padding: 18px 28px;
+}
+
+.page.active {
+    display: block;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin: 50px 25px 35px;
+}
+
+.stat {
+    min-height: 180px;
+    border: 2px dashed #a76bff;
+    display: grid;
+    place-items: center;
+    padding: 22px;
+}
+
+.stat span {
+    width: 47px;
+    height: 41px;
+    border-radius: 10px;
+    background: #129bf3;
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+}
+
+.chart {
+    min-height: 195px;
+    border: 2px dashed #be8cff;
+    padding: 12px;
+}
+
+.bar-text {
+    height: 130px;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+}
+
+.sub-menu {
+    width: 175px;
+    background: #d9d9d9;
+    border-radius: 0 0 10px 10px;
+    margin-left: 75px;
+    padding: 8px;
+    display: grid;
+    gap: 6px;
+}
+
+.actions {
+    display: flex;
+    gap: 20px;
+    margin: 12px 12px 14px;
+}
+
+.actions button {
+    background: #d9d9d9;
+    min-width: 150px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(280px, 360px));
+    gap: 16px 36px;
+}
+
+.card {
+    background: #d9d9d9;
+    border-radius: 9px;
+    padding: 18px 24px;
+    min-height: 108px;
+    position: relative;
+}
+
+.card p,
+.card h3 {
+    margin: 0 0 12px;
+}
+
+.two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.dot {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.green-dot {
+    background: #00d738;
+}
+
+.red-dot {
+    background: #f21b1b;
+}
+
+.blue-dot {
+    background: #176bff;
+}
+
+.green,
+.red {
+    border: 0;
+    color: white;
+    border-radius: 10px;
+    padding: 12px 22px;
+    font: inherit;
+    cursor: pointer;
+    margin-right: 14px;
+}
+
+.green {
+    background: #00e84d;
+}
+
+.red {
+    background: #ff1111;
+}
+
+.delete-x {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    border: 3px solid #222;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.edit-icon {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    border: 0;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.form-card {
+    background: #d9d9d9;
+    border-radius: 9px;
+    padding: 18px 24px;
+    width: 360px;
+    margin-bottom: 16px;
+}
+
+.form-card label {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+input,
+select {
+    height: 28px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 4px 10px;
+    font: inherit;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.modal-card {
+    width: 280px;
+    background: white;
+    border: 1px solid #333;
+    border-radius: 9px;
+    padding: 34px 20px 22px;
+}
+
+.modal-card b {
+    display: block;
+    margin-bottom: 28px;
+}
+
+@media (max-width: 800px) {
+    main,
+    nav {
+        width: 96%;
+    }
+
+    nav {
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .stats,
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}

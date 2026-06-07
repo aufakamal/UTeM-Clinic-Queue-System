@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTeM PKU Admin</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header>
+        <button class="back">&#8592;</button>
+        <h1>UTeM PKU</h1>
+        <div class="profile">👤</div>
+    </header>
+
+    <main>
+        <nav>
+            <button class="tab active" onclick="showPage('dashboard', this)">Dashboard</button>
+            <button class="tab" onclick="showPage('appointments', this)">Appointments</button>
+            <button class="tab" onclick="showPage('queue', this)">Queue Management</button>
+            <button class="tab" onclick="showPage('slots', this)">Slots</button>
+            <button class="tab" onclick="showPage('staff', this)">Staff</button>
+        </nav>
+
+        <section id="dashboard" class="page active">
+            <div class="stats">
+                <div class="stat"><b>Total<br>appointments<br>today</b><span id="totalToday">6</span></div>
+                <div class="stat"><b>Number of<br>waiting<br>patients</b><span id="waitingPatients">7</span></div>
+                <div class="stat"><b>Number of<br>active<br>consultations</b><span id="activeConsult">6</span></div>
+                <div class="stat"><b>Available<br>doctors</b><span id="availableDoctors">7</span></div>
+            </div>
+
+            <div class="chart">
+                <b>Weekly Appointments</b>
+                <div class="bar-text">📊 Bar Chart</div>
+            </div>
+        </section>
+
+        <section id="appointments" class="page">
+            <div class="sub-menu">
+                <button class="sub active" onclick="showAppointmentDates()">Dates</button>
+                <button class="sub" onclick="showLateArrival()">Late Arrival</button>
+            </div>
+            <div id="appointmentContent"></div>
+        </section>
+
+        <section id="queue" class="page">
+            <div id="queueContent"></div>
+        </section>
+
+        <section id="slots" class="page">
+            <div class="actions">
+                <button id="createSlotBtn" onclick="showSlotForm()">Create new slots +</button>
+                <button id="deleteSlotBtn" onclick="toggleDeleteSlot()">Delete slots</button>
+            </div>
+
+            <div id="slotForm" class="form-card hidden">
+                <label>Date: <input id="slotDate" placeholder="14/3/2026"></label>
+                <label>Time: <input id="slotTime" placeholder="8:00 am"></label>
+                <label>Doctor: <input id="slotDoctor" placeholder="A"></label>
+                <label>Capacity: <input id="slotCapacity" placeholder="10"></label>
+                <button class="green" onclick="createSlot()">Create</button>
+                <button class="red" onclick="hideSlotForm()">Cancel</button>
+            </div>
+
+            <div id="slotContent" class="cards"></div>
+        </section>
+
+        <section id="staff" class="page">
+            <div class="actions">
+                <button id="addStaffBtn" onclick="showStaffForm()">Add new staff +</button>
+                <button id="deleteStaffBtn" onclick="toggleDeleteStaff()">Delete staff</button>
+                <button id="editStaffBtn" onclick="toggleEditStaff()">Edit staff</button>
+            </div>
+
+            <div id="staffForm" class="form-card hidden">
+                <label>Name: <input id="staffName"></label>
+                <label>Staff ID: <input id="staffId"></label>
+                <label>Role:
+                    <select id="staffRole">
+                        <option>Admin</option>
+                        <option>Doctor</option>
+                        <option>Pharmacist</option>
+                    </select>
+                </label>
+                <label>Password: <input id="staffPassword" type="password"></label>
+                <button class="green" id="saveStaffBtn" onclick="saveStaff()">Create</button>
+                <button class="red" onclick="hideStaffForm()">Cancel</button>
+            </div>
+
+            <div id="staffContent" class="cards"></div>
+        </section>
+    </main>
+
+    <div id="confirmBox" class="modal hidden">
+        <div class="modal-card">
+            <b id="confirmText">Are you sure?</b>
+            <button class="green" onclick="confirmYes()">Confirm</button>
+            <button class="red" onclick="closeConfirm()">Cancel</button>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
