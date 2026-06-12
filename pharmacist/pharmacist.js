@@ -1,3 +1,13 @@
+//profile button and dropdown//
+let profileBtn = document.querySelector("#profileBtn");
+let profileDropdown = document.querySelector("#profileDropdown");
+
+if (profileBtn && profileDropdown) {
+    profileBtn.addEventListener("click", function() {
+        profileDropdown.classList.toggle("showDropdown");
+    });
+}
+
 let selectedQueue = "";
 
 const patients = 
@@ -125,7 +135,10 @@ dispenseBtn.addEventListener("click", () =>
     messagePopup.style.display = "block";
 });
 
-okBtn.addEventListener("click", () => 
-{
-    messagePopup.style.display = "none";
-});
+if (okBtn) {
+    okBtn.addEventListener("click", () => 
+    {
+        messagePopup.style.display = "none";
+    });
+}
+
