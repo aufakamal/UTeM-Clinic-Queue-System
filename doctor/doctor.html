@@ -8,19 +8,23 @@
 
 <header id="header">
 
-    <div id="leftSection">
-        <span>↩</span>
-        <h1>UTeM PKU</h1>
-    </div>
 
     <div id="rightSection">
-        <h1>Dr. Anis | Room 3</h1>
-        <img src="images/profile.png" class="profileIcon">
+    <h1>Dr. Anis | Room 3</h1>
+
+    <div class="profileContainer">
+        <img src="../images/profileIconDark.png" class="profileIcon" id="profileBtn" alt="Profile Icon">
+
+        <div id="profileDropdown">
+            <a href="profileDoctor.html">View Profile</a>
+            <a href="../login_register/login.html">Log Out</a>
+        </div>
+    </div>
     </div>
 
 </header>
 
-<main class="container">
+<section class="dashboard-grid">
 
     <!-- LEFT PANEL -->
     <aside class="sidebar">
@@ -71,7 +75,7 @@
     </aside>
 
     <!-- RIGHT PANEL -->
-    <section class="recordCard">
+    <main class="content-box">
 
         <h3>CURRENT CONSULTATIONS</h3>
 
@@ -117,9 +121,10 @@
 
         </div>
 
-    </section>
+    </main>
 
-</main>
+</section>
 
+<script src="doctor.js"></script>
 </body>
 </html>

@@ -1,0 +1,463 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #F8FAFC;
+    color: #1E293B;
+}
+
+.profilePage {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 35px 60px;
+    background-color: #F8FAFC;
+}
+
+/* TITLE */
+.profileTitle {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.profileTitle h1 {
+    margin: 0;
+    font-size: 34px;
+    color: #0F172A;
+}
+
+.backIcon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+/* VIEW PROFILE CARD */
+.profileCard {
+    width: 80%;
+    max-width: 1100px;
+    margin: 25px auto;
+
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+
+    padding: 28px;
+
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+}
+
+.profileHeader {
+    background-color: #E0F2FE;
+    border-radius: 16px;
+    padding: 24px;
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+.profileImage {
+    width: 90px;
+    height: 90px;
+
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    border: 4px solid white;
+
+    object-fit: contain;
+}
+
+.userInfo {
+    flex: 1;
+}
+
+.userInfo h2 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    color: #0F172A;
+}
+
+.userInfo p {
+    margin: 0;
+    color: #475569;
+    font-size: 15px;
+}
+
+.profileActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.roleName {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+
+    padding: 8px 16px;
+    border-radius: 999px;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.editBtn {
+    background-color: #0284C7;
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    padding: 12px 22px;
+
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    text-decoration: none;
+    display: inline-block;
+}
+
+.editBtn:hover {
+    background-color: #0369A1;
+}
+
+.profileContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 45px;
+}
+
+.infoBox h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+
+    font-size: 22px;
+    color: #0F172A;
+}
+
+/* FORM ELEMENTS */
+label {
+    display: block;
+
+    margin-top: 14px;
+    margin-bottom: 7px;
+
+    font-weight: 600;
+    color: #0F172A;
+}
+
+input {
+    width: 100%;
+    height: 40px;
+
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+
+    padding: 10px 12px;
+
+    background-color: #FFFFFF;
+    color: #1E293B;
+
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #0284C7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+/* EDIT PROFILE */
+.editHeader {
+    height: 110px;
+    background-color: #38BDF8;
+    border-radius: 14px 14px 0 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: end;
+
+    margin-bottom: 55px;
+}
+
+.editProfileImage {
+    width: 90px;
+    height: 90px;
+
+    border-radius: 50%;
+    background-color: white;
+    border: 4px solid white;
+
+    object-fit: contain;
+
+    transform: translateY(45px);
+}
+
+.editForm {
+    width: 60%;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.nameRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.editForm h3 {
+    margin-top: 24px;
+    margin-bottom: 10px;
+    color: #0F172A;
+}
+
+/* BUTTONS */
+.saveBtn {
+    display: block;
+    margin: 30px auto 0;
+
+    width: 150px;
+    height: 42px;
+
+    text-align: center;
+    line-height: 42px;
+    text-decoration: none;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: #0F766E;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.saveBtn:hover {
+    background-color: #115E59;
+}
+
+.changePasswordLink {
+    display: inline-block;
+    margin-top: 6px;
+
+    color: #0369A1;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.changePasswordLink:hover {
+    text-decoration: underline;
+}
+
+/* SUCCESS PAGE */
+.messageCard {
+    width: 80%;
+    max-width: 1100px;
+    min-height: 560px;
+
+    margin: 25px auto;
+
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+
+    padding: 50px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+}
+
+.tickIcon {
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    margin-bottom: 25px;
+}
+
+.successText {
+    font-size: 16px;
+    color: #0F172A;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.profileBtn {
+    display: inline-block;
+
+    background-color: #0F766E;
+    color: white;
+
+    padding: 12px 22px;
+    border-radius: 10px;
+
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.profileBtn:hover {
+    background-color: #115E59;
+}
+
+/* CHANGE PASSWORD */
+.changePasswordCard {
+    width: 80%;
+    max-width: 700px;
+    margin: 25px auto;
+
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+
+    padding: 45px;
+
+    text-align: center;
+
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+}
+
+.changePasswordIcon {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.changePasswordCard p {
+    color: #475569;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.changePasswordCard form {
+    width: 70%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.changePasswordCard .saveBtn {
+    display: block;
+    margin: 28px auto 0;
+    width: 180px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .profilePage {
+        padding: 18px;
+    }
+
+    .profileTitle h1 {
+        font-size: 28px;
+    }
+
+    .profileCard,
+    .messageCard,
+    .changePasswordCard {
+        width: 100%;
+        padding: 22px;
+    }
+
+    .profileHeader {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profileActions {
+        flex-direction: column;
+    }
+
+    .profileContent {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .editForm,
+    .changePasswordCard form {
+        width: 100%;
+    }
+
+    .nameRow {
+        grid-template-columns: 1fr;
+    }
+
+    .editBtn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* =========================
+   CHECKBOX & DROPDOWN FIX
+========================= */
+
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+
+    accent-color: #0F766E;
+    cursor: pointer;
+}
+
+.responsibilityGroup {
+    background-color: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+
+    padding: 14px 16px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.responsibilityGroup label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0;
+
+    font-weight: 600;
+    color: #0F172A;
+}
+
+select {
+    width: 100%;
+    height: 40px;
+
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+
+    padding: 0 12px;
+
+    background-color: #FFFFFF;
+    color: #1E293B;
+
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+select:focus {
+    outline: none;
+    border-color: #0284C7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}

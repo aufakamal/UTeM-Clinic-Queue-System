@@ -44,32 +44,33 @@
         <div class="right-sec">
             <h1>LOGIN</h1>
 
-            <form>
+            <form id="loginForm">
                 <label>ID</label>
-                <input type="text">
+                <input type="text" id="loginId">
 
                 <label>Password</label>
-                <input type="password">
+                <input type="password" id="loginPassword">
 
-                <a href="#" class="forgot">Forgot Password?</a>
+                <a href="forgotPassword.html" class="forgot">Forgot Password?</a>
 
                 <label>Login As</label>
-                <select>
-                    <option>Dropdown</option>
-                    <option>Student</option>
-                    <option>Staff</option>
-                    <option>Doctor</option>
-                    <option>Pharmacist</option>
-                    <option>Administrator</option>
+                <select id="loginRole">
+                    <option value="">Dropdown</option>
+                    <option value="patient">Student</option>
+                    <option value="patient">Staff</option>
+                    <option value="doctor">Doctor</option>
+                    <option value="pharmacist">Pharmacist</option>
+                    <option value="admin">Administrator</option>
                 </select>
 
-                <button type="submit">LOGIN</button>
+                <button type="submit" class="loginBtn">LOGIN</button>
 
                 <p>Don't have an account? <a href="register.html">Register</a></p>
             </form>
         </div>
     </div>
 </div>
-    
+
+<script src="loginRegister.js"></script>
 </body>
 </html>
