@@ -48,7 +48,7 @@
 
         <section>
             <h2>Book Appointment</h2>
-            <p>Select the type of appointment:</p>
+            <p>Select the type of appointment.</p>
 
             <div class="topCards">
                 <button id="sameDayBtn" class="cardBtn">
@@ -89,21 +89,32 @@
             <p>Select a preferred date and available time slot for your checkup.</p>
 
             <div class="topCards">
-                <button id="dateBtn" class="cardBtn">
+                <article>
                     <h2>Select Date</h2>
                     <h3>Choose your preferred appointment date</h3>
-                    <p>Click to select a date.</p>
-                </button>
+                    <p>Click 📅 to select a date</p>
+                    <br>
 
-                <button id="timeSlotBtn" class="cardBtn">
-                    <h2>Available Time Slot</h2>
+                    <form id="appointmentDateForm" action="">
+                        <input type="date" id="appointmentDate">
+                    </form>
+                </article>
+
+                <article>
+                    <h2>Select Time Slot</h2>
                     <h3>Choose an available time slot</h3>
-                    <p>Click to select a time slot.</p>
-                </button>
+
+
+                    <form id="appointmentSlotForm">
+                        <div id="slotContainer" class="slotContainer">
+                            <p>Please select a date first</p>
+                        </div>
+                    </form>
+                </article>
             </div>
         </section>
 
-        <section class="summaryBox">
+        <section class="summaryBox hidden">
             <h2>Summary</h2>
 
             <div class="summaryGrid">

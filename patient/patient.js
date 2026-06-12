@@ -10,6 +10,8 @@ let scheduledCard = document.querySelector("#scheduledCard");
 let morningBtn = document.querySelector("#morningBtn");
 let afternoonBtn = document.querySelector("#afternoonBtn");
 
+let summaryBox = document.querySelector(".summaryBox");
+
 let confirmBtn = document.querySelector("#confirmBtn");
 let info = document.querySelector(".info");
 
@@ -20,6 +22,8 @@ let appointmentType = document.querySelector("#appointmentType");
 
 if (sameDayBtn && scheduledBtn && sameDayCard && scheduledCard) {
     sameDayBtn.addEventListener("click", function() {
+        summaryBox.classList.add("hidden");
+        info.classList.add("hidden");
         sameDayCard.classList.remove("hidden");
         scheduledCard.classList.add("hidden");
 
@@ -30,8 +34,17 @@ if (sameDayBtn && scheduledBtn && sameDayCard && scheduledCard) {
     });
 
     scheduledBtn.addEventListener("click", function() {
+        summaryBox.classList.add("hidden");
+        info.classList.add("hidden");
         sameDayCard.classList.add("hidden");
         scheduledCard.classList.remove("hidden");
+
+        chosenAppointmentDate = "";
+        chosenTimeSlot = "";
+
+        if (appointmentDateInput) {
+            appointmentDateInput.value = "";
+        }
 
         if (selectedDate) selectedDate.innerHTML = "<strong>Selected Date:</strong> Please select a date";
         if (appointmentType) appointmentType.innerHTML = "<strong>Appointment Type:</strong> Scheduled Consultation";
@@ -42,6 +55,8 @@ if (sameDayBtn && scheduledBtn && sameDayCard && scheduledCard) {
 
 if (morningBtn) {
     morningBtn.addEventListener("click", function() {
+        summaryBox.classList.remove("hidden");
+
         if (selectedDate) selectedDate.innerHTML = "<strong>Selected Date:</strong> Today";
         if (appointmentType) appointmentType.innerHTML = "<strong>Appointment Type:</strong> Same-Day Consultation";
         if (selectedSession) selectedSession.innerHTML = "<strong>Selected Session:</strong> Morning Session";
@@ -51,12 +66,103 @@ if (morningBtn) {
 
 if (afternoonBtn) {
     afternoonBtn.addEventListener("click", function() {
+        summaryBox.classList.remove("hidden");
+
         if (selectedDate) selectedDate.innerHTML = "<strong>Selected Date:</strong> Today";
         if (appointmentType) appointmentType.innerHTML = "<strong>Appointment Type:</strong> Same-Day Consultation";
         if (selectedSession) selectedSession.innerHTML = "<strong>Selected Session:</strong> Afternoon Session";
         if (timeSlot) timeSlot.innerHTML = "<strong>Time Slot:</strong> 12:00 PM - 7:00 PM";
     });
 }
+
+let appointmentDateInput = document.querySelector("#appointmentDate");
+let slotContainer = document.querySelector("#slotContainer");
+
+let chosenAppointmentDate = "";
+let chosenTimeSlot = "";
+
+let allSlots = [
+    "8:30 AM",
+    "9:30 AM",
+    "10:30 AM",
+    "11:30 AM",
+    "2:30 PM",
+    "3:30 PM",
+    "4:30 PM"
+];
+
+// object that contains array
+let unavailableSlots = {
+    "2026-06-15": ["9:30 AM", "2:30 PM"],
+    "2026-06-16": ["8:30 AM", "11:30 AM", "4:30 PM"],
+    "2026-06-17": ["10:30 AM"]
+};
+
+if (appointmentDateInput && slotContainer) {
+    appointmentDateInput.addEventListener("change", function() {
+        chosenAppointmentDate = appointmentDateInput.value;
+        chosenTimeSlot = "";
+
+        slotContainer.innerHTML = "";
+
+        if (!chosenAppointmentDate) {
+            slotContainer.innerHTML = "<p>Please select a date first</p>";
+            return;
+        }
+
+        // change to date object, not string, baru boleh compare date nanti
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // change to date object, not string
+        let chosenDateObject = new Date(chosenAppointmentDate);
+        chosenDateObject.setHours(0, 0, 0, 0);
+
+        if (chosenDateObject < today) {
+            slotContainer.innerHTML = "<p>Please select today or a future date</p>";
+            return;
+        }
+
+        allSlots.forEach(function(slot) {
+            // create button dynamically (according to how many slots available)
+            let slotBtn = document.createElement("button");
+
+            // to allow the button to act like a normal button, not submit button
+            slotBtn.type = "button";
+
+            // to add CSS to the button
+            slotBtn.classList.add("slotBtn");
+
+            slotBtn.textContent = slot;
+
+            if (unavailableSlots[chosenAppointmentDate] &&
+                unavailableSlots[chosenAppointmentDate].includes(slot)) {
+                    slotBtn.disabled = true;
+            }
+
+            slotBtn.addEventListener("click", function() {
+                document.querySelectorAll(".slotBtn").forEach(function(button) {
+                    button.classList.remove("selectedSlot");
+                });
+
+                slotBtn.classList.add("selectedSlot");
+
+                chosenTimeSlot = slot;
+
+                summaryBox.classList.remove("hidden");
+
+                if (selectedDate) selectedDate.innerHTML = "<strong>Selected Date:</strong> " + chosenAppointmentDate;
+                if (appointmentType) appointmentType.innerHTML = "<strong>Appointment Type:</strong> Scheduled Consultation";
+                if (selectedSession) selectedSession.classList.add("hidden");
+                if (timeSlot) timeSlot.innerHTML = "<strong>Time Slot:</strong> " + chosenTimeSlot;
+            });
+
+            // add the button to the page
+            slotContainer.appendChild(slotBtn);
+        });
+    });
+}
+
 
 if (confirmBtn && info) {
     confirmBtn.addEventListener("click", function() {
@@ -144,9 +250,9 @@ mainAssessmentCard.addEventListener("submit", function(event) {
 
 let feverFluForm = document.querySelector("#feverFluForm");
 let painInjuryForm = document.querySelector("#painInjuryForm");
-let medicationConcernForm  = document.querySelector("#medicationConcernForm ");
-let mentalHealthConcernForm  = document.querySelector("#mentalHealthConcernForm ");
-let generalHealthConcernForm  = document.querySelector("#generalHealthConcernForm ");
+let medicationConcernForm  = document.querySelector("#medicationConcernForm");
+let mentalHealthConcernForm  = document.querySelector("#mentalHealthConcernForm");
+let generalHealthConcernForm  = document.querySelector("#generalHealthConcernForm");
 
 
 let resultCard = document.querySelector("#assessmentResultCard");

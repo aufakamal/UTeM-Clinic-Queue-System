@@ -358,6 +358,51 @@ article p {
 }
 
 /* =========================
+   SLOT BUTTON 
+========================= */
+
+.slotContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.slotBtn {
+    padding: 12px 18px;
+
+    border: 1px solid #D7E3EA;
+    border-radius: 10px;
+
+    background-color: #FFFFFF;
+    color: #1E293B;
+
+    font-size: 14px;
+    font-weight: 600;
+    font-family: Arial, sans-serif;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.slotBtn:hover {
+    background-color: #F0F9FF;
+    border-color: #7DD3FC;
+}
+
+.slotBtn:disabled {
+    background-color: #CBD5E1;
+    color: #64748B;
+    cursor: not-allowed;
+}
+
+.selectedSlot {
+    background-color: #0284C7;
+    color: #FFFFFF;
+    border-color: #0284C7;
+}
+
+/* =========================
    SUMMARY BOX
 ========================= */
 .summaryBox {
@@ -702,6 +747,51 @@ label {
 
 .singleTable tr:last-child td {
     border-bottom: none;
+}
+
+/* =========================
+   RADIO BUTTON 
+========================= */
+
+.radioOption {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 14px;
+}
+
+.radioOption input[type="radio"],
+.radioOption input[type="checkbox"] {
+    width: 16px;
+    max-width: 16px;
+    height: 16px;
+
+    margin: 0;
+    padding: 0;
+
+    flex: 0 0 16px;
+}
+
+.radioOption label {
+    margin: 0;
+
+    display: inline;
+    font-weight: 100;
+    color: #0F172A;
+}
+
+form h3 {
+    margin-top: 26px;
+    margin-bottom: 14px;
+}
+
+form h3:first-child {
+    margin-top: 0;
+}
+
+form .submitBtn {
+    margin-top: 18px;
 }
 
 /* =========================
