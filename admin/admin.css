@@ -3,33 +3,40 @@
 }
 
 body {
-    margin: 0;
-    background: #f4f7fb;
+   margin: 0;
     font-family: Arial, sans-serif;
-    color: #111827;
-    font-weight: 700;
+    background-color: #EFF6FF;
+    color: #1E293B;
 }
 
 header {
-    height: 74px;
-    background: white;
-    border-bottom: 3px solid #e5ebf2;
+     height: 75px;
+    background-color: #1E3A8A;
     display: flex;
     align-items: center;
-    padding: 0 26px;
-    gap: 22px;
+    padding: 0 20px;
+    color: white;
 }
 
-.back {
-    border: 0;
+.logout-btn {
+    border: none;
     background: white;
-    font-size: 34px;
+    color: #1E3A8A;
+    font-weight: bold;
+    padding: 10px 18px;
+    border-radius: 10px;
     cursor: pointer;
+    font-size: 14px;
+}
+
+.logout-btn:hover {
+    background: #e2e8f0;
 }
 
 h1 {
-    margin: 0;
-    font-size: 30px;
+     font-size: 24px;
+    font-weight: 700;
+    color: white;
 }
 
 .profile {
@@ -37,7 +44,8 @@ h1 {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: #d9d9d9;
+    background: white;
+    color: #1E3A8A;
     display: grid;
     place-items: center;
     font-size: 24px;
@@ -53,17 +61,37 @@ main {
 }
 
 nav {
-    width: 84%;
+    width: 95%;
+    margin: 20px auto;
     height: 52px;
-    background: #d9d9d9;
-    border-radius: 0 9px 9px 0;
+    background: white;
+    border-radius: 15px;
     display: grid;
     grid-template-columns: 1fr 1.2fr 2fr 1fr 1fr;
     align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    margin-bottom: 20px;
 }
 
 .tab,
-.sub,
+.sub {
+    background: white;
+    border: 1px solid #D7E3EA;
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.sub:hover {
+    background: #EFF6FF;
+}
+
+.sub.active {
+    background: #1E3A8A;
+    color: white;
+}
 .actions button {
     border: 0;
     background: transparent;
@@ -76,8 +104,36 @@ nav {
 .tab.active,
 .sub.active,
 .actions button.active {
-    background: #129bf3;
+     background: #1E3A8A;
     color: white;
+}
+
+.date-filter {
+    margin: 15px 0 25px;
+}
+
+.date-filter {
+    margin: 15px 0 25px;
+}
+
+.date-filter select {
+    width: 220px;
+    height: 42px;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 14px;
+    background: white;
+}
+
+.date-filter select {
+    width: 220px;
+    height: 42px;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 14px;
+    background: white;
 }
 
 .page {
@@ -98,7 +154,10 @@ nav {
 
 .stat {
     min-height: 180px;
-    border: 2px dashed #a76bff;
+     background: white;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(15,23,42,.08);
     display: grid;
     place-items: center;
     padding: 22px;
@@ -108,7 +167,7 @@ nav {
     width: 47px;
     height: 41px;
     border-radius: 10px;
-    background: #129bf3;
+    background: #0F766E;
     color: white;
     display: grid;
     place-items: center;
@@ -129,13 +188,11 @@ nav {
 }
 
 .sub-menu {
-    width: 175px;
-    background: #d9d9d9;
-    border-radius: 0 0 10px 10px;
-    margin-left: 75px;
-    padding: 8px;
-    display: grid;
-    gap: 6px;
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 0;
+    background: transparent;
 }
 
 .actions {
@@ -156,8 +213,10 @@ nav {
 }
 
 .card {
-    background: #d9d9d9;
-    border-radius: 9px;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid #D7E3EA;
+    box-shadow: 0 10px 28px rgba(15,23,42,.09);
     padding: 18px 24px;
     min-height: 108px;
     position: relative;
@@ -237,8 +296,10 @@ nav {
 }
 
 .form-card {
-    background: #d9d9d9;
-    border-radius: 9px;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid #D7E3EA;
+    box-shadow: 0 10px 28px rgba(15,23,42,.09);
     padding: 18px 24px;
     width: 360px;
     margin-bottom: 16px;
@@ -300,4 +361,84 @@ select {
     .cards {
         grid-template-columns: 1fr;
     }
+}
+/* Navbar links */
+nav a.tab {
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+    padding: 11px 14px;
+}
+
+/* Dashboard weekly bar chart */
+.weekly-chart {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    gap: 18px;
+    height: 180px;
+    padding: 20px;
+}
+
+.chart-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.chart-bar {
+    width: 45px;
+    background: #1E3A8A;
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    padding-top: 6px;
+    min-height: 24px;
+}
+
+.chart-label {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.user-menu {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.welcome {
+    color: white;
+    font-weight: bold;
+}
+
+.profile-container {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 180px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    overflow: hidden;
+    z-index: 999;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    color: #1E293B;
+    font-weight: 600;
+}
+
+.dropdown-menu a:hover {
+    background: #EFF6FF;
 }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Admin Profile</title>
+    <link rel="stylesheet" href="admin-profile.css">
+</head>
+<body>
+
+<div class="profilePage">
+
+    <div class="profileTitle">
+        <a href="admin-profile.html">
+            <span class="backIcon">↩</span>
+        </a>
+
+        <h1>EDIT PROFILE</h1>
+    </div>
+
+    <section class="profileCard">
+
+        <div class="editHeader">
+            <div class="profileImage">👤</div>
+        </div>
+
+        <form class="editForm">
+
+            <label>Full Name</label>
+            <input type="text" value="Ahmad Marthes">
+
+            <label>Email Address</label>
+            <input type="email" value="admin@utem.edu.my">
+
+            <label>Phone Number</label>
+            <input type="text" value="0112345678">
+
+            <label>Department</label>
+            <input type="text" value="PKU UTeM">
+
+            <label>Password</label>
+            <input type="password" value="12345678">
+
+            <button type="button" class="saveBtn" onclick="saveProfile()">
+                Save Changes
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+
+<script>
+function saveProfile() {
+    alert("Profile updated successfully!");
+    window.location.href = "admin-profile.html";
+}
+</script>
+
+</body>
+</html>

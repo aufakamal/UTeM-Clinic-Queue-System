@@ -59,11 +59,38 @@ function renderDashboard() {
 
 function showAppointmentDates() {
     document.querySelectorAll(".sub").forEach(btn => btn.classList.remove("active"));
-    event.target.classList.add("active");
 
-    let html = `<button class="actions-button active">12 April 2026 📅 ▼</button><div class="cards">`;
+    const firstSub = document.querySelector(".sub");
+    if (firstSub) firstSub.classList.add("active");
 
-    data.appointments.forEach(appt => {
+    let html = `
+        <div class="date-filter">
+            <input type="date" id="appointmentDateSelect" onchange="filterAppointmentsByDate()">
+        </div>
+
+        <div id="filteredAppointments" class="cards"></div>
+    `;
+
+    document.getElementById("appointmentContent").innerHTML = html;
+}
+
+
+
+function filterAppointmentsByDate() {
+    const selectedDate = document.getElementById("appointmentDateSelect").value;
+    const container = document.getElementById("filteredAppointments");
+
+    const filtered = data.appointments.filter(appt => {
+        const parts = appt.date.split("/");
+        const formattedDate =
+            `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`;
+
+        return formattedDate === selectedDate;
+    });
+
+    let html = "";
+
+    filtered.forEach(appt => {
         html += `
             <div class="card">
                 <h3>Patient Name: ${appt.name}</h3>
@@ -79,8 +106,7 @@ function showAppointmentDates() {
         `;
     });
 
-    html += `</div>`;
-    document.getElementById("appointmentContent").innerHTML = html;
+    container.innerHTML = html || `<p>No appointments found for this date.</p>`;
 }
 
 function showLateArrival() {
@@ -355,12 +381,124 @@ function closeConfirm() {
     document.getElementById("confirmBox").classList.add("hidden");
 }
 
-function renderAll() {
-    renderDashboard();
-    showAppointmentDates();
-    renderQueue();
-    renderSlots();
-    renderStaff();
+
+
+
+
+function renderCurrentPage() {
+
+
+    if (document.getElementById("weeklyChart")) {
+    renderWeeklyChart();
+}
+    if (document.getElementById("totalToday")) {
+        renderDashboard();
+    }
+
+    if (document.getElementById("appointmentContent")) {
+    let html = `<button class="actions-button active">12 April 2026 📅 ▼</button><div class="cards">`;
+
+    data.appointments.forEach(appt => {
+        html += `
+            <div class="card">
+                <h3>Patient Name: ${appt.name}</h3>
+                <div class="two">
+                    <p>Date: ${appt.date}</p>
+                    <p>Time: ${appt.time}</p>
+                </div>
+                <div class="two">
+                    <p>Status: <span class="dot ${getDot(appt.status)}"></span>${appt.status}</p>
+                    <p>Type: ${appt.type}</p>
+                </div>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+    document.getElementById("appointmentContent").innerHTML = html;
 }
 
-renderAll();
+    if (document.getElementById("queueContent")) {
+        renderQueue();
+    }
+
+    if (document.getElementById("slotContent")) {
+        renderSlots();
+    }
+
+    if (document.getElementById("staffContent")) {
+        renderStaff();
+    }
+}
+
+function renderWeeklyChart() {
+    const chart = document.getElementById("weeklyChart");
+
+    if (!chart) return;
+
+    const weeklyData = {
+        Mon: 0,
+        Tue: 0,
+        Wed: 0,
+        Thu: 0,
+        Fri: 0,
+        Sat: 0,
+        Sun: 0
+    };
+
+    data.appointments.forEach(appt => {
+        const parts = appt.date.split("/");
+        const d = new Date(parts[2], parts[1] - 1, parts[0]);
+
+        const day = d.toLocaleDateString(
+            "en-US",
+            { weekday: "short" }
+        );
+
+        if (weeklyData[day] !== undefined) {
+            weeklyData[day]++;
+        }
+    });
+
+    const max = Math.max(
+        ...Object.values(weeklyData),
+        1
+    );
+
+    chart.innerHTML = "";
+
+    Object.entries(weeklyData).forEach(([day, count]) => {
+
+        const height = (count / max) * 120;
+
+        chart.innerHTML += `
+            <div class="chart-item">
+                <div class="chart-bar"
+                     style="height:${height}px">
+                     ${count}
+                </div>
+                <div class="chart-label">${day}</div>
+            </div>
+        `;
+    });
+}
+
+renderCurrentPage();
+
+
+
+function logout() {
+    if (confirm("Are you sure you want to log out?")) {
+        window.location.href = "../login_register/login.html";
+    }
+}
+
+function toggleMenu() {
+    document
+        .getElementById("dropdownMenu")
+        .classList.toggle("hidden");
+}
+
+if (document.getElementById("appointmentContent")) {
+    showAppointmentDates();
+}

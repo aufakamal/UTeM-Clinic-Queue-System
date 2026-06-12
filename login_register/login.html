@@ -54,7 +54,7 @@
                 <a href="forgotPassword.html" class="forgot">Forgot Password?</a>
 
                 <label>Login As</label>
-                <select>
+                <select id="role">
                     <option>Dropdown</option>
                     <option>Student</option>
                     <option>Staff</option>
@@ -63,13 +63,28 @@
                     <option>Administrator</option>
                 </select>
 
-                <a href="/patient/dashboard.html" class="loginBtn">LOGIN</a>
+               <button type="button" class="loginBtn" onclick="loginRedirect()">
+    LOGIN
+</button>
 
                 <p>Don't have an account? <a href="register.html">Register</a></p>
             </form>
         </div>
     </div>
 </div>
-    
+    <script>
+function loginRedirect() {
+    alert("Button clicked!");
+
+    const role = document.getElementById("role").value;
+    alert("Role = " + role);
+
+    if (role === "Administrator") {
+        window.location.href = "../admin/admin-dashboard.html";
+    } else {
+        window.location.href = "../patient/dashboard.html";
+    }
+}
+</script>
 </body>
 </html>

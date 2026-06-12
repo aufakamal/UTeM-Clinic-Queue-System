@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile</title>
+    <link rel="stylesheet" href="admin-profile.css">
+</head>
+<body>
+
+<div class="profilePage">
+    <div class="profileTitle">
+        <a href="admin-dashboard.html">
+            <span class="backIcon">↩</span>
+        </a>
+
+        <h1>MY PROFILE</h1>
+    </div>
+
+    <section class="profileCard">
+
+        <div class="profileHeader">
+            <div class="profileImage">👤</div>
+
+            <div class="userInfo">
+                <h2>Ahmad Marthes</h2>
+                <p>admin@utem.edu.my</p>
+            </div>
+
+            <div class="profileActions">
+                <span class="roleName">Admin</span>
+                <a href="admin-edit-profile.html" class="editBtn">
+    Change Profile Information
+</a>
+            </div>
+        </div>
+
+        <div class="profileContent">
+
+            <div class="leftInfo">
+                <label>Staff ID</label>
+                <input type="text" value="A001" readonly>
+
+                <label>Phone Number</label>
+                <input type="text" value="0112345678" readonly>
+
+                <label>Password</label>
+                <input type="password" value="12345678" readonly>
+            </div>
+
+            <div class="rightInfo">
+                <h3>Staff Information</h3>
+
+                <label>Department</label>
+                <input type="text" value="PKU UTeM" readonly>
+
+                <label>Role</label>
+                <input type="text" value="Administrator" readonly>
+
+                <label>Status</label>
+                <input type="text" value="Active" readonly>
+            </div>
+
+        </div>
+    </section>
+</div>
+</main>
+
+<script src="admin.js"></script>
+</body>
+</html>

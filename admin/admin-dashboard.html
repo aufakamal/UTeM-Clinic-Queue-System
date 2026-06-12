@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTeM PKU Admin</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header>
+    <h1>UTeM PKU</h1>
+
+    <div class="user-menu">
+        <span class="welcome">Welcome, Admin!</span>
+
+        <div class="profile-container">
+            <div class="profile" onclick="toggleMenu()">
+                👤
+            </div>
+
+            <div id="dropdownMenu" class="dropdown-menu hidden">
+    <a href="admin-profile.html">View Profile</a>
+    <a href="#" onclick="logout()">Log Out</a>
+</div>
+        </div>
+    </div>
+</header>
+
+    <main>
+        <nav>
+    <a class="tab active" href="admin-dashboard.html">Dashboard</a>
+    <a class="tab" href="admin-appointments.html">Appointments</a>
+    <a class="tab" href="admin-queue.html">Queue Management</a>
+    <a class="tab" href="admin-slots.html">Slots</a>
+    <a class="tab" href="admin-staff.html">Staff</a>
+</nav>
+
+        <section id="dashboard" class="page active">
+            <div class="stats">
+                <div class="stat"><b>Total<br>appointments<br>today</b><span id="totalToday">6</span></div>
+                <div class="stat"><b>Number of<br>waiting<br>patients</b><span id="waitingPatients">7</span></div>
+                <div class="stat"><b>Number of<br>active<br>consultations</b><span id="activeConsult">6</span></div>
+                <div class="stat"><b>Available<br>doctors</b><span id="availableDoctors">7</span></div>
+            </div>
+
+            <div class="chart">
+                <b>Weekly Appointments</b>
+                <div id="weeklyChart" class="weekly-chart"></div>
+            </div>
+        </section>
+
+        
+
+        
+
+      
+
+       
+    </main>
+
+    <div id="confirmBox" class="modal hidden">
+        <div class="modal-card">
+            <b id="confirmText">Are you sure?</b>
+            <button class="green" onclick="confirmYes()">Confirm</button>
+            <button class="red" onclick="closeConfirm()">Cancel</button>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

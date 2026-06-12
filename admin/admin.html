@@ -8,9 +8,20 @@
 </head>
 <body>
     <header>
-        <button class="back">&#8592;</button>
+        <button class="logout-btn" onclick="logout()">
+    Logout
+</button>
         <h1>UTeM PKU</h1>
-        <div class="profile">👤</div>
+        <div class="profile-menu">
+    <div class="profile" onclick="toggleProfileMenu()">
+        👤
+    </div>
+
+    <div id="profileDropdown" class="dropdown hidden">
+        <button onclick="viewProfile()">View Profile</button>
+        <button onclick="logout()">Log Out</button>
+    </div>
+</div>
     </header>
 
     <main>
