@@ -1,0 +1,566 @@
+
+/* =========================
+   GLOBAL
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #F8FAFC;
+    color: #1E293B;
+}
+
+/* =========================
+   HEADER
+========================= */
+#header {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #D7E3EA;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 34px;
+    gap: 24px;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+#leftSection,
+#rightSection {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    white-space: nowrap;
+}
+
+#header h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+#rightSection h1 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 350px 1fr; /* Fixed sidebar, flexible content */
+    gap: 30px;
+    width: 90%;
+    max-width: 1400px;
+    margin: 36px auto;
+    align-items: start;
+}
+
+/* Sidebar (Left Column) */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Sidebar Cards (Consultations, Pharmacy, Search) */
+.sidebar .card {
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+}
+
+.sidebar .card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #0369A1;
+    font-weight: 700;
+}
+
+/* Main Panel (Right Column - Patient Record) */
+.main-panel {
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+    padding: 30px;
+    min-height: 600px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+}
+
+.main-panel h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-size: 24px;
+    color: #0F172A;
+}
+
+/* Action Buttons within Doctor Dashboard */
+.btn-action {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #0F766E;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-action:hover {
+    background-color: #115E59;
+}
+
+/* Large Full-Width Button (e.g. Complete Consultation) */
+.btn-complete {
+    background-color: #00FF80; /* Adjust to match your exact Figma green */
+    color: #064E3B;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
+    margin-top: 30px;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Responsive adjustment for screens smaller than 1000px */
+@media (max-width: 1000px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Stack vertically if screen is narrow */
+    }
+}
+
+.patient-profile {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #D7E3EA;
+}
+
+.patient-profile p {
+    margin: 4px 0;
+    color: #334155;
+}
+
+.record-content h3 {
+    margin-top: 24px;
+    font-size: 16px;
+    color: #0369A1;
+    text-transform: uppercase;
+}
+
+.record-content a {
+    color: #0284C7;
+    text-decoration: none;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.patient-details {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #F8FAFC;
+    border-radius: 12px;
+}
+
+.patient-details p {
+    margin: 5px 0;
+    font-weight: 500;
+}
+
+.medicalRecordTables h3 {
+    margin: 20px 0 10px;
+    font-size: 16px;
+    color: #0369A1;
+}
+
+/* Ensure tables look like the design */
+.singleTable {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Update the right section to stack items vertically  */
+#rightSection {
+    display: flex;
+    flex-direction: column; /* This stacks the name and image */
+    align-items: center;    /* Centers them horizontally */
+    gap: 8px;
+    white-space: nowrap;
+}
+
+/*side bar utk search patient*/
+.sidebar .card {
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+    margin-bottom: 20px;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #0369A1;
+    font-weight: 700;
+    border-bottom: 2px solid #0369A1; /* Matches your underline design */
+    display: inline-block;
+}
+
+.sidebar p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #1E293B;
+}
+
+.sidebar .btn {
+    width: 100%;
+    margin-top: 10px;
+    background-color: #FEF08A; /* Light yellow button background */
+    color: #000;
+    border: 1px solid #000;
+    font-weight: 600;
+}
+
+.sidebar .btn:hover {
+    background-color: #FDE047;
+}
+
+/*patient record*/
+/* Gaya Kontena Utama */
+.content-box {
+    background: #FFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+    padding: 40px;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Gaya Tab */
+.tabs-container {
+    background: #E0F2F1;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    margin: 20px 0;
+    color: #00796B;
+}
+
+/* Susunan Butang bawah */
+.action-buttons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-secondary {
+    padding: 12px 30px;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    background: #F8FAFC;
+    cursor: pointer;
+}
+
+.btn-green {
+    padding: 12px 30px;
+    background: #00FF80;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/*PHARMARCY UPDATE*/
+.main-panel {
+    background: #FFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+    padding: 40px;
+    min-height: 500px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+    width: 100%;        
+    max-width: 800px;  
+    margin: 0;         
+    justify-self: start;
+}
+
+.pharmacy-content textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 15px;
+    margin-top: 10px;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    font-family: inherit;
+}
+
+.btn-green {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    margin-top: 30px;
+    background: #00FF80;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+/*SEARCH PATEINT*/
+/* Style for the specific profile icon(search pateint pg*/
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #BAE6FD;
+}
+
+
+/* 1. Small Back Button Style(search patient pg) */
+.backBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+
+.smallIcon {
+    width: 24px; /* Adjust this to make the icon small */
+    height: 24px;
+}
+
+/* 2. Navigation Box Style */
+.navBox {
+    background-color: #E0F2FE; /* Light blue box background */
+    border: 1px solid #BAE6FD;
+    border-radius: 50px; /* Fully rounded box */
+    padding: 5px 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.navBox ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 10px;
+}
+
+.navBox li a {
+    text-decoration: none;
+    color: #0369A1;
+    font-weight: 600;
+    padding: 8px 20px;
+    display: block;
+    border-radius: 50px;
+}
+
+/* Active State for the clicked box */
+.navBox li.active a {
+    background-color: #0284C7;
+    color: white;
+}
+
+/* TABLE FOR SEARCH PATIENT */
+.medicalTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.medicalTable th {
+    background-color: #E0F2FE; /* Matches your header/nav theme */
+    color: #075985;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.medicalTable td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #E2E8F0;
+    color: #334155;
+    font-size: 14px;
+}
+
+/* Removes bottom border from the last row for extra neatness */
+.medicalTable tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+    background-color: #E0F2FE;
+    border-top: 1px solid #BAE6FD;
+    color: #0F172A;
+
+    padding: 34px 56px;
+    margin-top: 50px;
+}
+
+footer h2 {
+    margin-top: 0;
+    margin-bottom: 22px;
+
+    font-size: 22px;
+    color: #075985;
+}
+
+.footerGrid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    row-gap: 16px;
+    column-gap: 70px;
+    align-items: center;
+}
+
+.socialItem a,
+.contactItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+footer a {
+    color: #0369A1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    color: #0284C7;
+    text-decoration: underline;
+}
+
+footer .icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.copyright {
+    border-top: 1px solid #BAE6FD;
+
+    margin-top: 28px;
+    padding-top: 16px;
+
+    text-align: center;
+    font-size: 14px;
+    color: #475569;
+}
+
+/* =========================
+   JAVASCRIPT
+========================= */
+
+.hidden {
+    display: none;
+}
+
+.activeCard {
+    border: 2px solid #2563EB;
+    background-color: #EFF6FF;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1100px) {
+    #header {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav {
+        order: 3;
+    }
+
+    .tableGrid {
+        column-gap: 40px;
+        row-gap: 35px;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        width: 94%;
+    }
+
+    .topCards,
+    .tableGrid,
+    .summaryGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .topCards {
+        gap: 18px;
+    }
+
+    .cardBtn {
+        min-height: 150px;
+    }
+
+    .tableGrid {
+        row-gap: 26px;
+        padding: 0;
+    }
+
+    article {
+        padding: 22px;
+    }
+
+    #header {
+        padding: 14px 18px;
+    }
+
+    #leftSection,
+    #rightSection {
+        white-space: normal;
+    }
+
+    nav > ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .articleGrid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .footerGrid {
+        grid-template-columns: 1fr;
+        row-gap: 18px;
+    }
+
+    footer {
+        padding: 30px 24px;
+    }
+}
