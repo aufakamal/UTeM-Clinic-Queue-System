@@ -47,32 +47,31 @@
 
             <form id="registerForm">
                 <label>Full Name</label>
-                <input type="text">
-
+                <input type="text" id="fullName">
+                
                 <label>ID</label>
-                <input type="text">
-
+                <input type="text" id="registerId">
+                
                 <label>Email</label>
-                <input type="email">
-
+                <input type="email" id="email">
+                
                 <label>Phone Number</label>
-                <input type="text">
-
+                <input type="text" id="phone">
+                
                 <label>Create Password</label>
-                <input type="password">
-
+                <input type="password" id="password">
+                
                 <label>Confirm Password</label>
-                <input type="password">
-
+                <input type="password" id="confirmPassword">
+                
                 <label>Register As</label>
-                <select>
-                    <option>Dropdown</option>
-                    <option>Student</option>
-                    <option>Staff</option>
+                <select id="registerRole">
+                    <option value="">Dropdown</option>
+                    <option value="student">Student</option>
+                    <option value="staff">Staff</option>
                 </select>
 
-                <button type="submit" class="submit-button">NEXT</button>
-
+                <button type="button" onclick="window.location.href='medicalCondition.html'" class="submit-button">NEXT</button>
                 <p>Already have an account? <a href="login.html">Log In</a></p>
             </form>
         </div>
