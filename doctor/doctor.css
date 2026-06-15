@@ -21,7 +21,7 @@ body {
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
 
     padding: 16px 34px;
     gap: 24px;
