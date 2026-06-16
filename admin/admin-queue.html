@@ -7,54 +7,56 @@
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-    <header>
-    <h1>UTeM PKU</h1>
 
-    <div class="user-menu">
-        <span class="welcome">Welcome, Admin!</span>
+<div id="header">
+    <div id="leftSection">
+        <button class="iconBtn" onclick="history.back()">
+            <img class="icon" src="../images/backIconDark.png" alt="Back">
+        </button>
+        <h1>UTeM Clinic Queue System</h1>
+    </div>
 
-        <div class="profile-container">
-            <div class="profile" onclick="toggleMenu()">
-                👤
+    <nav>
+        <ul>
+            <li><a href="profileAdmin.html">Dashboard</a></li>
+            <li><a href="admin-appointments.html">Appointments</a></li>
+            <li class="active"><a href="admin-queue.html">Queue</a></li>
+            <li><a href="admin-slots.html">Slots</a></li>
+            <li><a href="admin-staff.html">Staff</a></li>
+        </ul>
+    </nav>
+
+    <div id="rightSection">
+        <h1>Welcome, Admin!</h1>
+
+        <div class="profileContainer">
+            <button class="iconBtn" type="button" onclick="toggleMenu()">
+                <img class="icon" src="../images/profileIconDark.png" alt="Profile">
+            </button>
+
+            <div id="profileDropdown">
+                <a href="admin-profile.html">View Profile</a>
+                <a href="#" onclick="logout()">Log Out</a>
             </div>
-
-            <div id="dropdownMenu" class="dropdown-menu hidden">
-    <a href="admin-profile.html">View Profile</a>
-    <a href="#" onclick="logout()">Log Out</a>
+        </div>
+    </div>
 </div>
-        </div>
+
+<section id="queue" class="page active">
+    <h2>Queue Management</h2>
+    <p>Manage patient queue status and consultation progress.</p>
+
+    <div id="queueContent"></div>
+</section>
+
+<div id="confirmBox" class="modal hidden">
+    <div class="modal-card">
+        <b id="confirmText">Are you sure?</b>
+        <button class="green" onclick="confirmYes()">Confirm</button>
+        <button class="red" onclick="closeConfirm()">Cancel</button>
     </div>
-</header>
+</div>
 
-    <main>
-        <nav>
-    <a class="tab" href="admin-dashboard.html">Dashboard</a>
-    <a class="tab" href="admin-appointments.html">Appointments</a>
-    <a class="tab active" href="admin-queue.html">Queue Management</a>
-    <a class="tab" href="admin-slots.html">Slots</a>
-    <a class="tab" href="admin-staff.html">Staff</a>
-</nav>
-
-        
-
-        
-
-        <section id="queue" class="page active">
-            <div id="queueContent"></div>
-        </section>
-
-        
-        
-    </main>
-
-    <div id="confirmBox" class="modal hidden">
-        <div class="modal-card">
-            <b id="confirmText">Are you sure?</b>
-            <button class="green" onclick="confirmYes()">Confirm</button>
-            <button class="red" onclick="closeConfirm()">Cancel</button>
-        </div>
-    </div>
-
-    <script src="admin.js"></script>
+<script src="admin.js"></script>
 </body>
 </html>

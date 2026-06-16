@@ -498,6 +498,12 @@ function toggleMenu() {
         .getElementById("dropdownMenu")
         .classList.toggle("hidden");
 }
+function toggleMenu() {
+
+    document
+        .getElementById("profileDropdown")
+        .classList.toggle("showDropdown");
+}
 
 if (document.getElementById("appointmentContent")) {
     showAppointmentDates();

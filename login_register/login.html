@@ -44,16 +44,17 @@
         <div class="right-sec">
             <h1>LOGIN</h1>
 
-            <form>
+            <form id="loginForm">
                 <label>ID</label>
-                <input type="text">
+                <input type="text" id="loginId">
 
                 <label>Password</label>
-                <input type="password">
+                <input type="password" id="loginPassword">
 
                 <a href="forgotPassword.html" class="forgot">Forgot Password?</a>
 
                 <label>Login As</label>
+<<<<<<< HEAD
                 <select id="role">
                     <option>Dropdown</option>
                     <option>Student</option>
@@ -66,12 +67,25 @@
                <button type="button" class="loginBtn" onclick="loginRedirect()">
     LOGIN
 </button>
+=======
+                <select id="loginRole">
+                    <option value="">Dropdown</option>
+                    <option value="patient">Student</option>
+                    <option value="patient">Staff</option>
+                    <option value="doctor">Doctor</option>
+                    <option value="pharmacist">Pharmacist</option>
+                    <option value="admin">Administrator</option>
+                </select>
+
+                <button type="submit" class="loginBtn">LOGIN</button>
+>>>>>>> de35bd4c43366562062a5fca4097e08a7ee5d54b
 
                 <p>Don't have an account? <a href="register.html">Register</a></p>
             </form>
         </div>
     </div>
 </div>
+<<<<<<< HEAD
     <script>
 function loginRedirect() {
     alert("Button clicked!");
@@ -80,11 +94,15 @@ function loginRedirect() {
     alert("Role = " + role);
 
     if (role === "Administrator") {
-        window.location.href = "../admin/admin-dashboard.html";
+        window.location.href = "../admin/profileAdmin.html";
     } else {
         window.location.href = "../patient/dashboard.html";
     }
 }
 </script>
+=======
+
+<script src="loginRegister.js"></script>
+>>>>>>> de35bd4c43366562062a5fca4097e08a7ee5d54b
 </body>
 </html>

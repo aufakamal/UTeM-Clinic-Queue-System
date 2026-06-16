@@ -8,15 +8,26 @@
 </head>
 <body>
 
-<div class="profilePage">
+<div id="header">
 
-    <div class="profileTitle">
-        <a href="admin-profile.html">
-            <span class="backIcon">↩</span>
-        </a>
+    <div id="leftSection">
 
-        <h1>EDIT PROFILE</h1>
+        <button class="iconBtn"
+                onclick="window.location.href='admin-profile.html'">
+            ←
+        </button>
+
+        <h1>UTeM Clinic Queue System</h1>
+
     </div>
+
+    <div id="rightSection">
+        <h1>Edit Profile</h1>
+    </div>
+
+</div>
+
+<div class="profilePage">
 
     <section class="profileCard">
 
@@ -41,7 +52,9 @@
             <label>Password</label>
             <input type="password" value="12345678">
 
-            <button type="button" class="saveBtn" onclick="saveProfile()">
+            <button type="button"
+                    class="saveBtn"
+                    onclick="saveProfile()">
                 Save Changes
             </button>
 

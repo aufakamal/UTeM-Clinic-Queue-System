@@ -3,69 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UTeM PKU Admin</title>
+    <title>UTeM Clinic Queue System - Admin</title>
     <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
-    <header>
-    <h1>UTeM PKU</h1>
 
-    <div class="user-menu">
-        <span class="welcome">Welcome, Admin!</span>
+<div id="header">
+    <div id="leftSection">
+        <button class="iconBtn" onclick="history.back()">
+            <img class="icon" src="../images/backIconDark.png" alt="Back Button">
+        </button>
 
-        <div class="profile-container">
-            <div class="profile" onclick="toggleMenu()">
-                👤
+        <h1>UTeM Clinic Queue System</h1>
+    </div>
+
+    <nav>
+        <ul>
+            <li class="active"><a href="profileAdmin.html">Dashboard</a></li>
+            <li><a href="admin-appointments.html">Appointments</a></li>
+            <li><a href="admin-queue.html">Queue</a></li>
+            <li><a href="admin-slots.html">Slots</a></li>
+            <li><a href="admin-staff.html">Staff</a></li>
+        </ul>
+    </nav>
+
+    <div id="rightSection">
+        <h1>Welcome, Admin!</h1>
+
+        <div class="profileContainer">
+            <button class="iconBtn" id="profileBtn" type="button" onclick="toggleMenu()">
+                <img class="icon" id="profileIcon" src="../images/profileIconDark.png" alt="Profile Icon">
+            </button>
+
+            <div id="profileDropdown">
+                <a href="admin-profile.html">View Profile</a>
+                <a href="#" onclick="logout()">Log Out</a>
             </div>
-
-            <div id="dropdownMenu" class="dropdown-menu hidden">
-    <a href="admin-profile.html">View Profile</a>
-    <a href="#" onclick="logout()">Log Out</a>
+        </div>
+    </div>
 </div>
+
+<section id="dashboard" class="page active">
+    <h2>Admin Dashboard</h2>
+    <p>Overview of clinic appointments, queue, consultations and doctors.</p>
+
+    <div class="stats">
+        <div class="stat">
+            <b>Total<br>appointments<br>today</b>
+            <span id="totalToday">6</span>
         </div>
-    </div>
-</header>
 
-    <main>
-        <nav>
-    <a class="tab active" href="admin-dashboard.html">Dashboard</a>
-    <a class="tab" href="admin-appointments.html">Appointments</a>
-    <a class="tab" href="admin-queue.html">Queue Management</a>
-    <a class="tab" href="admin-slots.html">Slots</a>
-    <a class="tab" href="admin-staff.html">Staff</a>
-</nav>
+        <div class="stat">
+            <b>Number of<br>waiting<br>patients</b>
+            <span id="waitingPatients">7</span>
+        </div>
 
-        <section id="dashboard" class="page active">
-            <div class="stats">
-                <div class="stat"><b>Total<br>appointments<br>today</b><span id="totalToday">6</span></div>
-                <div class="stat"><b>Number of<br>waiting<br>patients</b><span id="waitingPatients">7</span></div>
-                <div class="stat"><b>Number of<br>active<br>consultations</b><span id="activeConsult">6</span></div>
-                <div class="stat"><b>Available<br>doctors</b><span id="availableDoctors">7</span></div>
-            </div>
+        <div class="stat">
+            <b>Number of<br>active<br>consultations</b>
+            <span id="activeConsult">6</span>
+        </div>
 
-            <div class="chart">
-                <b>Weekly Appointments</b>
-                <div id="weeklyChart" class="weekly-chart"></div>
-            </div>
-        </section>
-
-        
-
-        
-
-      
-
-       
-    </main>
-
-    <div id="confirmBox" class="modal hidden">
-        <div class="modal-card">
-            <b id="confirmText">Are you sure?</b>
-            <button class="green" onclick="confirmYes()">Confirm</button>
-            <button class="red" onclick="closeConfirm()">Cancel</button>
+        <div class="stat">
+            <b>Available<br>doctors</b>
+            <span id="availableDoctors">7</span>
         </div>
     </div>
 
-    <script src="admin.js"></script>
+    <article class="chart">
+        <h2>Weekly Appointments</h2>
+        <div id="weeklyChart" class="weekly-chart"></div>
+    </article>
+</section>
+
+<div id="confirmBox" class="modal hidden">
+    <div class="modal-card">
+        <b id="confirmText">Are you sure?</b>
+        <button class="green" onclick="confirmYes()">Confirm</button>
+        <button class="red" onclick="closeConfirm()">Cancel</button>
+    </div>
+</div>
+
+<script src="admin.js"></script>
 </body>
 </html>

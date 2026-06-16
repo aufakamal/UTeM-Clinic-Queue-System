@@ -6,24 +6,37 @@
     <title>UTeM PKU Admin</title>
     <link rel="stylesheet" href="admin.css">
 </head>
-<body>
-    <header>
-        <button class="logout-btn" onclick="logout()">
-    Logout
-</button>
-        <h1>UTeM PKU</h1>
-        <div class="profile-menu">
-    <div class="profile" onclick="toggleProfileMenu()">
-        👤
+<div id="header">
+    <div id="leftSection">
+        <button class="iconBtn" onclick="history.back()">
+            <img class="icon" src="../images/backIconDark.png" alt="Back">
+        </button>
+        <h1>UTeM Clinic Queue System</h1>
     </div>
 
-    <div id="profileDropdown" class="dropdown hidden">
-        <button onclick="viewProfile()">View Profile</button>
-        <button onclick="logout()">Log Out</button>
+    <nav>
+        <ul>
+            <li class="active"><a href="profileAdmin.html">Dashboard</a></li>
+            <li><a href="admin-appointments.html">Appointments</a></li>
+            <li><a href="admin-queue.html">Queue</a></li>
+            <li><a href="admin-slots.html">Slots</a></li>
+            <li><a href="admin-staff.html">Staff</a></li>
+        </ul>
+    </nav>
+
+    <div id="rightSection">
+        <h1>Welcome, Admin!</h1>
+        <div class="profileContainer">
+            <button class="iconBtn" type="button" onclick="toggleMenu()">
+                <img class="icon" src="../images/profileIconDark.png" alt="Profile">
+            </button>
+            <div id="profileDropdown">
+                <a href="admin-profile.html">View Profile</a>
+                <a href="#" onclick="logout()">Log Out</a>
+            </div>
+        </div>
     </div>
 </div>
-    </header>
-
     <main>
         <nav>
             <button class="tab active" onclick="showPage('dashboard', this)">Dashboard</button>

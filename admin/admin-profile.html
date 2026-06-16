@@ -6,17 +6,35 @@
     <title>Admin Profile</title>
     <link rel="stylesheet" href="admin-profile.css">
 </head>
+
 <body>
 
-<div class="profilePage">
-    <div class="profileTitle">
-        <a href="admin-dashboard.html">
-            <span class="backIcon">↩</span>
-        </a>
+<div id="header">
+    <div id="leftSection">
+        <button class="iconBtn" onclick="window.location.href='profileAdmin.html'">
+            ←
+        </button>
 
-        <h1>MY PROFILE</h1>
+        <h1>UTeM Clinic Queue System</h1>
     </div>
 
+    <div id="rightSection">
+        <h1>Admin Profile</h1>
+
+        <div class="profileContainer">
+            <button class="iconBtn" type="button" onclick="toggleMenu()">
+                👤
+            </button>
+
+            <div id="profileDropdown">
+                <a href="admin-profile.html">View Profile</a>
+                <a href="../login_register/mainPage.php">Log Out</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="profilePage">
     <section class="profileCard">
 
         <div class="profileHeader">
@@ -29,9 +47,10 @@
 
             <div class="profileActions">
                 <span class="roleName">Admin</span>
+
                 <a href="admin-edit-profile.html" class="editBtn">
-    Change Profile Information
-</a>
+                    Change Profile Information
+                </a>
             </div>
         </div>
 
@@ -64,7 +83,6 @@
         </div>
     </section>
 </div>
-</main>
 
 <script src="admin.js"></script>
 </body>

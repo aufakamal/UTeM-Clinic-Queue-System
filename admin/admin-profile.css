@@ -9,46 +9,98 @@ body {
     color: #1E293B;
 }
 
+/* HEADER */
+#header {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #D7E3EA;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 34px;
+    gap: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+#leftSection,
+#rightSection {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+#header h1 {
+    margin: 0;
+    color: #0F172A;
+    font-size: 20px;
+}
+
+.iconBtn {
+    width: 46px;
+    height: 46px;
+    background-color: #E0F2FE;
+    border: 1px solid #BAE6FD;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.iconBtn:hover {
+    background-color: #BAE6FD;
+}
+
+.profileContainer {
+    position: relative;
+}
+
+#profileDropdown {
+    display: none;
+    position: absolute;
+    top: 55px;
+    right: 0;
+    background: white;
+    border: 1px solid #D7E3EA;
+    border-radius: 12px;
+    min-width: 160px;
+    box-shadow: 0 8px 22px rgba(15,23,42,.08);
+    overflow: hidden;
+    z-index: 999;
+}
+
+#profileDropdown.showDropdown {
+    display: block;
+}
+
+#profileDropdown a {
+    display: block;
+    padding: 12px 16px;
+    color: #334155;
+    text-decoration: none;
+}
+
+#profileDropdown a:hover {
+    background-color: #E0F2FE;
+}
+
+/* PAGE */
 .profilePage {
     width: 100%;
     min-height: 100vh;
-    margin: 0;
     padding: 35px 60px;
-    background-color: #F8FAFC;
 }
 
-/* TITLE */
-.profileTitle {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.profileTitle h1 {
-    margin: 0;
-    font-size: 34px;
-    color: #0F172A;
-}
-
-.backIcon {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-}
-
-/* VIEW PROFILE CARD */
+/* CARD */
 .profileCard {
     width: 80%;
     max-width: 1100px;
     margin: 25px auto;
-
     background-color: #FFFFFF;
     border: 1px solid #D7E3EA;
     border-radius: 18px;
-
     padding: 28px;
-
     box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
 }
 
@@ -56,23 +108,22 @@ body {
     background-color: #E0F2FE;
     border-radius: 16px;
     padding: 24px;
-
     display: flex;
     align-items: center;
     gap: 20px;
-
     margin-bottom: 30px;
 }
 
 .profileImage {
     width: 90px;
     height: 90px;
-
     border-radius: 50%;
     background-color: #FFFFFF;
     border: 4px solid white;
-
-    object-fit: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
 }
 
 .userInfo {
@@ -100,10 +151,8 @@ body {
 .roleName {
     background-color: #DBEAFE;
     color: #1E40AF;
-
     padding: 8px 16px;
     border-radius: 999px;
-
     font-size: 14px;
     font-weight: 700;
 }
@@ -111,16 +160,12 @@ body {
 .editBtn {
     background-color: #0284C7;
     color: white;
-
     border: none;
     border-radius: 10px;
-
     padding: 12px 22px;
-
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-
     text-decoration: none;
     display: inline-block;
 }
@@ -135,21 +180,18 @@ body {
     gap: 45px;
 }
 
-.infoBox h3 {
+.rightInfo h3 {
     margin-top: 0;
     margin-bottom: 16px;
-
     font-size: 22px;
     color: #0F172A;
 }
 
-/* FORM ELEMENTS */
+/* FORM */
 label {
     display: block;
-
     margin-top: 14px;
     margin-bottom: 7px;
-
     font-weight: 600;
     color: #0F172A;
 }
@@ -157,15 +199,11 @@ label {
 input {
     width: 100%;
     height: 40px;
-
     border: 1px solid #CBD5E1;
     border-radius: 10px;
-
     padding: 10px 12px;
-
     background-color: #FFFFFF;
     color: #1E293B;
-
     font-size: 14px;
 }
 
@@ -177,185 +215,54 @@ input:focus {
 
 /* EDIT PROFILE */
 .editHeader {
-    height: 110px;
-    background-color: #38BDF8;
-    border-radius: 14px 14px 0 0;
-
+    height: 120px;
+    background: #E0F2FE;
+    border-radius: 15px;
+    margin-bottom: 60px;
     display: flex;
     justify-content: center;
-    align-items: end;
-
-    margin-bottom: 55px;
+    align-items: flex-end;
 }
 
-.editProfileImage {
-    width: 90px;
-    height: 90px;
-
-    border-radius: 50%;
-    background-color: white;
-    border: 4px solid white;
-
-    object-fit: contain;
-
-    transform: translateY(45px);
+.editHeader .profileImage {
+    width: 100px;
+    height: 100px;
+    transform: translateY(50%);
+    font-size: 50px;
 }
 
 .editForm {
-    width: 60%;
+    width: 70%;
     max-width: 650px;
-    margin: 0 auto;
+    margin: auto;
 }
 
-.nameRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
+.editForm label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 600;
 }
 
-.editForm h3 {
-    margin-top: 24px;
-    margin-bottom: 10px;
-    color: #0F172A;
+.editForm input {
+    width: 100%;
 }
 
-/* BUTTONS */
 .saveBtn {
     display: block;
     margin: 30px auto 0;
-
-    width: 150px;
-    height: 42px;
-
-    text-align: center;
-    line-height: 42px;
-    text-decoration: none;
-
+    width: 180px;
+    height: 45px;
     border: none;
     border-radius: 10px;
-
-    background-color: #0F766E;
+    background: #0F766E;
     color: white;
-
-    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
 }
 
 .saveBtn:hover {
-    background-color: #115E59;
-}
-
-.changePasswordLink {
-    display: inline-block;
-    margin-top: 6px;
-
-    color: #0369A1;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.changePasswordLink:hover {
-    text-decoration: underline;
-}
-
-/* SUCCESS PAGE */
-.messageCard {
-    width: 80%;
-    max-width: 1100px;
-    min-height: 560px;
-
-    margin: 25px auto;
-
-    background-color: #FFFFFF;
-    border: 1px solid #D7E3EA;
-    border-radius: 18px;
-
-    padding: 50px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
-}
-
-.tickIcon {
-    width: 130px;
-    height: 130px;
-    object-fit: contain;
-    margin-bottom: 25px;
-}
-
-.successText {
-    font-size: 16px;
-    color: #0F172A;
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-.profileBtn {
-    display: inline-block;
-
-    background-color: #0F766E;
-    color: white;
-
-    padding: 12px 22px;
-    border-radius: 10px;
-
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.profileBtn:hover {
-    background-color: #115E59;
-}
-
-/* CHANGE PASSWORD */
-.changePasswordCard {
-    width: 80%;
-    max-width: 700px;
-    margin: 25px auto;
-
-    background-color: #FFFFFF;
-    border: 1px solid #D7E3EA;
-    border-radius: 18px;
-
-    padding: 45px;
-
-    text-align: center;
-
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
-}
-
-.changePasswordIcon {
-    width: 110px;
-    height: 110px;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-
-.changePasswordCard p {
-    color: #475569;
-    font-size: 14px;
-    margin-bottom: 25px;
-}
-
-.changePasswordCard form {
-    width: 70%;
-    margin: 0 auto;
-    text-align: left;
-}
-
-.changePasswordCard .saveBtn {
-    display: block;
-    margin: 28px auto 0;
-    width: 180px;
+    background: #115E59;
 }
 
 /* RESPONSIVE */
@@ -364,13 +271,7 @@ input:focus {
         padding: 18px;
     }
 
-    .profileTitle h1 {
-        font-size: 28px;
-    }
-
-    .profileCard,
-    .messageCard,
-    .changePasswordCard {
+    .profileCard {
         width: 100%;
         padding: 22px;
     }
@@ -389,82 +290,12 @@ input:focus {
         gap: 20px;
     }
 
-    .editForm,
-    .changePasswordCard form {
+    .editForm {
         width: 100%;
-    }
-
-    .nameRow {
-        grid-template-columns: 1fr;
     }
 
     .editBtn {
         width: 100%;
         text-align: center;
     }
-}
-
-.editHeader {
-    height: 120px;
-    background: #E0F2FE;
-    border-radius: 15px;
-    margin-bottom: 50px;
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-}
-
-.editHeader .profileImage {
-    width: 100px;
-    height: 100px;
-
-    border-radius: 50%;
-    background: white;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 50px;
-
-    transform: translateY(50%);
-    border: 4px solid white;
-}
-
-.editForm {
-    width: 70%;
-    margin: auto;
-}
-
-.editForm label {
-    display: block;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.editForm input {
-    width: 100%;
-}
-
-.saveBtn {
-    display: block;
-    margin: 30px auto 0;
-
-    width: 180px;
-    height: 45px;
-
-    border: none;
-    border-radius: 10px;
-
-    background: #0F766E;
-    color: white;
-
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.saveBtn:hover {
-    background: #115E59;
 }

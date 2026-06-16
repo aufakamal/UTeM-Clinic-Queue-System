@@ -1,0 +1,554 @@
+/* =========================
+   GLOBAL
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #F8FAFC;
+    color: #1E293B;
+}
+
+/* =========================
+   HEADER
+========================= */
+#header {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #D7E3EA;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 34px;
+    gap: 24px;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+#leftSection,
+#rightSection {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    white-space: nowrap;
+}
+
+#rightSection {
+    flex-direction: row;
+}
+
+#header h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+#rightSection h1 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #475569;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+.dashboard-grid,
+.container {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 30px;
+
+    width: 90%;
+    max-width: 1400px;
+    margin: 36px auto;
+
+    align-items: start;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar .card,
+.recordCard,
+.main-panel,
+.content-box {
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+
+    padding: 30px;
+
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+}
+
+.recordCard {
+    min-height: 600px;
+}
+
+.main-panel {
+    min-height: 500px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0;
+    justify-self: start;
+}
+
+.sidebar .card h3,
+.sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+
+    font-size: 16px;
+    color: #0369A1;
+    font-weight: 700;
+
+    border-bottom: 2px solid #0369A1;
+    display: inline-block;
+}
+
+.sidebar p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #1E293B;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.tabMenu {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tabMenu button,
+.tabs button {
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 999px;
+
+    background-color: #E0F2FE;
+    color: #0369A1;
+
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tabMenu .activeTab,
+.tabs button:hover {
+    background-color: #0284C7;
+    color: white;
+}
+
+.yellowBtn,
+.saveBtn,
+.completeBtn,
+.sidebar .btn,
+.btn-action,
+.btn-secondary,
+.btn-green {
+    border: none;
+    border-radius: 10px;
+
+    padding: 10px 18px;
+
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.yellowBtn,
+.sidebar .btn {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.yellowBtn:hover,
+.sidebar .btn:hover {
+    background-color: #FDE68A;
+}
+
+.saveBtn,
+.btn-secondary {
+    background-color: #E0F2FE;
+    color: #0369A1;
+}
+
+.completeBtn,
+.btn-action {
+    background-color: #0F766E;
+    color: white;
+}
+
+.completeBtn:hover,
+.btn-action:hover {
+    background-color: #115E59;
+}
+
+.btn-green {
+    display: block;
+    width: 100%;
+
+    margin-top: 30px;
+    padding: 16px;
+
+    background-color: #00FF80;
+    color: #064E3B;
+
+    font-weight: 700;
+}
+
+/* =========================
+   PATIENT RECORD AREA
+========================= */
+.patientInfo,
+.patient-details {
+    background-color: #F8FAFC;
+    border: 1px solid #D7E3EA;
+    border-radius: 14px;
+
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.patientInfo p,
+.patient-details p {
+    margin: 6px 0;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.contentArea,
+.overview-section {
+    background-color: #F8FAFC;
+    border: 1px solid #D7E3EA;
+    border-radius: 14px;
+
+    padding: 20px;
+}
+
+.actionButtons,
+.action-buttons {
+    margin-top: 25px;
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* =========================
+   NAV BOX
+========================= */
+.backBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    padding: 5px;
+}
+
+.smallIcon {
+    width: 24px;
+    height: 24px;
+}
+
+.navBox {
+    background-color: #E0F2FE;
+    border: 1px solid #BAE6FD;
+    border-radius: 50px;
+
+    padding: 5px 15px;
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.navBox ul {
+    display: flex;
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+
+    gap: 10px;
+}
+
+.navBox li a {
+    text-decoration: none;
+    color: #0369A1;
+
+    font-weight: 600;
+
+    padding: 8px 20px;
+    display: block;
+
+    border-radius: 50px;
+}
+
+.navBox li.active a {
+    background-color: #0284C7;
+    color: white;
+}
+
+/* =========================
+   PHARMACY UPDATE
+========================= */
+.pharmacy-content textarea {
+    width: 100%;
+    min-height: 120px;
+
+    padding: 15px;
+    margin-top: 10px;
+
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+
+    font-family: inherit;
+}
+
+/* =========================
+   TABLE
+========================= */
+.medicalTable {
+    width: 100%;
+    border-collapse: collapse;
+
+    margin-bottom: 20px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #D7E3EA;
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+.medicalTable th {
+    background-color: #E0F2FE;
+    color: #075985;
+
+    padding: 12px 16px;
+
+    text-align: left;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.medicalTable td {
+    padding: 12px 16px;
+
+    border-bottom: 1px solid #E2E8F0;
+
+    color: #334155;
+    font-size: 14px;
+}
+
+.medicalTable tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================
+   PROFILE DROPDOWN
+========================= */
+.profileContainer {
+    position: relative;
+}
+
+.profileIcon {
+    width: 42px;
+    height: 42px;
+
+    object-fit: contain;
+    cursor: pointer;
+}
+
+#profileDropdown {
+    display: none;
+
+    position: absolute;
+    top: 55px;
+    right: 0;
+
+    min-width: 150px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #D7E3EA;
+    border-radius: 12px;
+
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+
+    z-index: 999;
+    overflow: hidden;
+}
+
+#profileDropdown.showDropdown {
+    display: block;
+}
+
+#profileDropdown a {
+    display: block;
+
+    padding: 12px 16px;
+
+    color: #334155;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#profileDropdown a:hover {
+    background-color: #E0F2FE;
+    color: #0284C7;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+    background-color: #E0F2FE;
+    border-top: 1px solid #BAE6FD;
+    color: #0F172A;
+
+    padding: 34px 56px;
+    margin-top: 50px;
+}
+
+footer h2 {
+    margin-top: 0;
+    margin-bottom: 22px;
+
+    font-size: 22px;
+    color: #075985;
+}
+
+.footerGrid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    row-gap: 16px;
+    column-gap: 70px;
+
+    align-items: center;
+}
+
+.socialItem a,
+.contactItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+footer a {
+    color: #0369A1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    color: #0284C7;
+    text-decoration: underline;
+}
+
+footer .icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.copyright {
+    border-top: 1px solid #BAE6FD;
+
+    margin-top: 28px;
+    padding-top: 16px;
+
+    text-align: center;
+    font-size: 14px;
+    color: #475569;
+}
+
+/* =========================
+   JAVASCRIPT CLASSES
+========================= */
+.hidden {
+    display: none;
+}
+
+.activeCard {
+    border: 2px solid #2563EB;
+    background-color: #EFF6FF;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1100px) {
+    #header {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav {
+        order: 3;
+    }
+
+    .dashboard-grid,
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        width: 94%;
+    }
+
+    article {
+        padding: 22px;
+    }
+
+    #header {
+        padding: 14px 18px;
+    }
+
+    #leftSection,
+    #rightSection {
+        white-space: normal;
+    }
+
+    .navBox ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .actionButtons,
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .footerGrid {
+        grid-template-columns: 1fr;
+        row-gap: 18px;
+    }
+
+    footer {
+        padding: 30px 24px;
+    }
+}
