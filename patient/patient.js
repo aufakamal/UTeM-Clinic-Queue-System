@@ -102,7 +102,11 @@ let unavailableSlots = {
 let tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
 
-appointmentDateInput.min = tomorrow.toISOString().split("T")[0];
+if (appointmentDateInput)
+{
+    appointmentDateInput.min =
+        tomorrow.toISOString().split("T")[0];
+}
 
 
 if (appointmentDateInput && slotContainer) {
@@ -218,8 +222,9 @@ if (upcomingTab && previousTab && upcomingRecords && previousRecords) {
     });
 }
 
-=========================
+/* =========================
    SELF-ASSESSMENT PAGE
+========================= */
 
 let symptomChecker = document.querySelector("#symptomChecker");
 let mainAssessmentCard = document.querySelector("#mainAssessmentCard");
@@ -553,7 +558,10 @@ if (generalHealthConcernForm) {
     });
 }
 
-   PROFILE DROPDOWN
+/* =========================
+    PROFILE DROPDOWN
+========================= */
+
 let profileBtn = document.querySelector("#profileBtn");
 let profileDropdown = document.querySelector("#profileDropdown");
 
