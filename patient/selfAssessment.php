@@ -9,40 +9,7 @@
 
 <body>
 
-    <div id="header">
-        <div id="leftSection">
-            <button class="iconBtn">
-                <img class="icon" src="../images/backIconDark.png" alt="Back Button">
-            </button>
-
-            <h1>UTeM Clinic Queue System</h1>
-        </div>
-
-        <nav>
-            <ul>
-                <li><a href="dashboard.html">Dashboard</a></li>
-
-                <li class="dropdown">
-                    Appointment
-                    <ul class="submenu">
-                        <li><a href="bookAppointment.html">Book Appointment</a></li>
-                        <li><a href="appointmentRecord.html">Appointment Record</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="medicalRecord.html">Medical Record</a></li>
-                <li class="active"><a href="selfAssessment.html">Self-Assessment</a></li>
-            </ul>
-        </nav>
-
-        <div id="rightSection">
-            <h1>Welcome, Student!</h1>
-
-            <button class="iconBtn">
-                <img class="icon" id="profileIcon" src="../images/profileIconDark.png" alt="Profile Icon">
-            </button>
-        </div>
-    </div>
+    <?php include('inc/patient_header.php'); ?>
 
     <section>
         <h2>Self-Assessment</h2>
@@ -564,90 +531,7 @@
         </article>
     </section>
 
-    <section>
-        <h2>Health Articles</h2>
-        <p>Read basic health information and clinic-related guidance.</p>
-
-        <div class="articleGrid">
-            <button class="cardBtn">
-                <h2>Article Title</h2>
-                <p>Click to read more</p>
-            </button>
-
-            <button class="cardBtn">
-                <h2>Article Title</h2>
-                <p>Click to read more</p>
-            </button>
-
-            <button class="cardBtn">
-                <h2>Article Title</h2>
-                <p>Click to read more</p>
-            </button>
-
-            <button class="cardBtn">
-                <h2>Article Title</h2>
-                <p>Click to read more</p>
-            </button>
-
-            <button class="cardBtn">
-                <h2>Article Title</h2>
-                <p>Click to read more</p>
-            </button>
-
-            <button class="cardBtn">
-                <h2>Article Title</h2>
-                <p>Click to read more</p>
-            </button>
-
-            
-        </div>
-    </section>
-
-    <footer>
-        <h2>Contact Us</h2>
-
-        <div class="footerGrid">
-            <div class="socialItem">
-                <a href="https://www.instagram.com/pusatkesihatanutem/?hl=en">
-                    <img class="icon" src="../images/instagramIcon.png" alt="Instagram Icon">
-                    <span>Instagram</span>
-                </a>
-            </div>
-
-            <div class="contactItem">
-                <img class="icon" src="../images/phoneIcon.png" alt="Phone Icon">
-                <span>06-2292308</span>
-            </div>
-
-            <div class="socialItem">
-                <a href="https://www.facebook.com/PusatKesihatanUTeM/">
-                    <img class="icon" src="../images/facebookIcon.png" alt="Facebook Icon">
-                    <span>Facebook</span>
-                </a>
-            </div>
-
-            <div class="contactItem">
-                <img class="icon" src="../images/emailIcon.png" alt="Email Icon">
-                <a href="mailto:pusatkesihatanutem@utem.edu.my">pusatkesihatanutem@utem.edu.my</a>
-            </div>
-
-            <div class="socialItem">
-                <a href="https://www.tiktok.com/@utempku">
-                    <img class="icon" src="../images/tiktokIcon.png" alt="TikTok Icon">
-                    <span>TikTok</span>
-                </a>
-            </div>
-
-            <div class="contactItem">
-                <img class="icon" src="../images/LocationIcon.png" alt="Location Icon">
-                <span>Universiti Teknikal Malaysia Melaka, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka.</span>
-            </div>
-        </div>
-
-        <p class="copyright">
-            Copyright &copy; 2026 PROJECT SYSTEM DEVELOPMENT WORKSHOP S1G2
-        </p>
-    </footer>
+    <?php include('inc/patient_footer.php'); ?>
 <script src="patient.js"></script>
 </body>
 </html>
