@@ -218,9 +218,8 @@ if (upcomingTab && previousTab && upcomingRecords && previousRecords) {
     });
 }
 
-/* =========================
+=========================
    SELF-ASSESSMENT PAGE
-========================= */
 
 let symptomChecker = document.querySelector("#symptomChecker");
 let mainAssessmentCard = document.querySelector("#mainAssessmentCard");
@@ -554,4 +553,13 @@ if (generalHealthConcernForm) {
     });
 }
 
+   PROFILE DROPDOWN
+let profileBtn = document.querySelector("#profileBtn");
+let profileDropdown = document.querySelector("#profileDropdown");
+
+if (profileBtn && profileDropdown) {
+    profileBtn.addEventListener("click", function() {
+        profileDropdown.classList.toggle("showDropdown");
+    });
+}
 
