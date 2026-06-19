@@ -14,9 +14,9 @@
     <div class="main">
 
         <div class="left-sec">
-            <a href="mainPage.php" class="back">
+            <!-- <a href="mainPage.php" class="back">
                 <img src="loginRegisterImage/backIconDark.png" alt="Back">
-            </a>
+            </a> -->
 
             <h2>Welcome To <br>
             UTeM's PKU <br>
