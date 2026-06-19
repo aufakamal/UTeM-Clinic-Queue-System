@@ -1,4 +1,3 @@
-
 /* =========================
    GLOBAL
 ========================= */
@@ -53,514 +52,1322 @@ body {
     color: #475569;
 }
 
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 350px 1fr; /* Fixed sidebar, flexible content */
-    gap: 30px;
-    width: 90%;
-    max-width: 1400px;
+/* =========================
+   ICON BUTTONS
+========================= */
+.iconBtn {
+    width: 46px;
+    height: 46px;
+
+    background-color: #E0F2FE;
+    border: 1px solid #BAE6FD;
+    border-radius: 50%;
+
+    padding: 8px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    transition: 0.25s ease;
+}
+
+.iconBtn:hover {
+    background-color: #BAE6FD;
+    transform: translateY(-1px);
+}
+
+.iconBtn .icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+nav {
+    padding: 6px;
+
+    background-color: #E0F2FE;
+    border: 1px solid #BAE6FD;
+    border-radius: 999px;
+
+    box-shadow: 0 6px 16px rgba(2, 132, 199, 0.12);
+}
+
+nav > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+nav li {
+    position: relative;
+    border-radius: 999px;
+
+    color: #0369A1;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.25s ease;
+    white-space: nowrap;
+}
+
+nav a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    padding: 10px 18px;
+    border-radius: 999px;
+}
+
+nav li:hover {
+    background-color: #BAE6FD;
+    color: #075985;
+}
+
+nav li.active {
+    background-color: #0284C7;
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+}
+
+/* =========================
+   MAIN CONTENT BASE
+========================= */
+section {
+    width: 95%;
+    max-width: 1350px;
     margin: 36px auto;
+}
+/* =========================
+   DOCTOR WORKSPACE
+========================= */
+
+.doctorWorkspace {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
     align-items: start;
 }
 
-/* Sidebar (Left Column) */
-.sidebar {
+.leftColumn {
+    width: 320px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Sidebar Cards (Consultations, Pharmacy, Search) */
-.sidebar .card {
+.doctorCard, .workspaceCard {
     background-color: #FFFFFF;
     border: 1px solid #D7E3EA;
     border-radius: 18px;
-    padding: 24px;
+    padding: 22px;
     box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
 }
 
-.sidebar .card h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 16px;
-    color: #0369A1;
-    font-weight: 700;
+/* Update CSS untuk currentconstBox */
+.currentconstBox {
+    display: flex;
+    flex-direction: column; /* Butang akan jatuh ke bawah */
+    align-items: flex-start; /* Semua teks rata kiri */
+    gap: 10px; /* Jarak antara teks dan butang */
+    
+    background-color: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
 }
 
-/* Main Panel (Right Column - Patient Record) */
-.main-panel {
-    background-color: #FFFFFF;
-    border: 1px solid #D7E3EA;
-    border-radius: 18px;
-    padding: 30px;
-    min-height: 600px;
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
-}
-
-.main-panel h2 {
-    margin-top: 0;
-    margin-bottom: 24px;
-    font-size: 24px;
-    color: #0F172A;
-}
-
-/* Action Buttons within Doctor Dashboard */
-.btn-action {
-    display: block;
-    width: 100%;
-    margin-top: 15px;
-    padding: 12px;
-    background-color: #0F766E;
+/* Pastikan butang Start Session ikut lebar penuh kotak */
+.currentconstBox .startBtn {
+    width: 100%; /* Butang jadi lebar penuh */
+    background-color: #0284C7;
     color: white;
     border: none;
+    border-radius: 8px; /* Sedikit kurang bulat untuk nampak profesional */
+    padding: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.currentconstBox .startBtn:hover {
+    background-color: #0369A1;
+}
+
+/* Pastikan h3 dan p dalam kotak tidak ada margin yang pelik */
+.currentconstBox h3, .currentconstBox p {
+    margin: 0;
+}
+
+.searchInput {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+
+    margin-bottom: 12px;
+}
+
+.recentText {
+    color: #64748B;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* =========================
+   EDITABLE MEDICAL INFO
+========================= */
+
+.infoBlock {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.infoHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.infoHeader h3 {
+    color: #0069A6;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Button Add Allergy / Add Condition / Add Medication */
+.addSmallBtn {
+    border: none;
+    background: #E0F2FE;
+    color: #0369A1;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.2s ease;
+}
+
+.addSmallBtn:hover {
+    background: #BAE6FD;
+    color: #075985;
+}
+
+/* Container untuk senarai item editable */
+.editableList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Setiap row input + edit button */
+.editableItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Input medical info */
+.editableItem input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #CBD5E1;
     border-radius: 10px;
+    background: #F8FAFC;
+    color: #0F172A;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+/* Bila boleh edit */
+.editableItem input:not([readonly]) {
+    background: #FFFFFF;
+    border-color: #0284C7;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+}
+
+/* Button Edit */
+.editableItem button {
+    min-width: 70px;
+    border: 1px solid #CBD5E1;
+    background: #F8FAFC;
+    color: #475569;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 13px;
+    transition: 0.2s ease;
+}
+
+.editableItem button:hover {
+    background: #E2E8F0;
+    color: #1E293B;
+}
+
+/* Button Save bila sedang edit */
+.editableItem .saveEditBtn {
+    background: #22C55E;
+    border-color: #22C55E;
+    color: white;
+}
+
+.editableItem .saveEditBtn:hover {
+    background: #16A34A;
+    border-color: #16A34A;
+}
+
+/* Bagi overview section nampak lebih kemas */
+.overviewSection {
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* Responsive untuk screen kecil */
+@media (max-width: 700px) {
+    .infoHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .editableItem {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .editableItem button {
+        width: 100%;
+    }
+}
+
+/* =========================
+   PHARMACY UPDATES 
+========================= */
+
+.pharmacyUpdateBox {
+    background-color: #FFFFFF; /* Putih bersih */
+    border: 1px solid #E2E8F0; /* Border kelabu lembut */
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+/* Susunan teks di dalam kotak */
+.pharmacyUpdateBox h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #1E293B;
+}
+
+.pharmacyUpdateBox p {
+    margin: 4px 0;
+    font-weight: 700;
+    color: #2f3b4b;
+}
+
+/* Tag Biru-Kelabu Cair untuk Isu */
+.issueTag {
+    display: inline-block;
+    background-color: #E0F2FE; /* Biru cair */
+    color: #0369A1;            /* Teks biru gelap */
+    padding: 4px 10px;
+    border-radius: 999px;      /* Rounded rectangle */
+    font-size: 12px;
+    font-weight: 600;
+    margin: 8px 0;
+}
+
+/* Butang VIEW yang lebih kemas & subtle */
+.pharmacyUpdateBox .viewBtn {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    background-color: #0284C7; /* Bright blue */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
 }
 
-.btn-action:hover {
-    background-color: #115E59;
+.pharmacyUpdateBox .viewBtn:hover {
+    background-color: #3f7ccc;
+    color: #ffffff;
 }
 
-/* Large Full-Width Button (e.g. Complete Consultation) */
-.btn-complete {
-    background-color: #00FF80; /* Adjust to match your exact Figma green */
-    color: #064E3B;
-    padding: 16px 32px;
-    font-size: 16px;
-    font-weight: 700;
-    border-radius: 12px;
-    margin-top: 30px;
-    width: 100%;
-    cursor: pointer;
-}
-
-/* Responsive adjustment for screens smaller than 1000px */
-@media (max-width: 1000px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr; /* Stack vertically if screen is narrow */
-    }
-}
-
-.patient-profile {
-    margin-bottom: 24px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #D7E3EA;
-}
-
-.patient-profile p {
-    margin: 4px 0;
-    color: #334155;
-}
-
-.record-content h3 {
-    margin-top: 24px;
-    font-size: 16px;
-    color: #0369A1;
-    text-transform: uppercase;
-}
-
-.record-content a {
-    color: #0284C7;
-    text-decoration: none;
-    font-size: 12px;
-    margin-left: 10px;
-}
-
-.patient-details {
-    margin-bottom: 30px;
+.pharmacyPopup {
+    background: #F1F5F9;
     padding: 20px;
-    background: #F8FAFC;
-    border-radius: 12px;
+    border-radius: 14px;
+    width: 600px;
+    margin: 20px auto;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-.patient-details p {
-    margin: 5px 0;
+.popupTitle {
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #0F172A;
+}
+
+.popupHeaderBox p {
+    margin: 6px 0;
+}
+
+.popupBodyGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.popupCard {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid #CBD5E1;
+}
+
+.statusBtn {
+    margin-top: 8px;
+    background: #FDE68A;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.statusBtn[data-status="resolved"] {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.editResponseBtn {
+    margin-top: 6px;
+    background: #93C5FD;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.confirmResendBtn {
+    background: #22C55E;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 24px;
+    cursor: pointer;
+    font-weight: 700;
+    margin-top: 12px;
+}
+.confirmResendBtn:hover { background: #16A34A; }
+
+textarea#doctorReply {
+    width: 100%;
+    min-height: 80px;
+    padding: 8px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #94A3B8;
+    resize: vertical;
+}
+
+
+
+/* ========================= */
+/* CONSULTATION PANEL DESIGN */
+/* ========================= */
+
+#patientRecordDisplay {
+    width: 100%;
+}
+
+.recordTitle {
+    text-align: center;
+    text-decoration: underline;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.recordSubTitle {
+    text-align: center;
+    text-decoration: underline;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 22px;
+}
+
+/* Kotak patient info */
+.patientInfo {
+    background: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    border-radius: 14px;
+    padding: 22px 28px;
+    margin: 0 auto 28px auto;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.patientInfo p {
+    margin: 7px 0;
+    font-size: 16px;
+    color: #0F172A;
+}
+
+.patientInfo span {
     font-weight: 500;
 }
 
-.medicalRecordTables h3 {
-    margin: 20px 0 10px;
-    font-size: 16px;
-    color: #0369A1;
-}
-
-/* Ensure tables look like the design */
-.singleTable {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-/* Update the right section to stack items vertically  */
-#rightSection {
-    display: flex;
-    flex-direction: column; /* This stacks the name and image */
-    align-items: center;    /* Centers them horizontally */
-    gap: 8px;
-    white-space: nowrap;
-}
-
-/*side bar utk search patient*/
-.sidebar .card {
-    background-color: #FFFFFF;
-    border: 1px solid #D7E3EA;
-    border-radius: 18px;
-    padding: 24px;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
-    margin-bottom: 20px;
-}
-
-.sidebar h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 16px;
-    color: #0369A1;
+.patientInfo strong {
+    color: #0069A6;
     font-weight: 700;
-    border-bottom: 2px solid #0369A1; /* Matches your underline design */
-    display: inline-block;
 }
 
-.sidebar p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #1E293B;
-}
-
-.sidebar .btn {
-    width: 100%;
-    margin-top: 10px;
-    background-color: #FEF08A; /* Light yellow button background */
-    color: #000;
-    border: 1px solid #000;
-    font-weight: 600;
-}
-
-.sidebar .btn:hover {
-    background-color: #FDE047;
-}
-
-/*patient record*/
-/* Gaya Kontena Utama */
-.content-box {
-    background: #FFF;
-    border: 1px solid #D7E3EA;
+.miniTabBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    margin: 10px auto 28px auto;
+    padding: 6px;
+    gap: 6px;
+    border: 1px solid #99F6E4;
     border-radius: 18px;
-    padding: 40px;
-    width: 100%;
-    max-width: 800px;
+    background: #D1FAE5;
 }
 
-/* Gaya Tab */
-.tabs-container {
-    background: #E0F2F1;
-    padding: 10px;
-    text-align: center;
-    border-radius: 8px;
-    margin: 20px 0;
-    color: #00796B;
+.miniTab {
+    border: none;
+    padding: 12px 28px;
+    cursor: pointer;
+    background: transparent;
+    font-weight: 700;
+    font-size: 14px;
+    color: #020617;
+    border-radius: 14px;
+    transition: 0.2s ease;
 }
 
-/* Susunan Butang bawah */
-.action-buttons {
-    margin-top: 40px;
+.miniTab:hover {
+    background: #A7F3D0;
+}
+
+.miniTab.active {
+    background: #86EFAC;
+    border-radius: 14px;
+}
+
+/* Bahagian details bawah tab */
+.overviewSection {
+    width: 90%;
+    margin: 0 auto;
+}
+
+
+.overviewSection h3 {
+    color: #0069A6;
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+
+.overviewSection p {
+    color: #0F172A;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.45;
+}
+
+/* Button bawah */
+.consultButtons {
+    width: 90%;
+    margin: 42px auto 0 auto;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
-.btn-secondary {
-    padding: 12px 30px;
+.saveBtn {
+    padding: 12px 28px;
+    border-radius: 16px;
     border: 1px solid #CBD5E1;
-    border-radius: 8px;
+    background: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.saveBtn:hover {
     background: #F8FAFC;
-    cursor: pointer;
 }
 
-.btn-green {
-    padding: 12px 30px;
-    background: #00FF80;
+.completeBtn {
+    padding: 12px 28px;
+    border-radius: 16px;
     border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/*PHARMARCY UPDATE*/
-.main-panel {
-    background: #FFF;
-    border: 1px solid #D7E3EA;
-    border-radius: 18px;
-    padding: 40px;
-    min-height: 500px;
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
-    width: 100%;        
-    max-width: 800px;  
-    margin: 0;         
-    justify-self: start;
-}
-
-.pharmacy-content textarea {
-    width: 100%;
-    min-height: 120px;
-    padding: 15px;
-    margin-top: 10px;
-    border: 1px solid #CBD5E1;
-    border-radius: 10px;
-    font-family: inherit;
-}
-
-.btn-green {
-    display: block;
-    width: 100%;
-    padding: 16px;
-    margin-top: 30px;
-    background: #00FF80;
-    border: none;
-    border-radius: 10px;
+    background: #22C55E;
+    color: white;
     font-weight: 700;
     cursor: pointer;
+    transition: 0.2s ease;
 }
 
-
-/*SEARCH PATEINT*/
-/* Style for the specific profile icon(search pateint pg*/
-.profile-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #BAE6FD;
+.saveBtn,
+.completeBtn {
+    min-width: 180px;
 }
 
+.completeBtn:hover {
+    background: #16A34A;
+}
 
-/* 1. Small Back Button Style(search patient pg) */
-.backBtn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
+/* =========================
+   MESSAGE POPUP
+========================= */
+.messagePopup {
+    display: none; /* Sembunyi secara lalai */
+}
+
+.messagePopup.show {
+    display: flex; /* Paparkan apabila class 'show' ditambah */
+}
+.messagePopup {
+    display: none;                 /* Sembunyi dulu */
+    position: fixed;               /* Letak atas semua content */
+    inset: 0;                      /* Cover full screen */
+    background: rgba(0,0,0,0.15); /* Background separuh transparent */
+    justify-content: center;
     align-items: center;
-    padding: 5px;
+    z-index: 2000;                 /* Pastikan atas semua elemen */
 }
 
-.smallIcon {
-    width: 24px; /* Adjust this to make the icon small */
-    height: 24px;
+.messageContent {
+    background: #fff;
+    border-radius: 12px;           /* Buat cantik rounded */
+    padding: 24px 32px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
 
-/* 2. Navigation Box Style */
-.navBox {
-    background-color: #E0F2FE; /* Light blue box background */
-    border: 1px solid #BAE6FD;
-    border-radius: 50px; /* Fully rounded box */
-    padding: 5px 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+.messageText {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1E293B;
+    margin-bottom: 20px;
 }
 
-.navBox ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 10px;
-}
-
-.navBox li a {
-    text-decoration: none;
-    color: #0369A1;
-    font-weight: 600;
-    padding: 8px 20px;
-    display: block;
-    border-radius: 50px;
-}
-
-/* Active State for the clicked box */
-.navBox li.active a {
+.okBtn {
     background-color: #0284C7;
     color: white;
-}
-
-/* TABLE FOR SEARCH PATIENT */
-.medicalTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    background-color: #FFFFFF;
-    border: 1px solid #D7E3EA;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.medicalTable th {
-    background-color: #E0F2FE; /* Matches your header/nav theme */
-    color: #075985;
-    padding: 12px 16px;
-    text-align: left;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 999px; /* bulat penuh */
+    cursor: pointer;
     font-size: 14px;
     font-weight: 700;
 }
 
-.medicalTable td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #E2E8F0;
-    color: #334155;
-    font-size: 14px;
+.okBtn:hover {
+    background-color: #0369A1;
 }
 
-/* Removes bottom border from the last row for extra neatness */
-.medicalTable tr:last-child td {
-    border-bottom: none;
-}
 
 
 /* =========================
-   FOOTER
+   VISITS TAB
 ========================= */
-footer {
-    background-color: #E0F2FE;
-    border-top: 1px solid #BAE6FD;
-    color: #0F172A;
 
-    padding: 34px 56px;
-    margin-top: 50px;
+.tabSection {
+    width: 90%;
+    margin: 0 auto;
 }
 
-footer h2 {
-    margin-top: 0;
-    margin-bottom: 22px;
-
-    font-size: 22px;
-    color: #075985;
+.visitCard {
+    background: #D9D9D9;
+    border-radius: 14px;
+    padding: 20px 28px;
+    margin-bottom: 18px;
 }
 
-.footerGrid {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    row-gap: 16px;
-    column-gap: 70px;
-    align-items: center;
-}
-
-.socialItem a,
-.contactItem {
+.visitTop {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    margin-bottom: 18px;
 }
 
-footer a {
-    color: #0369A1;
-    text-decoration: none;
+.visitTop h3 {
+    margin: 0;
+    color: #0F172A;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.visitTop p {
+    margin: 0;
+    color: #0F172A;
+    font-size: 15px;
     font-weight: 600;
 }
 
-footer a:hover {
-    color: #0284C7;
+.statusDot {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    background: #00E65C;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.visitInfoGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+    margin-bottom: 18px;
+}
+
+.visitInfoBox {
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 11px 14px;
+    min-height: 52px;
+    background: #E5E5E5;
+}
+
+.visitInfoBox strong {
+    display: block;
+    font-size: 12px;
+    color: #0F172A;
+    margin-bottom: 3px;
+}
+
+.visitInfoBox span {
+    font-size: 13px;
+    color: #0F172A;
+}
+
+.viewMoreBtn {
+    display: block;
+    margin: 0 auto;
+    border: none;
+    background: transparent;
+    color: #0F172A;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.emptyTabBox {
+    background: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    border-radius: 14px;
+    padding: 30px;
+    text-align: center;
+    color: #64748B;
+    font-weight: 600;
+}
+
+/* =========================
+   DIAGNOSIS CLEAN TAB
+========================= */
+
+.diagnosisCleanBox {
+    width: 90%;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.diagnosisCleanHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.diagnosisCleanHeader h3 {
+    margin: 0;
+    color: #0069A6;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.diagnosisSectionBlock {
+    background: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+}
+
+.diagnosisSectionBlock h4 {
+    margin: 0 0 12px 0;
+    color: #0069A6;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.diagnosisSectionBlock p {
+    margin: 0;
+    color: #0F172A;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* =========================
+   ADD FINDINGS POPUP
+========================= */
+
+.addFindingsOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.15);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.addFindingsPopupBox {
+    width: 330px;
+    background: #FFF95A;
+    border: 1px solid #B9A900;
+    border-radius: 12px;
+    padding: 26px 34px;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+}
+
+.addFindingsPopupBox h3 {
+    margin: 0 0 22px 0;
+    text-align: left;
+    text-decoration: underline;
+    color: #0F172A;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.closeFindingsBtn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #B91C1C;
+    border-radius: 50%;
+    background: #FF6B6B;
+    color: #0F172A;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.findingFormGroup {
+    margin-bottom: 22px;
+}
+
+.findingFormGroup > label {
+    display: block;
+    margin-bottom: 10px;
+    color: #0F172A;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.findingCheck {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+.findingCheck input {
+    width: 14px;
+    height: 14px;
+}
+
+.findingValueInput {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #0F172A;
+    background: transparent;
+    padding: 8px 2px;
+    font-size: 14px;
+    outline: none;
+}
+
+.saveFindingBtn {
+    display: block;
+    margin: 28px auto 0 auto;
+    width: 140px;
+    padding: 12px 0;
+    border: 1px solid #0F172A;
+    border-radius: 12px;
+    background: #F8FAFC;
+    color: #0F172A;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.saveFindingBtn:hover {
+    background: #E2E8F0;
+}
+
+@media (max-width: 900px) {
+    .findingsGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================
+   PRESCRIPTION TAB
+========================= */
+
+.prescriptionCleanBox {
+    width: 90%;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.prescriptionCleanHeader {
+    margin-bottom: 18px;
+}
+
+.prescriptionCleanHeader h3 {
+    margin: 0;
+    color: #0F172A;
+    font-size: 20px;
+    font-weight: 800;
     text-decoration: underline;
 }
 
-footer .icon {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
+#prescriptionList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
-.copyright {
-    border-top: 1px solid #BAE6FD;
+.prescriptionItem {
+    background: #F8FAFC;
+    border: 1px solid #D6CFCF;
+    border-radius: 14px;
+    padding: 18px 22px;
+    box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06);
+}
 
-    margin-top: 28px;
-    padding-top: 16px;
+.prescriptionItem p {
+    margin: 0;
+    color: #0F172A;
+    font-size: 15px;
+    line-height: 1.45;
+}
 
-    text-align: center;
-    font-size: 14px;
-    color: #475569;
+.prescriptionItem strong {
+    font-weight: 800;
+}
+
+.addPrescriptionBtn {
+    margin-top: 22px;
+    background: #FFF200;
+    color: #0F172A;
+    border: 1px solid #D6C900;
+    border-radius: 12px;
+    padding: 14px 22px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.addPrescriptionBtn:hover {
+    background: #FACC15;
 }
 
 /* =========================
-   JAVASCRIPT
+   ADD PRESCRIPTION FORM
 ========================= */
 
-.hidden {
-    display: none;
+.prescriptionEditItem {
+    position: relative;
 }
 
-.activeCard {
-    border: 2px solid #2563EB;
-    background-color: #EFF6FF;
+.prescriptionInputGroup {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
 }
+
+.prescriptionInputGroup label {
+    min-width: 100px;
+    font-weight: 800;
+    color: #0F172A;
+}
+
+.prescriptionInput {
+    width: 260px;
+    border: 1px solid #94A3B8;
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 14px;
+    background: #FFFFFF;
+}
+
+.prescriptionInput:focus {
+    outline: none;
+    border-color: #0284C7;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.12);
+}
+
+.savePrescriptionBtn {
+    margin-top: 12px;
+    background: #22C55E;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 26px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.savePrescriptionBtn:hover {
+    background: #16A34A;
+}
+
+
+/* =========================
+   POPUP
+========================= */
+.issuePopup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Kotak Putih Popup */
+.popupContent {
+    background: white;
+    width: 650px; /* Lebar yang selesa */
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    position: relative;
+}
+
+/* Header Biru Cair (Tempat Queue & Name) */
+.popupHeaderBox {
+    background-color: #F0F9FF; /* Biru cair rujukan */
+    border: 1px solid #E0F2FE;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.popupHeaderBox p {
+    margin: 5px 0;
+    color: #334155;
+    font-size: 15px;
+}
+
+.popupHeaderBox strong {
+    color: #0F172A;
+    font-size: 16px;
+}
+
+/* Susunan Grid 2 Kolum untuk Maklumat Bawah */
+.popupBodyGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.popupBodyGrid h3 {
+    font-size: 16px;
+    color: #0369A1; /* Warna Biru Tema */
+    margin-bottom: 10px;
+}
+
+.popupBodyGrid p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #475569;
+}
+
+/* Textarea untuk Respon Doktor */
+.doctorResponseArea textarea {
+    width: 100%;
+    height: 100px;
+    padding: 12px;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    background-color: #F8FAFC;
+    resize: none;
+    margin-top: 10px;
+}
+
+/* Butang Confirm (Hijau) */
+.confirmResendBtn {
+    background-color: #10B981; /* Hijau rujukan */
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 30px;
+    font-weight: 600;
+    cursor: pointer;
+    float: right; /* Letak belah kanan bawah */
+    margin-top: 10px;
+}
+
+/* Butang Close (X) */
+.closeX {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #F1F5F9;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #B91C1C;
+    font-weight: bold;
+}
+
 
 /* =========================
    RESPONSIVE
 ========================= */
-@media (max-width: 1100px) {
-    #header {
-        flex-wrap: wrap;
-        justify-content: center;
+
+@media (max-width: 900px) {
+
+    .pharmacistWorkspace {
+        grid-template-columns: 1fr;
     }
 
-    nav {
-        order: 3;
+    .prescriptionArea {
+        grid-template-columns: 1fr;
     }
 
-    .tableGrid {
-        column-gap: 40px;
-        row-gap: 35px;
-    }
 }
 
-@media (max-width: 768px) {
-    section {
-        width: 94%;
-    }
+/* =========================
+   DOCTOR REPORT
+========================= */
 
-    .topCards,
-    .tableGrid,
-    .summaryGrid {
+.reportPage {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.reportHeader,
+.reportCard,
+.reportBox,
+.recordBox {
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+}
+
+.reportHeader h2,
+.reportBox h2,
+.recordBox h2 {
+    margin-top: 0;
+    color: #0F172A;
+}
+
+.reportHeader p {
+    color: #64748B;
+}
+
+.reportSummary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.reportCard h3 {
+    margin-top: 0;
+    color: #475569;
+}
+
+.reportCard p {
+    margin: 12px 0;
+    color: #0284C7;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.reportCard span {
+    color: #64748B;
+    font-size: 14px;
+}
+
+.reportMiddle {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    gap: 24px;
+}
+
+.statusRow {
+    display: grid;
+    grid-template-columns: 120px 1fr 45px;
+    align-items: center;
+    gap: 14px;
+    margin: 20px 0;
+}
+
+.statusRow p {
+    margin: 0;
+    color: #334155;
+    font-weight: 600;
+}
+
+.statusBar {
+    height: 14px;
+    background-color: #E2E8F0;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.statusFill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+.dispensedFill {
+    width: 75%;
+    background-color: #0284C7;
+}
+
+.returnedFill {
+    width: 15%;
+    background-color: #F59E0B;
+}
+
+.pendingFill {
+    width: 10%;
+    background-color: #64748B;
+}
+
+.reportBox label {
+    display: block;
+    margin: 14px 0 6px;
+    color: #334155;
+    font-weight: 600;
+}
+
+.reportBox input,
+.reportBox select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+}
+
+.searchReportBtn {
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px;
+    background-color: #0284C7;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.recordBox table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.recordBox th {
+    background-color: #E0F2FE;
+    color: #075985;
+    padding: 14px;
+    text-align: left;
+}
+
+.recordBox td {
+    padding: 14px;
+    border-bottom: 1px solid #E2E8F0;
+    color: #334155;
+}
+
+.doneStatus,
+.returnStatus,
+.pendingStatus {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.doneStatus {
+    background-color: #DCFCE7;
+    color: #166534;
+}
+
+.returnStatus {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.pendingStatus {
+    background-color: #E2E8F0;
+    color: #334155;
+}
+
+@media (max-width: 900px) {
+    .reportSummary,
+    .reportMiddle {
         grid-template-columns: 1fr;
-    }
-
-    .topCards {
-        gap: 18px;
-    }
-
-    .cardBtn {
-        min-height: 150px;
-    }
-
-    .tableGrid {
-        row-gap: 26px;
-        padding: 0;
-    }
-
-    article {
-        padding: 22px;
-    }
-
-    #header {
-        padding: 14px 18px;
-    }
-
-    #leftSection,
-    #rightSection {
-        white-space: normal;
-    }
-
-    nav > ul {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .articleGrid {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
-
-    .footerGrid {
-        grid-template-columns: 1fr;
-        row-gap: 18px;
-    }
-
-    footer {
-        padding: 30px 24px;
     }
 }

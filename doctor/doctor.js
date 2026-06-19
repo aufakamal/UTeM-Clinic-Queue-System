@@ -1,60 +1,596 @@
-/* =========================
-   DOCTOR DASHBOARD & CONSULTATION
-========================= */
+// ==========================
+// DATA PESAKIT
+// ==========================
+const patients = {
+    "A103": {
+        name: "Siti Sarah binti Roslan",
+        gender: "Female",
+        ic: "40989039",
+        id: "D0323578456",
+        bloodType: "O+",
+        allergies: [
+            "Seafood (Patient Reported)",
+            "Penicillin (Doctor Confirmed)"
+        ],
+        chronicDiseases: [
+            "Asthma"
+        ],
+        currentMedication: [
+            "Ventolin Inhaler"
+        ]
+    }
+};
 
-// Elemen untuk Tab Perundingan
-const overviewTab = document.querySelector("#overviewTab");
-const visitsTab = document.querySelector("#visitsTab");
-const diagnosisTab = document.querySelector("#diagnosisTab");
-const prescriptionTab = document.querySelector("#prescriptionTab");
+// ==========================
+// LOAD PAGE
+// ==========================
+document.addEventListener("DOMContentLoaded", () => {
 
-// Elemen untuk Kandungan (Content Sections)
-const overviewContent = document.querySelector("#overviewContent");
-const visitsContent = document.querySelector("#visitsContent");
-const diagnosisContent = document.querySelector("#diagnosisContent");
-const prescriptionContent = document.querySelector("#prescriptionContent");
+    // START SESSION
+    document.querySelectorAll(".startBtn").forEach(button => {
+        button.addEventListener("click", () => {
 
-// Fungsi untuk menukar Tab
-function switchTab(selectedTab, selectedContent) {
-    // 1. Sembunyikan semua content
-    [overviewContent, visitsContent, diagnosisContent, prescriptionContent].forEach(content => {
-        if(content) content.classList.add("hidden");
+            const queue = button.dataset.queue;
+            const patient = patients[queue];
+
+            if (patient) {
+                showPatientSession(patient, queue);
+            }
+        });
     });
 
-    // 2. Buang class 'active' dari semua tab
-    [overviewTab, visitsTab, diagnosisTab, prescriptionTab].forEach(tab => {
-        if(tab) tab.classList.remove("activeTab");
+    // VIEW PHARMACY UPDATE
+    document.querySelectorAll(".viewBtn").forEach(button => {
+        button.addEventListener("click", () => {
+
+            loadPharmacyUpdate(
+                "A096",
+                "Ahmad Ali",
+                "- Amoxicillin 500mg",
+                "Dosage unclear",
+                "Please confirm once daily / twice daily?"
+            );
+
+        });
     });
 
-    // 3. Paparkan content terpilih & aktifkan tab
-    if(selectedContent) selectedContent.classList.remove("hidden");
-    if(selectedTab) selectedTab.classList.add("activeTab");
+        // SAVE DRAFT BUTTON
+    const saveDraftBtn = document.getElementById("saveDraftBtn");
+
+    if (saveDraftBtn) {
+        saveDraftBtn.addEventListener("click", () => {
+            showActionMessage("Draft is saved.");
+        });
+    }
+
+    // COMPLETE CONSULTATION BUTTON
+    function completeConsultation() {
+    showActionMessage("Consultation is completed successfully.");
 }
 
-// Event Listeners untuk Tab
-if (overviewTab) overviewTab.addEventListener("click", () => switchTab(overviewTab, overviewContent));
-if (visitsTab) visitsTab.addEventListener("click", () => switchTab(visitsTab, visitsContent));
-if (diagnosisTab) diagnosisTab.addEventListener("click", () => switchTab(diagnosisTab, diagnosisContent));
-if (prescriptionTab) prescriptionTab.addEventListener("click", () => switchTab(prescriptionTab, prescriptionContent));
+});
 
+// ==========================
+// START CONSULTATION
+// ==========================
+function showPatientSession(patient, queue) {
 
-/* =========================
-   ACTION BUTTONS (SAVE/COMPLETE)
-========================= */
-const saveDraftBtn = document.querySelector("#saveDraftBtn");
-const completeBtn = document.querySelector("#completeBtn");
+    const defaultWorkspace = document.getElementById("defaultWorkspace");
+    const pharmacyUpdateForm = document.getElementById("pharmacyUpdateForm");
+    const placeholderText = document.getElementById("placeholderText");
+    const patientRecordDisplay = document.getElementById("patientRecordDisplay");
 
-if (saveDraftBtn) {
-    saveDraftBtn.addEventListener("click", () => {
-        // Logik untuk menghantar data ke database (Draft mode)
-        alert("Consultation saved as draft!");
+    if (defaultWorkspace) {
+        defaultWorkspace.style.display = "block";
+    }
+
+    if (pharmacyUpdateForm) {
+        pharmacyUpdateForm.style.display = "none";
+    }
+
+    if (placeholderText) {
+        placeholderText.style.display = "none";
+    }
+
+    if (patientRecordDisplay) {
+        patientRecordDisplay.style.display = "block";
+    }
+
+    document.getElementById("pName").textContent = patient.name;
+    document.getElementById("pGender").textContent = patient.gender;
+    document.getElementById("pIC").textContent = patient.ic;
+    document.getElementById("pID").textContent = patient.id;
+    document.getElementById("pBlood").textContent = patient.bloodType;
+
+    renderEditableList("pAllergyList", patient.allergies);
+    renderEditableList("pChronicList", patient.chronicDiseases);
+    renderEditableList("pMedList", patient.currentMedication);
+}
+
+// ==========================
+// EDITABLE MEDICAL INFO
+// ==========================
+function renderEditableList(containerId, items) {
+
+    const container = document.getElementById(containerId);
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = "";
+
+    items.forEach(item => {
+
+        const row = document.createElement("div");
+        row.className = "editableItem";
+
+        row.innerHTML = `
+            <input type="text" value="${item}" readonly>
+            <button type="button" onclick="editItem(this)">Edit</button>
+        `;
+
+        container.appendChild(row);
     });
 }
 
-if (completeBtn) {
-    completeBtn.addEventListener("click", () => {
-        // Logik untuk menghantar data ke database (Finalized)
-        // Disyorkan panggil fungsi fetch di sini
-        alert("Consultation completed and updated in system.");
-    });
+function editItem(button) {
+
+    const input = button.previousElementSibling;
+
+    if (input.readOnly) {
+
+        input.readOnly = false;
+        input.focus();
+        button.textContent = "Save";
+        button.classList.add("saveEditBtn");
+
+    } else {
+
+        input.readOnly = true;
+        button.textContent = "Edit";
+        button.classList.remove("saveEditBtn");
+
+    }
 }
+
+function addItem(containerId) {
+
+    const container = document.getElementById(containerId);
+
+    if (!container) {
+        return;
+    }
+
+    const row = document.createElement("div");
+    row.className = "editableItem";
+
+    row.innerHTML = `
+        <input type="text" placeholder="Enter new item">
+        <button type="button" onclick="editItem(this)" class="saveEditBtn">Save</button>
+    `;
+
+    container.appendChild(row);
+
+    const input = row.querySelector("input");
+    input.focus();
+}
+
+// ==========================
+// ACTION MESSAGE POPUP
+// ==========================
+function showActionMessage(message) {
+
+    const messagePopup = document.getElementById("messagePopup");
+    const messageText = document.getElementById("messageText");
+
+    if (messageText) {
+        messageText.textContent = message;
+    }
+
+    if (messagePopup) {
+        messagePopup.style.display = "flex";
+    }
+}
+
+function saveDraft() {
+    showActionMessage("Draft is saved.");
+}
+
+function completeConsultation() {
+    showActionMessage("Consultation is completed successfully.");
+}
+
+function closeMessage() {
+    const messagePopup = document.getElementById("messagePopup");
+
+    if (messagePopup) {
+        messagePopup.style.display = "none";
+    }
+}
+// ==========================
+// PHARMACY UPDATE
+// ==========================
+function loadPharmacyUpdate(queue, name, med, issue, note) {
+
+    const defaultWorkspace = document.getElementById("defaultWorkspace");
+    const pharmacyUpdateForm = document.getElementById("pharmacyUpdateForm");
+    const patientRecordDisplay = document.getElementById("patientRecordDisplay");
+    const placeholderText = document.getElementById("placeholderText");
+
+    // Jangan hide defaultWorkspace sebab pharmacy form mungkin berada dalam/berkait dengan workspace
+    if (defaultWorkspace) {
+        defaultWorkspace.style.display = "block";
+    }
+
+    // Hide consultation content
+    if (patientRecordDisplay) {
+        patientRecordDisplay.style.display = "none";
+    }
+
+    if (placeholderText) {
+        placeholderText.style.display = "none";
+    }
+
+    // Show pharmacy update form
+    if (pharmacyUpdateForm) {
+        pharmacyUpdateForm.style.display = "block";
+    }
+
+    document.getElementById("formPopQueue").textContent = queue;
+    document.getElementById("formPopName").textContent = name;
+    document.getElementById("formPopMed").textContent = med;
+    document.getElementById("formPopIssue").textContent = issue;
+    document.getElementById("formPopNote").textContent = note;
+}
+
+// ==========================
+// SUBMIT RESPONSE TO PHARMACY
+// ==========================
+function submitResponse() {
+
+    const reply = document.getElementById("doctorReply");
+
+    if (!reply || reply.value.trim() === "") {
+
+        alert("Please enter a response for the pharmacist.");
+
+        return;
+    }
+
+    showActionMessage("Data is saved and sent to the pharmacy.");
+
+    reply.value = "";
+}
+
+function switchMiniTab(button, tabName) {
+
+    // active button
+    document.querySelectorAll(".miniTab").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    // sections
+    const overviewSection = document.querySelector(".overviewSection");
+    const visitsSection = document.getElementById("visitsSection");
+    const diagnosisSection = document.getElementById("diagnosisSection");
+    const prescriptionSection = document.getElementById("prescriptionSection");
+
+    if (overviewSection) overviewSection.style.display = "none";
+    if (visitsSection) visitsSection.style.display = "none";
+    if (diagnosisSection) diagnosisSection.style.display = "none";
+    if (prescriptionSection) prescriptionSection.style.display = "none";
+
+    if (tabName === "overview" && overviewSection) {
+        overviewSection.style.display = "block";
+    }
+
+    if (tabName === "visits" && visitsSection) {
+        visitsSection.style.display = "block";
+    }
+
+    if (tabName === "diagnosis" && diagnosisSection) {
+        diagnosisSection.style.display = "block";
+    }
+
+    if (tabName === "prescription" && prescriptionSection) {
+        prescriptionSection.style.display = "block";
+    }
+}
+
+// ==========================
+// DIAGNOSIS TAB
+// ==========================
+function editDiagnosis(button) {
+
+    const diagnosisItem = button.closest(".diagnosisItem");
+
+    const input = diagnosisItem.querySelector("input");
+    const textarea = diagnosisItem.querySelector("textarea");
+
+    const isReadonly = input.readOnly;
+
+    if (isReadonly) {
+
+        input.readOnly = false;
+        textarea.readOnly = false;
+
+        input.focus();
+
+        button.textContent = "Save";
+        button.classList.add("saveMode");
+
+    } else {
+
+        input.readOnly = true;
+        textarea.readOnly = true;
+
+        button.textContent = "Edit";
+        button.classList.remove("saveMode");
+
+    }
+}
+
+function addDiagnosis() {
+
+    const diagnosisList = document.getElementById("diagnosisList");
+
+    if (!diagnosisList) {
+        return;
+    }
+
+    const diagnosisItem = document.createElement("div");
+    diagnosisItem.className = "diagnosisItem";
+
+    diagnosisItem.innerHTML = `
+        <label>Diagnosis Title</label>
+        <input 
+            type="text" 
+            placeholder="Enter diagnosis title"
+        >
+
+        <label>Doctor Notes</label>
+        <textarea placeholder="Enter doctor's notes"></textarea>
+
+        <div class="diagnosisActions">
+            <button 
+                type="button" 
+                class="editDiagnosisBtn saveMode" 
+                onclick="editDiagnosis(this)"
+            >
+                Save
+            </button>
+        </div>
+    `;
+
+    diagnosisList.appendChild(diagnosisItem);
+
+    diagnosisItem.querySelector("input").focus();
+}
+
+// ==========================
+// ADD FINDINGS POPUP
+// ==========================
+function addFindings() {
+    const popup = document.getElementById("addFindingsPopup");
+
+    if (popup) {
+        popup.style.display = "flex";
+    }
+}
+
+function closeFindingsPopup() {
+    const popup = document.getElementById("addFindingsPopup");
+
+    if (popup) {
+        popup.style.display = "none";
+    }
+
+    clearFindingsForm();
+}
+
+function saveFinding() {
+    const checkedTypes = document.querySelectorAll("input[name='findingType']:checked");
+    const valueInput = document.getElementById("findingValueInput");
+    const extraFindingsArea = document.getElementById("extraFindingsArea");
+
+    if (checkedTypes.length === 0) {
+        alert("Please select at least one finding type.");
+        return;
+    }
+
+    if (!valueInput || valueInput.value.trim() === "") {
+        alert("Please enter finding value.");
+        return;
+    }
+
+    if (!extraFindingsArea) {
+        return;
+    }
+
+    checkedTypes.forEach(type => {
+        const findingBox = document.createElement("div");
+        findingBox.className = "findingTextBox";
+
+        findingBox.innerHTML = `
+            <strong>${type.value}</strong>
+            <p>${valueInput.value.trim()}</p>
+        `;
+
+        extraFindingsArea.appendChild(findingBox);
+    });
+
+    closeFindingsPopup();
+}
+
+function clearFindingsForm() {
+    document.querySelectorAll("input[name='findingType']").forEach(checkbox => {
+        checkbox.checked = false;
+    });
+
+    const valueInput = document.getElementById("findingValueInput");
+
+    if (valueInput) {
+        valueInput.value = "";
+    }
+}
+
+// ==========================
+// ADD PRESCRIPTION
+// ==========================
+function addPrescription() {
+
+    const prescriptionList = document.getElementById("prescriptionList");
+
+    if (!prescriptionList) {
+        return;
+    }
+
+    const item = document.createElement("div");
+    item.className = "prescriptionItem prescriptionEditItem";
+
+    item.innerHTML = `
+        <div class="prescriptionInputGroup">
+            <label>Medicine:</label>
+            <input class="prescriptionInput medicineInput" type="text" placeholder="Medicine name">
+        </div>
+
+        <div class="prescriptionInputGroup">
+            <label>Dose:</label>
+            <input class="prescriptionInput doseInput" type="text" placeholder="Dose">
+        </div>
+
+        <div class="prescriptionInputGroup">
+            <label>Frequency:</label>
+            <input class="prescriptionInput frequencyInput" type="text" placeholder="Frequency">
+        </div>
+
+        <div class="prescriptionInputGroup">
+            <label>Duration:</label>
+            <input class="prescriptionInput durationInput" type="text" placeholder="Duration">
+        </div>
+
+        <div class="prescriptionInputGroup">
+            <label>Instructions:</label>
+            <input class="prescriptionInput instructionsInput" type="text" placeholder="Instructions">
+        </div>
+
+        <button type="button" class="savePrescriptionBtn" onclick="savePrescription(this)">
+            Save
+        </button>
+    `;
+
+    prescriptionList.appendChild(item);
+
+    item.querySelector(".medicineInput").focus();
+}
+
+function savePrescription(button) {
+
+    const item = button.closest(".prescriptionItem");
+
+    const medicine = item.querySelector(".medicineInput").value.trim();
+    const dose = item.querySelector(".doseInput").value.trim();
+    const frequency = item.querySelector(".frequencyInput").value.trim();
+    const duration = item.querySelector(".durationInput").value.trim();
+    const instructions = item.querySelector(".instructionsInput").value.trim();
+
+    if (
+        medicine === "" ||
+        dose === "" ||
+        frequency === "" ||
+        duration === "" ||
+        instructions === ""
+    ) {
+        alert("Please complete all prescription fields.");
+        return;
+    }
+
+    item.classList.remove("prescriptionEditItem");
+
+    item.innerHTML = `
+        <p>
+            <strong>Medicine:</strong> ${medicine}<br>
+            <strong>Dose:</strong> ${dose}<br>
+            <strong>Frequency:</strong> ${frequency}<br>
+            <strong>Duration:</strong> ${duration}<br>
+            <strong>Instructions:</strong> ${instructions}
+        </p>
+    `;
+}
+
+// Mark as resolved / pending
+function toggleIssueStatus(button){
+    const issueSpan = document.getElementById("formPopIssue");
+    if(button.dataset.status === "pending"){
+        button.dataset.status = "resolved";
+        button.textContent = "Resolved";
+        issueSpan.style.backgroundColor="#DCFCE7";
+        issueSpan.style.color="#166534";
+    } else {
+        button.dataset.status = "pending";
+        button.textContent = "Pending";
+        issueSpan.style.backgroundColor="#FDE68A";
+        issueSpan.style.color="#92400E";
+    }
+}
+
+function enableInlineResponse(){
+    const textarea = document.getElementById("doctorReply");
+    if(textarea) textarea.removeAttribute("readonly");
+    textarea.focus();
+}
+
+function submitResponse(){
+    const reply = document.getElementById("doctorReply");
+    if(!reply.value.trim()){
+        alert("Please enter a response for the pharmacist.");
+        return;
+    }
+    alert("Response saved and sent to pharmacy!");
+    reply.setAttribute("readonly", true);
+}
+
+
+// Pastikan anda letak ini di bahagian bawah fail atau di dalam DOMContentLoaded
+const okBtn = document.querySelector(".okBtn");
+const messagePopup = document.querySelector(".messagePopup");
+
+if (okBtn) {
+    okBtn.addEventListener("click", function(e) {
+        e.preventDefault(); // Mencegah tindakan default (penting!)
+        
+        // Sembunyikan popup
+        messagePopup.style.display = "none"; 
+        
+        console.log("Popup telah ditutup."); // Untuk debugging
+    });
+} else {
+    console.error("Butang OK tidak dijumpai dalam HTML!");
+}
+
+okBtn.addEventListener("click", () => {
+    // 1. Sembunyikan popup dahulu (UI feedback)
+    messagePopup.style.display = "none";
+
+    // 2. Hantar data ke server (PHP)
+    fetch('save_data.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            status: 'draft_saved',
+            patientID: selectedQueue
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Workspace</title>
+    <link rel="stylesheet" href="doctor.css">
+</head>
+
+<body>
+
+    <div id="header">
+        <div id="leftSection">
+            <button class="iconBtn">
+                <img class="icon" src="../images/backIconDark.png">
+            </button>
+            <h1>UTeM Clinic Queue System</h1>
+        </div>
+
+        <nav>
+            <ul>
+                <li class="active">
+                    <a href="doctorWorkshop.html">Workspace</a>
+                </li>
+                <li>
+                    <a href="doctorReport.html">Reports</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div id="rightSection">
+            <h1>Dr. Anis | Room 3</h1>
+            <button class="iconBtn">
+                <img class="icon" src="../images/profileIconDark.png">
+            </button>
+        </div>
+    </div>
+
+    <section class="doctorWorkspace">
+
+        <!-- LEFT COLUMN -->
+        <div class="leftColumn">
+
+            <article class="doctorCard">
+                <h2>Current Consultations</h2>
+
+                <div class="currentconstBox">
+                    <div>
+                        <h3 style="color: #0369A1;">A103</h3>
+                        <p style="font-weight: 600; font-size: 16px;">
+                            Siti Sarah bt Roslan
+                        </p>
+                        <p class="appointmentLabel">
+                            Type of Appointment: Medical Checkup
+                        </p>
+                    </div>
+
+                    <button class="startBtn" data-queue="A103">
+                        Start Session
+                    </button>
+                </div>
+            </article>
+
+            <article class="doctorCard">
+                <h2>Pharmacy Updates</h2>
+
+                <div class="pharmacyUpdateBox">
+                    <h3 style="margin: 0; font-size: 16px;">A096</h3>
+
+                    <p style="margin: 4px 0; font-weight: 500;">
+                        Ahmad Ali
+                    </p>
+
+                    <div class="issueTag">
+                        Issue Found: Dosage Unclear
+                    </div>
+
+                    <button class="viewBtn">
+                        VIEW
+                    </button>
+                </div>
+            </article>
+
+            <article class="doctorCard">
+                <h2>Search Patient</h2>
+
+                <input 
+                    class="searchInput" 
+                    type="text" 
+                    placeholder="Search by name or queue ID"
+                >
+
+                <p class="recentText">
+                    Recent Search:<br>
+                    • Amir bin Amar<br>
+                    • D514698002
+                </p>
+            </article>
+
+        </div>
+
+        <!-- RIGHT WORKSPACE -->
+        <article class="workspaceCard" id="workspaceCard">
+
+            <!-- CONSULTATION VIEW -->
+            <div id="defaultWorkspace">
+
+                <p id="placeholderText">
+                    Please select a patient to start consultation.
+                </p>
+
+                <div id="patientRecordDisplay" style="display:none;">
+
+                    <h2 class="recordTitle">CURRENT CONSULTATIONS</h2>
+
+                    <h3 class="recordSubTitle">PATIENT RECORD</h3>
+
+                    <div class="patientInfo">
+
+                        <p>
+                            <strong>Full name:</strong>
+                            <span id="pName"></span>
+                        </p>
+
+                        <p>
+                            <strong>Gender:</strong>
+                            <span id="pGender"></span>
+                        </p>
+
+                        <p>
+                            <strong>IC:</strong>
+                            <span id="pIC"></span>
+                        </p>
+
+                        <p>
+                            <strong>ID:</strong>
+                            <span id="pID"></span>
+                        </p>
+
+                        <p>
+                            <strong>Blood type:</strong>
+                            <span id="pBlood"></span>
+                        </p>
+
+                    </div>
+
+                    <!-- MINI TAB BAR -->
+                    <div class="miniTabBar">
+                        <button class="miniTab active" onclick="switchMiniTab(this, 'overview')">
+                            Overview
+                        </button>
+
+                        <button class="miniTab" onclick="switchMiniTab(this, 'visits')">
+                            Visits
+                        </button>
+
+                        <button class="miniTab" onclick="switchMiniTab(this, 'diagnosis')">
+                            Diagnosis
+                        </button>
+
+                        <button class="miniTab" onclick="switchMiniTab(this, 'prescription')">
+                            Prescription
+                        </button>
+                    </div>
+
+                    <!-- OVERVIEW SECTION -->
+                    <div class="overviewSection">
+
+                        <div class="infoBlock">
+                            <div class="infoHeader">
+                                <h3>Allergies</h3>
+
+                                <button 
+                                    type="button"
+                                    class="addSmallBtn" 
+                                    onclick="addItem('pAllergyList')"
+                                >
+                                    + Add Allergy
+                                </button>
+                            </div>
+
+                            <div id="pAllergyList" class="editableList"></div>
+                        </div>
+
+                        <div class="infoBlock">
+                            <div class="infoHeader">
+                                <h3>Chronic Diseases</h3>
+
+                                <button 
+                                    type="button"
+                                    class="addSmallBtn" 
+                                    onclick="addItem('pChronicList')"
+                                >
+                                    + Add Condition
+                                </button>
+                            </div>
+
+                            <div id="pChronicList" class="editableList"></div>
+                        </div>
+
+                        <div class="infoBlock">
+                            <div class="infoHeader">
+                                <h3>Current Medication</h3>
+
+                                <button 
+                                    type="button"
+                                    class="addSmallBtn" 
+                                    onclick="addItem('pMedList')"
+                                >
+                                    + Add Medication
+                                </button>
+                            </div>
+
+                            <div id="pMedList" class="editableList"></div>
+                        </div>
+
+                        <div class="workspaceActions">
+                                <button class="saveBtn" onclick="saveDraft()">Save Draft</button>
+                                <button class="completeBtn" onclick="completeConsultation()">Complete Consultation</button>
+                        </div>
+
+                    </div>
+
+                    <!-- VISITS SECTION -->
+                    <div id="visitsSection" class="tabSection" style="display: none;">
+
+                        <div class="visitCard">
+                            <div class="visitTop">
+                                <h3>Medical Checkup</h3>
+                                <p>
+                                    <span class="statusDot"></span>
+                                    Status: Completed
+                                </p>
+                            </div>
+
+                            <div class="visitInfoGrid">
+                                <div class="visitInfoBox">
+                                    <strong>Date</strong>
+                                    <span>11/3/2026</span>
+                                </div>
+
+                                <div class="visitInfoBox">
+                                    <strong>Time Slot</strong>
+                                    <span>11:00 - 12:00 PM</span>
+                                </div>
+
+                                <div class="visitInfoBox">
+                                    <strong>Doctor</strong>
+                                    <span>Dr. Ahmad</span>
+                                </div>
+                            </div>
+
+                            <button type="button" class="viewMoreBtn">
+                                View More
+                            </button>
+                        </div>
+
+                        <div class="visitCard">
+                            <div class="visitTop">
+                                <h3>Medical Checkup</h3>
+                                <p>
+                                    <span class="statusDot"></span>
+                                    Status: Completed
+                                </p>
+                            </div>
+
+                            <div class="visitInfoGrid">
+                                <div class="visitInfoBox">
+                                    <strong>Date</strong>
+                                    <span>27/2/2026</span>
+                                </div>
+
+                                <div class="visitInfoBox">
+                                    <strong>Time Slot</strong>
+                                    <span>9:00 - 10:00 PM</span>
+                                </div>
+
+                                <div class="visitInfoBox">
+                                    <strong>Doctor</strong>
+                                    <span>Dr. Siva</span>
+                                </div>
+                            </div>
+
+                            <button type="button" class="viewMoreBtn">
+                                View More
+                            </button>
+                        </div>
+
+                        <div class="visitCard">
+                            <div class="visitTop">
+                                <h3>Medical Checkup</h3>
+                                <p>
+                                    <span class="statusDot"></span>
+                                    Status: Completed
+                                </p>
+                            </div>
+
+                            <div class="visitInfoGrid">
+                                <div class="visitInfoBox">
+                                    <strong>Date</strong>
+                                    <span>1/2/2026</span>
+                                </div>
+
+                                <div class="visitInfoBox">
+                                    <strong>Time Slot</strong>
+                                    <span>2:00 - 4:00 PM</span>
+                                </div>
+
+                                <div class="visitInfoBox">
+                                    <strong>Doctor</strong>
+                                    <span>Dr. Anis</span>
+                                </div>
+                            </div>
+
+                            <button type="button" class="viewMoreBtn">
+                                View More
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- DIAGNOSIS SECTION -->
+                    <div id="diagnosisSection" class="tabSection" style="display: none;">
+
+                        <div class="diagnosisCleanBox">
+
+                            <div class="diagnosisCleanHeader">
+                                <h3>Diagnosis</h3>
+
+                                <button type="button" class="addSmallBtn" onclick="addFindings()">
+                                    + Add Findings
+                                </button>
+                            </div>
+
+                            <div class="diagnosisSectionBlock">
+                                <h4>Reason for Visit</h4>
+                                <p id="reasonVisitText">
+                                    Patient reports fever and headache.
+                                </p>
+                            </div>
+
+                            <div class="diagnosisSectionBlock">
+                                <h4>Clinical Findings</h4>
+
+                                <div class="findingsGrid">
+                                    <div class="findingBox">
+                                        <strong>Temperature</strong>
+                                        <span>38.5 Celsius</span>
+                                    </div>
+
+                                    <div class="findingBox">
+                                        <strong>Blood Pressure</strong>
+                                        <span>120/80</span>
+                                    </div>
+
+                                    <div class="findingBox">
+                                        <strong>Heart Rate</strong>
+                                        <span>92 bpm</span>
+                                    </div>
+                                </div>
+
+                                <div class="findingTextBox">
+                                    <strong>Physical Observation</strong>
+                                    <p>Patient appears fatigued.</p>
+                                </div>
+
+                                <div class="findingTextBox">
+                                    <strong>Test Results</strong>
+                                    <p>
+                                        Rapid COVID Test: Negative<br>
+                                        Blood Glucose: 6.1 mmol/L
+                                    </p>
+                                </div>
+
+                                <div id="extraFindingsArea"></div>
+                            </div>
+
+                            <div class="diagnosisSectionBlock">
+                                <h4>Diagnosis</h4>
+                                <p>Acute Viral Infection</p>
+                            </div>
+
+                            <div class="diagnosisSectionBlock">
+                                <h4>Treatment Plan</h4>
+                                <p>Patient advised rest and hydration.</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+<!-- PRESCRIPTION SECTION -->
+<div id="prescriptionSection" class="tabSection" style="display: none;">
+
+    <div class="prescriptionCleanBox">
+
+        <div class="prescriptionCleanHeader">
+            <h3>PRESCRIPTION</h3>
+        </div>
+
+        <div id="prescriptionList">
+
+            <div class="prescriptionItem">
+                <p>
+                    <strong>Medicine:</strong> Paracetamol<br>
+                    <strong>Dose:</strong> 500mg<br>
+                    <strong>Frequency:</strong> 3 times daily<br>
+                    <strong>Duration:</strong> 5 days<br>
+                    <strong>Instructions:</strong> After Food, 3x a day
+                </p>
+            </div>
+
+            <div class="prescriptionItem">
+                <p>
+                    <strong>Medicine:</strong> Amoxicillin<br>
+                    <strong>Dose:</strong> 800mg<br>
+                    <strong>Frequency:</strong> 2 times daily<br>
+                    <strong>Duration:</strong> 7 days<br>
+                    <strong>Instructions:</strong> Before Food, 5x a day
+                </p>
+            </div>
+
+        </div>
+
+        <button type="button" class="addPrescriptionBtn" onclick="addPrescription()">
+            + Add Prescription
+        </button>
+
+    </div>
+
+</div>
+
+                </div>
+            </div>
+
+            <!-- PHARMACY UPDATE VIEW -->
+            <div id="pharmacyUpdateForm" style="display: none;">
+
+                <h2 style="text-align: center; margin-bottom: 20px; text-decoration: underline;">
+                    PHARMACY UPDATES
+                </h2>
+
+                <div class="popupHeaderBox">
+                    <p>
+                        <strong>Queue No :</strong>
+                        <span id="formPopQueue"></span>
+                    </p>
+
+                    <p>
+                        <strong>Patient Name :</strong>
+                        <span id="formPopName"></span>
+                    </p>
+                </div>
+
+                <div class="popupBodyGrid">
+
+                    <div>
+                        <h3>Prescription:</h3>
+                        <p id="formPopMed"></p>
+
+                        <h3 style="margin-top: 20px;">
+                            Issue Raised by Pharmacy:
+                        </h3>
+
+                        <p style="font-weight: 600; color: #1E293B;">
+                            ⚠️ <span id="formPopIssue"></span>
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3>Pharmacist Note:</h3>
+
+                        <p style="font-style: italic;">
+                            "<span id="formPopNote"></span>"
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="doctorResponseArea">
+                    <label style="font-weight: 600; font-size: 14px;">
+                        Doctor Response:
+                    </label>
+
+                    <textarea 
+                        id="doctorReply" 
+                        placeholder="Type your confirmation here..."
+                    ></textarea>
+                </div>
+
+                <button type="button" class="confirmResendBtn" onclick="submitResponse()">
+                    Confirm & Resend to Pharmacy
+                </button>
+
+            </div>
+
+        </article>
+
+    </section>
+
+    <!-- MESSAGE POPUP -->
+    <div id="messagePopup" class="messagePopup">
+        <div class="messageContent">
+            <p class="messageText" id="messageText">
+                Data is saved.
+            </p>
+
+            <button type="button" class="okBtn" id="okMessageBtn">
+                OK
+            </button>
+        </div>
+    </div>
+
+    <!-- MESSAGE POP-UP -->
+<div id="messagePopup" class="messagePopup" style="display:none;">
+    <div class="messageContent">
+        <p id="messageText">Data is saved.</p>
+        <button class="okBtn" onclick="closeMessage()">OK</button>
+    </div>
+</div>
+
+    <!-- ADD FINDINGS POPUP -->
+    <div id="addFindingsPopup" class="addFindingsOverlay" style="display: none;">
+
+        <div class="addFindingsPopupBox">
+
+            <button type="button" class="closeFindingsBtn" onclick="closeFindingsPopup()">
+                X
+            </button>
+
+            <h3>Add Clinical Finding</h3>
+
+            <div class="findingFormGroup">
+                <label>Type :</label>
+
+                <label class="findingCheck">
+                    <input type="checkbox" name="findingType" value="Vital Sign">
+                    Vital Sign
+                </label>
+
+                <label class="findingCheck">
+                    <input type="checkbox" name="findingType" value="Physical Exam Result">
+                    Physical Exam Result
+                </label>
+
+                <label class="findingCheck">
+                    <input type="checkbox" name="findingType" value="Lab Result">
+                    Lab Result
+                </label>
+            </div>
+
+            <div class="findingFormGroup">
+                <label>Value:</label>
+                <input type="text" id="findingValueInput" class="findingValueInput">
+            </div>
+
+            <button type="button" class="saveFindingBtn" onclick="saveFinding()">
+                Save
+            </button>
+
+        </div>
+
+    <div class="messagePopup">
+        <p class="messageText"></p>
+        <button class="okBtn">OK</button>
+    </div>
+
+    <script src="doctor.js"></script>
+
+</body>
+</html>
