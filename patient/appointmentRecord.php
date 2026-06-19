@@ -1,3 +1,41 @@
+<?php
+include('inc/connect.php');
+
+$userID = 'B032410101';
+
+$sql = "
+    SELECT
+        a.appointmentID,
+        a.appointmentType,
+        a.appointmentStatus,
+        ts.slotDate,
+        ts.startTime,
+        ts.endTime
+    FROM appointment a
+    JOIN time_slot ts ON a.slotID = ts.slotID
+    WHERE a.userID = '$userID'
+";
+
+$result = mysqli_query($conn, $sql);
+
+$previousSQL = "
+    SELECT
+        a.appointmentID,
+        a.appointmentType,
+        a.appointmentStatus,
+        ts.slotDate,
+        ts.startTime,
+        ts.endTime
+    FROM appointment a
+    JOIN time_slot ts ON a.slotID = ts.slotID
+    WHERE a.userID = '$userID'
+        AND a.appointmentStatus IN ('Completed', 'Cancelled')
+    ORDER BY ts.slotDate DESC
+";
+
+$previousResult = mysqli_query($conn, $previousSQL);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,71 +44,102 @@
     <link rel="stylesheet" href="patient.css">
     <title>UTeM Clinic Queue System</title>
 </head>
-
 <body>
 
-    <?php include('inc/patient_header.php'); ?>
-    
-    <section>
-        <h2>Appointment Record</h2>
-        <p>Track your upcoming visits and review previous bookings.</p>
+<?php include('inc/patient_header.php'); ?>
 
-        <div class="appointmentTabs">
-            <button type="button" id="upcomingTab" class="activeTab">Upcoming</button>
-            <button type="button" id="previousTab">Previous</button>
-        </div>
+<section>
+    <h2>Appointment Record</h2>
+    <p>Track your upcoming visits and review previous bookings.</p>
 
-        <article id="upcomingRecords">
-            <h2>20/6/2026</h2>
-            <p>Appointment Status: Ongoing</p>
+    <div class="appointmentTabs">
+        <button type="button" id="upcomingTab" class="activeTab">Upcoming</button>
+        <button type="button" id="previousTab">Previous</button>
+    </div>
 
-            <div class="singleTable">
-                <table>
-                    <tr>
-                        <th>Appointment Type</th>
-                        <th>Time Slot</th>
-                        <th>Queue Number</th>
-                        <th>Queue Status</th>
-                        <th>Room Number</th>
-                    </tr>
-                    <tr>
-                        <td>Appointment</td>
-                        <td>11:00 AM - 12:00 PM</td>
-                        <td>S34</td>
-                        <td>Waiting</td>
-                        <td>Room 3</td>
-                    </tr>
-                </table>
-            </div>
-        </article>
+    <article id="upcomingRecords">
+        <?php
+        while ($row = mysqli_fetch_assoc($result))
+        {
+            if ($row['appointmentStatus'] == 'Booked')
+            {
+        ?>
+                <article>
+                    <h2><?= date('d/m/Y', strtotime($row['slotDate'])) ?></h2>
 
-        <article id="previousRecords" class="hidden">
-            <h2>1/1/2026</h2>
-            <p>Appointment Status: Cancelled / No-Show / Completed</p>
+                    <div class="singleTable">
+                        <table>
+                            <tr>
+                                <th>Appointment Type</th>
+                                <th>Time Slot</th>
+                                <th>Appointment Status</th>
+                                <th>Action</th>
+                            </tr>
 
-            <div class="singleTable">
-                <table>
-                    <tr>
-                        <th>Date</th>
-                        <th>Time Slot</th>
-                        <th>Queue Number</th>
-                        <th>Queue Status</th>
-                        <th>Room Number</th>
-                    </tr>
-                    <tr>
-                        <td>DD/MM/YY</td>
-                        <td>11:00 AM - 12:00 PM</td>
-                        <td>S34</td>
-                        <td>Completed</td>
-                        <td>Room 3</td>
-                    </tr>
-                </table>
-            </div>
-        </article>
-    </section>
+                            <tr>
+                                <td><?= $row['appointmentType'] ?></td>
 
-    <?php include('inc/patient_footer.php'); ?>
-    
-<script src="patient.js"></script>
+                                <td>
+                                    <?= date('g:i A', strtotime($row['startTime'])) ?>
+                                    -
+                                    <?= date('g:i A', strtotime($row['endTime'])) ?>
+                                </td>
+
+                                <td><?= $row['appointmentStatus'] ?></td>
+
+                                <td>
+                                    <button type="button">Cancel</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </article>
+        <?php
+            }
+        }
+        ?>
+    </article>
+
+    <article id="previousRecords" class="hidden">
+        <?php
+        while ($row = mysqli_fetch_assoc($previousResult))
+        {
+        ?>
+            <article>
+                <h2><?= date('d/m/Y', strtotime($row['slotDate'])) ?></h2>
+
+                <div class="singleTable">
+                    <table>
+                        <tr>
+                            <th>Appointment Type</th>
+                            <th>Time Slot</th>
+                            <th>Appointment Status</th>
+                            <th>Prescription Status</th>
+                        </tr>
+
+                        <tr>
+                            <td><?= $row['appointmentType'] ?></td>
+
+                            <td>
+                                <?= date('g:i A', strtotime($row['startTime'])) ?>
+                                -
+                                <?= date('g:i A', strtotime($row['endTime'])) ?>
+                            </td>
+
+                            <td><?= $row['appointmentStatus'] ?></td>
+
+                            <td>No Prescription Issued</td>
+                        </tr>
+                    </table>
+                </div>
+            </article>
+        <?php
+        }
+        ?>
+    </article>
+</section>
+
+<script src="js/appointmentRecord.js"></script>
+
 </body>
 </html>

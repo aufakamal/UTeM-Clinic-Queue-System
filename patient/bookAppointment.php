@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="patient.css">
+    <link rel="stylesheet" href="inc/patient.css">
     <title>UTeM Clinic Queue System</title>
 </head>
 
@@ -84,21 +84,44 @@
         <section class="summaryBox hidden">
             <h2>Summary</h2>
 
-            <div class="summaryGrid">
-                <p id="selectedDate"><strong>Selected Date:</strong> Today</p>
-                <p id="appointmentType"><strong>Appointment Type:</strong> Same-Day Consultation</p>
-                <p id="selectedSession"><strong>Selected Session:</strong> Session</p>
-                <p id="timeSlot"><strong>Time Slot:</strong> 8:00 AM - 12:00 PM</p>
-            </div>
+            <form action="processAppointment.php" method="POST">
+                <div class="summaryGrid">
+                    <p id="selectedDate">
+                        <strong>Selected Date:</strong> -
+                    </p>
 
-            <button id="confirmBtn" class="submitBtn">Confirm Booking</button>
-            <p class="info hidden">ⓘ You have booked an appointment. Go to Appointment>Appointment Record to get more information.</p>
-        </section>
+                    <p id="appointmentType">
+                        <strong>Appointment Type:</strong> -
+                    </p>
 
+                    <p id="selectedSession">
+                        <strong>Selected Session:</strong> -
+                    </p>
+
+                    <p id="timeSlot">
+                        <strong>Time Slot:</strong> -
+                    </p>
+
+                    <!-- Hidden inputs sent to PHP -->
+                    <input type="hidden" name="appointmentDate" id="appointmentDateHidden">
+                    <input type="hidden" name="appointmentType" id="appointmentTypeHidden">
+                    <input type="hidden" name="session" id="sessionHidden">
+                    <input type="hidden" name="timeSlot" id="timeSlotHidden">
+                </div>
+
+                <button type="submit" id="confirmBtn" class="submitBtn">
+                    Confirm Booking
+                </button>
+            </form>
+
+            <p class="info hidden">
+                ⓘ You have booked an appointment.
+                Go to Appointment > Appointment Record to get more information.
+            </p>
     </div>
     
     <?php include('inc/patient_footer.php'); ?>
 
-<script src="patient.js"></script>
+<script src="js/bookAppointment.js"></script>
 </body>
 </html>

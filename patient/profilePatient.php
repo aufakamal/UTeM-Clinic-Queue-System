@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Patient Page</title>
     <link rel="stylesheet" href="../shared/profile.css">
+    <link rel="stylesheet" href="inc/patient.css">
 </head>
 <body>
-<div class="profilePage">
-    <div class="profileTitle">
-        <a href="dashboard.php">
-            <img src="../images/backIconDark.png" alt="Back" class="backIcon" alt="Back">
-        </a>
 
-        <h1>MY PROFILE</h1>
-    </div>
+<?php include('inc/patient_header.php'); ?>
+<div class="profilePage">
+    <section class="profileTitle">
+        <!-- <a href="dashboard.php">
+            <img src="../images/backIconDark.png" alt="Back" class="backIcon" alt="Back">
+        </a> -->
+
+        <h2>My Profile</h2>
+    </section>
 
 <section class="profileCard">
-
     <div class="profileHeader">
-
         <img src="../images/profileIconDark.png" alt="Profile Picture" class="profileImage">
 
         <div class="userInfo">
@@ -30,7 +31,7 @@
         <div class="profileActions">
             <span class="roleName">Patient</span>
             
-            <a href="editProfilePatient.html" class="editBtn">Change Profile Information</a>
+            <a href="editProfilePatient.php" class="editBtn">Change Profile Information</a>
         </div>
 
     </div>
@@ -69,5 +70,6 @@
 
 </section>
 </div>
+<?php include('inc/patient_footer.php'); ?>
 </body>
 </html>

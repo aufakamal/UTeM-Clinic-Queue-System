@@ -10,24 +10,27 @@ body {
 }
 
 .profilePage {
-    width: 100%;
-    min-height: 100vh;
-    margin: 0;
-    padding: 35px 60px;
+    width: 80%;
+    max-width: 1350px;
+
+    margin: 36px auto;
+
     background-color: #F8FAFC;
 }
 
 /* TITLE */
 .profileTitle {
+    width: 100%;
+
     display: flex;
     align-items: center;
     gap: 15px;
+
     margin-bottom: 25px;
 }
 
-.profileTitle h1 {
+.profileTitle h2 {
     margin: 0;
-    font-size: 34px;
     color: #0F172A;
 }
 
@@ -39,9 +42,9 @@ body {
 
 /* VIEW PROFILE CARD */
 .profileCard {
-    width: 80%;
-    max-width: 1100px;
-    margin: 25px auto;
+
+    width: 100%;
+    max-width: none;
 
     background-color: #FFFFFF;
     border: 1px solid #D7E3EA;
@@ -178,7 +181,7 @@ input:focus {
 /* EDIT PROFILE */
 .editHeader {
     height: 110px;
-    background-color: #38BDF8;
+    background-color: #0284C7;
     border-radius: 14px 14px 0 0;
 
     display: flex;
@@ -262,11 +265,10 @@ input:focus {
 
 /* SUCCESS PAGE */
 .messageCard {
-    width: 80%;
-    max-width: 1100px;
-    min-height: 560px;
+    width: 100%;
+    max-width: none;
 
-    margin: 25px auto;
+    min-height: 560px;
 
     background-color: #FFFFFF;
     border: 1px solid #D7E3EA;
@@ -318,8 +320,8 @@ input:focus {
 
 /* CHANGE PASSWORD */
 .changePasswordCard {
-    width: 80%;
-    max-width: 700px;
+    width: 100%;
+    max-width: none;
     margin: 25px auto;
 
     background-color: #FFFFFF;
@@ -331,6 +333,12 @@ input:focus {
     text-align: center;
 
     box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+}
+
+.changePasswordCard form {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
 }
 
 .changePasswordIcon {
@@ -347,9 +355,24 @@ input:focus {
 }
 
 .changePasswordCard form {
-    width: 70%;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+
+    margin: 30px auto 0;
+
     text-align: left;
+
+}
+
+.changePasswordCard label {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+.changePasswordCard input {
+    width: 100%;
 }
 
 .changePasswordCard .saveBtn {
@@ -402,6 +425,26 @@ input:focus {
         width: 100%;
         text-align: center;
     }
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
+    margin-top: 30px;
+}
+
+.buttonGroup .saveBtn {
+    margin: 0;
+}
+
+.secondaryBtn {
+    background-color: #64748B;
+}
+
+.secondaryBtn:hover {
+    background-color: #475569;
 }
 
 /* =========================
