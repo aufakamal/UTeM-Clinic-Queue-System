@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="patient.css">
+    <link rel="stylesheet" href="inc/patient.css">
     <title>UTeM Clinic Queue System</title>
 </head>
 
@@ -532,6 +532,6 @@
     </section>
 
     <?php include('inc/patient_footer.php'); ?>
-<script src="patient.js"></script>
+<script src="js/selfAssessment.js"></script>
 </body>
 </html>

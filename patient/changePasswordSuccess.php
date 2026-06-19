@@ -5,19 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Changed Successfully</title>
     <link rel="stylesheet" href="../shared/profile.css">
+    <link rel="stylesheet" href="inc/patient.css">
 </head>
 
 <body>
-
+<?php include('inc/patient_header.php'); ?>
     <div class="profilePage">
 
         <div class="profileTitle">
 
-            <a href="changePassword.html">
+            <!-- <a href="changePassword.html">
                 <img src="../images/backIconDark.png" alt="Back"class="backIcon">
-            </a>
+            </a> -->
 
-            <h1>CHANGE PASSWORD</h1>
+            <h2>Change Password</h2>
 
         </div>
 
@@ -27,11 +28,11 @@
 
             <p class="successText">Your password has been successfully reset. Please log in using your new password.</p>
 
-            <a href="profilePatient.html" class="profileBtn">BACK TO PROFILE PAGE</a>
+            <a href="profilePatient.php" class="profileBtn">BACK TO PROFILE PAGE</a>
 
         </div>
 
     </div>
-
+<?php include('inc/patient_footer.php'); ?>
 </body>
 </html>

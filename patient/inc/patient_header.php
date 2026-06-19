@@ -1,8 +1,8 @@
 <div id="header">
     <div id="leftSection">
-        <button class="iconBtn">
+        <!-- <button class="iconBtn">
             <img class="icon" src="../images/backIconDark.png" alt="Back Button">
-        </button>
+        </button> -->
 
     <h1>UTeM Clinic Queue System</h1>
 </div>
@@ -25,13 +25,26 @@
 </nav>
 
 <div id="rightSection">
-    <h1>Welcome, Student!</h1>
+    <h1>Welcome, Patient!</h1>
 
-    <button class="iconBtn">
-        <img class="icon" id="profileIcon"
-            src="../images/profileIconDark.png"
-            alt="Profile Icon">
-    </button>
+    <div class="profileContainer">
+
+        <button class="iconBtn" id="profileBtn" type="button">
+            <img
+                class="icon"
+                id="profileIcon"
+                src="patientImages/profileIconDark.png"
+                alt="Profile Icon">
+        </button>
+
+        <div id="profileDropdown">
+            <a href="profilePatient.php">View Profile</a>
+            <a href="../login_register/mainPage.html">Log Out</a>
+        </div>
+
+    </div>
 </div>
 
 </div>
+
+<script src="js/profile.js"></script>

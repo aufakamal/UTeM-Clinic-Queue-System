@@ -17,7 +17,7 @@ if (loginForm) {
         alert("Login successful!");
 
         if (role === "patient") {
-            window.location.href = "../patient/dashboard.html";
+            window.location.href = "../patient/dashboard.php";
         } else if (role === "doctor") {
             window.location.href = "../doctor/doctor.html";
         } else if (role === "pharmacist") {
