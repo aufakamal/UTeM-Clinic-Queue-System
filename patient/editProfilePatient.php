@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile Page</title>
     <link rel="stylesheet" href="../shared/profile.css">
-
+    <link rel="stylesheet" href="inc/patient.css">
 </head>
 <body>
-
+<?php include('inc/patient_header.php'); ?>
 <div class="profilePage">
 
-    <div class="profileTitle">
-        <a href="profilePatient.html">
+    <section class="profileTitle">
+        <!-- <a href="profilePatient.html">
             <img src="../images/backIconDark.png" class="backIcon" alt="Back">
-        </a>
+        </a> -->
 
-        <h1>EDIT PROFILE</h1>
-    </div>
+        <h2>Edit Profile</h2>
+    </section>
 
     <div class="profileCard">
 
@@ -51,7 +51,7 @@
             <label>Password</label>
             <input type="password" value="123456789">
 
-            <a href="changePassword.html" class="changePasswordLink">Change password</a>
+            <a href="changePassword.php" class="changePasswordLink">Change password</a>
 
             <h3>Medical Information</h3>
 
@@ -67,12 +67,16 @@
             <label>Medication</label>
             <input type="text" value="Inhaler">
 
-            <a href="updateProfileSuccess.html" class="saveBtn">SAVE</a>
+            <div class="buttonGroup">
+                <a href="profilePatient.php" class="saveBtn secondaryBtn">BACK</a>
 
+                <a href="updateProfileSuccess.php" class="saveBtn">SAVE</a>
+            </div>
         </form>
 
     </div>
 
 </div>
+<?php include('inc/patient_footer.php'); ?>
 </body>
 </html>

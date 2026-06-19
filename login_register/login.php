@@ -9,29 +9,13 @@
 <body>
 
 <div class="container">
-    <div class="header">
-        <div class="logo-box">
-            <img src="image/utemLogoo.png" alt="UTeM Logo">
-        </div>
-
-        <div class="title">
-            DIGITAL CLINIC QUEUE MANAGEMENT SYSTEM 
-            <br>
-            FOR PKU UTeM
-        </div>
-
-        <div class="icons">
-            <img src="image/instagramIcon.png" alt="Instagram">
-            <img src="image/facebookIcon.png" alt="Facebook">
-            <img src="image/tiktokIcon.png" alt="Tiktok">
-        </div>
-    </div>
+    <?php include('inc/login_register_header.php'); ?>
 
     <div class="main">
 
         <div class="left-sec">
             <a href="mainPage.html" class="back">
-                <img src="image/backIconDark.png" alt="Back">
+                <img src="loginRegisterImage/backIconDark.png" alt="Back">
             </a>
 
             <h2>Welcome To <br>
@@ -42,7 +26,7 @@
         </div>
 
         <div class="right-sec">
-            <h1>LOGIN</h1>
+            <h2>LOGIN</h2>
 
             <form id="loginForm">
                 <label>ID</label>
@@ -51,13 +35,12 @@
                 <label>Password</label>
                 <input type="password" id="loginPassword">
 
-                <a href="forgotPassword.html" class="forgot">Forgot Password?</a>
+                <a href="forgotPassword.php" class="forgot">Forgot Password?</a>
 
                 <label>Login As</label>
                 <select id="loginRole">
                     <option value="">Dropdown</option>
-                    <option value="patient">Student</option>
-                    <option value="patient">Staff</option>
+                    <option value="patient">Patient</option>
                     <option value="doctor">Doctor</option>
                     <option value="pharmacist">Pharmacist</option>
                     <option value="admin">Administrator</option>
@@ -65,7 +48,7 @@
 
                 <button type="submit" class="loginBtn">LOGIN</button>
 
-                <p>Don't have an account? <a href="register.html">Register</a></p>
+                <p>Don't have an account? <a href="register.php">Register</a></p>
             </form>
         </div>
     </div>

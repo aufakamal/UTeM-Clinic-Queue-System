@@ -10,28 +10,13 @@
 
 <div class="container">
 
-    <div class="header">
-        <div class="logo-box">
-            <img src="image/utemLogoo.png" alt="UTeM Logo">
-        </div>
-
-        <div class="title">
-            DIGITAL CLINIC QUEUE MANAGEMENT SYSTEM <br>
-            FOR PKU UTeM
-        </div>
-
-        <div class="icons">
-            <img src="image/instagramIcon.png" alt="Instagram">
-            <img src="image/facebookIcon.png" alt="Facebook">
-            <img src="image/tiktokIcon.png" alt="Tiktok">
-        </div>
-    </div>
+    <?php include('inc/login_register_header.php'); ?>
 
     <div class="main">
 
         <div class="left-sec">
-            <a href="register.html" class="back">
-                <img src="image/backIconDark.png" alt="Back">
+            <a href="mainPage.php" class="back">
+                <img src="loginRegisterImage/backIconDark.png" alt="Back">
             </a>
 
             <h2>
@@ -44,7 +29,7 @@
 
         <div class="right-sec">
 
-            <h1>REGISTER</h1>
+            <h2>REGISTER</h2>
 
             <p class="description">Do you have any allergies or existing medical conditions? If yes, please specify. You can edit or change this later in your profile.</p>
 
@@ -60,13 +45,13 @@
                 <textarea rows="4"></textarea>
 
                 <div class="button-group">
-                    <a href="register.html" class="back-button">BACK</a>
-                    <a href="login.html" class="register-button">REGISTER</a>
+                    <a href="register.php" class="back-button">BACK</a>
+                    <a href="login.php" class="register-button">REGISTER</a>
                 </div>
 
                 <p class="login-link">
                     Already have an account?
-                    <a href="login.html">Log In</a>
+                    <a href="login.php">Log In</a>
                 </p>
 
             </form>

@@ -3,60 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="patient.css">
+    <link rel="stylesheet" href="inc/patient.css">
     <title>UTeM Clinic Queue System</title>
 </head>
 
 <body>
 
-    <div id="header">
-        <div id="leftSection">
-            <button class="iconBtn">
-                <img class="icon" src="../images/backIconDark.png" alt="Back Button">
-            </button>
-
-            <h1>UTeM Clinic Queue System</h1>
-        </div>
-
-        <nav>
-            <ul>
-                <li class="active"><a href="dashboard.html">Dashboard</a></li>
-
-                <li class="dropdown">
-                    Appointment
-                    <ul class="submenu">
-                        <li><a href="bookAppointment.html">Book Appointment</a></li>
-                        <li><a href="appointmentRecord.html">Appointment Record</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="medicalRecord.html">Medical Record</a></li>
-                <li><a href="selfAssessment.html">Self-Assessment</a></li>
-            </ul>
-        </nav>
-
-        <div id="rightSection">
-            <h1>Welcome, Student!</h1>
-
-            <div class="profileContainer">
-                <button class="iconBtn" id="profileBtn" type="button">
-                    <img class="icon" id="profileIcon" src="../images/profileIconDark.png" alt="Profile Icon">
-                </button>
-
-            <div id="profileDropdown">
-                <a href="profilePatient.html">View Profile</a>
-                <a href="../login_register/mainPage.html">Log Out</a>
-            </div>
-
-            </div>
-        </div>
-    </div>
+    <?php include('inc/patient_header.php'); ?>
 
     <section>
         <div class="topCards">
             <article>
                 <h2>Upcoming Appointment</h2>
-                <p>No appointment booked yet. <a href="bookAppointment.html">Click here</a> to make an appointment</p>
+                <p>No appointment booked yet. <a href="bookAppointment.php">Click here</a> to make an appointment</p>
             </article>
 
             <article>
@@ -264,51 +223,7 @@
         </article>
     </section>
 
-    <footer>
-        <h2>Contact Us</h2>
-
-        <div class="footerGrid">
-            <div class="socialItem">
-                <a href="https://www.instagram.com/pusatkesihatanutem/?hl=en">
-                    <img class="icon" src="../images/instagramIcon.png" alt="Instagram Icon">
-                    <span>Instagram</span>
-                </a>
-            </div>
-
-            <div class="contactItem">
-                <img class="icon" src="../images/phoneIcon.png" alt="Phone Icon">
-                <span>06-2292308</span>
-            </div>
-
-            <div class="socialItem">
-                <a href="https://www.facebook.com/PusatKesihatanUTeM/">
-                    <img class="icon" src="../images/facebookIcon.png" alt="Facebook Icon">
-                    <span>Facebook</span>
-                </a>
-            </div>
-
-            <div class="contactItem">
-                <img class="icon" src="../images/emailIcon.png" alt="Email Icon">
-                <a href="mailto:pusatkesihatanutem@utem.edu.my">pusatkesihatanutem@utem.edu.my</a>
-            </div>
-
-            <div class="socialItem">
-                <a href="https://www.tiktok.com/@utempku">
-                    <img class="icon" src="../images/tiktokIcon.png" alt="TikTok Icon">
-                    <span>TikTok</span>
-                </a>
-            </div>
-
-            <div class="contactItem">
-                <img class="icon" src="../images/LocationIcon.png" alt="Location Icon">
-                <span>Universiti Teknikal Malaysia Melaka, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka.</span>
-            </div>
-        </div>
-
-        <p class="copyright">
-            Copyright &copy; 2026 PROJECT SYSTEM DEVELOPMENT WORKSHOP S1G2
-        </p>
-    </footer>
-<script src="patient.js"></script>
+    <?php include('inc/patient_footer.php'); ?>
+<!-- <script src="patient.js"></script> -->
 </body>
 </html>
