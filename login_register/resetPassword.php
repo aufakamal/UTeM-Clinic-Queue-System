@@ -10,37 +10,18 @@
 
 <div class="container">
 
-    <div class="header">
-
-        <div class="logo-box">
-            <img src="image/utemLogo.png" alt="UTeM Logo">
-        </div>
-
-        <div class="title">
-            DIGITAL CLINIC QUEUE MANAGEMENT SYSTEM
-            <br>
-            FOR PKU UTeM
-        </div>
-
-        <div class="icons">
-            <img src="image/instagramIcon.png" alt="">
-            <img src="image/facebookIcon.png" alt="">
-            <img src="image/tiktokIcon.png" alt="">
-        </div>
-
-    </div>
-
+    <?php include('inc/login_register_header.php'); ?>
     <div class="main">
 
-        <a href="forgotPassword.html" class="back">
-            <img src="image/backIconDark.png" alt="">
+        <a href="forgotPassword.php" class="back">
+            <img src="loginRegisterImage/backIconDark.png" alt="">
         </a>
 
         <div class="resetCard">
 
-            <img src="image/resetPasswordIcon.png" alt="Reset Password" class="resetIcon">
+            <img src="loginRegisterImage/resetPasswordIcon.png" alt="Reset Password" class="resetIcon">
 
-            <h1>RESET PASSWORD</h1>
+            <h2>RESET PASSWORD</h2>
 
             <p>
                 Please enter your new password.

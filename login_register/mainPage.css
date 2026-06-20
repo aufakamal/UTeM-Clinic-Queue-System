@@ -10,9 +10,11 @@ body {
 }
 
 .container {
-    width: 100%;
     min-height: 100vh;
     background-color: #EFF6FF;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .header {
@@ -22,13 +24,16 @@ body {
 
     display: flex;
     align-items: center;
+
     padding: 0 14px;
 }
 
 .logo-box {
-    background-color: #ffffff;
+    background-color: #FFFFFF;
+
     width: 90px;
     height: 55px;
+
     margin-right: 20px;
 }
 
@@ -40,15 +45,17 @@ body {
 
 .title {
     flex: 1;
+
     font-size: 24px;
     font-weight: 700;
-    color: #ffffff;
+
+    color: #FFFFFF;
 }
 
 .icons {
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 8px;
 }
 
 .icons img {
@@ -58,39 +65,76 @@ body {
 }
 
 .mainContent {
-    height: 900px;
+    flex: 1;
+
     background-color: #EFF6FF;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    padding: 30px;
 }
 
 .clinicLogo {
     width: 220px;
     height: 220px;
+
     object-fit: contain;
-    margin-bottom: 20px;
+
+    margin-bottom: 25px;
 }
 
 .main-button {
     width: 250px;
     height: 70px;
+
     background-color: #DBEAFE;
     color: #1E3A8A;
+
     border: 1px solid #93C5FD;
+    border-radius: 10px;
 
     text-decoration: none;
     font-size: 30px;
+    font-weight: 600;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 10px;
     margin: 8px 0;
+
+    transition: 0.2s ease;
 }
 
 .main-button:hover {
     background-color: #BFDBFE;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+
+    .header {
+        height: auto;
+        padding: 12px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .title {
+        font-size: 18px;
+    }
+
+    .clinicLogo {
+        width: 180px;
+        height: 180px;
+    }
+
+    .main-button {
+        width: 220px;
+        height: 60px;
+        font-size: 24px;
+    }
 }

@@ -3,28 +3,19 @@ let loginForm = document.querySelector("#loginForm");
 
 if (loginForm) {
     loginForm.addEventListener("submit", function(event) {
-        event.preventDefault();
 
         let id = document.querySelector("#loginId").value.trim();
         let password = document.querySelector("#loginPassword").value.trim();
         let role = document.querySelector("#loginRole").value;
 
         if (id === "" || password === "" || role === "") {
+            event.preventDefault();
             alert("Please fill in all fields before login.");
             return;
         }
 
-        alert("Login successful!");
-
-        if (role === "patient") {
-            window.location.href = "../patient/dashboard.html";
-        } else if (role === "doctor") {
-            window.location.href = "../doctor/doctor.html";
-        } else if (role === "pharmacist") {
-            window.location.href = "../pharmacist/workspace.html";
-        } else if (role === "admin") {
-            window.location.href = "../admin/dashboard.html";
-        }
+        // jangan redirect dekat JS
+        // biar login.php check ID, role, password
     });
 }
 
@@ -34,56 +25,66 @@ let registerForm = document.querySelector("#registerForm");
 
 if (registerForm) {
     registerForm.addEventListener("submit", function(event) {
-        event.preventDefault();
 
         let fullName = document.querySelector("#fullName").value.trim();
+        let gender = document.querySelector("#gender").value;
         let id = document.querySelector("#registerId").value.trim();
+        let dateOfBirth = document.querySelector("#dateOfBirth").value;
         let email = document.querySelector("#email").value.trim();
         let phone = document.querySelector("#phone").value.trim();
+        let address = document.querySelector("#address").value.trim();
         let password = document.querySelector("#password").value.trim();
         let confirmPassword = document.querySelector("#confirmPassword").value.trim();
         let registerRole = document.querySelector("#registerRole").value;
 
         if (
             fullName === "" ||
+            gender === "" ||
             id === "" ||
+            dateOfBirth === "" ||
             email === "" ||
             phone === "" ||
+            address === "" ||
             password === "" ||
             confirmPassword === "" ||
             registerRole === ""
         ) {
+            event.preventDefault();
             alert("Please fill in all required fields.");
             return;
         }
 
         if (!email.includes("@")) {
+            event.preventDefault();
             alert("Please enter a valid email address.");
             return;
         }
 
         if (phone.length < 10) {
+            event.preventDefault();
             alert("Phone number must be at least 10 digits.");
             return;
         }
 
         if (!/^[0-9]+$/.test(phone)) {
+            event.preventDefault();
             alert("Phone number must contain digits only.");
             return;
         }
 
         if (password.length < 6) {
+            event.preventDefault();
             alert("Password must be at least 6 characters.");
             return;
         }
 
         if (password !== confirmPassword) {
+            event.preventDefault();
             alert("Password and Confirm Password do not match.");
             return;
         }
 
-        alert("Registration details saved. Please continue to medical condition page.");
-        window.location.href = "medicalCondition.html";
+        // kalau semua validation betul, form akan submit ke action="medicalCondition.php"
     });
 }
 
@@ -96,7 +97,7 @@ if (medicalForm) {
         event.preventDefault();
 
         alert("Medical information saved successfully.");
-        window.location.href = "login.html";
+        window.location.href = "login.php";
     });
 }
 
@@ -121,7 +122,7 @@ if (forgotForm) {
         }
 
         alert("Password reset link has been sent.");
-        window.location.href = "resetPassword.html";
+        window.location.href = "resetPassword.php";
     });
 }
 
@@ -152,6 +153,6 @@ if (resetForm) {
         }
 
         alert("Password reset successful.");
-        window.location.href = "resetSuccess.html";
+        window.location.href = "resetSuccess.php";
     });
 }

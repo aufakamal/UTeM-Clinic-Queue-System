@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password</title>
     <link rel="stylesheet" href="../shared/profile.css">
+    <link rel="stylesheet" href="inc/patient.css">
 </head>
 
 <body>
-
+<?php include('inc/patient_header.php'); ?>
 <div class="profilePage">
 
     <div class="profileTitle">
-        <a href="editProfilePatient.html">
+        <!-- <a href="editProfilePatient.php">
             <img src="../images/backIconDark.png" class="backIcon" alt="Back">
-        </a>
+        </a> -->
 
-        <h1>CHANGE PASSWORD</h1>
+        <h2>Change Password</h2>
     </div>
 
     <div class="changePasswordCard">
@@ -35,12 +36,18 @@
             <label>Confirm Password</label>
             <input type="password">
 
-            <a href="changePasswordSuccess.html" class="saveBtn">CHANGE PASSWORD</a>
+            <div class="buttonGroup">
+                <a href="profilePatient.php" class="saveBtn secondaryBtn">BACK</a>
+
+                <a href="changePasswordSuccess.php" class="saveBtn">
+                    CHANGE PASSWORD
+                </a>
+            </div>
         </form>
 
     </div>
 
 </div>
-
+<?php include('inc/patient_footer.php'); ?>
 </body>
 </html>
