@@ -21,8 +21,9 @@
             <li><a href="profileAdmin.html">Dashboard</a></li>
             <li><a href="admin-appointments.html">Appointments</a></li>
             <li class="active"><a href="admin-queue.html">Queue</a></li>
+            <li><a href="admin-history.html">History</a></li>
             <li><a href="admin-slots.html">Slots</a></li>
-            <li><a href="admin-staff.html">Staff</a></li>
+            <li><a href="admin-staff.html">Users</a></li>
         </ul>
     </nav>
 
@@ -44,9 +45,43 @@
 
 <section id="queue" class="page active">
     <h2>Queue Management</h2>
-    <p>Manage patient queue status and consultation progress.</p>
+    <p>View today’s queue list and filter patients by room or status.</p>
 
-    <div id="queueContent"></div>
+    <div class="filter-bar">
+        <input type="text" id="queueSearch" placeholder="Search patient name, queue number, or ID..." onkeyup="filterQueue()">
+
+        <select id="queueStatusFilter" onchange="filterQueue()">
+            <option value="All">All Status</option>
+            <option value="Waiting">Waiting</option>
+            <option value="In Consultation">In Consultation</option>
+            <option value="At Pharmacy">At Pharmacy</option>
+            <option value="Completed">Completed</option>
+        </select>
+
+        <select id="queueRoomFilter" onchange="filterQueue()">
+            <option value="All">All Rooms</option>
+            <option value="Room 1">Room 1</option>
+            <option value="Room 2">Room 2</option>
+            <option value="Pharmacy">Pharmacy</option>
+        </select>
+    </div>
+
+    <div class="table-card">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Queue No.</th>
+                    <th>Patient</th>
+                    <th>User ID</th>
+                    <th>Appointment Type</th>
+                    <th>Room</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="queueTableBody"></tbody>
+        </table>
+    </div>
 </section>
 
 <div id="confirmBox" class="modal hidden">

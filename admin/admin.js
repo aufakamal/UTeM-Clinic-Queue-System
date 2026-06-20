@@ -508,3 +508,328 @@ function toggleMenu() {
 if (document.getElementById("appointmentContent")) {
     showAppointmentDates();
 }
+
+const appointmentList = [
+    {
+        id: "AP001",
+        patient: "Ailene Farhana",
+        userID: "ST03295",
+        type: "Same-Day",
+        date: "2026-04-12",
+        time: "8:00 AM - 12:00 PM",
+        status: "Pending"
+    },
+    {
+        id: "AP002",
+        patient: "Ali Ahmad",
+        userID: "ST04521",
+        type: "Scheduled",
+        date: "2026-04-12",
+        time: "10:00 AM",
+        status: "Arrived"
+    },
+    {
+        id: "AP003",
+        patient: "Nur Aisyah",
+        userID: "ST07834",
+        type: "Medical Checkup",
+        date: "2026-04-13",
+        time: "2:00 PM",
+        status: "Pending"
+    },
+    {
+        id: "AP004",
+        patient: "Adam Lee",
+        userID: "ST08810",
+        type: "Follow-Up",
+        date: "2026-04-14",
+        time: "9:30 AM",
+        status: "Completed"
+    }
+];
+
+function renderAppointments(list = appointmentList) {
+    const tableBody = document.getElementById("appointmentTableBody");
+    if (!tableBody) return;
+
+    tableBody.innerHTML = "";
+
+    list.forEach(appt => {
+        const statusClass = appt.status.toLowerCase().replace(" ", "");
+
+        tableBody.innerHTML += `
+            <tr>
+                <td>${appt.id}</td>
+                <td>${appt.patient}</td>
+                <td>${appt.userID}</td>
+                <td>${appt.type}</td>
+                <td>${appt.date}</td>
+                <td>${appt.time}</td>
+                <td>
+                    <span class="status-badge status-${statusClass}">
+                        ${appt.status}
+                    </span>
+                </td>
+                <td>
+                    <button class="table-btn no-show-btn" onclick="markNoShow('${appt.id}')">
+                        No Show
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function filterAppointments() {
+    const search = document.getElementById("appointmentSearch").value.toLowerCase();
+    const date = document.getElementById("appointmentDateFilter").value;
+    const status = document.getElementById("appointmentStatusFilter").value;
+    const type = document.getElementById("appointmentTypeFilter").value;
+
+    const filtered = appointmentList.filter(appt => {
+        const matchesSearch =
+            appt.patient.toLowerCase().includes(search) ||
+            appt.userID.toLowerCase().includes(search) ||
+            appt.type.toLowerCase().includes(search) ||
+            appt.id.toLowerCase().includes(search);
+
+        const matchesDate = date === "" || appt.date === date;
+        const matchesStatus = status === "All" || appt.status === status;
+        const matchesType = type === "All" || appt.type === type;
+
+        return matchesSearch && matchesDate && matchesStatus && matchesType;
+    });
+
+    renderAppointments(filtered);
+}
+
+function markNoShow(id) {
+    const appointment = appointmentList.find(appt => appt.id === id);
+
+    if (appointment) {
+        appointment.status = "No Show";
+        filterAppointments();
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderAppointments();
+});
+
+const consultationHistory = [
+
+{
+id:"C001",
+patient:"Ali Ahmad",
+date:"2026-06-20",
+doctor:"Dr. Ahmad",
+type:"Same-Day",
+diagnosis:"Common Flu",
+status:"Completed"
+},
+
+{
+id:"C002",
+patient:"Nur Aisyah",
+date:"2026-06-19",
+doctor:"Dr. Lim",
+type:"Follow-Up",
+diagnosis:"Migraine",
+status:"Completed"
+},
+
+{
+id:"C003",
+patient:"Adam Lee",
+date:"2026-06-18",
+doctor:"Dr. Siti",
+type:"Scheduled",
+diagnosis:"Medical Check-up",
+status:"Completed"
+}
+
+];
+
+function renderHistory(data=consultationHistory){
+
+const table=document.getElementById("historyTableBody");
+
+if(!table) return;
+
+table.innerHTML="";
+
+data.forEach(item=>{
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${item.id}</td>
+
+<td>${item.patient}</td>
+
+<td>${item.date}</td>
+
+<td>${item.doctor}</td>
+
+<td>${item.type}</td>
+
+<td>${item.diagnosis}</td>
+
+<td>
+<span class="status-badge status-completed">
+Completed
+</span>
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+function filterHistory(){
+
+const search=document.getElementById("historySearch").value.toLowerCase();
+
+const doctor=document.getElementById("doctorFilter").value;
+
+const date=document.getElementById("historyDate").value;
+
+const type=document.getElementById("historyType").value;
+
+const filtered=consultationHistory.filter(item=>{
+
+const matchSearch=
+item.patient.toLowerCase().includes(search)||
+item.id.toLowerCase().includes(search);
+
+const matchDoctor=
+doctor==="All"||
+item.doctor===doctor;
+
+const matchDate=
+date===""||
+item.date===date;
+
+const matchType=
+type==="All"||
+item.type===type;
+
+return matchSearch &&
+matchDoctor &&
+matchDate &&
+matchType;
+
+});
+
+renderHistory(filtered);
+
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+renderHistory();
+
+});
+
+const queueList = [
+    { queueNo: "Q001", patient: "Ailene Farhana", userID: "ST03295", type: "Same-Day", room: "Room 1", status: "Waiting" },
+    { queueNo: "Q002", patient: "Ali Ahmad", userID: "ST04521", type: "Scheduled", room: "Room 2", status: "In Consultation" },
+    { queueNo: "Q003", patient: "Nur Aisyah", userID: "ST07834", type: "Same-Day", room: "Pharmacy", status: "At Pharmacy" }
+];
+
+function renderQueueTable(list = queueList) {
+    const table = document.getElementById("queueTableBody");
+    if (!table) return;
+
+    table.innerHTML = "";
+
+    list.forEach(item => {
+        const statusClass = item.status.toLowerCase().replaceAll(" ", "");
+
+        table.innerHTML += `
+            <tr>
+                <td>${item.queueNo}</td>
+                <td>${item.patient}</td>
+                <td>${item.userID}</td>
+                <td>${item.type}</td>
+                <td>${item.room}</td>
+                <td>
+                    <span class="status-badge status-${statusClass}">
+                        ${item.status}
+                    </span>
+                </td>
+                <td>
+                    <button class="table-btn" onclick="nextQueueStatus('${item.queueNo}')">
+                        Next
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function filterQueue() {
+    const search = document.getElementById("queueSearch").value.toLowerCase();
+    const status = document.getElementById("queueStatusFilter").value;
+    const room = document.getElementById("queueRoomFilter").value;
+
+    const filtered = queueList.filter(item => {
+        const matchSearch =
+            item.patient.toLowerCase().includes(search) ||
+            item.userID.toLowerCase().includes(search) ||
+            item.queueNo.toLowerCase().includes(search);
+
+        const matchStatus = status === "All" || item.status === status;
+        const matchRoom = room === "All" || item.room === room;
+
+        return matchSearch && matchStatus && matchRoom;
+    });
+
+    renderQueueTable(filtered);
+}
+
+function nextQueueStatus(queueNo) {
+    const item = queueList.find(q => q.queueNo === queueNo);
+    if (!item) return;
+
+    if (item.status === "Waiting") {
+        item.status = "In Consultation";
+        item.room = "Room 1";
+    } else if (item.status === "In Consultation") {
+        item.status = "At Pharmacy";
+        item.room = "Pharmacy";
+    } else if (item.status === "At Pharmacy") {
+        item.status = "Completed";
+    }
+
+    filterQueue();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderQueueTable();
+});
+
+function generateDefaultSlots() {
+    if (localStorage.getItem("defaultSlotsCreated")) return;
+
+    const defaultSlots = [];
+
+    for (let i = 1; i <= 10; i++) {
+        defaultSlots.push({
+            id: "S" + i.toString().padStart(3, "0"),
+            date: new Date().toISOString().split("T")[0],
+            time: `${8 + i}:00 AM`,
+            type: i <= 5 ? "Same-Day" : "Scheduled",
+            capacity: 10,
+            booked: 0,
+            status: "Available"
+        });
+    }
+
+    localStorage.setItem("adminSlots", JSON.stringify(defaultSlots));
+    localStorage.setItem("defaultSlotsCreated", "true");
+}

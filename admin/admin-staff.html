@@ -6,6 +6,8 @@
     <title>UTeM PKU Admin</title>
     <link rel="stylesheet" href="admin.css">
 </head>
+<body>
+
 <div id="header">
     <div id="leftSection">
         <button class="iconBtn" onclick="history.back()">
@@ -19,17 +21,20 @@
             <li><a href="profileAdmin.html">Dashboard</a></li>
             <li><a href="admin-appointments.html">Appointments</a></li>
             <li><a href="admin-queue.html">Queue</a></li>
+            <li><a href="admin-history.html">History</a></li>
             <li><a href="admin-slots.html">Slots</a></li>
-            <li><a href="admin-staff.html">Staff</a></li>
+            <li class="active"><a href="admin-staff.html">Users</a></li>
         </ul>
     </nav>
 
     <div id="rightSection">
         <h1>Welcome, Admin!</h1>
+
         <div class="profileContainer">
             <button class="iconBtn" type="button" onclick="toggleMenu()">
                 <img class="icon" src="../images/profileIconDark.png" alt="Profile">
             </button>
+
             <div id="profileDropdown">
                 <a href="admin-profile.html">View Profile</a>
                 <a href="#" onclick="logout()">Log Out</a>
@@ -37,51 +42,46 @@
         </div>
     </div>
 </div>
-    <main>
-        <nav>
-    <a class="tab" href="profileAdmin.html">Dashboard</a>
-    <a class="tab" href="admin-appointments.html">Appointments</a>
-    <a class="tab" href="admin-queue.html">Queue Management</a>
-    <a class="tab" href="admin-slots.html">Slots</a>
-    <a class="tab active" href="admin-staff.html">Staff</a>
-</nav>
 
-        
+<section id="staff" class="page active">
+    <h2>Staff Management</h2>
+    <p>Add, edit or remove clinic staff accounts.</p>
 
-        <section id="staff" class="page active">
-            <div class="actions">
-                <button id="addStaffBtn" onclick="showStaffForm()">Add new staff +</button>
-                <button id="deleteStaffBtn" onclick="toggleDeleteStaff()">Delete staff</button>
-                <button id="editStaffBtn" onclick="toggleEditStaff()">Edit staff</button>
-            </div>
-
-            <div id="staffForm" class="form-card hidden">
-                <label>Name: <input id="staffName"></label>
-                <label>Staff ID: <input id="staffId"></label>
-                <label>Role:
-                    <select id="staffRole">
-                        <option>Admin</option>
-                        <option>Doctor</option>
-                        <option>Pharmacist</option>
-                    </select>
-                </label>
-                <label>Password: <input id="staffPassword" type="password"></label>
-                <button class="green" id="saveStaffBtn" onclick="saveStaff()">Create</button>
-                <button class="red" onclick="hideStaffForm()">Cancel</button>
-            </div>
-
-            <div id="staffContent" class="cards"></div>
-        </section>
-    </main>
-
-    <div id="confirmBox" class="modal hidden">
-        <div class="modal-card">
-            <b id="confirmText">Are you sure?</b>
-            <button class="green" onclick="confirmYes()">Confirm</button>
-            <button class="red" onclick="closeConfirm()">Cancel</button>
-        </div>
+    <div class="actions">
+        <button id="addStaffBtn" onclick="showStaffForm()">Add New Staff +</button>
+        <button id="deleteStaffBtn" onclick="toggleDeleteStaff()">Delete Staff</button>
+        <button id="editStaffBtn" onclick="toggleEditStaff()">Edit Staff</button>
     </div>
 
-    <script src="admin.js"></script>
+    <div id="staffForm" class="form-card hidden">
+        <label>Name: <input id="staffName"></label>
+        <label>Staff ID: <input id="staffId"></label>
+
+        <label>Role:
+            <select id="staffRole">
+                <option>Admin</option>
+                <option>Doctor</option>
+                <option>Pharmacist</option>
+            </select>
+        </label>
+
+        <label>Password: <input id="staffPassword" type="password"></label>
+
+        <button class="green" id="saveStaffBtn" onclick="saveStaff()">Create</button>
+        <button class="red" onclick="hideStaffForm()">Cancel</button>
+    </div>
+
+    <div id="staffContent" class="cards"></div>
+</section>
+
+<div id="confirmBox" class="modal hidden">
+    <div class="modal-card">
+        <b id="confirmText">Are you sure?</b>
+        <button class="green" onclick="confirmYes()">Confirm</button>
+        <button class="red" onclick="closeConfirm()">Cancel</button>
+    </div>
+</div>
+
+<script src="admin.js"></script>
 </body>
 </html>

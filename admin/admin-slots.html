@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
- <div id="header">
+
+<div id="header">
     <div id="leftSection">
         <button class="iconBtn" onclick="history.back()">
             <img class="icon" src="../images/backIconDark.png" alt="Back">
@@ -20,17 +21,20 @@
             <li><a href="profileAdmin.html">Dashboard</a></li>
             <li><a href="admin-appointments.html">Appointments</a></li>
             <li><a href="admin-queue.html">Queue</a></li>
-            <li  class="active"><a href="admin-slots.html">Slots</a></li>
-            <li><a href="admin-staff.html">Staff</a></li>
+            <li><a href="admin-history.html">History</a></li>
+            <li class="active"><a href="admin-slots.html">Slots</a></li>
+            <li><a href="admin-staff.html">Users</a></li>
         </ul>
     </nav>
 
     <div id="rightSection">
         <h1>Welcome, Admin!</h1>
+
         <div class="profileContainer">
             <button class="iconBtn" type="button" onclick="toggleMenu()">
                 <img class="icon" src="../images/profileIconDark.png" alt="Profile">
             </button>
+
             <div id="profileDropdown">
                 <a href="admin-profile.html">View Profile</a>
                 <a href="#" onclick="logout()">Log Out</a>
@@ -38,45 +42,37 @@
         </div>
     </div>
 </div>
-    <main>
-        <nav>
-    <a class="tab" href="profileAdmin.html">Dashboard</a>
-    <a class="tab" href="admin-appointments.html">Appointments</a>
-    <a class="tab" href="admin-queue.html">Queue Management</a>
-    <a class="tab active" href="admin-slots.html">Slots</a>
-    <a class="tab" href="admin-staff.html">Staff</a>
-</nav>
 
-        
-        <section id="slots" class="page active">
-            <div class="actions">
-                <button id="createSlotBtn" onclick="showSlotForm()">Create new slots +</button>
-                <button id="deleteSlotBtn" onclick="toggleDeleteSlot()">Delete slots</button>
-            </div>
+<section id="slots" class="page active">
+    <h2>Slot Management</h2>
+    <p>Create, manage and remove available appointment slots.</p>
 
-            <div id="slotForm" class="form-card hidden">
-                <label>Date: <input id="slotDate" placeholder="14/3/2026"></label>
-                <label>Time: <input id="slotTime" placeholder="8:00 am"></label>
-                <label>Doctor: <input id="slotDoctor" placeholder="A"></label>
-                <label>Capacity: <input id="slotCapacity" placeholder="10"></label>
-                <button class="green" onclick="createSlot()">Create</button>
-                <button class="red" onclick="hideSlotForm()">Cancel</button>
-            </div>
-
-            <div id="slotContent" class="cards"></div>
-        </section>
-
-        
-    </main>
-
-    <div id="confirmBox" class="modal hidden">
-        <div class="modal-card">
-            <b id="confirmText">Are you sure?</b>
-            <button class="green" onclick="confirmYes()">Confirm</button>
-            <button class="red" onclick="closeConfirm()">Cancel</button>
-        </div>
+    <div class="actions">
+        <button id="createSlotBtn" onclick="showSlotForm()">Create New Slot +</button>
+        <button id="deleteSlotBtn" onclick="toggleDeleteSlot()">Delete Slot</button>
     </div>
 
-    <script src="admin.js"></script>
+    <div id="slotForm" class="form-card hidden">
+        <label>Date: <input id="slotDate" placeholder="14/3/2026"></label>
+        <label>Time: <input id="slotTime" placeholder="8:00 am"></label>
+        <label>Doctor: <input id="slotDoctor" placeholder="Doctor Name"></label>
+        <label>Capacity: <input id="slotCapacity" placeholder="10"></label>
+
+        <button class="green" onclick="createSlot()">Create</button>
+        <button class="red" onclick="hideSlotForm()">Cancel</button>
+    </div>
+
+    <div id="slotContent" class="cards"></div>
+</section>
+
+<div id="confirmBox" class="modal hidden">
+    <div class="modal-card">
+        <b id="confirmText">Are you sure?</b>
+        <button class="green" onclick="confirmYes()">Confirm</button>
+        <button class="red" onclick="closeConfirm()">Cancel</button>
+    </div>
+</div>
+
+<script src="admin.js"></script>
 </body>
 </html>

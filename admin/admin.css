@@ -100,11 +100,7 @@ body {
     border-radius: 999px;
 }
 
-#header nav li:hover {
-    background-color: #BAE6FD;
-    color: #075985;
-}
-
+#header nav li:hover,
 #header nav li.active {
     background-color: #0284C7;
     color: white;
@@ -147,7 +143,7 @@ body {
     color: #0284C7;
 }
 
-/* MAIN CONTENT */
+/* MAIN */
 section {
     width: 80%;
     max-width: 1350px;
@@ -242,7 +238,7 @@ section p {
     font-weight: bold;
 }
 
-/* APPOINTMENTS */
+/* SUB MENU */
 .sub-menu {
     display: flex;
     gap: 10px;
@@ -259,15 +255,13 @@ section p {
     cursor: pointer;
 }
 
-.sub:hover {
-    background: #BAE6FD;
-}
-
+.sub:hover,
 .sub.active {
     background: #0284C7;
     color: white;
 }
 
+/* DATE FILTER */
 .date-filter {
     margin: 15px 0 25px;
 }
@@ -307,7 +301,7 @@ section p {
     gap: 8px;
 }
 
-/* ACTION BUTTONS */
+/* ACTIONS */
 .actions {
     display: flex;
     gap: 14px;
@@ -329,8 +323,8 @@ section p {
     color: #0369A1;
 }
 
-.actions button.active,
-.actions button:hover {
+.actions button:hover,
+.actions button.active {
     background: #0284C7;
     color: white;
 }
@@ -384,7 +378,7 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
-/* STATUS DOTS */
+/* DOTS */
 .dot {
     display: inline-block;
     width: 13px;
@@ -405,7 +399,7 @@ select:focus {
     background: #3B82F6;
 }
 
-/* DELETE / EDIT ICON */
+/* ICON ACTIONS */
 .delete-x,
 .edit-icon {
     position: absolute;
@@ -479,12 +473,115 @@ select:focus {
         width: 100%;
     }
 
-    #header {
-        padding: 14px 18px;
-    }
-
     #header nav ul {
         flex-wrap: wrap;
         justify-content: center;
+    }
+}
+
+.admin-section {
+    width: 80%;
+    max-width: 1350px;
+    margin: 36px auto;
+}
+
+.filter-bar {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 24px 0;
+}
+
+.filter-bar input,
+.filter-bar select {
+    height: 44px;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    padding: 0 14px;
+    background: #FFFFFF;
+    font-size: 14px;
+}
+
+.table-card {
+    background: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+    overflow-x: auto;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    background: #E0F2FE;
+    color: #075985;
+    padding: 15px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.admin-table td {
+    padding: 14px 15px;
+    border-top: 1px solid #E2E8F0;
+    font-size: 14px;
+    color: #334155;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-pending {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.status-arrived {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.status-completed {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.status-cancelled,
+.status-noshow {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.table-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 8px 12px;
+    background: #0284C7;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.table-btn:hover {
+    background: #0369A1;
+}
+
+.no-show-btn {
+    background: #DC2626;
+}
+
+.no-show-btn:hover {
+    background: #B91C1C;
+}
+
+@media (max-width: 900px) {
+    .filter-bar {
+        grid-template-columns: 1fr;
     }
 }

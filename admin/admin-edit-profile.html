@@ -1,74 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Admin Profile</title>
-    <link rel="stylesheet" href="admin-profile.css">
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Edit Admin Profile</title>
+
+<link rel="stylesheet"
+href="admin-profile.css">
+
 </head>
+
 <body>
 
 <div id="header">
 
-    <div id="leftSection">
+<div id="leftSection">
 
-        <button class="iconBtn"
-                onclick="window.location.href='admin-profile.html'">
-            ←
-        </button>
+<button class="iconBtn"
+onclick="window.location.href='admin-profile.html'">
 
-        <h1>UTeM Clinic Queue System</h1>
+<img class="icon"
+src="../images/backIconDark.png"
+alt="Back">
 
-    </div>
+</button>
 
-    <div id="rightSection">
-        <h1>Edit Profile</h1>
-    </div>
+<h1>UTeM Clinic Queue System</h1>
+
+</div>
+
+<div id="rightSection">
+
+<h1>Edit Profile</h1>
+
+</div>
 
 </div>
 
 <div class="profilePage">
 
-    <section class="profileCard">
+<section class="profileCard">
 
-        <div class="editHeader">
-            <div class="profileImage">👤</div>
-        </div>
+<div class="editHeader">
 
-        <form class="editForm">
+<div class="profileImage">
+👤
+</div>
 
-            <label>Full Name</label>
-            <input type="text" value="Ahmad Marthes">
+</div>
 
-            <label>Email Address</label>
-            <input type="email" value="admin@utem.edu.my">
+<form class="editForm">
 
-            <label>Phone Number</label>
-            <input type="text" value="0112345678">
+<label>Full Name</label>
 
-            <label>Department</label>
-            <input type="text" value="PKU UTeM">
+<input type="text"
+value="Ahmad Marthes">
 
-            <label>Password</label>
-            <input type="password" value="12345678">
+<label>Email Address</label>
 
-            <button type="button"
-                    class="saveBtn"
-                    onclick="saveProfile()">
-                Save Changes
-            </button>
+<input type="email"
+value="admin@utem.edu.my">
 
-        </form>
+<label>Phone Number</label>
 
-    </section>
+<input type="text"
+value="0112345678">
+
+<label>Department</label>
+
+<input type="text"
+value="PKU UTeM">
+
+<label>Password</label>
+
+<input type="password"
+value="12345678">
+
+<button
+type="button"
+class="saveBtn"
+onclick="saveProfile()">
+
+Save Changes
+
+</button>
+
+</form>
+
+</section>
 
 </div>
 
 <script>
-function saveProfile() {
-    alert("Profile updated successfully!");
-    window.location.href = "admin-profile.html";
+
+function saveProfile(){
+
+alert("Profile updated successfully!");
+
+window.location.href="admin-profile.html";
+
 }
+
 </script>
 
 </body>

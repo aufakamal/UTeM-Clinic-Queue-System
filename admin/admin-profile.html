@@ -10,80 +10,103 @@
 <body>
 
 <div id="header">
+
     <div id="leftSection">
         <button class="iconBtn" onclick="window.location.href='profileAdmin.html'">
-            ←
+            <img class="icon" src="../images/backIconDark.png" alt="Back">
         </button>
 
         <h1>UTeM Clinic Queue System</h1>
     </div>
 
     <div id="rightSection">
+
         <h1>Admin Profile</h1>
 
         <div class="profileContainer">
-            <button class="iconBtn" type="button" onclick="toggleMenu()">
-                👤
+
+            <button class="iconBtn" onclick="toggleMenu()">
+                <img class="icon" src="../images/profileIconDark.png" alt="Profile">
             </button>
 
             <div id="profileDropdown">
                 <a href="admin-profile.html">View Profile</a>
                 <a href="../login_register/mainPage.php">Log Out</a>
             </div>
+
         </div>
+
     </div>
+
 </div>
 
 <div class="profilePage">
-    <section class="profileCard">
 
-        <div class="profileHeader">
-            <div class="profileImage">👤</div>
+<section class="profileCard">
 
-            <div class="userInfo">
-                <h2>Ahmad Marthes</h2>
-                <p>admin@utem.edu.my</p>
-            </div>
+<div class="profileHeader">
 
-            <div class="profileActions">
-                <span class="roleName">Admin</span>
+<div class="profileImage">
+👤
+</div>
 
-                <a href="admin-edit-profile.html" class="editBtn">
-                    Change Profile Information
-                </a>
-            </div>
-        </div>
+<div class="userInfo">
+<h2>Ahmad Marthes</h2>
+<p>admin@utem.edu.my</p>
+</div>
 
-        <div class="profileContent">
+<div class="profileActions">
 
-            <div class="leftInfo">
-                <label>Staff ID</label>
-                <input type="text" value="A001" readonly>
+<span class="roleName">
+Administrator
+</span>
 
-                <label>Phone Number</label>
-                <input type="text" value="0112345678" readonly>
+<a href="admin-edit-profile.html"
+class="editBtn">
+Change Profile Information
+</a>
 
-                <label>Password</label>
-                <input type="password" value="12345678" readonly>
-            </div>
+</div>
 
-            <div class="rightInfo">
-                <h3>Staff Information</h3>
+</div>
 
-                <label>Department</label>
-                <input type="text" value="PKU UTeM" readonly>
+<div class="profileContent">
 
-                <label>Role</label>
-                <input type="text" value="Administrator" readonly>
+<div class="leftInfo">
 
-                <label>Status</label>
-                <input type="text" value="Active" readonly>
-            </div>
+<label>Staff ID</label>
+<input type="text" value="A001" readonly>
 
-        </div>
-    </section>
+<label>Phone Number</label>
+<input type="text" value="0112345678" readonly>
+
+<label>Password</label>
+<input type="password" value="12345678" readonly>
+
+</div>
+
+<div class="rightInfo">
+
+<h3>Staff Information</h3>
+
+<label>Department</label>
+<input type="text" value="PKU UTeM" readonly>
+
+<label>Role</label>
+<input type="text" value="Administrator" readonly>
+
+<label>Status</label>
+<input type="text" value="Active" readonly>
+
+</div>
+
+</div>
+
+</section>
+
 </div>
 
 <script src="admin.js"></script>
+
 </body>
 </html>

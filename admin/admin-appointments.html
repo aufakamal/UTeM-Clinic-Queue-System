@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UTeM PKU Admin</title>
+    <title>Appointments - Admin</title>
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -11,9 +11,8 @@
 <div id="header">
     <div id="leftSection">
         <button class="iconBtn" onclick="history.back()">
-            <img class="icon" src="../images/backIconDark.png" alt="Back Button">
+            <img class="icon" src="../images/backIconDark.png" alt="Back">
         </button>
-
         <h1>UTeM Clinic Queue System</h1>
     </div>
 
@@ -22,19 +21,18 @@
             <li><a href="profileAdmin.html">Dashboard</a></li>
             <li class="active"><a href="admin-appointments.html">Appointments</a></li>
             <li><a href="admin-queue.html">Queue</a></li>
+            <li><a href="admin-history.html">History</a></li>
             <li><a href="admin-slots.html">Slots</a></li>
-            <li><a href="admin-staff.html">Staff</a></li>
+            <li><a href="admin-staff.html">Users</a></li>
         </ul>
     </nav>
 
     <div id="rightSection">
         <h1>Welcome, Admin!</h1>
-
         <div class="profileContainer">
             <button class="iconBtn" type="button" onclick="toggleMenu()">
-                <img class="icon" src="../images/profileIconDark.png" alt="Profile Icon">
+                <img class="icon" src="../images/profileIconDark.png" alt="Profile">
             </button>
-
             <div id="profileDropdown">
                 <a href="admin-profile.html">View Profile</a>
                 <a href="#" onclick="logout()">Log Out</a>
@@ -43,25 +41,53 @@
     </div>
 </div>
 
-<section id="appointments" class="page active">
+<section class="admin-section">
     <h2>Appointment Management</h2>
-    <p>View appointments by date and manage late arrivals.</p>
+    <p>Search, filter, and update today’s clinic appointments.</p>
 
-    <div class="sub-menu">
-        <button class="sub active" onclick="showAppointmentDates()">Dates</button>
-        <button class="sub" onclick="showLateArrival()">Late Arrival</button>
+    <div class="filter-bar">
+        <input type="text" id="appointmentSearch" placeholder="Search by patient name, ID, or type..." onkeyup="filterAppointments()">
+
+        <input type="date" id="appointmentDateFilter" onchange="filterAppointments()">
+
+        <select id="appointmentStatusFilter" onchange="filterAppointments()">
+            <option value="All">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Arrived">Arrived</option>
+            <option value="No Show">No Show</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+
+        <select id="appointmentTypeFilter" onchange="filterAppointments()">
+            <option value="All">All Types</option>
+            <option value="Same-Day">Same-Day</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Follow-Up">Follow-Up</option>
+            <option value="Medical Checkup">Medical Checkup</option>
+        </select>
     </div>
 
-    <div id="appointmentContent"></div>
+    <div class="table-card">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Appointment ID</th>
+                    <th>Patient</th>
+                    <th>User ID</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Time Slot</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="appointmentTableBody">
+            </tbody>
+        </table>
+    </div>
 </section>
-
-<div id="confirmBox" class="modal hidden">
-    <div class="modal-card">
-        <b id="confirmText">Are you sure?</b>
-        <button class="green" onclick="confirmYes()">Confirm</button>
-        <button class="red" onclick="closeConfirm()">Cancel</button>
-    </div>
-</div>
 
 <script src="admin.js"></script>
 </body>
