@@ -43,35 +43,39 @@
     </div>
 </div>
 
-<section id="staff" class="page active">
-    <h2>Staff Management</h2>
-    <p>Add, edit or remove clinic staff accounts.</p>
+<section id="users" class="page active">
+    <h2>User Management</h2>
+    <p>View and filter all system users.</p>
 
-    <div class="actions">
-        <button id="addStaffBtn" onclick="showStaffForm()">Add New Staff +</button>
-        <button id="deleteStaffBtn" onclick="toggleDeleteStaff()">Delete Staff</button>
-        <button id="editStaffBtn" onclick="toggleEditStaff()">Edit Staff</button>
+    <div class="filter-bar">
+        <input type="text" id="userSearch" placeholder="Search user ID, name, email, or phone..." onkeyup="filterUsers()">
+
+        <select id="userRoleFilter" onchange="filterUsers()">
+            <option value="All">All Roles</option>
+            <option value="Admin">Admin</option>
+            <option value="Doctor">Doctor</option>
+            <option value="Patient">Patient</option>
+            <option value="Pharmacist">Pharmacist</option>
+        </select>
     </div>
 
-    <div id="staffForm" class="form-card hidden">
-        <label>Name: <input id="staffName"></label>
-        <label>Staff ID: <input id="staffId"></label>
+    <div class="table-card">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Full Name</th>
+                    <th>Role</th>
+                    <th>Gender</th>
+                    <th>Email</th>
+                    <th>Phone No</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
 
-        <label>Role:
-            <select id="staffRole">
-                <option>Admin</option>
-                <option>Doctor</option>
-                <option>Pharmacist</option>
-            </select>
-        </label>
-
-        <label>Password: <input id="staffPassword" type="password"></label>
-
-        <button class="green" id="saveStaffBtn" onclick="saveStaff()">Create</button>
-        <button class="red" onclick="hideStaffForm()">Cancel</button>
+            <tbody id="usersTableBody"></tbody>
+        </table>
     </div>
-
-    <div id="staffContent" class="cards"></div>
 </section>
 
 <div id="confirmBox" class="modal hidden">

@@ -585,3 +585,37 @@ select:focus {
         grid-template-columns: 1fr;
     }
 }
+
+.single-filter {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+}
+
+.btn-edit{
+    background:#0E8AD7;
+    color:white;
+    border:none;
+    padding:8px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn-edit:hover{
+    background:#0A6EB0;
+}
+
+.btn-delete{
+    background:#D7263D;
+    color:white;
+    border:none;
+    padding:8px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    margin-left:8px;
+}
+
+.btn-delete:hover{
+    background:#B91C2C;
+}

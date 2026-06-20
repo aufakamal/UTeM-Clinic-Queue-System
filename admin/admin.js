@@ -245,24 +245,105 @@ function hideSlotForm() {
     document.getElementById("createSlotBtn").classList.remove("active");
 }
 
-function createSlot() {
-    data.slots.push({
-        slot: "Slot " + (data.slots.length + 1),
-        doctor: document.getElementById("slotDoctor").value || "A",
-        date: document.getElementById("slotDate").value || "14/3/2026",
-        time: document.getElementById("slotTime").value || "8:00 am",
-        capacity: document.getElementById("slotCapacity").value || "10"
+async function createSlot() {
+    const formData = new FormData();
+
+    formData.append("slotDate", document.getElementById("slotDate").value);
+    formData.append("startTime", document.getElementById("slotStartTime").value);
+    formData.append("endTime", document.getElementById("slotEndTime").value);
+    formData.append("slotType", document.getElementById("slotType").value);
+    formData.append("capacity", document.getElementById("slotCapacity").value);
+
+    const response = await fetch("../database/addSlot.php", {
+        method: "POST",
+        body: formData
     });
 
-    saveData();
-    hideSlotForm();
-    renderSlots();
+    const result = await response.json();
+
+    if (result.success) {
+        alert("Slot added successfully.");
+        hideSlotForm();
+        loadSlots();
+    } else {
+        alert("Failed to add slot.");
+    }
+}
+
+async function deleteSlot(slotID) {
+    if (!confirm("Delete this slot?")) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("slotID", slotID);
+
+    const response = await fetch("../database/deleteSlot.php", {
+        method: "POST",
+        body: formData
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        alert("Slot deleted successfully.");
+        loadSlots();
+    } else {
+        alert(result.message || "Failed to delete slot.");
+    }
 }
 
 function toggleDeleteSlot() {
     deleteSlotMode = !deleteSlotMode;
     document.getElementById("deleteSlotBtn").classList.toggle("active", deleteSlotMode);
     renderSlots();
+}
+
+function editSlot(slotID) {
+    const slot = slotList.find(s => s.slotID == slotID);
+
+    document.getElementById("slotDate").value = slot.slotDate;
+    document.getElementById("slotStartTime").value = slot.startTime;
+    document.getElementById("slotEndTime").value = slot.endTime;
+    document.getElementById("slotType").value = slot.slotType;
+    document.getElementById("slotCapacity").value = slot.capacity;
+
+    document.getElementById("slotForm").classList.remove("hidden");
+
+    const saveBtn = document.querySelector("#slotForm .green");
+    saveBtn.textContent = "Update";
+    saveBtn.setAttribute("onclick", `updateSlot(${slotID})`);
+}
+
+async function updateSlot(slotID) {
+    const formData = new FormData();
+
+    formData.append("slotID", slotID);
+    formData.append("slotDate", document.getElementById("slotDate").value);
+    formData.append("startTime", document.getElementById("slotStartTime").value);
+    formData.append("endTime", document.getElementById("slotEndTime").value);
+    formData.append("slotType", document.getElementById("slotType").value);
+    formData.append("capacity", document.getElementById("slotCapacity").value);
+
+    const response = await fetch("../database/updateSlot.php", {
+        method: "POST",
+        body: formData
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        alert("Slot updated successfully.");
+        hideSlotForm();
+
+        const saveBtn = document.querySelector("#slotForm .green");
+        saveBtn.textContent = "Create";
+        saveBtn.setAttribute("onclick", "createSlot()");
+
+        loadSlots();
+    } else {
+        alert("Failed to update slot.");
+    }
 }
 
 function askDeleteSlot(index) {
@@ -509,237 +590,158 @@ if (document.getElementById("appointmentContent")) {
     showAppointmentDates();
 }
 
-const appointmentList = [
-    {
-        id: "AP001",
-        patient: "Ailene Farhana",
-        userID: "ST03295",
-        type: "Same-Day",
-        date: "2026-04-12",
-        time: "8:00 AM - 12:00 PM",
-        status: "Pending"
-    },
-    {
-        id: "AP002",
-        patient: "Ali Ahmad",
-        userID: "ST04521",
-        type: "Scheduled",
-        date: "2026-04-12",
-        time: "10:00 AM",
-        status: "Arrived"
-    },
-    {
-        id: "AP003",
-        patient: "Nur Aisyah",
-        userID: "ST07834",
-        type: "Medical Checkup",
-        date: "2026-04-13",
-        time: "2:00 PM",
-        status: "Pending"
-    },
-    {
-        id: "AP004",
-        patient: "Adam Lee",
-        userID: "ST08810",
-        type: "Follow-Up",
-        date: "2026-04-14",
-        time: "9:30 AM",
-        status: "Completed"
-    }
-];
+let appointmentList = [];
 
-function renderAppointments(list = appointmentList) {
+async function loadAppointments() {
+    try {
+        console.log("Loading appointments...");
+
+        const response = await fetch("../database/getAppointments.php");
+        appointmentList = await response.json();
+
+        console.log("Appointments from database:", appointmentList);
+
+        renderAppointments();
+
+    } catch (err) {
+        console.log("Appointment error:", err);
+    }
+}
+    function renderAppointments(list = appointmentList) {
+
     const tableBody = document.getElementById("appointmentTableBody");
+
     if (!tableBody) return;
 
     tableBody.innerHTML = "";
 
     list.forEach(appt => {
-        const statusClass = appt.status.toLowerCase().replace(" ", "");
+
+        const patientName =
+            appt.appointmentFor === "Dependant"
+                ? appt.dependantName
+                : appt.fullName;
+
+        const attendanceStatus = appt.attendanceStatus || "Pending";
 
         tableBody.innerHTML += `
             <tr>
-                <td>${appt.id}</td>
-                <td>${appt.patient}</td>
+                <td>${appt.appointmentID}</td>
+                <td>${patientName}</td>
                 <td>${appt.userID}</td>
-                <td>${appt.type}</td>
-                <td>${appt.date}</td>
-                <td>${appt.time}</td>
+                <td>${appt.appointmentType}</td>
+                <td>${appt.slotDate}</td>
+                <td>${appt.startTime} - ${appt.endTime}</td>
+
                 <td>
-                    <span class="status-badge status-${statusClass}">
-                        ${appt.status}
+                    <span class="status-badge status-${appt.appointmentStatus.toLowerCase().replaceAll(" ", "")}">
+                        ${appt.appointmentStatus}
                     </span>
                 </td>
+
                 <td>
-                    <button class="table-btn no-show-btn" onclick="markNoShow('${appt.id}')">
-                        No Show
-                    </button>
+                    <span class="status-badge status-${attendanceStatus.toLowerCase().replaceAll(" ", "")}">
+                        ${attendanceStatus}
+                    </span>
+                </td>
+
+                <td>
+                    ${
+                        attendanceStatus === "Pending"
+                        ? `
+                            <button class="table-btn" onclick="markArrived('${appt.appointmentID}')">
+                                Arrived
+                            </button>
+
+                            <button class="table-btn no-show-btn" onclick="markNoShow('${appt.appointmentID}')">
+                                No Show
+                            </button>
+                          `
+                        : "-"
+                    }
                 </td>
             </tr>
         `;
     });
 }
-
 function filterAppointments() {
     const search = document.getElementById("appointmentSearch").value.toLowerCase();
-    const date = document.getElementById("appointmentDateFilter").value;
     const status = document.getElementById("appointmentStatusFilter").value;
     const type = document.getElementById("appointmentTypeFilter").value;
 
     const filtered = appointmentList.filter(appt => {
+        const patientName =
+            appt.appointmentFor === "Dependant"
+                ? appt.dependantName
+                : appt.fullName;
+
         const matchesSearch =
-            appt.patient.toLowerCase().includes(search) ||
+            appt.appointmentID.toString().toLowerCase().includes(search) ||
             appt.userID.toLowerCase().includes(search) ||
-            appt.type.toLowerCase().includes(search) ||
-            appt.id.toLowerCase().includes(search);
+            appt.appointmentType.toLowerCase().includes(search) ||
+            patientName.toLowerCase().includes(search);
 
-        const matchesDate = date === "" || appt.date === date;
-        const matchesStatus = status === "All" || appt.status === status;
-        const matchesType = type === "All" || appt.type === type;
+        const matchesStatus =
+            status === "All" || status === "" || appt.appointmentStatus === status;
 
-        return matchesSearch && matchesDate && matchesStatus && matchesType;
+        const matchesType =
+            type === "All" || type === "" || appt.appointmentType === type;
+
+        return matchesSearch && matchesStatus && matchesType;
     });
 
     renderAppointments(filtered);
 }
 
-function markNoShow(id) {
-    const appointment = appointmentList.find(appt => appt.id === id);
+async function markNoShow(id) {
+    if (!confirm("Mark this appointment as No Show?")) {
+        return;
+    }
 
-    if (appointment) {
-        appointment.status = "No Show";
-        filterAppointments();
+    const formData = new FormData();
+    formData.append("appointmentID", id);
+
+    const response = await fetch("../database/markNoShow.php", {
+        method: "POST",
+        body: formData
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        alert("Appointment marked as No Show.");
+        loadAppointments();
+    } else {
+        alert("Failed to mark No Show.");
+    }
+}
+
+async function markArrived(id) {
+    const formData = new FormData();
+    formData.append("appointmentID", id);
+
+    const response = await fetch("../database/markArrived.php", {
+        method: "POST",
+        body: formData
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        alert("Patient marked as arrived.");
+        loadAppointments();
+    } else {
+        alert("Failed to mark arrived.");
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    renderAppointments();
+    loadAppointments();
 });
 
-const consultationHistory = [
+    
 
-{
-id:"C001",
-patient:"Ali Ahmad",
-date:"2026-06-20",
-doctor:"Dr. Ahmad",
-type:"Same-Day",
-diagnosis:"Common Flu",
-status:"Completed"
-},
 
-{
-id:"C002",
-patient:"Nur Aisyah",
-date:"2026-06-19",
-doctor:"Dr. Lim",
-type:"Follow-Up",
-diagnosis:"Migraine",
-status:"Completed"
-},
-
-{
-id:"C003",
-patient:"Adam Lee",
-date:"2026-06-18",
-doctor:"Dr. Siti",
-type:"Scheduled",
-diagnosis:"Medical Check-up",
-status:"Completed"
-}
-
-];
-
-function renderHistory(data=consultationHistory){
-
-const table=document.getElementById("historyTableBody");
-
-if(!table) return;
-
-table.innerHTML="";
-
-data.forEach(item=>{
-
-table.innerHTML+=`
-
-<tr>
-
-<td>${item.id}</td>
-
-<td>${item.patient}</td>
-
-<td>${item.date}</td>
-
-<td>${item.doctor}</td>
-
-<td>${item.type}</td>
-
-<td>${item.diagnosis}</td>
-
-<td>
-<span class="status-badge status-completed">
-Completed
-</span>
-</td>
-
-</tr>
-
-`;
-
-});
-
-}
-
-function filterHistory(){
-
-const search=document.getElementById("historySearch").value.toLowerCase();
-
-const doctor=document.getElementById("doctorFilter").value;
-
-const date=document.getElementById("historyDate").value;
-
-const type=document.getElementById("historyType").value;
-
-const filtered=consultationHistory.filter(item=>{
-
-const matchSearch=
-item.patient.toLowerCase().includes(search)||
-item.id.toLowerCase().includes(search);
-
-const matchDoctor=
-doctor==="All"||
-item.doctor===doctor;
-
-const matchDate=
-date===""||
-item.date===date;
-
-const matchType=
-type==="All"||
-item.type===type;
-
-return matchSearch &&
-matchDoctor &&
-matchDate &&
-matchType;
-
-});
-
-renderHistory(filtered);
-
-}
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-renderHistory();
-
-});
-
-const queueList = [
-    { queueNo: "Q001", patient: "Ailene Farhana", userID: "ST03295", type: "Same-Day", room: "Room 1", status: "Waiting" },
-    { queueNo: "Q002", patient: "Ali Ahmad", userID: "ST04521", type: "Scheduled", room: "Room 2", status: "In Consultation" },
-    { queueNo: "Q003", patient: "Nur Aisyah", userID: "ST07834", type: "Same-Day", room: "Pharmacy", status: "At Pharmacy" }
-];
 
 function renderQueueTable(list = queueList) {
     const table = document.getElementById("queueTableBody");
@@ -832,4 +834,437 @@ function generateDefaultSlots() {
 
     localStorage.setItem("adminSlots", JSON.stringify(defaultSlots));
     localStorage.setItem("defaultSlotsCreated", "true");
+}
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("Admin JS loaded");
+
+    if (document.getElementById("appointmentTableBody")) {
+        console.log("Appointment table found");
+        loadAppointments();
+    }
+});
+
+let queueList = [];
+
+async function loadQueue() {
+    try {
+        const response = await fetch("../database/getQueue.php");
+        queueList = await response.json();
+        renderQueueTable();
+    } catch (err) {
+        console.log("Queue error:", err);
+    }
+}
+
+function renderQueueTable(list = queueList) {
+    const table = document.getElementById("queueTableBody");
+    if (!table) return;
+
+    table.innerHTML = "";
+
+    list.forEach(item => {
+        const statusClass = item.queueStatus
+            .toLowerCase()
+            .replaceAll(" ", "");
+
+        table.innerHTML += `
+            <tr>
+                <td>Q${item.queueNo.toString().padStart(3, "0")}</td>
+                <td>${item.fullName}</td>
+                <td>${item.userID}</td>
+                <td>${item.appointmentType}</td>
+                <td>${item.slotDate}</td>
+                <td>${item.startTime} - ${item.endTime}</td>
+                <td>
+                    <span class="status-badge status-${statusClass}">
+                        ${item.queueStatus}
+                    </span>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function filterQueue() {
+    const search = document.getElementById("queueSearch").value.toLowerCase();
+    const status = document.getElementById("queueStatusFilter").value;
+
+    const filtered = queueList.filter(item => {
+        const matchesSearch =
+            item.queueNo.toString().includes(search) ||
+            item.fullName.toLowerCase().includes(search) ||
+            item.userID.toLowerCase().includes(search);
+
+        const matchesStatus =
+            status === "All" || item.queueStatus === status;
+
+        return matchesSearch && matchesStatus;
+    });
+
+    renderQueueTable(filtered);
+}
+
+// ==========================
+// SLOT MANAGEMENT
+// ==========================
+
+let slotList = [];
+
+async function loadSlots() {
+    try {
+        const response = await fetch("../database/getSlots.php");
+        slotList = await response.json();
+        renderSlotTable();
+    } catch (err) {
+        console.error("Slot error:", err);
+    }
+}
+
+function renderSlotTable(list = slotList) {
+
+    const table = document.getElementById("slotTableBody");
+
+    if (!table) return;
+
+    table.innerHTML = "";
+
+    list.forEach(slot => {
+
+        table.innerHTML += `
+        <tr>
+
+            <td>${slot.slotID}</td>
+            <td>${slot.slotDate}</td>
+            <td>${slot.startTime}</td>
+            <td>${slot.endTime}</td>
+            <td>${slot.slotType}</td>
+            <td>${slot.capacity}</td>
+
+            <td>
+                <button class="btn-edit" onclick="editSlot(${slot.slotID})">Edit</button>
+                <button class="btn-delete" onclick="deleteSlot(${slot.slotID})">Delete</button>
+            </td>
+
+        </tr>
+        `;
+    });
+
+}
+
+function filterSlots(){
+
+    const search =
+    document.getElementById("slotSearch").value.toLowerCase();
+
+    const type =
+    document.getElementById("slotTypeFilter").value;
+
+    const filtered = slotList.filter(slot=>{
+
+        const matchesSearch =
+
+            slot.slotDate.toLowerCase().includes(search) ||
+
+            slot.slotType.toLowerCase().includes(search) ||
+
+            slot.startTime.includes(search) ||
+
+            slot.endTime.includes(search);
+
+        const matchesType =
+
+            type==="All" ||
+
+            slot.slotType===type;
+
+        return matchesSearch && matchesType;
+
+    });
+
+    renderSlotTable(filtered);
+
+}
+
+async function loadWeeklyAppointments() {
+
+    const response = await fetch("../database/getWeeklyAppointments.php");
+    const data = await response.json();
+    console.log("Weekly Data:", data);
+
+    const values = [
+        data[2],
+        data[3],
+        data[4],
+        data[5],
+        data[6],
+        data[7],
+        data[1]
+    ];
+
+    const days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
+    const chart = document.getElementById("weeklyChart");
+
+    chart.innerHTML = "";
+    const maxValue = Math.max(...values, 1);
+
+
+    values.forEach((value, index) => {
+    const barHeight = value === 0 ? 25 : (value / maxValue) * 120;
+
+    chart.innerHTML += `
+        <div class="chart-item">
+            <div class="chart-bar" style="height:${barHeight}px">
+                ${value}
+            </div>
+            <div class="chart-label">${days[index]}</div>
+        </div>
+    `;
+});
+
+}
+
+async function loadDashboard() {
+    
+    try {
+        const response = await fetch("../database/getDashboard.php");
+        const data = await response.json();
+
+        document.getElementById("totalToday").textContent = data.totalAppointments;
+        document.getElementById("waitingPatients").textContent = data.waitingPatients;
+        document.getElementById("activeConsult").textContent = data.activeConsultations;
+        document.getElementById("availableDoctors").textContent = data.availableDoctors;
+
+    } catch (err) {
+        console.error("Dashboard error:", err);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("appointmentTableBody")) {
+        loadAppointments();
+    }
+
+    if (document.getElementById("queueTableBody")) {
+        loadQueue();
+    }
+
+    if (document.getElementById("historyTableBody")) {
+        loadHistory();
+    }
+
+    if(document.getElementById("slotTableBody")){
+    loadSlots();
+}
+
+if (document.getElementById("usersTableBody")) {
+    loadUsers();
+}
+
+if (document.getElementById("totalToday")) {
+    loadDashboard();
+}
+
+if (document.getElementById("weeklyChart")) {
+    loadWeeklyAppointments();
+}
+
+
+
+});
+
+let historyList = [];
+
+async function loadHistory() {
+    try {
+        const response = await fetch("../database/getHistory.php");
+        historyList = await response.json();
+        renderHistoryTable();
+    } catch (err) {
+        console.log("History error:", err);
+    }
+}
+
+function renderHistoryTable(list = historyList) {
+    const table = document.getElementById("historyTableBody");
+    if (!table) return;
+
+    table.innerHTML = "";
+
+    list.forEach(item => {
+        const statusClass = item.queueStatus
+            .toLowerCase()
+            .replaceAll(" ", "");
+
+        table.innerHTML += `
+            <tr>
+                <td>${item.consultationID}</td>
+                <td>Q${item.queueNo.toString().padStart(3, "0")}</td>
+                <td>${item.patientName}</td>
+                <td>${item.doctorName}</td>
+                <td>${item.startTime}</td>
+                <td>${item.endTime}</td>
+                <td>
+                    <span class="status-badge status-${statusClass}">
+                        ${item.queueStatus}
+                    </span>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function filterHistory() {
+    const search = document.getElementById("historySearch").value.toLowerCase();
+
+    const filtered = historyList.filter(item => {
+        return (
+            item.consultationID.toString().includes(search) ||
+            item.patientName.toLowerCase().includes(search) ||
+            item.doctorName.toLowerCase().includes(search) ||
+            item.queueNo.toString().includes(search)
+        );
+    });
+
+    renderHistoryTable(filtered);
+}
+
+// ================= USERS =================
+
+let users = [];
+
+async function loadUsers() {
+    try {
+        const response = await fetch("../database/getUsers.php");
+        users = await response.json();
+        renderUsers(users);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function renderUsers(data) {
+window.filterUsers = function () {
+    const search = document.getElementById("userSearch").value.toLowerCase();
+    const role = document.getElementById("userRoleFilter").value;
+
+    const filtered = users.filter(user => {
+        const matchesSearch =
+            user.userID.toLowerCase().includes(search) ||
+            user.fullName.toLowerCase().includes(search) ||
+            user.email.toLowerCase().includes(search) ||
+            user.phoneNo.toLowerCase().includes(search);
+
+        const matchesRole =
+            role === "All" || user.roleName === role;
+
+        return matchesSearch && matchesRole;
+    });
+
+    renderUsers(filtered);
+};
+    const tbody = document.getElementById("usersTableBody");
+
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    data.forEach(user => {
+
+        tbody.innerHTML += `
+        <tr>
+
+            <td>${user.userID}</td>
+            <td>${user.fullName}</td>
+            <td>${user.roleName}</td>
+            <td>${user.gender}</td>
+            <td>${user.email}</td>
+            <td>${user.phoneNo}</td>
+
+            <td>
+
+               <button class="btn-edit"
+onclick="editUser(
+'${user.userID}',
+'${user.fullName}',
+'${user.gender}',
+'${user.email}',
+'${user.phoneNo}'
+)">
+    Edit
+</button>
+
+                <button class="btn-delete" onclick="deleteUser('${user.userID}')">
+    Delete
+</button>
+
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+}
+
+async function deleteUser(userID) {
+    if (!confirm("Delete this user?")) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("userID", userID);
+
+    const response = await fetch("../database/deleteUser.php", {
+        method: "POST",
+        body: formData
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        alert("User deleted successfully.");
+        loadUsers();
+    } else {
+        alert(result.message || "Failed to delete user.");
+    }
+}
+
+async function editUser(userID, fullName, gender, email, phoneNo) {
+
+    const newName = prompt("Full Name:", fullName);
+    if (newName === null) return;
+
+    const newGender = prompt("Gender (Male/Female):", gender);
+    if (newGender === null) return;
+
+    const newEmail = prompt("Email:", email);
+    if (newEmail === null) return;
+
+    const newPhone = prompt("Phone Number:", phoneNo);
+    if (newPhone === null) return;
+
+    const formData = new FormData();
+    formData.append("userID", userID);
+    formData.append("fullName", newName);
+    formData.append("gender", newGender);
+    formData.append("email", newEmail);
+    formData.append("phoneNo", newPhone);
+
+    const response = await fetch("../database/updateUser.php", {
+        method: "POST",
+        body: formData
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        alert("User updated successfully.");
+        loadUsers();
+    } else {
+        alert(result.message || "Failed to update user.");
+    }
 }

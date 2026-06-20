@@ -55,63 +55,8 @@
 View completed consultations and previous clinic visits.
 </p>
 
-<div class="filter-bar">
-
-<input
-type="text"
-id="historySearch"
-placeholder="Search patient name or ID..."
-onkeyup="filterHistory()">
-
-<input
-type="date"
-id="historyDate"
-onchange="filterHistory()">
-
-<select
-id="doctorFilter"
-onchange="filterHistory()">
-
-<option value="All">
-All Doctors
-</option>
-
-<option>
-Dr. Ahmad
-</option>
-
-<option>
-Dr. Siti
-</option>
-
-<option>
-Dr. Lim
-</option>
-
-</select>
-
-<select
-id="historyType"
-onchange="filterHistory()">
-
-<option value="All">
-All Consultation Types
-</option>
-
-<option>
-Same-Day
-</option>
-
-<option>
-Scheduled
-</option>
-
-<option>
-Follow-Up
-</option>
-
-</select>
-
+<div class="filter-bar single-filter">
+    <input type="text" id="historySearch" placeholder="Search consultation ID, queue no, patient, or doctor..." onkeyup="filterHistory()">
 </div>
 
 <div class="table-card">
@@ -121,28 +66,18 @@ Follow-Up
 <thead>
 
 <tr>
-
-<th>ID</th>
-
-<th>Patient</th>
-
-<th>Date</th>
-
-<th>Doctor</th>
-
-<th>Consultation</th>
-
-<th>Diagnosis</th>
-
-<th>Status</th>
-
+    <th>Consultation ID</th>
+    <th>Queue No</th>
+    <th>Patient</th>
+    <th>Doctor</th>
+    <th>Start Time</th>
+    <th>End Time</th>
+    <th>Status</th>
 </tr>
 
 </thead>
 
-<tbody id="historyTableBody">
-
-</tbody>
+<tbody id="historyTableBody"></tbody>
 
 </table>
 
