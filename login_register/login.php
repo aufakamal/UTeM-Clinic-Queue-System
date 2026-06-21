@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 switch ($row['roleID']) {
 
                     case 1:
-                        header("Location: ../admin/profileAdmin.html");
+                        header("Location: ../admin/admin-dashboard.php");
                         break;
 
                     case 2:

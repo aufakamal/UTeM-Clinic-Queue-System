@@ -3,45 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UTeM PKU Admin</title>
+    <title>Slot Management - Admin</title>
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
-<div id="header">
-    <div id="leftSection">
-        <button class="iconBtn" onclick="history.back()">
-            <img class="icon" src="admin_images/backIconDark.png" alt="Back">
-        </button>
-        <h1>UTeM Clinic Queue System</h1>
-    </div>
-
-    <nav>
-        <ul>
-            <li><a href="profileAdmin.html">Dashboard</a></li>
-            <li><a href="admin-appointments.html">Appointments</a></li>
-            <li><a href="admin-queue.html">Queue</a></li>
-            <li><a href="admin-history.html">History</a></li>
-            <li class="active"><a href="admin-slots.html">Slots</a></li>
-            <li><a href="admin-staff.html">Users</a></li>
-        </ul>
-    </nav>
-
-    <div id="rightSection">
-        <h1>Welcome, Admin!</h1>
-
-        <div class="profileContainer">
-            <button class="iconBtn" type="button" onclick="toggleMenu()">
-                <img class="icon" src="admin_images/profileIconDark.png" alt="Profile">
-            </button>
-
-            <div id="profileDropdown">
-                <a href="admin-profile.html">View Profile</a>
-                <a href="#" onclick="logout()">Log Out</a>
-            </div>
-        </div>
-    </div>
-</div>
+<?php include 'inc/admin_header.php'; ?>
 
 <section id="slots" class="page active">
     <h2>Slot Management</h2>

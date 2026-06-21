@@ -8,47 +8,17 @@
 </head>
 <body>
 
-<div id="header">
-    <div id="leftSection">
-        <button class="iconBtn" onclick="history.back()">
-            <img class="icon" src="admin_images/backIconDark.png" alt="Back">
-        </button>
-        <h1>UTeM Clinic Queue System</h1>
-    </div>
-
-    <nav>
-        <ul>
-            <li><a href="profileAdmin.html">Dashboard</a></li>
-            <li><a href="admin-appointments.html">Appointments</a></li>
-            <li class="active"><a href="admin-queue.html">Queue</a></li>
-            <li><a href="admin-history.html">History</a></li>
-            <li><a href="admin-slots.html">Slots</a></li>
-            <li><a href="admin-staff.html">Users</a></li>
-        </ul>
-    </nav>
-
-    <div id="rightSection">
-        <h1>Welcome, Admin!</h1>
-
-        <div class="profileContainer">
-            <button class="iconBtn" type="button" onclick="toggleMenu()">
-                <img class="icon" src="admin_images/profileIconDark.png" alt="Profile">
-            </button>
-
-            <div id="profileDropdown">
-                <a href="admin-profile.html">View Profile</a>
-                <a href="#" onclick="logout()">Log Out</a>
-            </div>
-        </div>
-    </div>
-</div>
+<?php include 'inc/admin_header.php'; ?>
 
 <section id="queue" class="page active">
     <h2>Queue Management</h2>
     <p>View and filter today’s clinic queue.</p>
 
     <div class="filter-bar">
-        <input type="text" id="queueSearch" placeholder="Search queue no, patient, or user ID..." onkeyup="filterQueue()">
+        <input type="text"
+               id="queueSearch"
+               placeholder="Search queue no, patient, or user ID..."
+               onkeyup="filterQueue()">
 
         <select id="queueStatusFilter" onchange="filterQueue()">
             <option value="All">All Status</option>
@@ -72,7 +42,8 @@
                 </tr>
             </thead>
 
-            <tbody id="queueTableBody"></tbody>
+            <tbody id="queueTableBody">
+            </tbody>
         </table>
     </div>
 </section>

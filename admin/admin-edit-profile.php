@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Admin Profile</title>
+
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="admin-profile.css">
+
+</head>
+
+<body>
+
+<?php include 'inc/admin_header.php'; ?>
+
+<div class="profilePage">
+
+    <section class="profileCard">
+
+        <div class="editHeader">
+            <div class="profileImage">
+                👤
+            </div>
+        </div>
+
+        <form class="editForm">
+
+            <label>Full Name</label>
+            <input id="fullName" type="text">
+
+            <label>Email Address</label>
+            <input id="email" type="email">
+
+            <label>Phone Number</label>
+            <input id="phoneNo" type="text">
+
+            <button
+                type="button"
+                class="saveBtn"
+                onclick="saveProfile()">
+
+                Save Changes
+
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+
+<script>
+
+async function loadProfile(){
+
+    const response = await fetch("../database/getAdminProfile.php");
+
+    const admin = await response.json();
+
+    document.getElementById("fullName").value = admin.fullName;
+    document.getElementById("email").value = admin.email;
+    document.getElementById("phoneNo").value = admin.phoneNo;
+
+}
+
+async function saveProfile(){
+
+    const formData = new FormData();
+
+    formData.append(
+        "fullName",
+        document.getElementById("fullName").value
+    );
+
+    formData.append(
+        "email",
+        document.getElementById("email").value
+    );
+
+    formData.append(
+        "phoneNo",
+        document.getElementById("phoneNo").value
+    );
+
+    const response = await fetch("../database/updateAdminProfile.php",{
+        method:"POST",
+        body:formData
+    });
+
+    const result = await response.json();
+
+    if(result.success){
+
+        alert("Profile updated successfully!");
+
+        window.location.href = "admin-profile.php";
+
+    }else{
+
+        alert(result.message);
+
+    }
+
+}
+
+loadProfile();
+
+</script>
+
+</body>
+</html>
