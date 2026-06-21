@@ -3,28 +3,19 @@ let loginForm = document.querySelector("#loginForm");
 
 if (loginForm) {
     loginForm.addEventListener("submit", function(event) {
-        event.preventDefault();
 
         let id = document.querySelector("#loginId").value.trim();
         let password = document.querySelector("#loginPassword").value.trim();
         let role = document.querySelector("#loginRole").value;
 
         if (id === "" || password === "" || role === "") {
+            event.preventDefault();
             alert("Please fill in all fields before login.");
             return;
         }
 
-        alert("Login successful!");
-
-        if (role === "patient") {
-            window.location.href = "../patient/dashboard.php";
-        } else if (role === "doctor") {
-            window.location.href = "../doctor/doctor.html";
-        } else if (role === "pharmacist") {
-            window.location.href = "../pharmacist/workspace.html";
-        } else if (role === "admin") {
-            window.location.href = "../admin/dashboard.html";
-        }
+        // jangan redirect dekat JS
+        // biar login.php check ID, role, password
     });
 }
 
