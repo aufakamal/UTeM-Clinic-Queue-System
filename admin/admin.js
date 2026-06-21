@@ -938,7 +938,7 @@ async function loadAdminProfile() {
 
     document.getElementById("profileUserID").value = admin.userID;
     document.getElementById("profilePhone").value = admin.phoneNo;
-    document.getElementById("profilePassword").value = admin.password;
+    
     document.getElementById("profileRoleInput").value = admin.roleName;
 
 }

@@ -619,3 +619,48 @@ select:focus {
 .btn-delete:hover{
     background:#B91C2C;
 }
+
+/* DASHBOARD POLISH */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.stat {
+    background: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+    padding: 28px;
+    text-align: center;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+    transition: 0.2s ease;
+}
+
+.stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
+}
+
+.stat h3 {
+    font-size: 16px;
+    color: #0F172A;
+    margin-bottom: 18px;
+}
+
+.stat span,
+.stat p,
+.stat .number {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 54px;
+    height: 46px;
+    padding: 0 16px;
+    background: #0F766E;
+    color: white;
+    border-radius: 12px;
+    font-size: 22px;
+    font-weight: 800;
+}

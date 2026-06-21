@@ -54,29 +54,13 @@ alt="Back">
 <form class="editForm">
 
 <label>Full Name</label>
-
-<input type="text"
-value="Ahmad Marthes">
+<input id="fullName" type="text">
 
 <label>Email Address</label>
-
-<input type="email"
-value="admin@utem.edu.my">
+<input id="email" type="email">
 
 <label>Phone Number</label>
-
-<input type="text"
-value="0112345678">
-
-<label>Department</label>
-
-<input type="text"
-value="PKU UTeM">
-
-<label>Password</label>
-
-<input type="password"
-value="12345678">
+<input id="phoneNo" type="text">
 
 <button
 type="button"
@@ -88,20 +72,62 @@ Save Changes
 </button>
 
 </form>
-
 </section>
 
 </div>
 
 <script>
 
-function saveProfile(){
+async function loadProfile(){
 
-alert("Profile updated successfully!");
+    const response = await fetch("../database/getAdminProfile.php");
 
-window.location.href="admin-profile.html";
+    const admin = await response.json();
+
+    document.getElementById("fullName").value = admin.fullName;
+    document.getElementById("email").value = admin.email;
+    document.getElementById("phoneNo").value = admin.phoneNo;
 
 }
+
+async function saveProfile(){
+
+    const formData = new FormData();
+
+    formData.append("fullName",
+        document.getElementById("fullName").value);
+
+    formData.append("email",
+        document.getElementById("email").value);
+
+    formData.append("phoneNo",
+        document.getElementById("phoneNo").value);
+
+    const response = await fetch("../database/updateAdminProfile.php",{
+
+        method:"POST",
+        body:formData
+
+    });
+
+    const result = await response.json();
+
+    if(result.success){
+
+        alert("Profile updated successfully!");
+
+        window.location.href="admin-profile.html";
+
+    }
+    else{
+
+        alert(result.message);
+
+    }
+
+}
+
+loadProfile();
 
 </script>
 
