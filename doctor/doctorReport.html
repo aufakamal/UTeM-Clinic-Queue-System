@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Report</title>
     <link rel="stylesheet" href="doctor.css">
-
-    <title>DoctorReport</title>
 </head>
 
 <body>
     <div id="header">
         <div id="leftSection">
-            <button class="iconBtn">
+            <button class="iconBtn" onclick="window.location.href='doctor.html'">
                 <img class="icon" src="../images/backIconDark.png">
             </button>
 
@@ -27,135 +26,149 @@
 
         <div id="rightSection">
             <h1>Dr. Anis | Room 3</h1>
-            <button class="iconBtn"><img class="icon" src="../images/profileIconDark.png"></button>
+            <button class="iconBtn">
+                <img class="icon" src="../images/profileIconDark.png">
+            </button>
         </div>
     </div>
 
-    <section class="reportPage">
+    <section class="drReportPage">
 
-        <article class="reportHeader">
-            <h2>Doctor's Report</h2>
-            <p>Daily summary for prescription review and medication dispensing.</p>
+        <article class="drHeaderCard">
+            <div>
+                <h2>Doctor's Report Dashboard</h2>
+                <p>Overview of patient illness, monthly appointments and medicine usage.</p>
+            </div>
+
+            <div class="drDateBox">
+                <span>📅</span>
+                <p id="reportMonth">May 2025</p>
+            </div>
         </article>
 
-        <div class="reportSummary">
-
-            <article class="reportCard">
-                <h3>Total Patient</h3>
-                <p>28</p>
-                <span>Patients in pharmacy queue</span>
+        <!-- SUMMARY CARDS -->
+        <div class="drSummaryGrid">
+            <article class="drSummaryCard">
+                <div class="drIconBox blue">👥</div>
+                <div>
+                    <h3>Total Patients<br>This Month</h3>
+                    <h1 id="totalPatients">0</h1>
+                    <span class="greenText">+18% from last month</span>
+                </div>
             </article>
 
-            <article class="reportCard">
-                <h3>Dispensed</h3>
-                <p>21</p>
-                <span>Completed today</span>
+            <article class="drSummaryCard">
+                <div class="drIconBox green">🦠</div>
+                <div>
+                    <h3>Most Common Illness<br>This Month</h3>
+                    <h1 id="commonIllness">-</h1>
+                    <span id="commonIllnessDesc">-</span>
+                </div>
             </article>
 
-            <article class="reportCard">
-                <h3>Returned</h3>
-                <p>4</p>
-                <span>Sent back to doctor</span>
+            <article class="drSummaryCard">
+                <div class="drIconBox red">💊</div>
+                <div>
+                    <h3>Medicine Usage Alert<br>Low Stock</h3>
+                    <h1 id="lowStockMedicine">-</h1>
+                    <span id="lowStockDesc">-</span>
+                </div>
+            </article>
+        </div>
+
+        <!-- CHARTS -->
+        <div class="drChartGrid">
+
+            <article class="drChartBox">
+                <h2>Illness Distribution</h2>
+                <p>Top illnesses this month</p>
+
+                <div class="drIllnessWrap">
+                    <div id="illnessPieChart" class="drPieChart"></div>
+                    <div id="illnessLegend" class="drLegend"></div>
+                </div>
             </article>
 
-            <article class="reportCard">
-                <h3>Pending</h3>
-                <p>3</p>
-                <span>Waiting for review</span>
+            <article class="drChartBox">
+                <h2>Monthly Appointment</h2>
+                <p>Patient visits trend</p>
+
+                <div id="appointmentChart" class="drLineChart"></div>
+            </article>
+
+            <article class="drChartBox">
+                <h2>Medicine Usage</h2>
+                <p>Most used medicines this month</p>
+
+                <div id="medicineUsageChart" class="drBarChart"></div>
             </article>
 
         </div>
 
-        <div class="reportMiddle">
+        <!-- TABLES -->
+        <div class="drTableGrid">
 
-            <article class="reportBox">
-                <h2>Prescription Status</h2>
-
-                <div class="statusRow">
-                    <p>Dispensed</p>
-                    <div class="statusBar">
-                        <div class="statusFill dispensedFill"></div>
+            <article class="drTableBox">
+                <div class="drTableHeader">
+                    <div>
+                        <h2>💊 Medicine Stock List</h2>
+                        <p>Current medicine stock status from Pharmacy</p>
                     </div>
-                    <span>75%</span>
+
+                    <a href="pharmacyUpdate.html">View All Medicine →</a>
                 </div>
 
-                <div class="statusRow">
-                    <p>Returned</p>
-                    <div class="statusBar">
-                        <div class="statusFill returnedFill"></div>
-                    </div>
-                    <span>15%</span>
-                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Usage</th>
+                        </tr>
+                    </thead>
 
-                <div class="statusRow">
-                    <p>Pending</p>
-                    <div class="statusBar">
-                        <div class="statusFill pendingFill"></div>
-                    </div>
-                    <span>10%</span>
-                </div>
+                    <tbody id="medicineTableBody"></tbody>
+                </table>
             </article>
 
-            <article class="reportBox">
-                <h2>Search Record</h2>
+            <article class="drTableBox">
+                <div class="drTableHeader">
+                    <div>
+                        <h2>👥 Patient Summary</h2>
+                        <p>Summary of recent patient records</p>
+                    </div>
 
-                <label>Patient Name / Queue ID</label>
-                <input type="text" placeholder="Search record">
+                    <a href="patientRecord.html">View All Patients →</a>
+                </div>
 
-                <label>Status</label>
-                <select>
-                    <option>All</option>
-                    <option>Dispensed</option>
-                    <option>Returned</option>
-                    <option>Pending</option>
-                </select>
+                <div class="drSearchArea">
+                    <input type="text" id="patientSearchInput" placeholder="Search patient name or illness">
+                    <select id="statusFilter">
+                        <option value="All">All Status</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
 
-                <label>Date</label>
-                <input type="date">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Illness</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
 
-                <button class="searchReportBtn">Search</button>
+                    <tbody id="patientTableBody"></tbody>
+                </table>
             </article>
 
         </div>
-
-        <article class="recordBox">
-            <h2>Recent Pharmacy Records</h2>
-
-            <table>
-                <tr>
-                    <th>Queue ID</th>
-                    <th>Patient Name</th>
-                    <th>Medicine</th>
-                    <th>Status</th>
-                    <th>Time</th>
-                </tr>
-
-                <tr>
-                    <td>A098</td>
-                    <td>Amir bin Amar</td>
-                    <td>Paracetamol</td>
-                    <td><span class="doneStatus">Dispensed</span></td>
-                    <td>10:15 AM</td>
-                </tr>
-
-                <tr>
-                    <td>A102</td>
-                    <td>Nur Aisyah</td>
-                    <td>Paracetamol 500mg</td>
-                    <td><span class="pendingStatus">Pending</span></td>
-                    <td>10:30 AM</td>
-                </tr>
-
-                <tr>
-                    <td>A103</td>
-                    <td>Ahmad Ali</td>
-                    <td>Cough Syrup</td>
-                    <td><span class="returnStatus">Returned</span></td>
-                    <td>10:45 AM</td>
-                </tr>
-            </table>
-        </article>
 
     </section>
+
+    <script src="doctorReport.js"></script>
 </body>
 </html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Admin Profile</title>
+    <link rel="stylesheet" href="../shared/profile.css">
+</head>
+<body>
+
+<div class="profilePage">
+
+    <div class="profileTitle">
+        <a href="profileAdmin.html">
+            <img src="../images/backIconDark.png" class="backIcon" alt="Back">
+        </a>
+
+        <h1>EDIT PROFILE</h1>
+    </div>
+
+    <div class="profileCard">
+
+        <div class="editHeader">
+            <img src="../images/profileIconDark.png" class="editProfileImage" alt="Profile Icon">
+        </div>
+
+        <form class="editForm">
+
+            <div class="nameRow">
+                <div>
+                    <label>First Name</label>
+                    <input type="text" value="Mohd">
+                </div>
+
+                <div>
+                    <label>Last Name</label>
+                    <input type="text" value="Hisham">
+                </div>
+            </div>
+
+            <label>Email</label>
+            <input type="email" value="mohdisham@gmail.com">
+
+            <label>ID</label>
+            <input type="text" value="AD254179">
+
+            <label>Phone Number</label>
+            <input type="text" value="0161279356">
+
+            <label>Password</label>
+            <input type="password" value="123456789">
+
+            <a href="changePasswordAdmin.html" class="changePasswordLink">Change password</a>
+
+            <h3>Admin Information</h3>
+
+            <label>Access Level</label>
+            <select>
+                <option>Super Admin</option>
+                <option>Admin</option>
+            </select>
+
+            <h3>Responsibilities</h3>
+
+            <div class="responsibilityGroup">
+                <label>
+                    <input type="checkbox" checked>
+                    Manage Users
+                </label>
+
+                <label>
+                    <input type="checkbox" checked>
+                    Manage Queue
+                </label>
+
+                <label>
+                    <input type="checkbox" checked>
+                    System Settings
+                </label>
+            </div>
+
+            <h3>System Settings</h3>
+
+            <div class="nameRow">
+                <div>
+                    <label>Clinic Status</label>
+                    <select>
+                        <option>Open</option>
+                        <option>Closed</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Queue Status</label>
+                    <select>
+                        <option>Enabled</option>
+                        <option>Disabled</option>
+                    </select>
+                </div>
+            </div>
+
+            <a href="updateProfileSuccessAdmin.html" class="saveBtn">SAVE</a>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

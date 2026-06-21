@@ -607,47 +607,34 @@ textarea#doctorReply {
     line-height: 1.45;
 }
 
-/* Button bawah */
-.consultButtons {
+/* =========================
+   CONSULTATION BOTTOM ACTIONS
+========================= */
+
+.consultationBottomActions {
     width: 90%;
-    margin: 42px auto 0 auto;
+    margin: 30px auto 10px auto;
+    padding-top: 20px;
+    border-top: 1px solid #E2E8F0;
+
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
 }
 
-.saveBtn {
-    padding: 12px 28px;
-    border-radius: 16px;
-    border: 1px solid #CBD5E1;
-    background: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s ease;
+.consultationBottomActions .saveBtn,
+.consultationBottomActions .completeBtn {
+    min-width: 190px;
 }
 
-.saveBtn:hover {
-    background: #F8FAFC;
+.currentconstBox.completedConsultation {
+    opacity: 0.65;
+    border-color: #22C55E;
 }
 
-.completeBtn {
-    padding: 12px 28px;
-    border-radius: 16px;
-    border: none;
-    background: #22C55E;
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.saveBtn,
-.completeBtn {
-    min-width: 180px;
-}
-
-.completeBtn:hover {
-    background: #16A34A;
+.currentconstBox.completedConsultation .startBtn {
+    background-color: #94A3B8;
+    cursor: not-allowed;
 }
 
 /* =========================
@@ -703,100 +690,83 @@ textarea#doctorReply {
 
 
 /* =========================
-   VISITS TAB
+   medical RECORD TAB
 ========================= */
+..visitContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* CARD */
+.visitCard{
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 18px;
+}
+
+/* TITLE */
+.visitTitle{
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+/* TABLE */
+.visitTable{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+}
+
+.visitTable th{
+    background: #E2E8F0;
+    text-align: left;
+    padding: 10px;
+    font-size: 13px;
+}
+
+.visitTable td{
+    padding: 10px;
+    border-bottom: 1px solid #F1F5F9;
+    font-size: 13px;
+}
+
+/* STATUS */
+.status.done{
+    background: #DCFCE7;
+    color: #166534;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+/* DETAIL BOX */
+.visitDetail{
+    background: #F8FAFC;
+    padding: 12px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    font-size: 13px;
+}
+
+/* =========================
+   HIDE TAB
+========================= */
+.tabSection.active {
+    display: block;
+}
 
 .tabSection {
-    width: 90%;
-    margin: 0 auto;
+    display: none;
 }
 
-.visitCard {
-    background: #D9D9D9;
-    border-radius: 14px;
-    padding: 20px 28px;
-    margin-bottom: 18px;
-}
-
-.visitTop {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
-}
-
-.visitTop h3 {
-    margin: 0;
-    color: #0F172A;
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.visitTop p {
-    margin: 0;
-    color: #0F172A;
-    font-size: 15px;
-    font-weight: 600;
-}
-
-.statusDot {
-    display: inline-block;
-    width: 11px;
-    height: 11px;
-    background: #00E65C;
-    border-radius: 50%;
-    margin-right: 8px;
-}
-
-.visitInfoGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 26px;
-    margin-bottom: 18px;
-}
-
-.visitInfoBox {
-    border: 1px solid #334155;
-    border-radius: 10px;
-    padding: 11px 14px;
-    min-height: 52px;
-    background: #E5E5E5;
-}
-
-.visitInfoBox strong {
+.tabSection.active {
     display: block;
-    font-size: 12px;
-    color: #0F172A;
-    margin-bottom: 3px;
 }
-
-.visitInfoBox span {
-    font-size: 13px;
-    color: #0F172A;
-}
-
-.viewMoreBtn {
-    display: block;
-    margin: 0 auto;
-    border: none;
-    background: transparent;
-    color: #0F172A;
-    font-size: 12px;
-    font-weight: 700;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.emptyTabBox {
-    background: #F8FAFC;
-    border: 1px solid #CBD5E1;
-    border-radius: 14px;
-    padding: 30px;
-    text-align: center;
-    color: #64748B;
-    font-weight: 600;
-}
-
 /* =========================
    DIAGNOSIS CLEAN TAB
 ========================= */
@@ -1192,182 +1162,379 @@ textarea#doctorReply {
 
 }
 
-/* =========================
-   DOCTOR REPORT
-========================= */
+/* ================= DOCTOR REPORT DASHBOARD ================= */
 
-.reportPage {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+.drReportPage {
+    min-height: 100vh;
+    background: #f4f8fc;
+    padding: 32px 52px;
 }
 
-.reportHeader,
-.reportCard,
-.reportBox,
-.recordBox {
-    background-color: #FFFFFF;
-    border: 1px solid #D7E3EA;
+.drHeaderCard {
+    background: #ffffff;
+    border: 1px solid #d8e6f2;
     border-radius: 18px;
-    padding: 22px;
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+    padding: 28px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 24px rgba(31, 91, 140, 0.07);
 }
 
-.reportHeader h2,
-.reportBox h2,
-.recordBox h2 {
-    margin-top: 0;
-    color: #0F172A;
+.drHeaderCard h2 {
+    font-size: 30px;
+    color: #061b3a;
+    margin-bottom: 8px;
 }
 
-.reportHeader p {
-    color: #64748B;
+.drHeaderCard p {
+    color: #526882;
+    font-size: 15px;
 }
 
-.reportSummary {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 22px;
-}
-
-.reportCard h3 {
-    margin-top: 0;
-    color: #475569;
-}
-
-.reportCard p {
-    margin: 12px 0;
-    color: #0284C7;
-    font-size: 34px;
+.drDateBox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #eef7ff;
+    border-radius: 12px;
+    padding: 12px 18px;
+    color: #061b3a;
     font-weight: 700;
 }
 
-.reportCard span {
-    color: #64748B;
+.drSummaryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-bottom: 25px;
+}
+
+.drSummaryCard {
+    background: #ffffff;
+    border: 1px solid #d8e6f2;
+    border-radius: 14px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    box-shadow: 0 8px 24px rgba(31, 91, 140, 0.07);
+}
+
+.drIconBox {
+    width: 70px;
+    height: 70px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
+
+.drIconBox.blue {
+    background: #e6f2ff;
+}
+
+.drIconBox.green {
+    background: #e8f9ef;
+}
+
+.drIconBox.red {
+    background: #ffe9e9;
+}
+
+.drSummaryCard h3 {
+    font-size: 15px;
+    color: #061b3a;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.drSummaryCard h1 {
+    font-size: 34px;
+    color: #1189d6;
+    margin-bottom: 5px;
+}
+
+.drSummaryCard span {
+    color: #526882;
     font-size: 14px;
 }
 
-.reportMiddle {
-    display: grid;
-    grid-template-columns: 1.4fr 0.8fr;
-    gap: 24px;
+.greenText {
+    color: #16a34a !important;
+    font-weight: 700;
 }
 
-.statusRow {
+#commonIllness {
+    color: #16a34a;
+}
+
+#lowStockMedicine {
+    color: #ef4444;
+}
+
+.drChartGrid {
     display: grid;
-    grid-template-columns: 120px 1fr 45px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-bottom: 25px;
+}
+
+.drChartBox {
+    background: #ffffff;
+    border: 1px solid #d8e6f2;
+    border-radius: 14px;
+    padding: 24px;
+    min-height: 335px;
+    box-shadow: 0 8px 24px rgba(31, 91, 140, 0.07);
+}
+
+.drChartBox h2 {
+    color: #061b3a;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.drChartBox p {
+    color: #526882;
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.drIllnessWrap {
+    display: flex;
     align-items: center;
+    gap: 28px;
+}
+
+.drPieChart {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.drLegend {
+    width: 100%;
+}
+
+.drLegendItem {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #061b3a;
+    font-size: 14px;
+    margin-bottom: 13px;
+}
+
+.drLegendItem b {
+    margin-left: auto;
+    font-size: 13px;
+}
+
+.drDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.drLineChart svg {
+    width: 100%;
+    height: 240px;
+}
+
+.drAxis {
+    stroke: #dce8f3;
+    stroke-width: 2;
+}
+
+.drGridLine {
+    stroke: #edf3f8;
+    stroke-width: 1;
+}
+
+.drLinePath {
+    fill: none;
+    stroke: #1189d6;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.drLinePoint {
+    fill: #1189d6;
+}
+
+.drLineText {
+    font-size: 13px;
+    fill: #526882;
+}
+
+.drBarChart {
+    display: flex;
+    flex-direction: column;
     gap: 14px;
-    margin: 20px 0;
 }
 
-.statusRow p {
-    margin: 0;
-    color: #334155;
-    font-weight: 600;
+.drBarRow {
+    display: grid;
+    grid-template-columns: 100px 1fr 45px;
+    align-items: center;
+    gap: 12px;
 }
 
-.statusBar {
-    height: 14px;
-    background-color: #E2E8F0;
-    border-radius: 999px;
+.drBarLabel {
+    color: #061b3a;
+    font-size: 14px;
+}
+
+.drBarTrack {
+    height: 18px;
+    background: #e7eef6;
+    border-radius: 20px;
     overflow: hidden;
 }
 
-.statusFill {
+.drBarFill {
     height: 100%;
-    border-radius: 999px;
+    background: linear-gradient(90deg, #7c5ce6, #9d7dff);
+    border-radius: 20px;
 }
 
-.dispensedFill {
-    width: 75%;
-    background-color: #0284C7;
+.drBarValue {
+    color: #061b3a;
+    font-weight: 700;
+    font-size: 13px;
 }
 
-.returnedFill {
-    width: 15%;
-    background-color: #F59E0B;
+.drTableGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
 }
 
-.pendingFill {
-    width: 10%;
-    background-color: #64748B;
+.drTableBox {
+    background: #ffffff;
+    border: 1px solid #d8e6f2;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(31, 91, 140, 0.07);
 }
 
-.reportBox label {
-    display: block;
-    margin: 14px 0 6px;
-    color: #334155;
-    font-weight: 600;
+.drTableHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
 }
 
-.reportBox input,
-.reportBox select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #CBD5E1;
-    border-radius: 12px;
+.drTableHeader h2 {
+    color: #061b3a;
+    font-size: 20px;
+    margin-bottom: 8px;
 }
 
-.searchReportBtn {
-    width: 100%;
-    margin-top: 18px;
-    padding: 12px;
-    background-color: #0284C7;
-    color: white;
-    border: none;
-    border-radius: 999px;
-    font-weight: 600;
-    cursor: pointer;
+.drTableHeader p {
+    color: #526882;
+    font-size: 14px;
 }
 
-.recordBox table {
+.drTableHeader a {
+    color: #1189d6;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.drSearchArea {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.drSearchArea input,
+.drSearchArea select {
+    border: 1px solid #cbdceb;
+    border-radius: 10px;
+    padding: 11px 13px;
+    outline: none;
+    font-size: 14px;
+}
+
+.drSearchArea input {
+    flex: 1;
+}
+
+.drSearchArea select {
+    width: 150px;
+}
+
+.drTableBox table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 16px;
 }
 
-.recordBox th {
-    background-color: #E0F2FE;
-    color: #075985;
-    padding: 14px;
+.drTableBox th {
+    background: #f1f7fc;
+    color: #061b3a;
+    padding: 14px 12px;
     text-align: left;
+    font-size: 14px;
 }
 
-.recordBox td {
-    padding: 14px;
-    border-bottom: 1px solid #E2E8F0;
-    color: #334155;
+.drTableBox td {
+    color: #061b3a;
+    padding: 14px 12px;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 14px;
 }
 
-.doneStatus,
-.returnStatus,
-.pendingStatus {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 999px;
+.drBadge {
+    padding: 6px 13px;
+    border-radius: 20px;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
+    display: inline-block;
 }
 
-.doneStatus {
-    background-color: #DCFCE7;
-    color: #166534;
+.drBadge.available,
+.drBadge.completed {
+    background: #d9f8df;
+    color: #16803a;
 }
 
-.returnStatus {
-    background-color: #FEF3C7;
-    color: #92400E;
+.drBadge.low {
+    background: #ffdede;
+    color: #ef4444;
 }
 
-.pendingStatus {
-    background-color: #E2E8F0;
-    color: #334155;
+.drBadge.medium,
+.drBadge.pending {
+    background: #fff0d4;
+    color: #f59e0b;
 }
 
-@media (max-width: 900px) {
-    .reportSummary,
-    .reportMiddle {
+@media (max-width: 1100px) {
+    .drSummaryGrid,
+    .drChartGrid,
+    .drTableGrid {
         grid-template-columns: 1fr;
+    }
+
+    .drReportPage {
+        padding: 25px;
+    }
+
+    .drHeaderCard {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .drIllnessWrap {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

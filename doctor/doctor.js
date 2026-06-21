@@ -5,7 +5,6 @@ const patients = {
     "A103": {
         name: "Siti Sarah binti Roslan",
         gender: "Female",
-        ic: "40989039",
         id: "D0323578456",
         bloodType: "O+",
         allergies: [
@@ -39,20 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // VIEW PHARMACY UPDATE
-    document.querySelectorAll(".viewBtn").forEach(button => {
-        button.addEventListener("click", () => {
-
-            loadPharmacyUpdate(
-                "A096",
-                "Ahmad Ali",
-                "- Amoxicillin 500mg",
-                "Dosage unclear",
-                "Please confirm once daily / twice daily?"
-            );
-
-        });
-    });
 
         // SAVE DRAFT BUTTON
     const saveDraftBtn = document.getElementById("saveDraftBtn");
@@ -65,40 +50,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // COMPLETE CONSULTATION BUTTON
     function completeConsultation() {
-    showActionMessage("Consultation is completed successfully.");
-}
 
+    if (!selectedQueue || !selectedPatient) {
+        alert("Please select a patient first.");
+        return;
+    }
+
+    const completedData = {
+        queue: selectedQueue,
+        patient: selectedPatient,
+        completedAt: new Date().toISOString()
+    };
+
+    localStorage.setItem("completed_" + selectedQueue, JSON.stringify(completedData));
+
+    showActionMessage("Consultation completed: " + selectedQueue);
+
+    // OPTIONAL: disable button in left panel
+    const btn = document.querySelector(`.startBtn[data-queue="${selectedQueue}"]`);
+    if (btn) {
+        btn.textContent = "Completed";
+        btn.disabled = true;
+        btn.style.background = "#9CA3AF";
+    }
+}
 });
 
 // ==========================
 // START CONSULTATION
 // ==========================
 function showPatientSession(patient, queue) {
+    selectedQueue = queue;
+    selectedPatient = patient;
 
     const defaultWorkspace = document.getElementById("defaultWorkspace");
-    const pharmacyUpdateForm = document.getElementById("pharmacyUpdateForm");
     const placeholderText = document.getElementById("placeholderText");
     const patientRecordDisplay = document.getElementById("patientRecordDisplay");
 
-    if (defaultWorkspace) {
-        defaultWorkspace.style.display = "block";
-    }
-
-    if (pharmacyUpdateForm) {
-        pharmacyUpdateForm.style.display = "none";
-    }
-
-    if (placeholderText) {
-        placeholderText.style.display = "none";
-    }
-
-    if (patientRecordDisplay) {
-        patientRecordDisplay.style.display = "block";
-    }
+    if (placeholderText) placeholderText.style.display = "none";
+    if (patientRecordDisplay) patientRecordDisplay.style.display = "block";
 
     document.getElementById("pName").textContent = patient.name;
     document.getElementById("pGender").textContent = patient.gender;
-    document.getElementById("pIC").textContent = patient.ic;
     document.getElementById("pID").textContent = patient.id;
     document.getElementById("pBlood").textContent = patient.bloodType;
 
@@ -176,6 +169,20 @@ function addItem(containerId) {
     input.focus();
 }
 
+
+
+function openTab(tabId) {
+
+    // hide semua
+    document.querySelectorAll(".tabSection").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    // show only selected
+    document.getElementById(tabId).classList.add("active");
+}
+
+
 // ==========================
 // ACTION MESSAGE POPUP
 // ==========================
@@ -194,56 +201,22 @@ function showActionMessage(message) {
 }
 
 function saveDraft() {
-    showActionMessage("Draft is saved.");
+
+    if (!selectedQueue || !selectedPatient) {
+        alert("Please select a patient first.");
+        return;
+    }
+
+    const draftData = {
+        queue: selectedQueue,
+        patient: selectedPatient,
+        savedAt: new Date().toISOString()
+    };
+
+    localStorage.setItem("draft_" + selectedQueue, JSON.stringify(draftData));
+
+    showActionMessage("Draft saved for " + selectedQueue);
 }
-
-function completeConsultation() {
-    showActionMessage("Consultation is completed successfully.");
-}
-
-function closeMessage() {
-    const messagePopup = document.getElementById("messagePopup");
-
-    if (messagePopup) {
-        messagePopup.style.display = "none";
-    }
-}
-// ==========================
-// PHARMACY UPDATE
-// ==========================
-function loadPharmacyUpdate(queue, name, med, issue, note) {
-
-    const defaultWorkspace = document.getElementById("defaultWorkspace");
-    const pharmacyUpdateForm = document.getElementById("pharmacyUpdateForm");
-    const patientRecordDisplay = document.getElementById("patientRecordDisplay");
-    const placeholderText = document.getElementById("placeholderText");
-
-    // Jangan hide defaultWorkspace sebab pharmacy form mungkin berada dalam/berkait dengan workspace
-    if (defaultWorkspace) {
-        defaultWorkspace.style.display = "block";
-    }
-
-    // Hide consultation content
-    if (patientRecordDisplay) {
-        patientRecordDisplay.style.display = "none";
-    }
-
-    if (placeholderText) {
-        placeholderText.style.display = "none";
-    }
-
-    // Show pharmacy update form
-    if (pharmacyUpdateForm) {
-        pharmacyUpdateForm.style.display = "block";
-    }
-
-    document.getElementById("formPopQueue").textContent = queue;
-    document.getElementById("formPopName").textContent = name;
-    document.getElementById("formPopMed").textContent = med;
-    document.getElementById("formPopIssue").textContent = issue;
-    document.getElementById("formPopNote").textContent = note;
-}
-
 // ==========================
 // SUBMIT RESPONSE TO PHARMACY
 // ==========================
@@ -570,27 +543,3 @@ if (okBtn) {
 } else {
     console.error("Butang OK tidak dijumpai dalam HTML!");
 }
-
-okBtn.addEventListener("click", () => {
-    // 1. Sembunyikan popup dahulu (UI feedback)
-    messagePopup.style.display = "none";
-
-    // 2. Hantar data ke server (PHP)
-    fetch('save_data.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            status: 'draft_saved',
-            patientID: selectedQueue
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-});
