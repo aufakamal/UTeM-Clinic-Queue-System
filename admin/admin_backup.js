@@ -1,4 +1,113 @@
+let data = JSON.parse(localStorage.getItem("utemPkuAdmin")) || {
+    appointments: [
+        { name: "abc", date: "12/4/2026", time: "8:00 am", status: "Completed", type: "Consultation" },
+        { name: "bcd", date: "12/4/2026", time: "10:00 am", status: "No-Show", type: "Medical Checkup" },
+        { name: "cde", date: "12/4/2026", time: "9:00 am", status: "Cancelled", type: "Medical Checkup" }
+    ],
+    late: [
+        { name: "abc", date: "14/3/2026", time: "8:00 am", status: "Confirmed", type: "Consultation" }
+    ],
+    queue: [
+        { name: "abc", date: "14/3/2026", time: "8:00 am", status: "Confirmed", type: "Consultation", queue: 10, room: "Room 8" }
+    ],
+    slots: [
+        { slot: "Slot 1", doctor: "A", date: "14/3/2026", time: "8:00 am", capacity: 10 },
+        { slot: "Slot 1", doctor: "A", date: "14/3/2026", time: "8:00 am", capacity: 10 },
+        { slot: "Slot 1", doctor: "A", date: "14/3/2026", time: "8:00 am", capacity: 10 },
+        { slot: "Slot 1", doctor: "A", date: "14/3/2026", time: "8:00 am", capacity: 10 }
+    ],
+    staff: [
+        { name: "Ali bin Abu", id: "D001", role: "Doctor", status: "Active", password: "123" },
+        { name: "Ahmad Marthes", id: "A001", role: "Admin", status: "Active", password: "123" },
+        { name: "Ahmad Brokoli", id: "P001", role: "Pharmacist", status: "Active", password: "123" },
+        { name: "Justin Bieber", id: "A002", role: "Admin", status: "Inactive", password: "123" }
+    ]
+};
 
+let deleteSlotMode = false;
+let deleteStaffMode = false;
+let editStaffMode = false;
+let editingStaffIndex = null;
+let confirmFunction = null;
+
+function saveData() {
+    localStorage.setItem("utemPkuAdmin", JSON.stringify(data));
+}
+
+function showPage(pageId, button) {
+    document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+
+    document.getElementById(pageId).classList.add("active");
+    button.classList.add("active");
+
+    renderAll();
+}
+
+function getDot(status) {
+    if (status === "No-Show" || status === "Cancelled") return "red-dot";
+    if (status === "Confirmed") return "blue-dot";
+    return "green-dot";
+}
+
+function renderDashboard() {
+    document.getElementById("totalToday").textContent = data.appointments.length + data.late.length;
+    document.getElementById("waitingPatients").textContent = data.queue.filter(q => q.status === "Waiting" || q.status === "Confirmed").length;
+    document.getElementById("activeConsult").textContent = data.queue.filter(q => q.status === "In Progress").length || 6;
+    document.getElementById("availableDoctors").textContent = data.staff.filter(s => s.role === "Doctor" && s.status === "Active").length || 7;
+}
+
+function showAppointmentDates() {
+    document.querySelectorAll(".sub").forEach(btn => btn.classList.remove("active"));
+
+    const firstSub = document.querySelector(".sub");
+    if (firstSub) firstSub.classList.add("active");
+
+    let html = `
+        <div class="date-filter">
+            <input type="date" id="appointmentDateSelect" onchange="filterAppointmentsByDate()">
+        </div>
+
+        <div id="filteredAppointments" class="cards"></div>
+    `;
+
+    document.getElementById("appointmentContent").innerHTML = html;
+}
+
+
+
+function filterAppointmentsByDate() {
+    const selectedDate = document.getElementById("appointmentDateSelect").value;
+    const container = document.getElementById("filteredAppointments");
+
+    const filtered = data.appointments.filter(appt => {
+        const parts = appt.date.split("/");
+        const formattedDate =
+            `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`;
+
+        return formattedDate === selectedDate;
+    });
+
+    let html = "";
+
+    filtered.forEach(appt => {
+        html += `
+            <div class="card">
+                <h3>Patient Name: ${appt.name}</h3>
+                <div class="two">
+                    <p>Date: ${appt.date}</p>
+                    <p>Time: ${appt.time}</p>
+                </div>
+                <div class="two">
+                    <p>Status: <span class="dot ${getDot(appt.status)}"></span>${appt.status}</p>
+                    <p>Type: ${appt.type}</p>
+                </div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html || `<p>No appointments found for this date.</p>`;
+}
 
 function showLateArrival() {
     document.querySelectorAll(".sub").forEach(btn => btn.classList.remove("active"));
@@ -99,8 +208,32 @@ function renderQueue() {
     document.getElementById("queueContent").innerHTML = html;
 }
 
+function changeQueueStatus(index, status) {
+    data.queue[index].status = status;
+    saveData();
+    renderQueue();
+    renderDashboard();
+}
 
+function renderSlots() {
+    let html = "";
 
+    data.slots.forEach((slot, index) => {
+        html += `
+            <div class="card">
+                ${deleteSlotMode ? `<button class="delete-x" onclick="askDeleteSlot(${index})">&times;</button>` : ""}
+                <h3>${slot.slot} &nbsp;&nbsp;&nbsp;&nbsp; Doctor: ${slot.doctor}</h3>
+                <div class="two">
+                    <p>Date: ${slot.date}</p>
+                    <p>Time: ${slot.time}</p>
+                </div>
+                <p>Capacity: ${slot.capacity}</p>
+            </div>
+        `;
+    });
+
+    document.getElementById("slotContent").innerHTML = html;
+}
 
 function showSlotForm() {
     document.getElementById("slotForm").classList.remove("hidden");
@@ -160,7 +293,11 @@ async function deleteSlot(slotID) {
     }
 }
 
-
+function toggleDeleteSlot() {
+    deleteSlotMode = !deleteSlotMode;
+    document.getElementById("deleteSlotBtn").classList.toggle("active", deleteSlotMode);
+    renderSlots();
+}
 
 function editSlot(slotID) {
     const slot = slotList.find(s => s.slotID == slotID);
@@ -209,23 +346,106 @@ async function updateSlot(slotID) {
     }
 }
 
+function askDeleteSlot(index) {
+    showConfirm("Are you sure you want to delete this slot?", function () {
+        data.slots.splice(index, 1);
+        saveData();
+        renderSlots();
+    });
+}
 
+function renderStaff() {
+    let html = "";
 
+    data.staff.forEach((staff, index) => {
+        html += `
+            <div class="card">
+                ${deleteStaffMode ? `<button class="delete-x" onclick="askDeleteStaff(${index})">&times;</button>` : ""}
+                ${editStaffMode ? `<button class="edit-icon" onclick="editStaff(${index})">✎</button>` : ""}
+                <p>Name: ${staff.name}</p>
+                <p>Staff ID: ${staff.id}</p>
+                <p>Role: ${staff.role}</p>
+                <p>Status: ${staff.status}</p>
+            </div>
+        `;
+    });
 
+    document.getElementById("staffContent").innerHTML = html;
+}
 
+function showStaffForm() {
+    editingStaffIndex = null;
+    document.getElementById("saveStaffBtn").textContent = "Create";
+    document.getElementById("staffName").value = "";
+    document.getElementById("staffId").value = "";
+    document.getElementById("staffRole").value = "Admin";
+    document.getElementById("staffPassword").value = "";
+    document.getElementById("staffForm").classList.remove("hidden");
+    document.getElementById("addStaffBtn").classList.add("active");
+}
 
 function hideStaffForm() {
     document.getElementById("staffForm").classList.add("hidden");
     document.getElementById("addStaffBtn").classList.remove("active");
 }
 
+function saveStaff() {
+    let staff = {
+        name: document.getElementById("staffName").value || "Hadi Merican",
+        id: document.getElementById("staffId").value || "A003",
+        role: document.getElementById("staffRole").value,
+        status: "Active",
+        password: document.getElementById("staffPassword").value || "123"
+    };
 
+    if (editingStaffIndex === null) {
+        data.staff.push(staff);
+    } else {
+        data.staff[editingStaffIndex] = staff;
+    }
 
+    saveData();
+    hideStaffForm();
+    renderStaff();
+    renderDashboard();
+}
 
+function toggleDeleteStaff() {
+    deleteStaffMode = !deleteStaffMode;
+    editStaffMode = false;
+    document.getElementById("deleteStaffBtn").classList.toggle("active", deleteStaffMode);
+    document.getElementById("editStaffBtn").classList.remove("active");
+    renderStaff();
+}
 
+function toggleEditStaff() {
+    editStaffMode = !editStaffMode;
+    deleteStaffMode = false;
+    document.getElementById("editStaffBtn").classList.toggle("active", editStaffMode);
+    document.getElementById("deleteStaffBtn").classList.remove("active");
+    renderStaff();
+}
 
+function editStaff(index) {
+    let staff = data.staff[index];
+    editingStaffIndex = index;
 
+    document.getElementById("staffName").value = staff.name;
+    document.getElementById("staffId").value = staff.id;
+    document.getElementById("staffRole").value = staff.role;
+    document.getElementById("staffPassword").value = staff.password;
+    document.getElementById("saveStaffBtn").textContent = "Save";
+    document.getElementById("staffForm").classList.remove("hidden");
+}
 
+function askDeleteStaff(index) {
+    showConfirm("Are you sure you want to delete this staff?", function () {
+        data.staff.splice(index, 1);
+        saveData();
+        renderStaff();
+        renderDashboard();
+    });
+}
 
 function showConfirm(text, action) {
     confirmFunction = action;
@@ -246,11 +466,107 @@ function closeConfirm() {
 
 
 
+function renderCurrentPage() {
 
 
-/* =========================================
-   ni functions yg common
-========================================= */
+    if (document.getElementById("weeklyChart")) {
+    renderWeeklyChart();
+}
+    if (document.getElementById("totalToday")) {
+        renderDashboard();
+    }
+
+    if (document.getElementById("appointmentContent")) {
+    let html = `<button class="actions-button active">12 April 2026 📅 ▼</button><div class="cards">`;
+
+    data.appointments.forEach(appt => {
+        html += `
+            <div class="card">
+                <h3>Patient Name: ${appt.name}</h3>
+                <div class="two">
+                    <p>Date: ${appt.date}</p>
+                    <p>Time: ${appt.time}</p>
+                </div>
+                <div class="two">
+                    <p>Status: <span class="dot ${getDot(appt.status)}"></span>${appt.status}</p>
+                    <p>Type: ${appt.type}</p>
+                </div>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+    document.getElementById("appointmentContent").innerHTML = html;
+}
+
+    if (document.getElementById("queueContent")) {
+        renderQueue();
+    }
+
+    if (document.getElementById("slotContent")) {
+        renderSlots();
+    }
+
+    if (document.getElementById("staffContent")) {
+        renderStaff();
+    }
+}
+
+function renderWeeklyChart() {
+    const chart = document.getElementById("weeklyChart");
+
+    if (!chart) return;
+
+    const weeklyData = {
+        Mon: 0,
+        Tue: 0,
+        Wed: 0,
+        Thu: 0,
+        Fri: 0,
+        Sat: 0,
+        Sun: 0
+    };
+
+    data.appointments.forEach(appt => {
+        const parts = appt.date.split("/");
+        const d = new Date(parts[2], parts[1] - 1, parts[0]);
+
+        const day = d.toLocaleDateString(
+            "en-US",
+            { weekday: "short" }
+        );
+
+        if (weeklyData[day] !== undefined) {
+            weeklyData[day]++;
+        }
+    });
+
+    const max = Math.max(
+        ...Object.values(weeklyData),
+        1
+    );
+
+    chart.innerHTML = "";
+
+    Object.entries(weeklyData).forEach(([day, count]) => {
+
+        const height = (count / max) * 120;
+
+        chart.innerHTML += `
+            <div class="chart-item">
+                <div class="chart-bar"
+                     style="height:${height}px">
+                     ${count}
+                </div>
+                <div class="chart-label">${day}</div>
+            </div>
+        `;
+    });
+}
+
+renderCurrentPage();
+
+
 
 function logout() {
     if (confirm("Are you sure you want to log out?")) {
@@ -258,7 +574,11 @@ function logout() {
     }
 }
 
-
+function toggleMenu() {
+    document
+        .getElementById("dropdownMenu")
+        .classList.toggle("hidden");
+}
 function toggleMenu() {
 
     document
@@ -266,9 +586,9 @@ function toggleMenu() {
         .classList.toggle("showDropdown");
 }
 
-/* =========================================
-   page appoinments
-========================================= */
+if (document.getElementById("appointmentContent")) {
+    showAppointmentDates();
+}
 
 let appointmentList = [];
 
@@ -415,10 +735,6 @@ async function markArrived(id) {
     }
 }
 
-/* =========================================
-   PAGE INITIALIZER
-========================================= */
-
 document.addEventListener("DOMContentLoaded", () => {
     loadAppointments();
 });
@@ -427,7 +743,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+function renderQueueTable(list = queueList) {
+    const table = document.getElementById("queueTableBody");
+    if (!table) return;
 
+    table.innerHTML = "";
+
+    list.forEach(item => {
+        const statusClass = item.status.toLowerCase().replaceAll(" ", "");
+
+        table.innerHTML += `
+            <tr>
+                <td>${item.queueNo}</td>
+                <td>${item.patient}</td>
+                <td>${item.userID}</td>
+                <td>${item.type}</td>
+                <td>${item.room}</td>
+                <td>
+                    <span class="status-badge status-${statusClass}">
+                        ${item.status}
+                    </span>
+                </td>
+                <td>
+                    <button class="table-btn" onclick="nextQueueStatus('${item.queueNo}')">
+                        Next
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
 
 function filterQueue() {
     const search = document.getElementById("queueSearch").value.toLowerCase();
@@ -449,7 +794,22 @@ function filterQueue() {
     renderQueueTable(filtered);
 }
 
+function nextQueueStatus(queueNo) {
+    const item = queueList.find(q => q.queueNo === queueNo);
+    if (!item) return;
 
+    if (item.status === "Waiting") {
+        item.status = "In Consultation";
+        item.room = "Room 1";
+    } else if (item.status === "In Consultation") {
+        item.status = "At Pharmacy";
+        item.room = "Pharmacy";
+    } else if (item.status === "At Pharmacy") {
+        item.status = "Completed";
+    }
+
+    filterQueue();
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     renderQueueTable();
@@ -486,10 +846,6 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAppointments();
     }
 });
-
-/* =========================================
-   ni page queue
-========================================= */
 
 let queueList = [];
 
@@ -552,7 +908,7 @@ function filterQueue() {
 }
 
 // ==========================
-// ni page slot management
+// SLOT MANAGEMENT
 // ==========================
 
 let slotList = [];
@@ -632,28 +988,6 @@ function filterSlots(){
 
 }
 
-
-
-/* =========================================
-   ni page dashboard
-========================================= */
-
-async function loadDashboard() {
-    
-    try {
-        const response = await fetch("../database/getDashboard.php");
-        const data = await response.json();
-
-        document.getElementById("totalToday").textContent = data.totalAppointments;
-        document.getElementById("waitingPatients").textContent = data.waitingPatients;
-        document.getElementById("activeConsult").textContent = data.activeConsultations;
-        document.getElementById("availableDoctors").textContent = data.availableDoctors;
-
-    } catch (err) {
-        console.error("Dashboard error:", err);
-    }
-}
-
 async function loadWeeklyAppointments() {
 
     const response = await fetch("../database/getWeeklyAppointments.php");
@@ -693,6 +1027,22 @@ async function loadWeeklyAppointments() {
 
 }
 
+async function loadDashboard() {
+    
+    try {
+        const response = await fetch("../database/getDashboard.php");
+        const data = await response.json();
+
+        document.getElementById("totalToday").textContent = data.totalAppointments;
+        document.getElementById("waitingPatients").textContent = data.waitingPatients;
+        document.getElementById("activeConsult").textContent = data.activeConsultations;
+        document.getElementById("availableDoctors").textContent = data.availableDoctors;
+
+    } catch (err) {
+        console.error("Dashboard error:", err);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("appointmentTableBody")) {
         loadAppointments();
@@ -722,15 +1072,9 @@ if (document.getElementById("weeklyChart")) {
     loadWeeklyAppointments();
 }
 
-if (document.getElementById("profileName")) {
-    loadAdminProfile();
-}
+
 
 });
-
-/* =========================================
-   ni page history
-========================================= */
 
 let historyList = [];
 
@@ -788,7 +1132,7 @@ function filterHistory() {
     renderHistoryTable(filtered);
 }
 
-// ================= ni page users =================
+// ================= USERS =================
 
 let users = [];
 
@@ -923,26 +1267,4 @@ async function editUser(userID, fullName, gender, email, phoneNo) {
     } else {
         alert(result.message || "Failed to update user.");
     }
-}
-
-
-
-async function loadAdminProfile() {
-
-    const response = await fetch("../database/getAdminProfile.php");
-    const admin = await response.json();
-
-    document.getElementById("profileName").textContent = admin.fullName;
-    document.getElementById("profileEmail").textContent = admin.email;
-    document.getElementById("profileRole").textContent = admin.roleName;
-
-    document.getElementById("profileUserID").value = admin.userID;
-    document.getElementById("profilePhone").value = admin.phoneNo;
-    document.getElementById("profilePassword").value = admin.password;
-    document.getElementById("profileRoleInput").value = admin.roleName;
-
-}
-
-if (document.getElementById("profileName")) {
-    loadAdminProfile();
 }
