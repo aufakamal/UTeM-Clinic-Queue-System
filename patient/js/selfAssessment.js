@@ -11,15 +11,13 @@ let medicationConcernCard = document.querySelector("#medicationConcernCard");
 let mentalHealthConcernCard = document.querySelector("#mentalHealthConcernCard");
 let generalHealthConcernCard = document.querySelector("#generalHealthConcernCard");
 
-if (symptomChecker && mainAssessmentCard)
-{
+if (symptomChecker && mainAssessmentCard) {
     symptomChecker.addEventListener("click", function() {
         mainAssessmentCard.classList.remove("hidden");
     });
 }
 
-if (mainAssessmentCard)
-{
+if (mainAssessmentCard) {
     mainAssessmentCard.addEventListener("submit", function(event) {
         event.preventDefault();
 

@@ -1,5 +1,5 @@
 /* =========================
-   GLOBAL
+    GLOBAL
 ========================= */
 * {
     box-sizing: border-box;
@@ -13,7 +13,7 @@ body {
 }
 
 /* =========================
-   HEADER
+    HEADER
 ========================= */
 #header {
     background-color: #FFFFFF;
@@ -53,7 +53,7 @@ body {
 }
 
 /* =========================
-   ICON BUTTONS
+    ICON BUTTONS
 ========================= */
 .iconBtn {
     width: 46px;
@@ -86,7 +86,7 @@ body {
 }
 
 /* =========================
-   PROFILE 
+    PROFILE 
 ========================= */
 .profileContainer {
     position: relative;
@@ -129,7 +129,7 @@ body {
 }
 
 /* =========================
-   NAVBAR
+    NAVBAR
 ========================= */
 nav {
     padding: 6px;
@@ -188,7 +188,7 @@ nav li.active {
 }
 
 /* =========================
-   DROPDOWN
+    DROPDOWN
 ========================= */
 .dropdown {
     position: relative;
@@ -253,8 +253,8 @@ nav li.active {
 }
 
 /* =========================
-   MAIN CONTENT
-   SAME WIDTH FOR ALL PATIENT PAGES
+    MAIN CONTENT
+    SAME WIDTH FOR ALL PATIENT PAGES
 ========================= */
 section {
     width: 80%;
@@ -276,7 +276,7 @@ section p {
 }
 
 /* =========================
-   CARD GRID
+    CARD GRID
 ========================= */
 .topCards {
     display: grid;
@@ -288,7 +288,7 @@ section p {
 }
 
 /* =========================
-   ARTICLE GRID
+    ARTICLE GRID
 ========================= */
 .articleGrid {
     display: grid;
@@ -304,8 +304,8 @@ section p {
 }
 
 /* =========================
-   NORMAL ARTICLE CARDS
-   Dashboard / announcements / content cards
+    NORMAL ARTICLE CARDS
+    Dashboard / announcements / content cards
 ========================= */
 article {
     background-color: #FFFFFF;
@@ -345,8 +345,53 @@ article p {
 }
 
 /* =========================
-   CARD BUTTONS
-   Book Appointment clickable cards
+    DASHBOARD
+========================= */
+
+.upcomingAppointmentCard h3
+{
+    font-size: 32px;
+    margin-bottom: 6px;
+    color: #0F172A;
+}
+
+.appointmentTime
+{
+    font-size: 18px;
+    font-weight: 500;
+    color: #475569;
+
+    margin-bottom: 12px;
+}
+
+.appointmentTypeBadge
+{
+    display: inline-block;
+
+    padding: 8px 14px;
+
+    border-radius: 999px;
+
+    background-color: #E0F2FE;
+    color: #0284C7;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    margin-bottom: 16px;
+}
+
+.upcomingAppointmentCard a
+{
+    display: inline-block;
+    margin-top: 8px;
+
+    font-weight: 600;
+}
+
+/* =========================
+    CARD BUTTONS
+    Book Appointment clickable cards
 ========================= */
 .cardBtn {
     width: 100%;
@@ -401,7 +446,7 @@ article p {
 }
 
 /* =========================
-   SLOT BUTTON 
+    SLOT BUTTON 
 ========================= */
 
 .slotContainer {
@@ -446,7 +491,7 @@ article p {
 }
 
 /* =========================
-   SUMMARY BOX
+    SUMMARY BOX
 ========================= */
 .summaryBox {
     background-color: #FFFFFF;
@@ -483,7 +528,7 @@ article p {
 }
 
 /* =========================
-   NORMAL BUTTONS
+    NORMAL BUTTONS
 ========================= */
 .submitBtn,
 .btn {
@@ -525,7 +570,7 @@ article p {
 }
 
 /* =========================
-   TABLE GRID
+    TABLE GRID
 ========================= */
 .tableGrid {
     display: grid;
@@ -584,8 +629,8 @@ article p {
 }
 
 /* =========================
-   FORM ELEMENTS
-   For pages with input/select/textarea
+    FORM ELEMENTS
+    For pages with input/select/textarea
 ========================= */
 input,
 select,
@@ -621,7 +666,7 @@ label {
 }
 
 /* =========================
-   APPOINTMENT TABS
+    APPOINTMENT TABS
 ========================= */
 .appointmentTabs {
     display: flex;
@@ -661,7 +706,7 @@ label {
 }
 
 /* =========================
-   APPOINTMENT FOR & DEPENDANT
+    APPOINTMENT FOR & DEPENDANT
 ========================= */
 
 .appointmentForSection {
@@ -731,7 +776,7 @@ label {
 }
 
 /* =========================
-   APPOINTMENT RECORD TABLE
+    APPOINTMENT RECORD TABLE
 ========================= */
 .appointmentRecordTable {
     margin-top: 20px;
@@ -892,7 +937,7 @@ label {
 }
 
 /* =========================
-   MEDICAL RECORD TABLES
+    MEDICAL RECORD TABLES
 ========================= */
 .medicalRecordTables {
     display: flex;
@@ -934,12 +979,12 @@ label {
     border-bottom: none;
 }
 
-.medicalRecordTables table:nth-child(2) th {
-    width: 240px;
+.medicalRecordTables table th {
+    width: 180px;
 }
 
 /* =========================
-   SINGLE TABLE
+    SINGLE TABLE
 ========================= */
 .singleTable {
     margin-top: 22px;
@@ -985,7 +1030,7 @@ label {
 }
 
 /* =========================
-   RADIO BUTTON 
+    RADIO BUTTON 
 ========================= */
 
 .radioOption {
@@ -1030,7 +1075,7 @@ form .submitBtn {
 }
 
 /* =========================
-   FOOTER
+    FOOTER
 ========================= */
 footer {
     background-color: #E0F2FE;
@@ -1093,7 +1138,7 @@ footer .icon {
 }
 
 /* =========================
-   JAVASCRIPT
+    JAVASCRIPT
 ========================= */
 
 .hidden {
@@ -1106,7 +1151,7 @@ footer .icon {
 }
 
 /* =========================
-   RESPONSIVE
+    RESPONSIVE
 ========================= */
 @media (max-width: 1100px) {
     #header {

@@ -1,14 +1,13 @@
 <?php
+
     session_start();
     include('../dbconnect.php');
 
     $userID = $_SESSION['userID'];
 
-    $sql = "
-    SELECT patientType
-    FROM patient_profile
-    WHERE userID = '$userID'
-    ";
+    $sql = "SELECT patientType
+            FROM patient_profile
+            WHERE userID = '$userID'";
 
     $result = mysqli_query($conn, $sql);
 
@@ -18,27 +17,17 @@
 
     $availableSlots = [];
 
-    if(isset($_POST['checkAvailability']))
-    {
-        $selectedDate =
-            $_POST['appointmentDate'];
+    if(isset($_POST['checkAvailability'])) {
+        $selectedDate = $_POST['appointmentDate'];
 
-        $sqlSlots = "
-        SELECT *
-        FROM time_slot
-        WHERE slotDate = '$selectedDate'
-        AND slotType = 'Scheduled'
-        AND capacity > 0
-        ";
+        $sqlSlots = "SELECT *
+                    FROM time_slot
+                    WHERE slotDate = '$selectedDate' AND slotType = 'Scheduled' AND capacity > 0";
 
-        $resultSlots =
-            mysqli_query($conn, $sqlSlots);
+        $resultSlots = mysqli_query($conn, $sqlSlots);
 
-        while($rowSlot =
-            mysqli_fetch_assoc($resultSlots))
-        {
-            $availableSlots[] =
-                $rowSlot;
+        while($rowSlot = mysqli_fetch_assoc($resultSlots)) {
+            $availableSlots[] = $rowSlot;
         }
     }
 ?>
@@ -57,7 +46,6 @@
     <?php include('inc/patient_header.php'); ?>
 
     <div class="bookAppointmentPage">
-
 
         <section>
             <h2>Book Appointment</h2>
@@ -110,9 +98,7 @@
                     <br>
 
                     <form method="POST">
-                        <input type="date" id="appointmentDate" name="appointmentDate" value="<?=
-                                                                                                isset($selectedDate) ? $selectedDate : '';
-                                                                                            ?>">
+                        <input type="date" id="appointmentDate" name="appointmentDate" value="<?= isset($selectedDate) ? $selectedDate : ''; ?>">
                         <button type="submit" name="checkAvailability" class="submitBtn">Check Availability</button>
                     </form>
                 </article>
@@ -124,29 +110,31 @@
                     <form id="appointmentSlotForm">
                         <div id="slotContainer" class="slotContainer">
                             <?php
-                            if(empty($availableSlots)) {
-                                echo "<p>No available slot</p>";
-                            }
-                            else {
-                                foreach($availableSlots as $slot)
-                                {
+                                if(empty($availableSlots)) {
+                                    echo "<p>No available slot</p>";
+                                }
+                                else {
+                                    foreach($availableSlots as $slot)
+                                    {
                             ?>
+
                             <button type="button" class="slotBtn"
                                     data-slotid="<?= $slot['slotID'] ?>"
                                     data-start="<?= $slot['startTime'] ?>"
                                     data-end="<?= $slot['endTime'] ?>">
+
                             <?=
                                 date("g:i A", strtotime($slot['startTime']));
                             ?>
                             -
                             <?=
-                            date("g:i A", strtotime($slot['endTime']));
+                                date("g:i A", strtotime($slot['endTime']));
                             ?>
                             </button>
 
                             <?php
+                                    }
                                 }
-                            }
                             ?>
                         </div>
                     </form>
@@ -159,21 +147,13 @@
 
             <form action="processAppointment.php" method="POST">
                 <div class="summaryGrid">
-                    <p id="selectedDate">
-                        <strong>Selected Date:</strong> -
-                    </p>
+                    <p id="selectedDate"><strong>Selected Date:</strong> - </p>
 
-                    <p id="appointmentType">
-                        <strong>Appointment Type:</strong> -
-                    </p>
+                    <p id="appointmentType"><strong>Appointment Type:</strong> - </p>
 
-                    <p id="selectedSession">
-                        <strong>Selected Session:</strong> -
-                    </p>
+                    <p id="selectedSession"><strong>Selected Session:</strong> - </p>
 
-                    <p id="timeSlot">
-                        <strong>Time Slot:</strong> -
-                    </p>
+                    <p id="timeSlot"><strong>Time Slot:</strong> - </p>
 
                     <!-- Hidden inputs sent to PHP -->
                     <input type="hidden" name="slotID" id="slotIDHidden">
@@ -186,26 +166,11 @@
                 <?php if ($patientType == 'Staff') : ?>
 
                 <div class="appointmentForSection">
-
                     <h3>Appointment For</h3>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="appointmentFor"
-                            value="Self"
-                            checked>
-                        Self
-                    </label>
+                    <label><input type="radio" name="appointmentFor" value="Self" checked>Self</label>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="appointmentFor"
-                            value="Dependant">
-                        Dependant
-                    </label>
-
+                    <label><input type="radio" name="appointmentFor" value="Dependant">Dependant</label>
                 </div>
 
                 <div id="dependantSection" class="hidden">
@@ -213,42 +178,27 @@
                     <h3>Dependant Information</h3>
 
                     <div>
-                        <label for="dependantName">
-                            Dependant Name
-                        </label>
+                        <label for="dependantName">Dependant Name</label>
 
-                        <input
-                            type="text"
-                            id="dependantName"
-                            name="dependantName">
+                        <input type="text" id="dependantName" name="dependantName">
                     </div>
 
                     <div>
-                        <label for="dependantRelationship">
-                            Relationship
-                        </label>
+                        <label for="dependantRelationship">Relationship</label>
 
-                        <input
-                            type="text"
-                            id="dependantRelationship"
-                            name="dependantRelationship">
+                        <input type="text" id="dependantRelationship" name="dependantRelationship">
                     </div>
-
                 </div>
 
                 <?php else : ?>
 
-                <input
-                    type="hidden"
-                    name="appointmentFor"
-                    value="Self">
+                <input type="hidden" name="appointmentFor" value="Self">
 
                 <?php endif; ?>
 
-                <button type="submit" id="confirmBtn" class="submitBtn">
-                    Confirm Booking
-                </button>
+                <button type="submit" id="confirmBtn" class="submitBtn">Confirm Booking</button>
             </form>
+        </section>
     </div>
     
     <?php include('inc/patient_footer.php'); ?>
