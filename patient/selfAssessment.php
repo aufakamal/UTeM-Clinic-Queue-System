@@ -532,6 +532,6 @@
     </section>
 
     <?php include('inc/patient_footer.php'); ?>
-<script src="js/selfAssessment.js"></script>
+    <script src="js/selfAssessment.js"></script>
 </body>
 </html>

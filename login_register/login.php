@@ -1,14 +1,6 @@
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 <?php
 session_start();
 include("../dbconnect.php");
-=======
-<?php
-session_start();
-include("dbconnect.php");
->>>>>>> master
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -90,10 +82,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> master
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,14 +99,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="main">
 
         <div class="left-sec">
-<<<<<<< HEAD
-            <!-- <a href="mainPage.html" class="back">
-=======
 
             <a href="mainPage.php" class="back">
->>>>>>> master
                 <img src="loginRegisterImage/backIconDark.png" alt="Back">
-            </a> -->
+            </a>
 
             <h2>
                 Welcome To <br>

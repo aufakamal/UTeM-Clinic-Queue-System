@@ -1,6 +1,7 @@
 /* =========================
    BOOK APPOINTMENT PAGE
 ========================= */
+
 let sameDayBtn = document.querySelector("#sameDayBtn");
 let scheduledBtn = document.querySelector("#scheduledBtn");
 
@@ -69,16 +70,6 @@ if (sameDayBtn && scheduledBtn && sameDayCard && scheduledCard) {
     });
 }
 
-// let currentHour = new Date().getHours();
-
-// if (currentHour >= 0 && morningBtn) {
-//     morningBtn.disabled = true;
-// }
-
-// if (currentHour >= 19 && afternoonBtn) {
-//     afternoonBtn.disabled = true;
-// }
-
 if (morningBtn) {
     morningBtn.addEventListener("click", function() {
         let currentHour = new Date().getHours();
@@ -126,32 +117,20 @@ if (afternoonBtn) {
     });
 }
 
-let appointmentDateInput =
-    document.querySelector("#appointmentDate");
+let appointmentDateInput = document.querySelector("#appointmentDate");
 
 let tomorrow = new Date();
 
-tomorrow.setDate(
-    tomorrow.getDate() + 1
-);
+tomorrow.setDate(tomorrow.getDate() + 1);
 
-if (appointmentDateInput)
-{
-    let year =
-        tomorrow.getFullYear();
+if (appointmentDateInput) {
+    let year = tomorrow.getFullYear();
 
-    let month =
-        String(
-            tomorrow.getMonth() + 1
-        ).padStart(2, "0");
+    let month = String(tomorrow.getMonth() + 1).padStart(2, "0");
 
-    let day =
-        String(
-            tomorrow.getDate()
-        ).padStart(2, "0");
+    let day = String(tomorrow.getDate()).padStart(2, "0");
 
-    appointmentDateInput.min =
-        `${year}-${month}-${day}`;
+    appointmentDateInput.min =`${year}-${month}-${day}`;
 }
 
 
@@ -160,99 +139,68 @@ if (confirmBtn) {
     });
 }
 
-let appointmentForRadios =
-    document.querySelectorAll('input[name="appointmentFor"]');
+let appointmentForRadios = document.querySelectorAll('input[name="appointmentFor"]');
 
-let dependantSection =
-    document.querySelector("#dependantSection");
+let dependantSection = document.querySelector("#dependantSection");
 
-if (appointmentForRadios.length > 0 && dependantSection)
-{
-    appointmentForRadios.forEach(function(radio)
-    {
-        radio.addEventListener("change", function()
-        {
-            if (this.value === "Dependant")
-            {
+if (appointmentForRadios.length > 0 && dependantSection) {
+    appointmentForRadios.forEach(function(radio) {
+        radio.addEventListener("change", function() {
+            if (this.value === "Dependant") {
                 dependantSection.classList.remove("hidden");
             }
-            else
-            {
+            else {
                 dependantSection.classList.add("hidden");
             }
         });
     });
 }
 
-let slotButtons =
-    document.querySelectorAll(".slotBtn");
+let slotButtons = document.querySelectorAll(".slotBtn");
 
-slotButtons.forEach(function(button)
-{
-    button.addEventListener("click", function()
-    {
-        slotButtons.forEach(function(btn)
-        {
+slotButtons.forEach(function(button) {
+    button.addEventListener("click", function() {
+        slotButtons.forEach(function(btn) {
             btn.classList.remove("selectedSlot");
         });
 
         this.classList.add("selectedSlot");
 
-        let slotID =
-            this.dataset.slotid;
+        let slotID =  this.dataset.slotid;
 
-        let startTime =
-            this.dataset.start;
+        let startTime = this.dataset.start;
 
-        let endTime =
-            this.dataset.end;
+        let endTime = this.dataset.end;
 
-        if(slotIDHidden)
-        {
-            slotIDHidden.value =
-                slotID;
+        if(slotIDHidden) {
+            slotIDHidden.value = slotID;
         }
 
-        if(appointmentDateHidden)
-        {
-            appointmentDateHidden.value =
-                appointmentDateInput.value;
+        if(appointmentDateHidden) {
+            appointmentDateHidden.value = appointmentDateInput.value;
         }
 
-        if(appointmentTypeHidden)
-        {
-            appointmentTypeHidden.value =
-                "Scheduled";
+        if(appointmentTypeHidden) {
+            appointmentTypeHidden.value = "Scheduled";
         }
 
-        if(timeSlotHidden)
-        {
-            timeSlotHidden.value =
-                startTime + " - " + endTime;
+        if(timeSlotHidden) {
+            timeSlotHidden.value = startTime + " - " + endTime;
         }
 
         summaryBox.classList.remove("hidden");
 
-        if(selectedDate)
-        {
-            selectedDate.innerHTML =
-                "<strong>Selected Date:</strong> "
-                + appointmentDateInput.value;
+        if(selectedDate) {
+            selectedDate.innerHTML = "<strong>Selected Date:</strong> " + appointmentDateInput.value;
         }
 
-        if(appointmentType)
-        {
-            appointmentType.innerHTML =
-                "<strong>Appointment Type:</strong> Scheduled Consultation";
+        if(appointmentType) { 
+            appointmentType.innerHTML = "<strong>Appointment Type:</strong> Scheduled Consultation";
         }
 
         if(timeSlot)
         {
-            timeSlot.innerHTML =
-                "<strong>Time Slot:</strong> "
-                + startTime
-                + " - "
-                + endTime;
+            timeSlot.innerHTML = "<strong>Time Slot:</strong> " + startTime + " - " + endTime;
         }
     });
 });
