@@ -1,3 +1,21 @@
+<?php
+    session_start();
+    include('../dbconnect.php');
+
+    $userID = $_SESSION['userID'];
+
+    $sql = "SELECT c.consultationID, c.startTime, c.reasonForVisit, c.clinicalFindings, c.diagnosis, c.treatmentPlan, u.fullName AS doctorName
+            FROM appointment a
+            JOIN attendance att ON a.appointmentID = att.appointmentID
+            JOIN queue q ON att.attendanceID = q.attendanceID
+            JOIN consultation c ON q.queueID = c.queueID
+            JOIN user u ON c.doctorUserID = u.userID
+            WHERE a.userID = '$userID'
+            ORDER BY c.startTime DESC";
+
+    $result = mysqli_query($conn, $sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,50 +33,97 @@
         <h2>Medical Record</h2>
         <p>View your visit history, doctor notes, and prescriptions.</p>
 
-        <article>
-            <h2>12/6/2026</h2>
+        <article class="medicalRecordCard">
+
+            <?php
+                if(mysqli_num_rows($result) == 0)
+                {
+            ?>
+
+            <p>No medical records found.</p>
+
+            <?php
+            }
+                else
+                {
+                    while($row = mysqli_fetch_assoc($result))
+                    {
+            ?>
+
+            <div class="medicalRecordHeader">
+                <span class="medicalRecordLabel">Visit Date</span>
+
+                <h2><?= date('d/m/Y', strtotime($row['startTime'])) ?></h2>
+            </div>
 
             <div class="medicalRecordTables">
                 <table>
                     <tr>
-                        <th>Time Slot</th>
                         <th>Doctor</th>
-                        <th>Appointment Type</th>
+                        <td><?= $row['doctorName'] ?></td>
                     </tr>
-                    <tr>
-                        <td>11:00 AM - 12:00 PM</td>
-                        <td>Dr Anis</td>
-                        <td>Same-Day Consultation</td>
-                    </tr>
-                </table>
 
-                <table>
                     <tr>
                         <th>Reason for Visit</th>
-                        <td>Fever, sore throat, and body ache for three days.</td>
+                        <td><?= $row['reasonForVisit'] ?></td>
                     </tr>
+
                     <tr>
                         <th>Clinical Findings</th>
-                        <td>Patient has mild fever, throat redness, nasal congestion, and general body weakness. No breathing difficulty or chest pain reported.</td>
+                        <td><?= $row['clinicalFindings'] ?></td>
                     </tr>
+
                     <tr>
                         <th>Diagnosis</th>
-                        <td>Acute upper respiratory tract infection.</td>
+                        <td><?= $row['diagnosis'] ?></td>
                     </tr>
+
                     <tr>
                         <th>Treatment Plan</th>
-                        <td>Advise rest, increase fluid intake, and monitor temperature. Patient should return to the clinic if fever continues for more than five days or symptoms worsen.</td>
+                        <td><?= $row['treatmentPlan'] ?></td>
                     </tr>
+
                     <tr>
                         <th>Prescription</th>
-                        <td>Paracetamol 500mg, take one tablet every 6 hours when needed for fever or body ache.</td>
+                        <td>
+                            <?php
+
+                                $consultationID = $row['consultationID'];
+
+                                $prescriptionSQL = "SELECT m.medicineName, pi.dosage, pi.frequency, pi.duration, pi.instructions
+                                                    FROM prescription p
+                                                    JOIN prescription_item pi ON p.prescriptionID = pi.prescriptionID
+                                                    JOIN medicine m ON pi.medicineID = m.medicineID
+                                                    WHERE p.consultationID = '$consultationID'";
+
+                                $prescriptionResult = mysqli_query($conn, $prescriptionSQL);
+
+                                if(mysqli_num_rows($prescriptionResult) == 0) {
+                                    echo "No prescription issued.";
+                                }
+                                else {
+                                    while($medicine = mysqli_fetch_assoc($prescriptionResult)) {
+                                        echo "<strong>" . $medicine['medicineName'] . "</strong><br>";
+                                        echo "Dosage: " . $medicine['dosage'] . "<br>";
+                                        echo "Frequency: " . $medicine['frequency'] . "<br>";
+                                        echo "Duration: " . $medicine['duration'] . "<br>";
+                                        echo "Instruction: " . $medicine['instructions'] . "<br><br>";
+                                    }
+                                }
+
+                            ?>
+                        </td>
                     </tr>
                 </table>
             </div>
         </article>
+        <?php
+                }
+            }
+        ?>
     </section>
 
     <?php include('inc/patient_footer.php'); ?>
-<script src="js/medicalRecord.js"></script>
+    <script src="js/medicalRecord.js"></script>
 </body>
 </html>

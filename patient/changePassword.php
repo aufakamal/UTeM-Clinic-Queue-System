@@ -9,45 +9,45 @@
 </head>
 
 <body>
-<?php include('inc/patient_header.php'); ?>
-<div class="profilePage">
 
-    <div class="profileTitle">
-        <!-- <a href="editProfilePatient.php">
-            <img src="../images/backIconDark.png" class="backIcon" alt="Back">
-        </a> -->
+    <?php include('inc/patient_header.php'); ?>
 
-        <h2>Change Password</h2>
+    <div class="profilePage">
+
+        <div class="profileTitle">
+            <!-- <a href="editProfilePatient.php">
+                <img src="../images/backIconDark.png" class="backIcon" alt="Back">
+            </a> -->
+
+            <h2>Change Password</h2>
+        </div>
+
+        <div class="changePasswordCard">
+
+            <img src="../images/changePasswordIcon.png" class="changePasswordIcon" alt="Change Password">
+
+            <p>Please enter your new password</p>
+
+            <form>
+                <label>Old Password</label>
+                <input type="password">
+
+                <label>New Password</label>
+                <input type="password">
+
+                <label>Confirm Password</label>
+                <input type="password">
+
+                <div class="buttonGroup">
+                    <a href="profilePatient.php" class="saveBtn secondaryBtn">BACK</a>
+
+                    <a href="changePasswordSuccess.php" class="saveBtn">
+                        CHANGE PASSWORD
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <div class="changePasswordCard">
-
-        <img src="../images/changePasswordIcon.png" class="changePasswordIcon" alt="Change Password">
-
-        <p>Please enter your new password</p>
-
-        <form>
-            <label>Old Password</label>
-            <input type="password">
-
-            <label>New Password</label>
-            <input type="password">
-
-            <label>Confirm Password</label>
-            <input type="password">
-
-            <div class="buttonGroup">
-                <a href="profilePatient.php" class="saveBtn secondaryBtn">BACK</a>
-
-                <a href="changePasswordSuccess.php" class="saveBtn">
-                    CHANGE PASSWORD
-                </a>
-            </div>
-        </form>
-
-    </div>
-
-</div>
-<?php include('inc/patient_footer.php'); ?>
+    <?php include('inc/patient_footer.php'); ?>
 </body>
 </html>

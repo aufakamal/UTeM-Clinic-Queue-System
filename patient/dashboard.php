@@ -1,3 +1,27 @@
+<?php
+
+    session_start();
+    include('../dbconnect.php');
+
+    $userID = $_SESSION['userID'];
+
+    $upcomingSQL = "SELECT a.appointmentType, ts.slotDate, ts.startTime, ts.endTime
+                    FROM appointment a
+
+                    JOIN time_slot ts ON a.slotID = ts.slotID
+
+                    WHERE a.userID = '$userID' AND a.appointmentStatus = 'Booked'
+
+                    ORDER BY ts.slotDate ASC, ts.startTime ASC
+
+                    LIMIT 1";
+
+    $upcomingResult = mysqli_query($conn, $upcomingSQL);
+
+    $upcomingAppointment = mysqli_fetch_assoc($upcomingResult);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,16 +39,61 @@
         <div class="topCards">
             <article>
                 <h2>Upcoming Appointment</h2>
-                <p>No appointment booked yet. <a href="bookAppointment.php">Click here</a> to make an appointment</p>
+
+                <?php
+                    if($upcomingAppointment)
+                    {
+                ?>
+
+                <div class="upcomingAppointmentCard">
+                    <h3>
+                        <?= date('d/m/Y',
+                            strtotime($upcomingAppointment['slotDate'])) ?>
+                    </h3>
+
+                    <p class="appointmentTime">
+                        <?= date('g:i A',
+                            strtotime($upcomingAppointment['startTime'])) ?>
+                        -
+                        <?= date('g:i A',
+                            strtotime($upcomingAppointment['endTime'])) ?>
+                    </p>
+
+                    <span class="appointmentTypeBadge">
+                        <?= $upcomingAppointment['appointmentType'] ?>
+                    </span>
+
+                    <p>
+                        <a href="appointmentRecord.php">
+                            View Appointment Record 
+                        </a>
+                    </p>
+                </div>
+
+                <?php
+                    }
+                    else
+                    {
+                ?>
+
+                <p>No appointment booked yet.<a href="bookAppointment.php"> Click here </a>to make an appointment.</p>
+
+                <?php
+                    }
+                ?>
+
             </article>
 
             <article>
-                <h2>Announcement</h2>
-                <h3>Flu Prevention Reminder</h3>
-                <p>Students experiencing fever, cough, sore throat, or flu symptoms are encouraged to rest, wear a mask, and visit the clinic if symptoms worsen.</p>
-            </br>
-                <h3>Free Basic Health Screening</h3>
-                <p>Basic health screening services such as blood pressure checks are available at the clinic. Students may walk in or ask clinic staff for assistance.</p>
+                <h2>Clinic Information</h2>
+
+                <h3>Before Your Appointment</h3>
+                <p>Please arrive at least 15 minutes before your scheduled appointment and bring your student identification card for verification.</p>
+
+                <br>
+
+                <h3>Medication Collection</h3>
+                <p>Patients who receive prescriptions may collect their medication at the pharmacy counter after consultation and verification.</p>
             </article>
         </div>
 

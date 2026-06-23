@@ -9,17 +9,15 @@
 </head>
 
 <body>
-<?php include('inc/patient_header.php'); ?>
+    <?php include('inc/patient_header.php'); ?>
     <div class="profilePage">
 
         <div class="profileTitle">
-
             <!-- <a href="changePassword.php">
                 <img src="../images/backIconDark.png" alt="Back"class="backIcon">
             </a> -->
 
             <h2>Change Password</h2>
-
         </div>
 
         <div class="messageCard">
@@ -33,6 +31,6 @@
         </div>
 
     </div>
-<?php include('inc/patient_footer.php'); ?>
+    <?php include('inc/patient_footer.php'); ?>
 </body>
 </html>
