@@ -8,29 +8,8 @@
 </head>
 
 <body>
-    <div id="header">
-        <div id="leftSection">
-            <button class="iconBtn" onclick="window.location.href='doctor.html'">
-                <img class="icon" src="../images/backIconDark.png">
-            </button>
+        <?php include('inc/doctor_header.php'); ?>
 
-            <h1>UTeM Clinic Queue System</h1>
-        </div>
-
-        <nav>
-            <ul>
-                <li><a href="doctorWorkshop.html">Workspace</a></li>
-                <li class="active"><a href="doctorReport.html">Reports</a></li>
-            </ul>
-        </nav>
-
-        <div id="rightSection">
-            <h1>Dr. Anis | Room 3</h1>
-            <button class="iconBtn">
-                <img class="icon" src="../images/profileIconDark.png">
-            </button>
-        </div>
-    </div>
 
     <section class="drReportPage">
 

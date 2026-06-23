@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Workspace</title>
+    <link rel="stylesheet" href="doctor.css">
+</head>
+
+<body>
+
+    <?php include('inc/doctor_header.php'); ?>
+
+    <section class="doctorWorkspace">
+
+        <!-- LEFT COLUMN -->
+        <div class="leftColumn">
+
+            <article class="doctorCard">
+                <h2>Current Consultations</h2>
+
+                <div class="currentconstBox">
+                    <div>
+                        <h3 style="color: #0369A1;">A103</h3>
+                        <p style="font-weight: 600; font-size: 16px;">
+                            Siti Sarah bt Roslan
+                        </p>
+                        <p class="appointmentLabel">
+                            Type of Appointment: Medical Checkup
+                        </p>
+                    </div>
+
+                    <button class="startBtn" data-queue="A103">
+                        Start Session
+                    </button>
+                </div>
+
+            </article>
+
+            <article class="doctorCard">
+
+                <h2>Search Patient</h2>
+
+                <!-- SEARCH INPUT -->
+                <input 
+                    id="searchInput"
+                    class="searchInput" 
+                    type="text" 
+                    placeholder="Search by name or queue ID"
+                    onkeyup="searchPatient(this.value)"
+                >
+
+                <!-- SEARCH RESULT -->
+                <div id="searchResultBox"></div>
+
+                <p class="recentText">
+                    Recent Search:<br>
+                    • Amir bin Amar<br>
+                    • D514698002
+                </p>
+
+            </article>
+
+        </div>
+
+        <!-- RIGHT WORKSPACE -->
+        <article class="workspaceCard" id="workspaceCard">
+
+            <!-- CONSULTATION VIEW -->
+            <div id="defaultWorkspace">
+
+                <p id="placeholderText">
+                    Please select a patient to start consultation.
+                </p>
+
+                <div id="patientRecordDisplay" style="display:none;">
+
+                    <h2 class="recordTitle">CURRENT CONSULTATIONS</h2>
+
+                    <h3 class="recordSubTitle">PATIENT RECORD</h3>
+
+                    <div class="patientInfo">
+
+                        <p>
+                            <strong>Full name:</strong>
+                            <span id="pName"></span>
+                        </p>
+
+                        <p>
+                            <strong>Gender:</strong>
+                            <span id="pGender"></span>
+                        </p>
+
+                        <p>
+                            <strong>ID:</strong>
+                            <span id="pID"></span>
+                        </p>
+
+                        <p>
+                            <strong>Blood type:</strong>
+                            <span id="pBlood"></span>
+                        </p>
+
+                    </div>
+
+                    <!-- MINI TAB BAR -->
+                    <div class="miniTabBar">
+
+                        <button class="miniTab active" onclick="switchTab('overview', this)">Overview</button>
+                        <button class="miniTab" onclick="switchTab('visits', this)">Visits</button>
+                        <button class="miniTab" onclick="switchTab('diagnosis', this)">Diagnosis</button>
+                        <button class="miniTab" onclick="switchTab('prescription', this)">Prescription</button>
+
+                    </div>
+
+                    <!-- OVERVIEW SECTION -->
+                    <div class="overviewSection">
+
+                        <div class="infoBlock">
+                            <div class="infoHeader">
+                                <h3>Allergies</h3>
+
+                                <button 
+                                    type="button"
+                                    class="addSmallBtn" 
+                                    onclick="addItem('pAllergyList')"
+                                >
+                                    + Add Allergy
+                                </button>
+                            </div>
+
+                            <div id="pAllergyList" class="editableList"></div>
+                        </div>
+
+                        <div class="infoBlock">
+                            <div class="infoHeader">
+                                <h3>Chronic Diseases</h3>
+
+                                <button 
+                                    type="button"
+                                    class="addSmallBtn" 
+                                    onclick="addItem('pChronicList')"
+                                >
+                                    + Add Condition
+                                </button>
+                            </div>
+
+                            <div id="pChronicList" class="editableList"></div>
+                        </div>
+
+                        <div class="infoBlock">
+                            <div class="infoHeader">
+                                <h3>Current Medication</h3>
+
+                                <button 
+                                    type="button"
+                                    class="addSmallBtn" 
+                                    onclick="addItem('pMedList')"
+                                >
+                                    + Add Medication
+                                </button>
+                            </div>
+
+                            <div id="pMedList" class="editableList"></div>
+                        </div>
+
+                    </div>
+
+
+        <!-- VISITS SECTION -->
+        <div id="visitsSection" class="tabSection" style="display: none;">
+
+                <!-- CARD 1 -->
+                <div id="visitCard">
+                    <h2 class="visitTitle">Medical Record</h2>
+
+                    <table class="visitTable">
+                        <thead>
+                            <tr>
+                                <th>Time Slot</th>
+                                <th>Doctor</th>
+                                <th>Appointment Type</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>11:00 AM - 12:00 PM</td>
+                                <td>Dr Anis</td>
+                                <td>Same-Day Consultation</td>
+                                <td><span class="status done">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="visitDetail">
+                        <div><b>Reason for Visit:</b> Fever</div>
+                        <div><b>Clinical Findings:</b> Viral infection</div>
+                        <div><b>Diagnosis:</b> Influenza</div>
+                        <div><b>Treatment Plan:</b> Rest + fluids</div>
+                        <div><b>Prescription:</b> Paracetamol</div>
+                    </div>      
+                </div>
+
+                <!-- CARD 2 -->
+                <div id="visitCard">
+                    <h2 class="visitTitle">Medical Record</h2>
+
+                    <table class="visitTable">
+                        <thead>
+                            <tr>
+                                <th>Time Slot</th>
+                                <th>Doctor</th>
+                                <th>Appointment Type</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>2:00 PM - 4:00 PM</td>
+                                <td>Dr Siva</td>
+                                <td>Follow Up</td>
+                                <td><span class="status done">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="visitDetail">
+                        <div><b>Reason for Visit:</b> Asthma review</div>
+                        <div><b>Clinical Findings:</b> Stable condition</div>
+                        <div><b>Diagnosis:</b> Chronic Asthma</div>
+                        <div><b>Treatment Plan:</b> Continue inhaler</div>
+                        <div><b>Prescription:</b> Ventolin</div>
+                    </div>
+
+                </div>
+
+                <!-- CARD 3 -->
+                <div id="visitCard">
+                    <h2 class="visitTitle">Medical Record</h2>
+
+                    <table class="visitTable">
+                        <thead>
+                            <tr>
+                                <th>Time Slot</th>
+                                <th>Doctor</th>
+                                <th>Appointment Type</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>9:00 AM - 10:00 AM</td>
+                                <td>Dr Ahmad</td>
+                                <td>Medical Checkup</td>
+                                <td><span class="status done">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="visitDetail">
+                        <div><b>Reason for Visit:</b> Headache</div>
+                        <div><b>Clinical Findings:</b> Mild dehydration</div>
+                        <div><b>Diagnosis:</b> Tension headache</div>
+                        <div><b>Treatment Plan:</b> Hydration + rest</div>
+                        <div><b>Prescription:</b> Ibuprofen</div>
+                    </div>
+
+                </div>
+        </div>
+
+
+            <!-- DIAGNOSIS SECTION -->
+            <div id="diagnosisSection" class="tabSection" style="display: none;">
+
+                <div class="diagnosisCleanBox">
+                        <!-- 1. REASON FOR VISIT -->
+                        <div class="cardBox">
+                            <h4>Reason for Visit</h4>
+                            <p id="reasonVisitText">
+                                Patient reports fever and headache.
+                            </p>
+                        </div>
+
+                        <!-- 2. CLINICAL FINDINGS -->
+                        <div class="cardBox">
+
+                            <div class="cardHeader">
+                                <h4>Clinical Findings</h4>
+                            </div>
+
+                            <div class="findingsGrid">
+
+                                <div class="findingBox">
+                                    <strong>Temperature</strong>
+                                    <span>38.5 Celsius</span>
+                                </div>
+
+                                <div class="findingBox">
+                                    <strong>Blood Pressure</strong>
+                                    <span>120/80</span>
+                                </div>
+
+                                <div class="findingBox">
+                                    <strong>Heart Rate</strong>
+                                    <span>92 bpm</span>
+                                </div>
+
+                            </div>
+
+                            <div class="findingText">
+                                <strong>Add Clinical Finding</strong>
+                            </div>
+
+
+                            <div id="findingOutput"></div>
+                            <!-- optional doctor input -->
+                            <div class="noteRow">
+                                <input id="newFinding" placeholder="Add clinical note..." />
+                                <button type ="button" onclick="addFinding()">Add</button>
+                            </div>
+
+                            <div id="findingList"></div>
+
+                            <div class="findingText">
+                                <strong>Physical Observation</strong>
+                                <p>Patient appears fatigued.</p>
+                            </div>
+
+                            <div class="findingText">
+                                <strong>Test Results</strong>
+                                <p>
+                                    Rapid COVID Test: Negative<br>
+                                    Blood Glucose: 6.1 mmol/L
+                                </p>
+                            </div>
+                </div>
+
+                        <!-- 3. DIAGNOSIS -->
+                        <div class="cardBox">
+                            <h4>Diagnosis</h4>
+                            <p id="diagnosisText">Acute Viral Infection</p>
+                        </div>
+
+                        <!-- 4. TREATMENT PLAN -->
+                        <div class="cardBox">
+                            <h4>Treatment Plan</h4>
+                            <p id="treatmentText">Patient advised rest and hydration.</p>
+                        </div>
+            </div>
+</div>
+
+            <!-- PRESCRIPTION SECTION -->
+            <div id="prescriptionSection" class="tabSection" style="display:none;">
+
+                <h2 class="prescriptionTitle">PRESCRIPTION</h2>
+
+                <!-- ADD MEDICINE SECTION -->
+                <div class="formCard">
+
+                    <div class="rowTop">
+                        <h3>Add Medicine <span class="infoIcon">ⓘ</span></h3>
+
+                        <button type="button" class="adminBtn">
+                            + Add New Medicine (Admin Only)
+                        </button>
+                    </div>
+
+                    <div class="grid">
+
+                        <div class="field">
+                            <label>Medicine</label>
+                            <select id="medicine" onchange="updateStock()">
+                                <option value="Paracetamol 500mg" data-stock="120">Paracetamol 500mg</option>
+                                <option value="Amoxicillin 500mg" data-stock="80">Amoxicillin 500mg</option>
+                                <option value="Ibuprofen 400mg" data-stock="50">Ibuprofen 400mg</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label>Stock Available</label>
+                            <div class="stockBox" id="stockBox">120 tablets</div>
+                        </div>
+
+                        <div class="field">
+                            <label>Dosage</label>
+                            <select id="dosage">
+                                <option>1 tablet</option>
+                                <option>2 tablets</option>
+                                <option>1 capsule</option>
+                                <option>500mg</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label>Frequency</label>
+                            <select id="frequency">
+                                <option>TDS (3 times a day)</option>
+                                <option>BD (2 times a day)</option>
+                                <option>OD (once a day)</option>
+                                <option>SOS (When needed)</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label>Duration</label>
+                            <select id="duration">
+                                <option>3 days</option>
+                                <option>5 days</option>
+                                <option>7 days</option>
+                                <option>14 days</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label>Notes (Optional)</label>
+                            <input id="notes" placeholder="e.g. After meals">
+                        </div>
+
+                    </div>
+
+                    <div class="addPrescriptionWrap">
+                        <button type="button" class="addBtn" onclick="addPrescription()">
+                            + Add to Prescription
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- PRESCRIPTION LIST -->
+                <div class="prescriptionListBox">
+                    <h3>Prescription List</h3>
+                    <p>Listed medicines will be saved for this patient.</p>
+
+                    <table class="rxTable">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Medicine</th>
+                                <th>Dosage</th>
+                                <th>Frequency</th>
+                                <th>Duration</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="rxTableBody">
+                            <tr>
+                                <td>1</td>
+                                <td>Paracetamol 500mg</td>
+                                <td>1 tablet</td>
+                                <td>TDS (3 times a day)</td>
+                                <td>5 days</td>
+                                <td>After meals</td>
+                                <td><button type="button" class="deleteRxBtn" onclick="deleteRx(this)">🗑</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- IMPORTANT NOTES -->
+                <div class="importantBox">
+                    <div>
+                        <h4>ⓘ Important Notes</h4>
+                        <p>• Please review the prescription before submitting.</p>
+                        <p>• Stock will be deducted after saving the prescription.</p>
+                        <p>• Cannot prescribe medicine with 0 stock.</p>
+                    </div>
+
+                    <button type="button" class="savePrescriptionBtn">
+                        💾 Save Prescription
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="consultationBottomActions">
+                <button type="button" class="completeBtn" onclick="saveCompletion()">
+                    Save Completion
+                </button>
+            </div>
+
+    <script src="doctor.js"></script>
+
+</body>
+</html>

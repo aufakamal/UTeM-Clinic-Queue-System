@@ -6,8 +6,8 @@
 
     <nav>
         <ul>
-            <li class="active">
-                <a href="doctorWorkshop.php">Workspace</a>
+            <li>
+                <a href="doctorWorkspace.php">Workspace</a>
             </li>
 
             <li>
