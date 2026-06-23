@@ -109,7 +109,7 @@
                         </td>
                     </tr>
                     <?php
-                        
+                        }
                     ?>
                 </table>
             </div>
@@ -168,7 +168,7 @@
                         <td><span class="status<?= str_replace(' ', '', $row['appointmentStatus']) ?>"><?= $row['appointmentStatus'] ?></span></td>
                     </tr>
                     <?php
-                        
+                        }
                     ?>
                 </table>
             </div>
