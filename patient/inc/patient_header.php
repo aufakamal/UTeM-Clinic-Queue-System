@@ -39,7 +39,7 @@
 
         <div id="profileDropdown">
             <a href="profilePatient.php">View Profile</a>
-            <a href="../login_register/mainPage.html">Log Out</a>
+            <a href="../login_register/mainPage.php">Log Out</a>
         </div>
 
     </div>

@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <?php
 session_start();
 include("../dbconnect.php");
+=======
+<?php
+session_start();
+include("dbconnect.php");
+>>>>>>> master
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -84,7 +90,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> master
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,51 +105,86 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
 <div class="container">
+
     <?php include('inc/login_register_header.php'); ?>
 
     <div class="main">
 
         <div class="left-sec">
+<<<<<<< HEAD
             <!-- <a href="mainPage.html" class="back">
+=======
+
+            <a href="mainPage.php" class="back">
+>>>>>>> master
                 <img src="loginRegisterImage/backIconDark.png" alt="Back">
             </a> -->
 
-            <h2>Welcome To <br>
-            UTeM's PKU <br>
-            Digital Clinic <br>
-            Queue
+            <h2>
+                Welcome To <br>
+                UTeM's PKU <br>
+                Digital Clinic <br>
+                Queue
             </h2>
+
         </div>
 
         <div class="right-sec">
+
             <h2>LOGIN</h2>
 
-            <form id="loginForm">
+            <form method="POST" action="login.php">
+
                 <label>ID</label>
-                <input type="text" id="loginId">
+                <input
+                    type="text"
+                    id="loginId"
+                    name="userID"
+                    required
+                >
 
                 <label>Password</label>
-                <input type="password" id="loginPassword">
+                <input
+                    type="password"
+                    id="loginPassword"
+                    name="password"
+                    required
+                >
 
-                <a href="forgotPassword.php" class="forgot">Forgot Password?</a>
+                <a href="forgotPassword.php" class="forgot">
+                    Forgot Password?
+                </a>
 
                 <label>Login As</label>
-                <select id="loginRole">
+
+                <select
+                    id="loginRole"
+                    name="roleID"
+                    required
+                >
                     <option value="">Dropdown</option>
-                    <option value="patient">Patient</option>
-                    <option value="doctor">Doctor</option>
-                    <option value="pharmacist">Pharmacist</option>
-                    <option value="admin">Administrator</option>
+                    <option value="1">Admin</option>
+                    <option value="2">Doctor</option>
+                    <option value="3">Pharmacist</option>
+                    <option value="4">Patient</option>
                 </select>
 
-                <button type="submit" class="loginBtn">LOGIN</button>
+                <button type="submit" class="loginBtn">
+                    LOGIN
+                </button>
 
-                <p>Don't have an account? <a href="register.php">Register</a></p>
+                <p>
+                    Don't have an account?
+                    <a href="register.php">Register</a>
+                </p>
+
             </form>
+
         </div>
+
     </div>
+
 </div>
 
-<script src="loginRegister.js"></script>
 </body>
 </html>

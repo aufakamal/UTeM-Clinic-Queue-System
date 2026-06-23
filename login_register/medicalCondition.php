@@ -31,22 +31,53 @@
 
             <h2>REGISTER</h2>
 
-            <p class="description">Do you have any allergies or existing medical conditions? If yes, please specify. You can edit or change this later in your profile.</p>
+            <p class="description">
+                Please select your allergies or existing medical conditions.
+                You can edit or change this later in your profile.
+            </p>
 
-            <form>
+            <form action="login.php" method="post">
 
-                <label>Allergy</label>
-                <textarea rows="4"></textarea>
+                <div class="medical-grid">
 
-                <label>Chronic Disease</label>
-                <textarea rows="4"></textarea>
+                    <div class="medical-card">
+                        <h3>Allergy</h3>
 
-                <label>Current Medication</label>
-                <textarea rows="4"></textarea>
+                        <label><input type="checkbox" name="allergy[]" value="None"> None</label>
+                        <label><input type="checkbox" name="allergy[]" value="Peanuts"> Peanuts</label>
+                        <label><input type="checkbox" name="allergy[]" value="Seafood"> Seafood</label>
+                        <label><input type="checkbox" name="allergy[]" value="Dust"> Dust</label>
+                        <label><input type="checkbox" name="allergy[]" value="Penicillin"> Penicillin</label>
+                        <label><input type="checkbox" name="allergy[]" value="Others"> Others</label>
+                    </div>
+
+                    <div class="medical-card">
+                        <h3>Chronic Disease</h3>
+
+                        <label><input type="checkbox" name="chronicDisease[]" value="None"> None</label>
+                        <label><input type="checkbox" name="chronicDisease[]" value="Asthma"> Asthma</label>
+                        <label><input type="checkbox" name="chronicDisease[]" value="Diabetes"> Diabetes</label>
+                        <label><input type="checkbox" name="chronicDisease[]" value="Hypertension"> Hypertension</label>
+                        <label><input type="checkbox" name="chronicDisease[]" value="Heart Disease"> Heart Disease</label>
+                        <label><input type="checkbox" name="chronicDisease[]" value="Others"> Others</label>
+                    </div>
+
+                </div>
+
+                <div class="medical-card medication-card">
+                    <h3>Current Medication</h3>
+
+                    <label><input type="checkbox" name="currentMed[]" value="None"> None</label>
+                    <label><input type="checkbox" name="currentMed[]" value="Ventolin"> Ventolin</label>
+                    <label><input type="checkbox" name="currentMed[]" value="Metformin"> Metformin</label>
+                    <label><input type="checkbox" name="currentMed[]" value="Amlodipine"> Amlodipine</label>
+                    <label><input type="checkbox" name="currentMed[]" value="Painkiller"> Painkiller</label>
+                    <label><input type="checkbox" name="currentMed[]" value="Others"> Others</label>
+                </div>
 
                 <div class="button-group">
                     <a href="register.php" class="back-button">BACK</a>
-                    <a href="login.php" class="register-button">REGISTER</a>
+                    <button type="submit" class="register-button">REGISTER</button>
                 </div>
 
                 <p class="login-link">
@@ -61,6 +92,7 @@
     </div>
 
 </div>
+
 <script src="loginRegister.js"></script> 
 </body>
 </html>
