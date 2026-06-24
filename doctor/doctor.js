@@ -662,27 +662,53 @@ function viewSearchedPatient() {
 
             <h3 class="viewSectionTitle">VISITS (MEDICAL RECORD)</h3>
 
-            <div class="visitViewCard">
-                <div class="visitViewHeader">
-                    <strong>Visit #3 Latest</strong>
-                    <span>22/06/2026, 02:30:45 pm</span>
-                </div>
+            <div class="visitDropdownList">
 
-                <p><strong>Reason for Visit:</strong> Patient reports fever and headache.</p>
-                <p><strong>Clinical Findings:</strong> Temperature 38.5°C, BP 120/80 mmHg, HR 92 bpm, RR 20/min, SpO2 98%, Additional: Throat redness.</p>
-                <p><strong>Diagnosis:</strong> Influenza</p>
-                <p><strong>Treatment Plan:</strong> Rest + fluids</p>
-                <p><strong>Prescription:</strong> Paracetamol 500mg | 1 tablet | TDS | 5 days</p>
-            </div>
+                <details class="visitDropdown" open>
+                    <summary>
+                        <span>Visit #3 Latest</span>
+                        <small>19/06/2026, 02:30:45 pm</small>
+                    </summary>
 
-            <div class="visitMiniCard">
-                <strong>Visit #2</strong>
-                <span>22/06/2026, 11:35:20 pm</span>
-            </div>
+                    <div class="visitDropdownContent">
+                        <p><strong>Reason for Visit:</strong> Patient reports fever and headache.</p>
+                        <p><strong>Clinical Findings:</strong> Temperature 38.5°C, BP 120/80 mmHg, HR 92 bpm, RR 20/min, SpO2 98%, Additional: Throat redness.</p>
+                        <p><strong>Diagnosis:</strong> Influenza</p>
+                        <p><strong>Treatment Plan:</strong> Rest + fluids</p>
+                        <p><strong>Prescription:</strong> Paracetamol 500mg | 1 tablet | TDS | 5 days</p>
+                    </div>
+                </details>
 
-            <div class="visitMiniCard">
-                <strong>Visit #1</strong>
-                <span>10/05/2026, 10:15:10 am</span>
+                <details class="visitDropdown">
+                    <summary>
+                        <span>Visit #2</span>
+                        <small>2/05/2026, 11:35:20 pm</small>
+                    </summary>
+
+                    <div class="visitDropdownContent">
+                        <p><strong>Reason for Visit:</strong> Headache</p>
+                        <p><strong>Clinical Findings:</strong> BP 120/80, HR 88</p>
+                        <p><strong>Diagnosis:</strong> Tension Headache</p>
+                        <p><strong>Treatment Plan:</strong> Rest + hydration</p>
+                        <p><strong>Prescription:</strong> Ibuprofen 400mg</p>
+                    </div>
+                </details>
+
+                <details class="visitDropdown">
+                    <summary>
+                        <span>Visit #1</span>
+                        <small>10/04/2026, 10:15:10 am</small>
+                    </summary>
+
+                    <div class="visitDropdownContent">
+                        <p><strong>Reason for Visit:</strong> Asthma review</p>
+                        <p><strong>Clinical Findings:</strong> Stable condition</p>
+                        <p><strong>Diagnosis:</strong> Chronic Asthma</p>
+                        <p><strong>Treatment Plan:</strong> Continue inhaler</p>
+                        <p><strong>Prescription:</strong> Ventolin Inhaler</p>
+                    </div>
+                </details>
+
             </div>
 
             <div class="viewOnlyNote">

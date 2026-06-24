@@ -1218,6 +1218,72 @@ body{
     font-size: 14px;
 }
 
+.visitDropdownList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.visitDropdown {
+    background: #ffffff;
+    border: 1px solid #dbe6f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.visitDropdown summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 15px 18px;
+    background: #f3f8fd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.visitDropdown summary::-webkit-details-marker {
+    display: none;
+}
+
+.visitDropdown summary::before {
+    content: "▶";
+    margin-right: 10px;
+    color: #0284c7;
+    font-size: 13px;
+}
+
+.visitDropdown[open] summary::before {
+    content: "▼";
+}
+
+.visitDropdown summary span {
+    flex: 1;
+}
+
+.visitDropdown summary small {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.visitDropdownContent {
+    padding: 16px 20px;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+}
+
+.visitDropdownContent p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #0f172a;
+    line-height: 1.5;
+}
+
+.visitDropdownContent strong {
+    color: #0069a6;
+}
 
 
 /* =========================
