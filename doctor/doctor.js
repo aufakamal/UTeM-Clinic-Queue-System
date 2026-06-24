@@ -112,9 +112,11 @@ function showPatientSession(patient, queue) {
     const defaultWorkspace = document.getElementById("defaultWorkspace");
     const placeholderText = document.getElementById("placeholderText");
     const patientRecordDisplay = document.getElementById("patientRecordDisplay");
+    const viewOnlyRecordDisplay = document.getElementById("viewOnlyRecordDisplay");
 
     if (placeholderText) placeholderText.style.display = "none";
     if (patientRecordDisplay) patientRecordDisplay.style.display = "block";
+    if (viewOnlyRecordDisplay) viewOnlyRecordDisplay.style.display = "none";
 
     document.getElementById("pName").textContent = patient.name;
     document.getElementById("pGender").textContent = patient.gender;
@@ -516,7 +518,6 @@ function renderVisitHistory() {
 }
 
 
-
 function renderVisits(visits) {
 
     const box = document.getElementById("visitHistoryList");
@@ -539,4 +540,177 @@ function renderVisits(visits) {
 
         box.appendChild(div);
     });
+}
+
+// ==========================
+// START SESSION 
+// ==========================
+function startSession() {
+    document.getElementById("placeholderText").style.display = "none";
+    document.getElementById("patientRecordDisplay").style.display = "block";
+    document.getElementById("viewOnlyRecordDisplay").style.display = "none";
+
+    // code lama awak yang isi pName, pGender, pID, pBlood semua kekalkan
+}
+
+// ==========================
+// SEARCH PATIENT - VIEW ONLY
+// ==========================
+function searchPatientLive() {
+    const input = document.getElementById("searchPatientInput").value.toLowerCase().trim();
+    const resultBox = document.getElementById("searchResultBox");
+
+    if (!resultBox) {
+        console.log("searchResultBox not found");
+        return;
+    }
+
+    if (input === "") {
+        resultBox.innerHTML = "";
+        return;
+    }
+
+    if ("amir bin amar".includes(input) || "d514698002".includes(input)) {
+        resultBox.innerHTML = `
+            <div class="patientSearchResult">
+                <div>
+                    <h4>Amir bin Amar</h4>
+                    <p>D514698002</p>
+                </div>
+
+                <button type="button" onclick="viewSearchedPatient()">
+                    View
+                </button>
+            </div>
+        `;
+    } else {
+        resultBox.innerHTML = `
+            <div class="noPatientFound">
+                No patient found
+            </div>
+        `;
+    }
+}
+
+function viewSearchedPatient() {
+    const placeholderText = document.getElementById("placeholderText");
+    const patientRecordDisplay = document.getElementById("patientRecordDisplay");
+    const searchPatientView = document.getElementById("searchPatientView");
+
+    if (!searchPatientView) {
+        alert("searchPatientView tak jumpa. Pastikan div searchPatientView ada dalam doctorWorkshop.php");
+        return;
+    }
+
+    if (placeholderText) {
+        placeholderText.style.display = "none";
+    }
+
+    if (patientRecordDisplay) {
+        patientRecordDisplay.style.display = "none";
+    }
+
+    searchPatientView.style.display = "block";
+
+    searchPatientView.innerHTML = `
+        <div class="viewOnlyRecord">
+
+            <h2 class="recordTitle">
+                PATIENT RECORD <span style="color: green;">(VIEW ONLY)</span>
+            </h2>
+
+            <div class="viewOnlyAlert">
+                👁 You are viewing this patient record. Information shown below is for reference only.
+            </div>
+
+            <div class="patientInfo">
+                <p><strong>Full name:</strong> Amir bin Amar</p>
+                <p><strong>Gender:</strong> Male</p>
+                <p><strong>ID:</strong> D514698002</p>
+                <p><strong>Blood type:</strong> B+</p>
+            </div>
+
+            <h3 class="viewSectionTitle">OVERVIEW</h3>
+
+            <div class="infoBlock">
+                <div class="infoHeader">
+                    <h3>Allergies</h3>
+                    <button type="button" class="addSmallBtn" disabled>+ Add Allergy</button>
+                </div>
+
+                <p>• Dust (Patient Reported)</p>
+                <p>• Peanuts (Doctor Confirmed)</p>
+            </div>
+
+            <div class="infoBlock">
+                <div class="infoHeader">
+                    <h3>Chronic Diseases</h3>
+                    <button type="button" class="addSmallBtn" disabled>+ Add Condition</button>
+                </div>
+
+                <p>• Asthma</p>
+            </div>
+
+            <div class="infoBlock">
+                <div class="infoHeader">
+                    <h3>Current Medication</h3>
+                    <button type="button" class="addSmallBtn" disabled>+ Add Medication</button>
+                </div>
+
+                <p>• Ventolin Inhaler</p>
+            </div>
+
+            <h3 class="viewSectionTitle">VISITS (MEDICAL RECORD)</h3>
+
+            <div class="visitViewCard">
+                <div class="visitViewHeader">
+                    <strong>Visit #3 Latest</strong>
+                    <span>22/06/2026, 02:30:45 pm</span>
+                </div>
+
+                <p><strong>Reason for Visit:</strong> Patient reports fever and headache.</p>
+                <p><strong>Clinical Findings:</strong> Temperature 38.5°C, BP 120/80 mmHg, HR 92 bpm, RR 20/min, SpO2 98%, Additional: Throat redness.</p>
+                <p><strong>Diagnosis:</strong> Influenza</p>
+                <p><strong>Treatment Plan:</strong> Rest + fluids</p>
+                <p><strong>Prescription:</strong> Paracetamol 500mg | 1 tablet | TDS | 5 days</p>
+            </div>
+
+            <div class="visitMiniCard">
+                <strong>Visit #2</strong>
+                <span>22/06/2026, 11:35:20 pm</span>
+            </div>
+
+            <div class="visitMiniCard">
+                <strong>Visit #1</strong>
+                <span>10/05/2026, 10:15:10 am</span>
+            </div>
+
+            <div class="viewOnlyNote">
+                🔒 This is a view only page. To create a new consultation, please start a session from the Current Consultations.
+            </div>
+
+        </div>
+    `;
+}
+
+function showPatientSession(patient, queue) {
+    selectedQueue = queue;
+    selectedPatient = patient;
+
+    const placeholderText = document.getElementById("placeholderText");
+    const patientRecordDisplay = document.getElementById("patientRecordDisplay");
+    const searchPatientView = document.getElementById("searchPatientView");
+
+    if (placeholderText) placeholderText.style.display = "none";
+    if (patientRecordDisplay) patientRecordDisplay.style.display = "block";
+    if (searchPatientView) searchPatientView.style.display = "none";
+
+    document.getElementById("pName").textContent = patient.name;
+    document.getElementById("pGender").textContent = patient.gender;
+    document.getElementById("pID").textContent = patient.id;
+    document.getElementById("pBlood").textContent = patient.bloodType || patient.blood || "-";
+
+    renderEditableList("pAllergyList", patient.allergies || []);
+    renderEditableList("pChronicList", patient.chronicDiseases || patient.chronic || []);
+    renderEditableList("pMedList", patient.currentMedication || patient.medication || []);
 }

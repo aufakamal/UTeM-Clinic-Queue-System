@@ -39,25 +39,24 @@
 
             <article class="doctorCard">
 
+                <div class="searchPatientBox">
                 <h2>Search Patient</h2>
 
-                <!-- SEARCH INPUT -->
                 <input 
-                    id="searchInput"
-                    class="searchInput" 
                     type="text" 
+                    id="searchPatientInput" 
                     placeholder="Search by name or queue ID"
-                    onkeyup="searchPatient(this.value)"
+                    oninput="searchPatientLive()"
                 >
 
-                <!-- SEARCH RESULT -->
                 <div id="searchResultBox"></div>
 
-                <p class="recentText">
-                    Recent Search:<br>
-                    • Amir bin Amar<br>
-                    • D514698002
-                </p>
+                <div class="recentSearch">
+                    <p>Recent Search:</p>
+                    <p>• Amir bin Amar</p>
+                    <p>• D514698002</p>
+                </div>
+                </div>
 
             </article>
 
@@ -68,11 +67,13 @@
 
             <!-- CONSULTATION VIEW -->
             <div id="defaultWorkspace">
-
+            <!-- CURRENT CONSULTATION VIEW -->
                 <p id="placeholderText">
                     Please select a patient to start consultation.
                 </p>
 
+                <div id="searchPatientView" style="display:none;"></div>
+                
                 <div id="patientRecordDisplay" style="display:none;">
 
                     <h2 class="recordTitle">CURRENT CONSULTATIONS</h2>
@@ -163,6 +164,107 @@
 
                             <div id="pMedList" class="editableList"></div>
                         </div>
+
+                        <!----SEARCH PATIENT VIEW---->
+                        <div id="viewOnlyRecordDisplay" style="display:none;">
+                        <h2 class="recordTitle">
+                        PATIENT RECORD <span style="color:green;">(VIEW ONLY)</span>
+                        </h2>
+
+                        <div class="viewOnlyAlert">
+                            👁 You are viewing this patient record. Information shown below is for reference only.
+                        </div>
+
+                        <div class="patientInfo">
+
+                            <p>
+                                <strong>Full name:</strong>
+                                <span>Amir bin Amar</span>
+                            </p>
+
+                            <p>
+                                <strong>Gender:</strong>
+                                <span>Male</span>
+                            </p>
+
+                            <p>
+                                <strong>ID:</strong>
+                                <span>D514698002</span>
+                            </p>
+
+                            <p>
+                                <strong>Blood type:</strong>
+                                <span>B+</span>
+                            </p>
+
+                        </div>
+
+                        <h3 class="viewSectionTitle">OVERVIEW</h3>
+
+                        <div class="infoBlock">
+                            <div class="infoHeader">
+                                <h3>Allergies</h3>
+                                <button type="button" class="addSmallBtn" disabled>+ Add Allergy</button>
+                            </div>
+
+                            <p>• Dust (Patient Reported)</p>
+                            <p>• Peanuts (Doctor Confirmed)</p>
+                        </div>
+
+                        <div class="infoBlock">
+                            <div class="infoHeader">
+                                <h3>Chronic Diseases</h3>
+                                <button type="button" class="addSmallBtn" disabled>+ Add Condition</button>
+                            </div>
+
+                            <p>No chronic diseases recorded.</p>
+                        </div>
+
+                        <div class="infoBlock">
+                            <div class="infoHeader">
+                                <h3>Current Medication</h3>
+                                <button type="button" class="addSmallBtn" disabled>+ Add Medication</button>
+                            </div>
+
+                            <p>• Ventolin Inhaler</p>
+                        </div>
+
+                        <h3 class="viewSectionTitle">VISITS (MEDICAL RECORD)</h3>
+
+                        <div class="visitViewCard">
+                            <div class="visitViewHeader">
+                                <strong>Visit #3 (Latest)</strong>
+                                <span>22/06/2026, 02:30:45 pm</span>
+                            </div>
+
+                            <p><strong>Reason for Visit:</strong> Patient reports fever and headache.</p>
+                            <p><strong>Clinical Findings:</strong> Temperature 38.5°C, BP 120/80 mmHg, HR 92 bpm, RR 20/min, SpO2 98%, Additional: Throat redness.</p>
+                            <p>No shortness of breath</p>
+                            <p><strong>Diagnosis:</strong> Influenza</p>
+                            <p><strong>Treatment Plan:</strong> Rest + fluids</p>
+                            <p><strong>Prescription:</strong> Paracetamol 500mg | 1 tablet | TDS | 5 days</p>
+                        </div>
+
+                        <div class="visitMiniCard">
+                            <strong>Visit #2</strong>
+                            <span>22/06/2026, 11:35:20 pm</span>
+                        </div>
+
+                        <div class="visitMiniCard">
+                            <strong>Visit #1</strong>
+                            <span>10/05/2026, 10:15:10 am</span>
+                        </div>
+
+                        <div class="visitMiniCard">
+                            <strong>Visit #0</strong>
+                            <span>05/03/2026, 09:40:00 am</span>
+                        </div>
+
+                        <div class="viewOnlyNote">
+                            🔒 This is a view only page. To create a new consultation, please start a session from the Current Consultations.
+                        </div>
+
+                    </div>
 
                     </div>
 
@@ -484,6 +586,9 @@
                 </button>
             </div>
 
+
+
+            <!-----SEARCH PATIENT---->
     <script src="doctor.js"></script>
 
 </body>
