@@ -2,152 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Report</title>
     <link rel="stylesheet" href="doctor.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-        <?php include('inc/doctor_header.php'); ?>
 
+<?php include('inc/doctor_header.php'); ?>
 
-    <section class="drReportPage">
+<section class="drReportPage">
 
-        <article class="drHeaderCard">
-            <div>
-                <h2>Doctor's Report Dashboard</h2>
-                <p>Overview of patient illness, monthly appointments and medicine usage.</p>
+    <!-- HEADER -->
+
+    <div class="report-wrapper">
+
+    <!-- TITLE SECTION -->
+    <div class="report-header">
+        <div>
+            <h2>Doctor Dashboard Overview</h2>
+            <p>Overview of patient visits and illness trends.</p>
+        </div>
+
+        <div class="date-box">
+            📅 <span>May 2025</span>
+        </div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-row">
+
+        <div class="kpi-card blue">
+            <h4>Total Patients</h4>
+            <h2>256</h2>
+            <p>This Year</p>
+        </div>
+
+        <div class="kpi-card green">
+            <h4>Most Common Illness</h4>
+            <h2>Flu</h2>
+            <p>78 cases (30.5%)</p>
+        </div>
+
+        <div class="kpi-card purple">
+            <h4>Avg Appointments</h4>
+            <h2>213</h2>
+            <p>Per Month</p>
+        </div>
+
+        <div class="insight-box">
+    💡      <b>Insight:</b> Flu cases increased this month due to seasonal weather changes.
+        </div>
+
+    </div>
+
+    <!-- CHART SECTION -->
+    <div class="chart-row">
+
+        <div class="chart-card">
+            <h3>Illness Distribution</h3>
+            <p>Top illnesses this month</p>
+            <canvas id="pieChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Monthly Appointment Trend</h3>
+            <p>Patient visit trend</p>
+            <canvas id="lineChart"></canvas>
+        </div>
+
+    </div>
+
+    <!-- FOOT KPI -->
+    <div class="bottom-kpi">
+
+            <div class="small-card">
+                <p>Total Appointments</p>
+                <h2>2,564</h2>
             </div>
 
-            <div class="drDateBox">
-                <span>📅</span>
-                <p id="reportMonth">May 2025</p>
+            <div class="small-card">
+                <p>Avg / Month</p>
+                <h2>213</h2>
             </div>
-        </article>
 
-        <!-- SUMMARY CARDS -->
-        <div class="drSummaryGrid">
-            <article class="drSummaryCard">
-                <div class="drIconBox blue">👥</div>
-                <div>
-                    <h3>Total Patients<br>This Month</h3>
-                    <h1 id="totalPatients">0</h1>
-                    <span class="greenText">+18% from last month</span>
-                </div>
-            </article>
+            <div class="small-card">
+                <p>Most Active Month</p>
+                <h2>Dec</h2>
+            </div>
 
-            <article class="drSummaryCard">
-                <div class="drIconBox green">🦠</div>
-                <div>
-                    <h3>Most Common Illness<br>This Month</h3>
-                    <h1 id="commonIllness">-</h1>
-                    <span id="commonIllnessDesc">-</span>
-                </div>
-            </article>
+            <div class="small-card growth">
+                <p>Growth</p>
+                <h2>+18%</h2>
+            </div>
 
-            <article class="drSummaryCard">
-                <div class="drIconBox red">💊</div>
-                <div>
-                    <h3>Medicine Usage Alert<br>Low Stock</h3>
-                    <h1 id="lowStockMedicine">-</h1>
-                    <span id="lowStockDesc">-</span>
-                </div>
-            </article>
-        </div>
+    </div>
 
-        <!-- CHARTS -->
-        <div class="drChartGrid">
+</div>
 
-            <article class="drChartBox">
-                <h2>Illness Distribution</h2>
-                <p>Top illnesses this month</p>
+</section>
 
-                <div class="drIllnessWrap">
-                    <div id="illnessPieChart" class="drPieChart"></div>
-                    <div id="illnessLegend" class="drLegend"></div>
-                </div>
-            </article>
+<script src="doctorReport.js"></script>
 
-            <article class="drChartBox">
-                <h2>Monthly Appointment</h2>
-                <p>Patient visits trend</p>
-
-                <div id="appointmentChart" class="drLineChart"></div>
-            </article>
-
-            <article class="drChartBox">
-                <h2>Medicine Usage</h2>
-                <p>Most used medicines this month</p>
-
-                <div id="medicineUsageChart" class="drBarChart"></div>
-            </article>
-
-        </div>
-
-        <!-- TABLES -->
-        <div class="drTableGrid">
-
-            <article class="drTableBox">
-                <div class="drTableHeader">
-                    <div>
-                        <h2>💊 Medicine Stock List</h2>
-                        <p>Current medicine stock status from Pharmacy</p>
-                    </div>
-
-                    <a href="pharmacyUpdate.html">View All Medicine →</a>
-                </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Medicine</th>
-                            <th>Stock</th>
-                            <th>Status</th>
-                            <th>Usage</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="medicineTableBody"></tbody>
-                </table>
-            </article>
-
-            <article class="drTableBox">
-                <div class="drTableHeader">
-                    <div>
-                        <h2>👥 Patient Summary</h2>
-                        <p>Summary of recent patient records</p>
-                    </div>
-
-                    <a href="patientRecord.html">View All Patients →</a>
-                </div>
-
-                <div class="drSearchArea">
-                    <input type="text" id="patientSearchInput" placeholder="Search patient name or illness">
-                    <select id="statusFilter">
-                        <option value="All">All Status</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Pending">Pending</option>
-                    </select>
-                </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Patient Name</th>
-                            <th>Illness</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="patientTableBody"></tbody>
-                </table>
-            </article>
-
-        </div>
-
-    </section>
-
-    <script src="doctorReport.js"></script>
 </body>
 </html>
