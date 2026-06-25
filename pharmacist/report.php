@@ -1,3 +1,21 @@
+<?php
+
+$conn = new mysqli("localhost", "root", "", "clinic_db", 3306);
+
+if ($conn->connect_error)
+{
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$dispensedSql = "SELECT COUNT(*) AS dispensedToday 
+                 FROM prescription 
+                 WHERE status = 'Dispensed'";
+
+$dispensedResult = $conn->query($dispensedSql);
+$dispensedRow = $dispensedResult->fetch_assoc();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +39,7 @@
         <nav>
             <ul>
                 <li><a href="workspace.php">Workspace</a></li>
-                <li class="active"><a href="report.php">Reports</a></li>
+                <li><a href="report.php">Reports</a></li>
                 <li><a href="medicine.php">Medicine Stock</a></li>
             </ul>
         </nav>

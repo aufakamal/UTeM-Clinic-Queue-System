@@ -10,24 +10,24 @@ if (profileBtn && profileDropdown) {
 
 let selectedQueue = "";
 
-const patients = 
+const patients =
 {
-    A102: 
+    A102:
     {
         name: "Nur Aisyah",
         queue: "A102",
         doctor: "Dr. Amir",
         allergy: "Penicillin",
-        prescription: "Paracetamol 500mg<br>Dosage: 3 times daily for 5 days<br>Doctor Note: After food"
+        prescription: "Paracetamol 500mg<br>Quantity: 10<br>Current Stock: 200<br><br>Dosage: 3 times daily for 5 days<br>Doctor Note: After food"
     },
 
-    A103: 
+    A103:
     {
         name: "Ahmad Ali",
         queue: "A103",
         doctor: "Dr. Siti",
         allergy: "No Known Allergy",
-        prescription: "Cough Syrup 10ml<br>Dosage: 2 times daily for 3 days<br>Doctor Note: Drink more water"
+        prescription: "Cough Syrup 10ml<br>Quantity: 1<br>Current Stock: 50<br><br>Dosage: 2 times daily for 3 days<br>Doctor Note: Drink more water"
     }
 };
 
@@ -44,23 +44,15 @@ const prescriptionInfo = document.querySelector(".prescriptionInfo");
 const pharmacistNote = document.querySelector(".pharmacistNote");
 const safetyChecks = document.querySelectorAll(".prescriptionArea input[type='checkbox']");
 
-const issueBtn = document.querySelector(".issueBtn");
 const dispenseBtn = document.querySelector(".dispenseBtn");
-
-const issuePopup = document.querySelector(".issuePopup");
-const cancelBtn = document.querySelector(".cancelBtn");
-const sendDoctorBtn = document.querySelector(".sendDoctorBtn");
-
-const returnedRecord = document.querySelector("#returnedRecord");
-const dispensedRecord = document.querySelector("#dispensedRecord");
 
 const messagePopup = document.querySelector(".messagePopup");
 const messageText = document.querySelector(".messageText");
 const okBtn = document.querySelector(".okBtn");
 
-viewButtons.forEach((button) => 
+viewButtons.forEach((button) =>
 {
-    button.addEventListener("click", () => 
+    button.addEventListener("click", () =>
     {
         const queue = button.dataset.queue;
         selectedQueue = queue;
@@ -74,7 +66,7 @@ viewButtons.forEach((button) =>
         allergyInfo.textContent = patients[queue].allergy;
         prescriptionInfo.innerHTML = patients[queue].prescription;
 
-        safetyChecks.forEach((check) => 
+        safetyChecks.forEach((check) =>
         {
             check.checked = false;
         });
@@ -83,62 +75,43 @@ viewButtons.forEach((button) =>
     });
 });
 
-issueBtn.addEventListener("click", () => 
+dispenseBtn.addEventListener("click", () =>
 {
-    if (selectedQueue === "") 
+    if (selectedQueue === "")
     {
         alert("Please select a patient first.");
         return;
     }
-
-    issuePopup.style.display = "flex";
-});
-
-cancelBtn.addEventListener("click", () => 
-{
-    issuePopup.style.display = "none";
-});
-
-sendDoctorBtn.addEventListener("click", () => 
-{
-    issuePopup.style.display = "none";
-
-    returnedRecord.innerHTML = `
-        <p>
-            <strong>${selectedQueue}</strong><br>
-            ${patients[selectedQueue].name}<br>
-            Returned for doctor review
-        </p>
-    `;
-
-    messageText.textContent = "Prescription sent back to doctor successfully.";
-    messagePopup.style.display = "block";
-});
-
-dispenseBtn.addEventListener("click", () => 
-{
-    if (selectedQueue === "") 
-    {
-        alert("Please select a patient first.");
-        return;
-    }
-
-    dispensedRecord.innerHTML = `
-        <p>
-            <strong>${selectedQueue}</strong><br>
-            ${patients[selectedQueue].name}<br>
-            Dispensed successfully
-        </p>
-    `;
 
     messageText.textContent = "Medication dispensed successfully.";
     messagePopup.style.display = "block";
 });
 
-if (okBtn) {
-    okBtn.addEventListener("click", () => 
+okBtn.addEventListener("click", () =>
+{
+    messagePopup.style.display = "none";
+});
+
+const searchInput = document.querySelector(".searchInput");
+
+if (searchInput)
+{
+    searchInput.addEventListener("keyup", function ()
     {
-        messagePopup.style.display = "none";
+        const keyword = searchInput.value.toLowerCase();
+
+        document.querySelectorAll(".queueBox").forEach(function (box)
+        {
+            const patientInfo = box.textContent.toLowerCase();
+
+            if (patientInfo.includes(keyword))
+            {
+                box.style.display = "flex";
+            }
+            else
+            {
+                box.style.display = "none";
+            }
+        });
     });
 }
-

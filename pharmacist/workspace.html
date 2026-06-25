@@ -14,16 +14,14 @@
                 <img class="icon" src="../images/backIconDark.png">
             </button>
 
-            <h1>
-                UTeM Clinic Queue System
-            </h1>
-
+            <h1>UTeM Clinic Queue System</h1>
         </div>
 
         <nav>
             <ul>
-                <li class="active"><a href="workspace.html">Workspace</a></li>
-                <li><a href="report.html">Reports</a></li>
+                <li><a href="workspace.php">Workspace</a></li>
+                <li><a href="report.php">Reports</a></li>
+                <li><a href="medicine.php">Medicine Stock</a></li>
             </ul>
         </nav>
 
@@ -45,13 +43,15 @@
 
     <section class="pharmacistWorkspace">
         <div class="leftColumn">
-            <article class="pharmacyCard">
-                <h2>Current Queue</h2>
+            <article class="pharmacyCard pendingCard">
+                <h2>Pending Prescriptions</h2>
+                <p class="pendingText">Showing latest pending prescriptions</p>
+
                 <div class="queueBox">
                     <div>
                         <h3>A102</h3>
                         <p>Nur Aisyah</p>
-                        <span class="queueStatus">Waiting</span>
+                        <span class="queueStatus">Pending</span>
                     </div>
 
                     <button class="viewBtn" data-queue="A102">View</button>
@@ -61,7 +61,7 @@
                     <div>
                         <h3>A103</h3>
                         <p>Ahmad Ali</p>
-                        <span class="queueStatus">Waiting</span>
+                        <span class="queueStatus">Pending</span>
                     </div>
 
                     <button class="viewBtn" data-queue="A103">View</button>
@@ -69,27 +69,14 @@
             </article>
 
             <article class="pharmacyCard">
-                <h2>Returned To Doctor</h2>
-                <div class="smallRecord" id="returnedRecord">
-                    <p>No returned prescription yet.</p>
-                </div>
-            </article>
-
-            <article class="pharmacyCard">
-                <h2>Dispensed Today</h2>
-                <div class="smallRecord" id="dispensedRecord">
-                    <p>No medication dispensed yet.</p>
-                </div>
-            </article>
-
-            <article class="pharmacyCard">
                 <h2>Search Patient</h2>
                 <input class="searchInput" type="text" placeholder="Search by name or queue ID">
+
                 <p class="recentText">
                     Recent Search:<br>
-                    • Amir bin Amar<br>
-                    • D514698002<br>
-                    • 070502132567
+                    • Q4 - Siti Sarah Kamal<br>
+                    • Q5 - Amir bin Amar<br>
+                    • Q6 - Nur Aisyah Bt Ali
                 </p>
             </article>
         </div>
@@ -97,7 +84,7 @@
         <article class="workspaceCard">
             <div class="emptyWorkspace">
                 <h2>Prescription Workspace</h2>
-                <p>Please select a patient from current queue to view prescription details.</p>
+                <p>Please select a prescription to view prescription details.</p>
             </div>
 
             <div class="prescriptionDetails">
@@ -124,35 +111,18 @@
                         <label><input type="checkbox"> Dosage checked</label>
                         <label><input type="checkbox"> Instruction clear</label>
 
-                        <h3>Pharmacist Note</h3>
-                        <textarea class="pharmacistNote" placeholder="Write note here..."></textarea>
+                        <h3>Remarks</h3>
+                        <textarea class="pharmacistNote" placeholder="Write remarks here..."></textarea>
                     </div>
                 </div>
                 
-                 <div class="buttonArea">
-                    <button class="issueBtn">Issue Found</button>
+                <div class="buttonArea">
                     <button class="dispenseBtn">Dispense</button>
                 </div>
             </div>
         </article>
     </section>
-    <div class="issuePopup">
-        <div class="popupContent">
-            <h2>Issue Found</h2>
-            <label><input type="checkbox"> Dosage unclear</label>
-            <label><input type="checkbox"> Missing dosage</label>
-            <label><input type="checkbox"> Medication unavailable</label>
-            <label><input type="checkbox"> Possible drug interaction</label>
-            <label><input type="checkbox"> Prescription incomplete</label>
 
-            <textarea placeholder="Additional notes..."></textarea>
-
-            <div class="popupButton">
-                <button class="cancelBtn">Cancel</button>
-                <button class="sendDoctorBtn">Send To Doctor</button>
-            </div>
-        </div>
-    </div>
     <div class="messagePopup">
         <p class="messageText"></p>
         <button class="okBtn">OK</button>

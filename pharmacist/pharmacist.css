@@ -314,7 +314,7 @@ section {
     margin-top: 25px;
 }
 
-.issueBtn,
+.readyBtn,
 .dispenseBtn {
     border: none;
     border-radius: 999px;
@@ -325,7 +325,7 @@ section {
     cursor: pointer;
 }
 
-.issueBtn {
+.readyBtn {
     background-color: #FEF3C7;
     color: #92400E;
 }
@@ -335,7 +335,7 @@ section {
     color: white;
 }
 
-.issueBtn:hover {
+.readyBtn:hover {
     background-color: #FDE68A;
 }
 
@@ -608,7 +608,7 @@ section {
     background-color: #0284C7;
 }
 
-.returnedFill {
+.waitingFill {
     width: 15%;
     background-color: #F59E0B;
 }
@@ -665,7 +665,7 @@ section {
 }
 
 .doneStatus,
-.returnStatus,
+.waitingStatus,
 .pendingStatus {
     display: inline-block;
     padding: 6px 12px;
@@ -679,7 +679,7 @@ section {
     color: #166534;
 }
 
-.returnStatus {
+.waitingStatus {
     background-color: #FEF3C7;
     color: #92400E;
 }
@@ -692,6 +692,307 @@ section {
 @media (max-width: 900px) {
     .reportSummary,
     .reportMiddle {
+        grid-template-columns: 1fr;
+    }
+}
+
+.chartDesc {
+    color: #64748B;
+    margin-bottom: 25px;
+}
+
+.verticalBarChart {
+    display: flex;
+    gap: 15px;
+    height: 330px;
+    margin-top: 25px;
+}
+
+.yAxis {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #334155;
+    font-size: 14px;
+}
+
+.yAxis p {
+    margin: 0;
+}
+
+.chartArea {
+    position: relative;
+    flex: 1;
+    height: 250px;
+    border-left: 1px solid #94A3B8;
+    border-bottom: 1px solid #94A3B8;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 0 25px;
+}
+
+.chartLine {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed #CBD5E1;
+}
+
+.lineOne { top: 0; }
+.lineTwo { top: 25%; }
+.lineThree { top: 50%; }
+.lineFour { top: 75%; }
+
+.barItem {
+    width: 110px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 2;
+    position: relative;
+}
+
+.barItem b {
+    margin-bottom: 8px;
+}
+
+.verticalBar {
+    width: 65px;
+    border-radius: 6px 6px 0 0;
+}
+
+.paracetamolBar {
+    height: 225px;
+    background-color: #0EA5E9;
+}
+
+.amoxicillinBar {
+    height: 150px;
+    background-color: #10B981;
+}
+
+.ibuprofenBar {
+    height: 125px;
+    background-color: #FACC15;
+}
+
+.cetirizineBar {
+    height: 100px;
+    background-color: #8B5CF6;
+}
+
+.vitaminBar {
+    height: 75px;
+    background-color: #F43F5E;
+}
+
+.rightWorkspaceColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.nextActionBox {
+    background-color: #E0F2FE;
+    border: 1px solid #BAE6FD;
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+}
+
+.nextActionBox p {
+    margin: 6px 0;
+    color: #334155;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 12px;
+}
+
+.readyBtn {
+    background-color: #16A34A;
+    color: white;
+}
+
+.dispenseBtn {
+    background-color: #0284C7;
+    color: white;
+}
+
+.readyBtn,
+.dispenseBtn {
+    border: none;
+    border-radius: 999px;
+    padding: 12px 22px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.statusFlowBox {
+    background-color: white;
+    border: 1px solid #D7E3EA;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+}
+
+.statusFlow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.flowCard {
+    flex: 1;
+    text-align: center;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.pendingFlow {
+    background-color: #FEF3C7;
+    border: 1px solid #FCD34D;
+}
+
+.readyFlow {
+    background-color: #DCFCE7;
+    border: 1px solid #86EFAC;
+}
+
+.dispensedFlow {
+    background-color: #DBEAFE;
+    border: 1px solid #93C5FD;
+}
+
+.statusFlow span {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.medicineDashboard {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 22px;
+}
+
+.medicineMain {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.medicineSummary {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.medicineFilterForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    align-items: end;
+}
+
+.searchMedicineBox label,
+.filterMedicineBox label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.filterButtons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filterButtons button,
+.clearFilterBtn {
+    border: 1px solid #CBD5E1;
+    background-color: white;
+    color: #0369A1;
+    border-radius: 10px;
+    padding: 11px 18px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.filterButtons .activeFilter {
+    background-color: #0284C7;
+    color: white;
+    border-color: #0284C7;
+}
+
+.filterButtons .availableFilter {
+    color: #15803D;
+    border-color: #86EFAC;
+}
+
+.filterButtons .lowFilter {
+    color: #C2410C;
+    border-color: #FDBA74;
+}
+
+.clearFilterBtn {
+    color: #475569;
+}
+
+.lowStockAlert {
+    background-color: #FFF7F7;
+    border: 1px solid #FECACA;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+}
+
+.lowStockAlert h2 {
+    margin-top: 0;
+    color: #B91C1C;
+}
+
+.lowStockAlert p {
+    color: #64748B;
+}
+
+.alertRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #FECACA;
+}
+
+.alertRow b {
+    color: #B91C1C;
+}
+
+.viewMedicineBtn {
+    border: 1px solid #0284C7;
+    background-color: white;
+    color: #0284C7;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.viewMedicineBtn:hover {
+    background-color: #E0F2FE;
+}
+
+@media (max-width: 900px) {
+    .medicineDashboard,
+    .medicineFilterForm {
         grid-template-columns: 1fr;
     }
 }
