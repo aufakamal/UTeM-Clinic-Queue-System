@@ -36,7 +36,7 @@
     </div>
 
     <div class="contactItem">
-        <img class="icon" src="patientImages/LocationIcon.png" alt="Location Icon">
+        <img class="icon" src="patientImages/locationIcon.png" alt="Location Icon">
         <span>
             Universiti Teknikal Malaysia Melaka, Jalan Hang Tuah Jaya,
             76100 Durian Tunggal, Melaka.

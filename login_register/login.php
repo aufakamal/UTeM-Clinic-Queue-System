@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../dbconnect.php");
+include("dbconnect.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 switch ($row['roleID']) {
 
                     case 1:
-                        header("Location: ../admin/profileAdmin.html");
+                        header("Location: ../admin/admin-dashboard.php");
                         break;
 
                     case 2:
@@ -100,10 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="left-sec">
 
-            <a href="mainPage.php" class="back">
-                <img src="loginRegisterImage/backIconDark.png" alt="Back">
-            </a>
-
             <h2>
                 Welcome To <br>
                 UTeM's PKU <br>
@@ -153,10 +149,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="4">Patient</option>
                 </select>
 
-                <button type="submit" class="loginBtn">
-                    LOGIN
-                </button>
+                <div class="buttonRow">
+                    <a href="mainPage.php" class="backBtn">BACK</a>
 
+                    <button type="submit" class="loginBtn">LOGIN</button>
+                </div>
+                
                 <p>
                     Don't have an account?
                     <a href="register.php">Register</a>
