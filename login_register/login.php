@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         break;
 
                     case 2:
-                        header("Location: ../doctor/doctor.html");
+                        header("Location: ../doctor/doctorWorkspace.php");
                         break;
 
                     case 3:
