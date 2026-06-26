@@ -14,9 +14,9 @@
 
     <div class="main">
 
-        <!-- <a href="login.php" class="back">
+        <a href="login.php" class="back">
             <img src="loginRegisterImage/backIconDark.png" alt="">
-        </a> -->
+        </a>
 
         <div class="forgotCard">
 
@@ -30,12 +30,9 @@
 
                 <label>Email Address</label>
 
-                <input type="email" placeholder="example@email.com">
-                
-                <div class="button-group">
-                    <a href="login.php" class="back-button">BACK</a>
-                    <a href="resetPassword.php" class="submitBtn">SUBMIT</a>
-                </div>
+                <input type="email" placeholder="example@email.com" required>
+
+                <button type="submit" class="submitBtn">SUBMIT</button>
 
             </form>
 

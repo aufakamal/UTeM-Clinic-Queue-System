@@ -1,5 +1,5 @@
 /* =========================
-    GLOBAL
+   GLOBAL
 ========================= */
 * {
     box-sizing: border-box;
@@ -13,7 +13,7 @@ body {
 }
 
 /* =========================
-    HEADER
+   HEADER
 ========================= */
 #header {
     background-color: #FFFFFF;
@@ -53,7 +53,7 @@ body {
 }
 
 /* =========================
-    ICON BUTTONS
+   ICON BUTTONS
 ========================= */
 .iconBtn {
     width: 46px;
@@ -86,7 +86,7 @@ body {
 }
 
 /* =========================
-    PROFILE 
+   PROFILE 
 ========================= */
 .profileContainer {
     position: relative;
@@ -129,7 +129,7 @@ body {
 }
 
 /* =========================
-    NAVBAR
+   NAVBAR
 ========================= */
 nav {
     padding: 6px;
@@ -188,7 +188,7 @@ nav li.active {
 }
 
 /* =========================
-    DROPDOWN
+   DROPDOWN
 ========================= */
 .dropdown {
     position: relative;
@@ -253,8 +253,8 @@ nav li.active {
 }
 
 /* =========================
-    MAIN CONTENT
-    SAME WIDTH FOR ALL PATIENT PAGES
+   MAIN CONTENT
+   SAME WIDTH FOR ALL PATIENT PAGES
 ========================= */
 section {
     width: 80%;
@@ -276,7 +276,7 @@ section p {
 }
 
 /* =========================
-    CARD GRID
+   CARD GRID
 ========================= */
 .topCards {
     display: grid;
@@ -288,7 +288,7 @@ section p {
 }
 
 /* =========================
-    ARTICLE GRID
+   ARTICLE GRID
 ========================= */
 .articleGrid {
     display: grid;
@@ -304,8 +304,8 @@ section p {
 }
 
 /* =========================
-    NORMAL ARTICLE CARDS
-    Dashboard / announcements / content cards
+   NORMAL ARTICLE CARDS
+   Dashboard / announcements / content cards
 ========================= */
 article {
     background-color: #FFFFFF;
@@ -345,53 +345,8 @@ article p {
 }
 
 /* =========================
-    DASHBOARD
-========================= */
-
-.upcomingAppointmentCard h3
-{
-    font-size: 32px;
-    margin-bottom: 6px;
-    color: #0F172A;
-}
-
-.appointmentTime
-{
-    font-size: 18px;
-    font-weight: 500;
-    color: #475569;
-
-    margin-bottom: 12px;
-}
-
-.appointmentTypeBadge
-{
-    display: inline-block;
-
-    padding: 8px 14px;
-
-    border-radius: 999px;
-
-    background-color: #E0F2FE;
-    color: #0284C7;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    margin-bottom: 16px;
-}
-
-.upcomingAppointmentCard a
-{
-    display: inline-block;
-    margin-top: 8px;
-
-    font-weight: 600;
-}
-
-/* =========================
-    CARD BUTTONS
-    Book Appointment clickable cards
+   CARD BUTTONS
+   Book Appointment clickable cards
 ========================= */
 .cardBtn {
     width: 100%;
@@ -446,7 +401,7 @@ article p {
 }
 
 /* =========================
-    SLOT BUTTON 
+   SLOT BUTTON 
 ========================= */
 
 .slotContainer {
@@ -491,7 +446,7 @@ article p {
 }
 
 /* =========================
-    SUMMARY BOX
+   SUMMARY BOX
 ========================= */
 .summaryBox {
     background-color: #FFFFFF;
@@ -528,7 +483,7 @@ article p {
 }
 
 /* =========================
-    NORMAL BUTTONS
+   NORMAL BUTTONS
 ========================= */
 .submitBtn,
 .btn {
@@ -570,7 +525,7 @@ article p {
 }
 
 /* =========================
-    TABLE GRID
+   TABLE GRID
 ========================= */
 .tableGrid {
     display: grid;
@@ -629,8 +584,8 @@ article p {
 }
 
 /* =========================
-    FORM ELEMENTS
-    For pages with input/select/textarea
+   FORM ELEMENTS
+   For pages with input/select/textarea
 ========================= */
 input,
 select,
@@ -666,7 +621,7 @@ label {
 }
 
 /* =========================
-    APPOINTMENT TABS
+   APPOINTMENT TABS
 ========================= */
 .appointmentTabs {
     display: flex;
@@ -706,77 +661,7 @@ label {
 }
 
 /* =========================
-    APPOINTMENT FOR & DEPENDANT
-========================= */
-
-.appointmentForSection {
-    margin-top: 24px;
-    margin-bottom: 24px;
-
-    padding: 24px;
-
-    background-color: #F8FAFC;
-
-    border: 1px solid #D7E3EA;
-    border-radius: 14px;
-}
-
-.appointmentForSection h3 {
-    margin-top: 0;
-    margin-bottom: 16px;
-
-    color: #0F172A;
-}
-
-.appointmentForSection label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    margin-bottom: 12px;
-
-    cursor: pointer;
-
-    font-weight: 500;
-}
-
-.appointmentForSection input[type="radio"] {
-    width: 18px;
-    height: 18px;
-
-    margin: 0;
-
-    flex-shrink: 0;
-}
-
-#dependantSection {
-    margin-top: 20px;
-
-    padding: 24px;
-
-    background-color: #F8FAFC;
-
-    border: 1px solid #D7E3EA;
-    border-radius: 14px;
-}
-
-#dependantSection h3 {
-    margin-top: 0;
-    margin-bottom: 20px;
-
-    color: #0F172A;
-}
-
-#dependantSection div {
-    margin-bottom: 18px;
-}
-
-#dependantSection div:last-child {
-    margin-bottom: 0;
-}
-
-/* =========================
-    APPOINTMENT RECORD TABLE
+   APPOINTMENT RECORD TABLE
 ========================= */
 .appointmentRecordTable {
     margin-top: 20px;
@@ -791,8 +676,6 @@ label {
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
-
-    table-layout: fixed;
 }
 
 .appointmentRecordTable th {
@@ -806,7 +689,7 @@ label {
 }
 
 .appointmentRecordTable td {
-    padding: 20px 18px;
+    padding: 14px 18px;
     border-bottom: 1px solid #E2E8F0;
     color: #334155;
     font-size: 14px;
@@ -816,128 +699,8 @@ label {
     border-bottom: none;
 }
 
-/* Date */
-.appointmentRecordTable th:nth-child(1),
-.appointmentRecordTable td:nth-child(1)
-{
-    width: 12%;
-    font-weight: 700;
-    color: #0F172A;
-}
-
-/* Session */
-.appointmentRecordTable th:nth-child(2),
-.appointmentRecordTable td:nth-child(2)
-{
-    width: 24%;
-    white-space: nowrap;
-
-    font-weight: 600;
-    color: #0369A1;
-}
-
-/* Time Slot */
-.appointmentRecordTable th:nth-child(3),
-.appointmentRecordTable td:nth-child(3)
-{
-    width: 22%;
-    white-space: nowrap;
-}
-
-/* Appointment For */
-.appointmentRecordTable th:nth-child(4),
-.appointmentRecordTable td:nth-child(4)
-{
-    width: 18%;
-}
-
-/* Status */
-.appointmentRecordTable th:nth-child(5),
-.appointmentRecordTable td:nth-child(5)
-{
-    width: 10%;
-    text-align: center;
-}
-
-/* Action */
-.appointmentRecordTable th:nth-child(6),
-.appointmentRecordTable td:nth-child(6)
-{
-    width: 14%;
-    text-align: center;
-}
-
-.appointmentRecordTable td,
-.appointmentRecordTable th
-{
-    vertical-align: middle;
-}
-
-.appointmentRecordTable tbody tr:nth-child(even)
-{
-    background-color: #F8FAFC;
-}
-
-.statusBooked,
-.statusCompleted,
-.statusCancelled,
-.statusNoShow
-{
-    display: inline-block;
-
-    padding: 6px 12px;
-
-    border-radius: 999px;
-
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.statusBooked
-{
-    background-color: #E0F2FE;
-    color: #0284C7;
-}
-
-.statusCompleted
-{
-    background-color: #DCFCE7;
-    color: #16A34A;
-}
-
-.statusCancelled
-{
-    background-color: #FEE2E2;
-    color: #DC2626;
-}
-
-.statusNoShow
-{
-    background-color: #FEF3C7;
-    color: #D97706;
-}
-
-.cancelBtn {
-    background-color: #DC2626;
-    color: white;
-
-    border: none;
-    border-radius: 8px;
-
-    padding: 8px 14px;
-
-    font-size: 13px;
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-.cancelBtn:hover {
-    background-color: #B91C1C;
-}
-
 /* =========================
-    MEDICAL RECORD TABLES
+   MEDICAL RECORD TABLES
 ========================= */
 .medicalRecordTables {
     display: flex;
@@ -979,12 +742,12 @@ label {
     border-bottom: none;
 }
 
-.medicalRecordTables table th {
-    width: 180px;
+.medicalRecordTables table:nth-child(2) th {
+    width: 240px;
 }
 
 /* =========================
-    SINGLE TABLE
+   SINGLE TABLE
 ========================= */
 .singleTable {
     margin-top: 22px;
@@ -1030,7 +793,7 @@ label {
 }
 
 /* =========================
-    RADIO BUTTON 
+   RADIO BUTTON 
 ========================= */
 
 .radioOption {
@@ -1075,7 +838,7 @@ form .submitBtn {
 }
 
 /* =========================
-    FOOTER
+   FOOTER
 ========================= */
 footer {
     background-color: #E0F2FE;
@@ -1138,7 +901,7 @@ footer .icon {
 }
 
 /* =========================
-    JAVASCRIPT
+   JAVASCRIPT
 ========================= */
 
 .hidden {
@@ -1151,7 +914,7 @@ footer .icon {
 }
 
 /* =========================
-    RESPONSIVE
+   RESPONSIVE
 ========================= */
 @media (max-width: 1100px) {
     #header {
