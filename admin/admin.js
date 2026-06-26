@@ -133,7 +133,7 @@ async function createSlot() {
         hideSlotForm();
         loadSlots();
     } else {
-        alert("Failed to add slot.");
+        alert(result.message || "Failed to add slot.");
     }
 }
 
@@ -397,6 +397,10 @@ async function markNoShow(id) {
 }
 
 async function markArrived(id) {
+    if (!confirm("Mark this patient as Arrived and add to queue?")) {
+        return;
+    }
+
     const formData = new FormData();
     formData.append("appointmentID", id);
 
@@ -408,10 +412,20 @@ async function markArrived(id) {
     const result = await response.json();
 
     if (result.success) {
-        alert("Patient marked as arrived.");
+        alert(
+            "Patient marked as arrived.\n" +
+            "Queue No: " + result.queueNo + "\n" +
+            "Assigned Room: " + result.roomNo
+        );
+
         loadAppointments();
+
+        if (typeof loadQueue === "function") {
+            loadQueue();
+        }
+
     } else {
-        alert("Failed to mark arrived.");
+        alert(result.message || "Failed to mark arrived.");
     }
 }
 
@@ -421,6 +435,9 @@ async function markArrived(id) {
 
 document.addEventListener("DOMContentLoaded", () => {
     loadAppointments();
+    setMinimumSlotDate();
+
+    loadSlots();
 });
 
     
@@ -508,6 +525,7 @@ function renderQueueTable(list = queueList) {
     if (!table) return;
 
     table.innerHTML = "";
+    renderRoomDashboard(list);
 
     list.forEach(item => {
         const statusClass = item.queueStatus
@@ -519,6 +537,7 @@ function renderQueueTable(list = queueList) {
                 <td>Q${item.queueNo.toString().padStart(3, "0")}</td>
                 <td>${item.fullName}</td>
                 <td>${item.userID}</td>
+                <td class="room-cell">${item.roomNo || "-"}</td>
                 <td>${item.appointmentType}</td>
                 <td>${item.slotDate}</td>
                 <td>${item.startTime} - ${item.endTime}</td>
@@ -528,6 +547,43 @@ function renderQueueTable(list = queueList) {
                     </span>
                 </td>
             </tr>
+        `;
+    });
+}
+
+function renderRoomDashboard(list = queueList) {
+    const dashboard = document.getElementById("roomDashboard");
+
+    if (!dashboard) return;
+
+    const waitingQueue = list.filter(item => item.queueStatus === "Called");
+
+    const rooms = {};
+
+    waitingQueue.forEach(item => {
+        if (!item.roomNo) return;
+
+const room = item.roomNo;
+
+        if (!rooms[room]) {
+            rooms[room] = [];
+        }
+
+        rooms[room].push(item);
+    });
+
+    dashboard.innerHTML = "";
+
+    Object.keys(rooms).forEach(room => {
+        const firstPatient = rooms[room][0];
+
+        dashboard.innerHTML += `
+            <div class="room-card">
+                <h3>${room}</h3>
+                <p>Next Patient</p>
+                <strong>Q${String(firstPatient.queueNo).padStart(3, "0")}</strong>
+                <span>${firstPatient.fullName}</span>
+            </div>
         `;
     });
 }
@@ -557,7 +613,18 @@ function filterQueue() {
 
 let slotList = [];
 
+async function generateDailySlots() {
+    try {
+        await fetch("../database/generateDailySlots.php");
+    } catch (err) {
+        console.log("Generate slots error:", err);
+    }
+}
+
 async function loadSlots() {
+    await generateDailySlots();
+    await fetch("../database/updateSlotStatus.php");
+
     try {
         const response = await fetch("../database/getSlots.php");
         slotList = await response.json();
@@ -577,6 +644,8 @@ function renderSlotTable(list = slotList) {
 
     list.forEach(slot => {
 
+        const hasAppointment = Number(slot.appointmentCount) > 0;
+
         table.innerHTML += `
         <tr>
 
@@ -586,16 +655,29 @@ function renderSlotTable(list = slotList) {
             <td>${slot.endTime}</td>
             <td>${slot.slotType}</td>
             <td>${slot.capacity}</td>
+            <td>${slot.appointmentCount} / ${slot.capacity}</td>
+            <td>
+    <span class="status-badge status-${slot.slotStatus.toLowerCase()}">
+        ${slot.slotStatus}
+    </span>
+</td>
 
             <td>
-                <button class="btn-edit" onclick="editSlot(${slot.slotID})">Edit</button>
-                <button class="btn-delete" onclick="deleteSlot(${slot.slotID})">Delete</button>
+                ${
+                    hasAppointment
+                    ? `<span class="locked-slot">
+🔒 Booked
+</span>`
+                    : `
+                        <button class="btn-edit" onclick="editSlot(${slot.slotID})">Edit</button>
+                        <button class="btn-delete" onclick="deleteSlot(${slot.slotID})">Delete</button>
+                      `
+                }
             </td>
 
         </tr>
         `;
     });
-
 }
 
 function filterSlots(){
@@ -803,25 +885,27 @@ async function loadUsers() {
 }
 
 function renderUsers(data) {
-window.filterUsers = function () {
-    const search = document.getElementById("userSearch").value.toLowerCase();
-    const role = document.getElementById("userRoleFilter").value;
 
-    const filtered = users.filter(user => {
-        const matchesSearch =
-            user.userID.toLowerCase().includes(search) ||
-            user.fullName.toLowerCase().includes(search) ||
-            user.email.toLowerCase().includes(search) ||
-            user.phoneNo.toLowerCase().includes(search);
+    window.filterUsers = function () {
+        const search = document.getElementById("userSearch").value.toLowerCase();
+        const role = document.getElementById("userRoleFilter").value;
 
-        const matchesRole =
-            role === "All" || user.roleName === role;
+        const filtered = users.filter(user => {
+            const matchesSearch =
+                user.userID.toLowerCase().includes(search) ||
+                user.fullName.toLowerCase().includes(search) ||
+                user.email.toLowerCase().includes(search) ||
+                user.phoneNo.toLowerCase().includes(search);
 
-        return matchesSearch && matchesRole;
-    });
+            const matchesRole =
+                role === "All" || user.roleName === role;
 
-    renderUsers(filtered);
-};
+            return matchesSearch && matchesRole;
+        });
+
+        renderUsers(filtered);
+    };
+
     const tbody = document.getElementById("usersTableBody");
 
     if (!tbody) return;
@@ -840,22 +924,38 @@ window.filterUsers = function () {
             <td>${user.email}</td>
             <td>${user.phoneNo}</td>
 
-            <td>
+            <td class="action-cell">
 
-               <button class="btn-edit"
-onclick="editUser(
-'${user.userID}',
-'${user.fullName}',
-'${user.gender}',
-'${user.email}',
-'${user.phoneNo}'
-)">
-    Edit
-</button>
+                <div class="action-left">
 
-                <button class="btn-delete" onclick="deleteUser('${user.userID}')">
-    Delete
-</button>
+                    <button class="btn-edit"
+                        onclick="editUser(
+                            '${user.userID}',
+                            '${user.fullName}',
+                            '${user.gender}',
+                            '${user.email}',
+                            '${user.phoneNo}'
+                        )">
+                        Edit
+                    </button>
+
+                    <button class="btn-delete"
+                        onclick="deleteUser('${user.userID}')">
+                        Delete
+                    </button>
+
+                </div>
+
+                ${
+                    user.roleName === "Patient"
+                    ? `
+                        <button class="btn-view"
+                            onclick="viewPatientDetails('${user.userID}')">
+                            View Details
+                        </button>
+                    `
+                    : ""
+                }
 
             </td>
 
@@ -864,6 +964,28 @@ onclick="editUser(
 
     });
 
+}
+async function viewPatientDetails(userID) {
+
+    const response = await fetch("../database/getPatientDetails.php?userID=" + userID);
+    const patient = await response.json();
+
+    if (!patient.success) {
+        alert(patient.message || "Patient details not found.");
+        return;
+    }
+
+    alert(
+        "Patient Details\n\n" +
+        "Name: " + patient.fullName + "\n" +
+        "Patient Type: " + (patient.patientType || "-") + "\n" +
+        "Blood Type: " + (patient.bloodType || "-") + "\n" +
+        "Allergy: " + (patient.allergy || "-") + "\n" +
+        "Chronic Condition: " + (patient.chronicCondition || "-") + "\n" +
+        "Current Medication: " + (patient.currentMed || "-") + "\n" +
+        "Emergency Contact: " + (patient.emergencyContactName || "-") + "\n" +
+        "Emergency Phone: " + (patient.emergencyContactPhone || "-")
+    );
 }
 
 async function deleteUser(userID) {
@@ -945,4 +1067,9 @@ async function loadAdminProfile() {
 
 if (document.getElementById("profileName")) {
     loadAdminProfile();
+}
+
+function setMinimumSlotDate() {
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("slotDate").min = today;
 }

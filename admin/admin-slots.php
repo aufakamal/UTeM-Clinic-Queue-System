@@ -33,10 +33,9 @@
 
         <label>Type:
             <select id="slotType">
-                <option>Same-Day Morning</option>
-                <option>Same-Day Afternoon</option>
-                <option>Scheduled</option>
-            </select>
+    <option>Extra Slot</option>
+    <option>Emergency Slot</option>
+</select>
         </label>
 
         <label>Capacity:
@@ -51,11 +50,13 @@
         <input type="text" id="slotSearch" placeholder="Search by date, type, or time..." onkeyup="filterSlots()">
 
         <select id="slotTypeFilter" onchange="filterSlots()">
-            <option value="All">All Slot Types</option>
-            <option value="Same-Day Morning">Same-Day Morning</option>
-            <option value="Same-Day Afternoon">Same-Day Afternoon</option>
-            <option value="Scheduled">Scheduled</option>
-        </select>
+    <option value="All">All Slot Types</option>
+    <option value="Same-Day Morning">Same-Day Morning</option>
+    <option value="Same-Day Afternoon">Same-Day Afternoon</option>
+    <option value="Scheduled">Scheduled</option>
+    <option value="Extra Slot">Extra Slot</option>
+    <option value="Emergency Slot">Emergency Slot</option>
+</select>
     </div>
 
     <div class="table-card">
@@ -68,6 +69,8 @@
                     <th>End Time</th>
                     <th>Slot Type</th>
                     <th>Capacity</th>
+                    <th>Booked</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>

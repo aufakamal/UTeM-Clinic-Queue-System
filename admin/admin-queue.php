@@ -13,7 +13,7 @@
 <section id="queue" class="page active">
     <h2>Queue Management</h2>
     <p>View and filter today’s clinic queue.</p>
-
+<div id="roomDashboard" class="room-dashboard"></div>
     <div class="filter-bar">
         <input type="text"
                id="queueSearch"
@@ -33,12 +33,13 @@
             <thead>
                 <tr>
                     <th>Queue No</th>
-                    <th>Patient</th>
-                    <th>User ID</th>
-                    <th>Type</th>
-                    <th>Date</th>
-                    <th>Time Slot</th>
-                    <th>Status</th>
+<th>Patient</th>
+<th>User ID</th>
+<th>Room</th>
+<th>Type</th>
+<th>Date</th>
+<th>Time Slot</th>
+<th>Status</th>
                 </tr>
             </thead>
 

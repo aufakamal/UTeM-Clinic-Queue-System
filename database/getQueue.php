@@ -6,6 +6,7 @@ $sql = "
 SELECT
     q.queueID,
     q.queueNo,
+    q.roomNo,
     q.queueStatus,
     att.attendanceStatus,
     a.appointmentID,
