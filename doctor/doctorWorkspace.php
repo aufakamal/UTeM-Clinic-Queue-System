@@ -73,7 +73,7 @@
                 </p>
 
                 <div id="searchPatientView" style="display:none;"></div>
-                
+
                 <div id="patientRecordDisplay" style="display:none;">
 
                     <h2 class="recordTitle">CURRENT CONSULTATIONS</h2>
@@ -271,6 +271,7 @@
 
         <!-- VISITS SECTION -->
         <div id="visitsSection" class="tabSection" style="display: none;">
+            <div id="visitHistoryList"></div>
 
                 <!-- CARD 1 -->
                 <div id="visitCard">
@@ -586,9 +587,6 @@
                 </button>
             </div>
 
-
-
-            <!-----SEARCH PATIENT---->
     <script src="doctor.js"></script>
 
 </body>
