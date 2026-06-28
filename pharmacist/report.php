@@ -38,7 +38,7 @@ $dispensedRow = $dispensedResult->fetch_assoc();
 
         <nav>
             <ul>
-                <li><a href="workspace.php">Workspace</a></li>
+                <li><a href="workspace.html">Workspace</a></li>
                 <li><a href="report.php">Reports</a></li>
                 <li><a href="medicine.php">Medicine Stock</a></li>
             </ul>
@@ -54,7 +54,7 @@ $dispensedRow = $dispensedResult->fetch_assoc();
 
         <div id="profileDropdown">
             <a href="profilePharmacist.html">View Profile</a>
-            <a href="../login_register/login.php">Log Out</a>
+            <a href="../login_register/login.html">Log Out</a>
         </div>
     </div>
     </div>

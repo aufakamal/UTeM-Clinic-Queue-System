@@ -7,6 +7,9 @@ if ($conn->connect_error)
     die("Connection failed: " . $conn->connect_error);
 }
 
+/* =========================
+   PENDING PRESCRIPTIONS
+========================= */
 $sql = "
 SELECT
     p.prescriptionID,
@@ -49,6 +52,118 @@ if (!$result)
 
 $patients = array();
 
+/* =========================
+   SEARCH PATIENT DATA
+========================= */
+$searchPatientSql = "
+SELECT 
+    u.userID,
+    u.fullName,
+    u.gender,
+    u.dateOfBirth,
+    u.email,
+    u.phoneNo,
+    pp.patientType,
+    pp.allergy,
+    pp.chronicCondition,
+    pp.currentMed,
+    pp.bloodType
+FROM user u
+INNER JOIN patient_profile pp ON u.userID = pp.userID
+ORDER BY u.fullName ASC
+";
+
+$searchPatientResult = $conn->query($searchPatientSql);
+
+$searchPatients = array();
+$patientRecords = array();
+
+if ($searchPatientResult && $searchPatientResult->num_rows > 0)
+{
+    while ($patientRow = $searchPatientResult->fetch_assoc())
+    {
+        $userID = $patientRow['userID'];
+
+        $searchPatients[] = array(
+            "userID" => $userID,
+            "fullName" => $patientRow['fullName'],
+            "gender" => $patientRow['gender'],
+            "dateOfBirth" => $patientRow['dateOfBirth'],
+            "bloodType" => $patientRow['bloodType'],
+            "allergy" => $patientRow['allergy'],
+            "chronicCondition" => $patientRow['chronicCondition'],
+            "currentMed" => $patientRow['currentMed']
+        );
+
+        $patientRecords[$userID] = array(
+            "userID" => $userID,
+            "fullName" => $patientRow['fullName'],
+            "gender" => $patientRow['gender'],
+            "dateOfBirth" => $patientRow['dateOfBirth'],
+            "patientType" => $patientRow['patientType'],
+            "bloodType" => $patientRow['bloodType'],
+            "allergy" => $patientRow['allergy'],
+            "chronicCondition" => $patientRow['chronicCondition'],
+            "currentMed" => $patientRow['currentMed'],
+            "history" => array()
+        );
+    }
+}
+
+/* =========================
+   PRESCRIPTION HISTORY
+========================= */
+$historySql = "
+SELECT
+    ap.userID,
+    q.queueNo,
+    c.startTime,
+    doctor.fullName AS doctorName,
+    p.status,
+    p.prescriptionDate,
+    m.medicineName,
+    pi.quantity,
+    pi.dosage,
+    pi.frequency,
+    pi.duration,
+    pi.instructions
+FROM prescription p
+INNER JOIN consultation c ON p.consultationID = c.consultationID
+INNER JOIN queue q ON c.queueID = q.queueID
+INNER JOIN attendance a ON q.attendanceID = a.attendanceID
+INNER JOIN appointment ap ON a.appointmentID = ap.appointmentID
+INNER JOIN user doctor ON c.doctorUserID = doctor.userID
+INNER JOIN prescription_item pi ON p.prescriptionID = pi.prescriptionID
+INNER JOIN medicine m ON pi.medicineID = m.medicineID
+ORDER BY c.startTime DESC
+";
+
+$historyResult = $conn->query($historySql);
+
+if ($historyResult && $historyResult->num_rows > 0)
+{
+    while ($historyRow = $historyResult->fetch_assoc())
+    {
+        $userID = $historyRow['userID'];
+
+        if (isset($patientRecords[$userID]))
+        {
+            $patientRecords[$userID]["history"][] = array(
+                "queueNo" => "Q" . $historyRow['queueNo'],
+                "dateTime" => $historyRow['startTime'],
+                "doctorName" => $historyRow['doctorName'],
+                "medicineName" => $historyRow['medicineName'],
+                "quantity" => $historyRow['quantity'],
+                "dosage" => $historyRow['dosage'],
+                "frequency" => $historyRow['frequency'],
+                "duration" => $historyRow['duration'],
+                "instructions" => $historyRow['instructions'],
+                "status" => $historyRow['status']
+            );
+        }
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -56,8 +171,8 @@ $patients = array();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="pharmacist.css">
     <title>Pharmacist Workspace</title>
+    <link rel="stylesheet" href="pharmacist.css">
 </head>
 
 <body>
@@ -65,7 +180,9 @@ $patients = array();
     <?php include('inc/pharmacist_header.php'); ?>
 
     <section class="pharmacistWorkspace">
+
         <div class="leftColumn">
+
             <article class="pharmacyCard pendingCard">
                 <h2>Pending Prescriptions</h2>
                 <p class="pendingText">Showing latest pending prescriptions</p>
@@ -108,22 +225,27 @@ $patients = array();
 
             <article class="pharmacyCard">
                 <h2>Search Patient</h2>
-                <input class="searchInput" type="text" placeholder="Search by name or queue ID">
 
-                <p class="recentText">
-                Recent Search:<br>
-                    • Q4 - Siti Sarah Kamal<br>
-                    • Q5 - Amir bin Amar<br>
-                    • Q6 - Nur Aisyah Bt Ali
-                </p>
+                <input 
+                    class="searchInput" 
+                    id="searchPatientInput"
+                    type="text" 
+                    placeholder="Search by name or patient ID"
+                    onkeyup="searchPatientLive()"
+                >
+
+                <div id="searchResultBox"></div>
             </article>
+
         </div>
 
         <div class="rightWorkspaceColumn">
+
             <article class="workspaceCard">
+
                 <div class="emptyWorkspace">
                     <h2>Prescription Workspace</h2>
-                    <p>Please select a prescription to view prescription details.</p>
+                    <p>Please select a prescription or search a patient to view details.</p>
                 </div>
 
                 <div class="prescriptionDetails">
@@ -168,6 +290,9 @@ $patients = array();
                         </div>
                     </div>
                 </div>
+
+                <div id="patientRecordView" style="display:none;"></div>
+
             </article>
 
             <article class="statusFlowBox">
@@ -194,7 +319,9 @@ $patients = array();
                     </div>
                 </div>
             </article>
+
         </div>
+
     </section>
 
     <div class="messagePopup">
@@ -203,108 +330,13 @@ $patients = array();
     </div>
 
     <script>
-        let selectedQueue = "";
-
-        const patients = <?php echo json_encode($patients); ?>;
-
-        const viewButtons = document.querySelectorAll(".viewBtn");
-        const emptyWorkspace = document.querySelector(".emptyWorkspace");
-        const prescriptionDetails = document.querySelector(".prescriptionDetails");
-
-        const patientName = document.querySelector(".patientName");
-        const queueNo = document.querySelector(".queueNo");
-        const doctorName = document.querySelector(".doctorName");
-        const allergyInfo = document.querySelector(".allergyInfo");
-        const prescriptionInfo = document.querySelector(".prescriptionInfo");
-
-        const pharmacistNote = document.querySelector(".pharmacistNote");
-        const safetyChecks = document.querySelectorAll(".prescriptionArea input[type='checkbox']");
-
-        const readyBtn = document.querySelector(".readyBtn");
-        const dispenseBtn = document.querySelector(".dispenseBtn");
-
-        const messagePopup = document.querySelector(".messagePopup");
-        const messageText = document.querySelector(".messageText");
-        const okBtn = document.querySelector(".okBtn");
-
-        viewButtons.forEach((button) =>
-        {
-            button.addEventListener("click", () =>
-            {
-                const queue = button.dataset.queue;
-                selectedQueue = queue;
-
-                emptyWorkspace.style.display = "none";
-                prescriptionDetails.style.display = "block";
-
-                patientName.textContent = patients[queue].name;
-                queueNo.textContent = patients[queue].queue;
-                doctorName.textContent = patients[queue].doctor;
-                allergyInfo.textContent = patients[queue].allergy;
-                prescriptionInfo.innerHTML = patients[queue].prescription;
-
-                safetyChecks.forEach((check) =>
-                {
-                    check.checked = false;
-                });
-
-                pharmacistNote.value = "";
-            });
-        });
-
-        readyBtn.addEventListener("click", () =>
-        {
-            if (selectedQueue === "")
-            {
-                alert("Please select a patient first.");
-                return;
-            }
-
-            messageText.textContent = "Prescription status updated to Ready.";
-            messagePopup.style.display = "block";
-        });
-
-        dispenseBtn.addEventListener("click", () =>
-        {
-            if (selectedQueue === "")
-            {
-                alert("Please select a patient first.");
-                return;
-            }
-
-            messageText.textContent = "Medication dispensed successfully.";
-            messagePopup.style.display = "block";
-        });
-
-        okBtn.addEventListener("click", () =>
-        {
-            messagePopup.style.display = "none";
-        });
-
-        const searchInput = document.querySelector(".searchInput");
-
-        if (searchInput)
-        {
-            searchInput.addEventListener("keyup", function ()
-            {
-                const keyword = searchInput.value.toLowerCase();
-
-                document.querySelectorAll(".queueBox").forEach(function (box)
-                {
-                    const patientInfo = box.textContent.toLowerCase();
-
-                    if (patientInfo.includes(keyword))
-                    {
-                        box.style.display = "flex";
-                    }
-                    else
-                    {
-                        box.style.display = "none";
-                    }
-                });
-            });
-        }
+        const patientsData = <?php echo json_encode($patients); ?>;
+        const searchPatientsData = <?php echo json_encode($searchPatients); ?>;
+        const patientRecordsData = <?php echo json_encode($patientRecords); ?>;
     </script>
+
+    <script src="js/pharmacist.js"></script>
+    <script src="js/workspace.js"></script>
 
 </body>
 </html>

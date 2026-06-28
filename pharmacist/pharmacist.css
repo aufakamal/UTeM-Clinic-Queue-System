@@ -976,18 +976,18 @@ section {
     color: #B91C1C;
 }
 
-.viewMedicineBtn {
-    border: 1px solid #0284C7;
-    background-color: white;
-    color: #0284C7;
-    border-radius: 999px;
-    padding: 8px 14px;
-    font-weight: 600;
-    cursor: pointer;
+.viewMedicineBtn{
+    background:white;
+    color:#0284C7;
+    border:1px solid #0284C7;
+    border-radius:999px;
+    padding:8px 16px;
+    cursor:pointer;
+    transition:.3s;
 }
 
-.viewMedicineBtn:hover {
-    background-color: #E0F2FE;
+.viewMedicineBtn:hover{
+    background:#E0F2FE;
 }
 
 @media (max-width: 900px) {
@@ -995,4 +995,257 @@ section {
     .medicineFilterForm {
         grid-template-columns: 1fr;
     }
+}
+
+.stockPopup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.35);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.stockPopupContent {
+    width: 400px;
+    background-color: white;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.closeStockBtn {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.closeAddMedicineBtn{
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.stockPopupContent input[type="text"],
+.stockPopupContent input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    margin-top: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.stockPopupContent form{
+    display:flex;
+    flex-direction:column;
+}
+
+.stockPopupContent label{
+    margin-top:15px;
+    margin-bottom:5px;
+    font-weight:600;
+    color:#334155;
+}
+
+.stockPopupContent p{
+    margin:8px 0;
+}
+
+.stockActionChoice {
+    display: flex;
+    gap: 15px;
+    margin: 12px 0;
+}
+
+.saveStockBtn {
+    width: 100%;
+    background-color: #0284C7;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 12px;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+.medicineHeader
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.addMedicineBtn
+{
+    background-color: #0284C7;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 22px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* =========================
+   PATIENT SEARCH
+========================= */
+
+#searchResultBox{
+    margin-top:15px;
+}
+
+.patientSearchResult{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px;
+    margin-bottom:12px;
+    background:#F8FAFC;
+    border:1px solid #E2E8F0;
+    border-radius:14px;
+}
+
+.patientSearchResult h4{
+    margin:0;
+    color:#0F172A;
+}
+
+.patientSearchResult p{
+    margin:5px 0 0;
+    color:#64748B;
+    font-size:14px;
+}
+
+.patientSearchResult button{
+    background:#0284C7;
+    color:white;
+    border:none;
+    border-radius:999px;
+    padding:10px 18px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.patientSearchResult button:hover{
+    background:#0369A1;
+}
+
+.noPatientFound{
+    text-align:center;
+    padding:18px;
+    color:#64748B;
+}
+
+
+/* =========================
+   MEDICAL RECORD
+========================= */
+
+.viewOnlyRecord{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.recordTop h2{
+    margin:0;
+    color:#0F172A;
+}
+
+.recordTop span{
+    color:#16A34A;
+    font-size:18px;
+}
+
+.viewOnlyAlert{
+    background:#ECFEFF;
+    border:1px solid #A5F3FC;
+    border-radius:14px;
+    padding:15px;
+    color:#155E75;
+}
+
+.medicalInfoCard{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.medicalInfoCard div{
+    background:#F8FAFC;
+    border:1px solid #E2E8F0;
+    border-radius:14px;
+    padding:18px;
+}
+
+.medicalInfoCard p{
+    margin:0;
+    color:#64748B;
+    font-size:13px;
+}
+
+.medicalInfoCard h3{
+    margin:6px 0 18px;
+    color:#0F172A;
+    font-size:120px;
+    font-weight:600;
+}
+
+.medicalBlock{
+    background:white;
+    border:1px solid #E2E8F0;
+    border-radius:14px;
+    padding:20px;
+}
+
+.medicalBlock h3{
+    margin-top:0;
+    color:#0284C7;
+}
+
+.historyTable{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+.historyTable th{
+    background:#E0F2FE;
+    color:#075985;
+    padding:12px;
+    text-align:left;
+}
+
+.historyTable td{
+    padding:12px;
+    border-bottom:1px solid #E2E8F0;
+}
+
+.viewOnlyNote{
+    background:#FEFCE8;
+    border:1px solid #FDE68A;
+    border-radius:14px;
+    padding:15px;
+    color:#92400E;
+}
+
+@media(max-width:900px){
+
+    .medicalInfoCard{
+        grid-template-columns:1fr;
+    }
+
 }
