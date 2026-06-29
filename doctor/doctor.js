@@ -1,47 +1,101 @@
-// ==========================
-// DATA PESAKIT
-// ==========================
-const patients = {
-    "A103": {
-        name: "Siti Sarah binti Roslan",
-        gender: "Female",
-        id: "D0323578456",
-        bloodType: "O+",
-        allergies: [
-            "Seafood (Patient Reported)",
-            "Penicillin (Doctor Confirmed)"
-        ],
-        chronicDiseases: [
-            "Asthma"
-        ],
-        currentMedication: [
-            "Ventolin Inhaler"
-        ]
-    },
-    D514698002: {
-        name: "Amir bin Amar",
-        gender: "Male",
-        id: "D514698002",
-        blood: "B+",
-        allergies: ["Dust", "Peanuts"],
-        chronic: ["Asthma"],
-        medication: ["Ventolin Inhaler"],
-        visits: [
-            {
-                date: "22/06/2026, 11:35 pm",
-                reason: "Headache",
-                findings: "BP 120/80, HR 88",
-                diagnosis: "Tension Headache",
-                treatment: "Rest + hydration",
-                prescription: "Ibuprofen 400mg"
-            }
-        ]
-    }
-};
 
-// ==========================
-// LOAD PAGE
-// ==========================
+let currentPatient = null;
+let currentQueueId = null;
+
+function startSessionFromQueue(btn) {
+    console.log("BUTTON CLICKED");
+
+    const queueId = btn.dataset.queueid;
+    console.log("QUEUE ID:", queueId);
+}
+
+function startSessionFromQueue(btn) {
+
+    const queueId = btn.dataset.queueid;
+
+    fetch("getNextQueue.php")
+    .then(res => res.json())
+    .then(data => {
+
+        if (!data) {
+            alert("No patient");
+            return;
+        }
+
+        currentPatient = data;
+        currentQueueId = data.queue_id;
+
+        fetch("lockQueue.php", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ queue_id: currentQueueId })
+        });
+
+        loadPatient(data);
+    });
+}
+
+function loadPatient(p) {
+
+    document.getElementById("patientRecordDisplay").style.display = "block";
+
+    document.getElementById("pName").innerText = p.fullName;
+    document.getElementById("pGender").innerText = p.gender;
+    document.getElementById("pID").innerText = p.userID;
+    document.getElementById("pBlood").innerText = p.bloodType;
+
+    // clear + show empty editable lists
+    document.getElementById("pAllergyList").innerHTML = "";
+    document.getElementById("pChronicList").innerHTML = "";
+    document.getElementById("pMedList").innerHTML = "";
+}
+
+function endSession() {
+
+    const payload = {
+        queue_id: currentQueueId,
+        diagnosis: document.getElementById("diagnosisInput")?.value || "",
+        treatment: document.getElementById("treatmentInput")?.value || "",
+        prescription: collectPrescription()
+    };
+
+    fetch("endSession.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+    });
+
+    currentPatient = null;
+    currentQueueId = null;
+
+    document.getElementById("patientRecordDisplay").style.display = "none";
+
+    alert("Session completed");
+}
+
+function collectPrescription() {
+
+    let rows = document.querySelectorAll("#rxTableBody tr");
+    let data = [];
+
+    rows.forEach(row => {
+
+        if (row.id === "emptyRow") return;
+
+        let cells = row.children;
+
+        data.push({
+            medicine: cells[1].innerText,
+            dosage: cells[2].innerText,
+            frequency: cells[3].innerText,
+            duration: cells[4].innerText,
+            instruction: cells[5].innerText
+        });
+    });
+
+    return data;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".endBtn").forEach(button => {
@@ -49,65 +103,63 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener("click", endSession);
     });
 
-    document.querySelectorAll(".startBtn").forEach(button => {
-        button.addEventListener("click", () => {
-
-            const queue = button.dataset.queue;
-            const patient = patients[queue];
-
-            if (!patient) return;
-
-            showPatientSession(patient, queue);
-
-            const savedVisits = localStorage.getItem("visitHistory_" + queue);
-            visitHistory = savedVisits ? JSON.parse(savedVisits) : [];
-
-            renderVisitHistory();
-
-            const endBtn = document.querySelector(`.endBtn[data-queue="${queue}"]`);
-            if (endBtn) endBtn.disabled = false;
-        });
-    });
-
 });
 
-// ==========================
-// START CONSULTATION
-// ==========================
-function showPatientSession(patient, queue) {
-    selectedQueue = queue;
+function showPatientSession(patient, userID) {
+
+    selectedQueue = userID;
     selectedPatient = patient;
 
-    const defaultWorkspace = document.getElementById("defaultWorkspace");
     const placeholderText = document.getElementById("placeholderText");
     const patientRecordDisplay = document.getElementById("patientRecordDisplay");
     const viewOnlyRecordDisplay = document.getElementById("viewOnlyRecordDisplay");
+    const searchPatientView = document.getElementById("searchPatientView");
 
     if (placeholderText) placeholderText.style.display = "none";
     if (patientRecordDisplay) patientRecordDisplay.style.display = "block";
     if (viewOnlyRecordDisplay) viewOnlyRecordDisplay.style.display = "none";
+    if (searchPatientView) searchPatientView.style.display = "none";
 
-    document.getElementById("pName").textContent = patient.name;
-    document.getElementById("pGender").textContent = patient.gender;
-    document.getElementById("pID").textContent = patient.id;
-    document.getElementById("pBlood").textContent = patient.bloodType;
+    hideAllSections();
 
-    renderEditableList("pAllergyList", patient.allergies);
-    renderEditableList("pChronicList", patient.chronicDiseases);
-    renderEditableList("pMedList", patient.currentMedication);
+    const overview = document.querySelector(".overviewSection");
+    if (overview) overview.style.display = "block";
+
+    document.querySelectorAll(".miniTab").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    const firstTab = document.querySelector(".miniTab");
+    if (firstTab) firstTab.classList.add("active");
+
+    document.getElementById("pName").textContent = patient.name || "-";
+    document.getElementById("pGender").textContent = patient.gender || "-";
+    document.getElementById("pID").textContent = patient.id || "-";
+    document.getElementById("pBlood").textContent = patient.bloodType || "-";
+
+    renderEditableList("pAllergyList", patient.allergies || ["-"]);
+    renderEditableList("pChronicList", patient.chronicDiseases || ["-"]);
+    renderEditableList("pMedList", patient.currentMedication || ["-"]);
 }
 
+function hideAllSections() {
 
-// ==========================
-// EDITABLE MEDICAL INFO
-// ==========================
+    const visits = document.getElementById("visitsSection");
+    const diagnosis = document.getElementById("diagnosisSection");
+    const prescription = document.getElementById("prescriptionSection");
+    const overview = document.querySelector(".overviewSection");
+
+    if (overview) overview.style.display = "none";
+    if (visits) visits.style.display = "none";
+    if (diagnosis) diagnosis.style.display = "none";
+    if (prescription) prescription.style.display = "none";
+}
+
 function renderEditableList(containerId, items) {
 
     const container = document.getElementById(containerId);
 
-    if (!container) {
-        return;
-    }
+    if (!container) return;
 
     container.innerHTML = "";
 
@@ -130,94 +182,19 @@ function editItem(button) {
     const input = button.previousElementSibling;
 
     if (input.readOnly) {
-
         input.readOnly = false;
         input.focus();
         button.textContent = "Save";
         button.classList.add("saveEditBtn");
-
     } else {
-
         input.readOnly = true;
         button.textContent = "Edit";
         button.classList.remove("saveEditBtn");
-
     }
-}
-
-function addItem(containerId) {
-
-    const container = document.getElementById(containerId);
-
-    if (!container) {
-        return;
-    }
-
-    const row = document.createElement("div");
-    row.className = "editableItem";
-
-    row.innerHTML = `
-        <input type="text" placeholder="Enter new item">
-        <button type="button" onclick="editItem(this)" class="saveEditBtn">Save</button>
-    `;
-
-    container.appendChild(row);
-
-    const input = row.querySelector("input");
-    input.focus();
-}
-
-
-function openTab(tabId) {
-
-    // hide semua
-    document.querySelectorAll(".tabSection").forEach(tab => {
-        tab.classList.remove("active");
-    });
-
-    // show only selected
-    document.getElementById(tabId).classList.add("active");
-}
-
-
-// ==========================
-// ACTION MESSAGE POPUP
-// ==========================
-function showActionMessage(message) {
-
-    const messagePopup = document.getElementById("messagePopup");
-    const messageText = document.getElementById("messageText");
-
-    if (messageText) {
-        messageText.textContent = message;
-    }
-
-    if (messagePopup) {
-        messagePopup.style.display = "flex";
-    }
-}
-
-function saveDraft() {
-
-    if (!selectedQueue || !selectedPatient) {
-        alert("Please select a patient first.");
-        return;
-    }
-
-    const draftData = {
-        queue: selectedQueue,
-        patient: selectedPatient,
-        savedAt: new Date().toISOString()
-    };
-
-    localStorage.setItem("draft_" + selectedQueue, JSON.stringify(draftData));
-
-    showActionMessage("Draft saved for " + selectedQueue);
 }
 
 function switchTab(tabName, button) {
 
-    // active button
     document.querySelectorAll(".miniTab").forEach(tab => {
         tab.classList.remove("active");
     });
@@ -226,53 +203,148 @@ function switchTab(tabName, button) {
         button.classList.add("active");
     }
 
-    // hide semua section
+    hideAllSections();
+
     const overview = document.querySelector(".overviewSection");
     const visits = document.getElementById("visitsSection");
     const diagnosis = document.getElementById("diagnosisSection");
     const prescription = document.getElementById("prescriptionSection");
 
-    if (overview) overview.style.display = "none";
-    if (visits) visits.style.display = "none";
-    if (diagnosis) diagnosis.style.display = "none";
-    if (prescription) prescription.style.display = "none";
+    if (tabName === "overview" && overview) overview.style.display = "block";
+    if (tabName === "visits" && visits) visits.style.display = "block";
+    if (tabName === "diagnosis" && diagnosis) diagnosis.style.display = "block";
+    if (tabName === "prescription" && prescription) prescription.style.display = "block";
+}
 
-    // show selected section
-    if (tabName === "overview" && overview) {
-        overview.style.display = "block";
+/* =========================
+   SEARCH PATIENT
+========================= */
+
+function searchPatientLive() {
+
+    const input = document.getElementById("searchPatientInput");
+    const box = document.getElementById("searchResultBox");
+
+    if (!input || !box || !window.searchPatientsData) return;
+
+    const keyword = input.value.toLowerCase().trim();
+
+    if (keyword === "") {
+        box.innerHTML = "";
+        return;
     }
 
-    if (tabName === "visits" && visits) {
-        visits.style.display = "block";
+    let html = "";
+
+    window.searchPatientsData.forEach(p => {
+
+        const text = (p.fullName + " " + p.userID).toLowerCase();
+
+        if (text.includes(keyword)) {
+            html += `
+                <div class="patientSearchResult">
+                    <div>
+                        <h4>${p.fullName}</h4>
+                        <p>${p.userID}</p>
+                    </div>
+
+                    <button type="button" onclick="viewPatientRecord('${p.userID}')">
+                        View
+                    </button>
+                </div>
+            `;
+        }
+    });
+
+    box.innerHTML = html || `<div class="noPatientFound">No patient found</div>`;
+}
+
+function viewPatientRecord(userID) {
+
+    const patient = window.patientRecordsData[userID];
+
+    if (!patient) {
+        alert("Patient record not found.");
+        return;
     }
 
-    if (tabName === "diagnosis" && diagnosis) {
-        diagnosis.style.display = "block";
-    }
+    selectedQueue = null;
+    selectedPatient = null;
 
-    if (tabName === "prescription" && prescription) {
-        prescription.style.display = "block";
+    const placeholderText = document.getElementById("placeholderText");
+    const patientRecordDisplay = document.getElementById("patientRecordDisplay");
+    const viewOnlyRecordDisplay = document.getElementById("viewOnlyRecordDisplay");
+    const searchPatientView = document.getElementById("searchPatientView");
+
+    if (placeholderText) placeholderText.style.display = "none";
+    if (patientRecordDisplay) patientRecordDisplay.style.display = "none";
+    if (viewOnlyRecordDisplay) viewOnlyRecordDisplay.style.display = "block";
+    if (searchPatientView) searchPatientView.style.display = "none";
+
+    hideAllSections();
+
+    document.getElementById("vName").textContent = patient.fullName || "-";
+    document.getElementById("vGender").textContent = patient.gender || "-";
+    document.getElementById("vBlood").textContent = patient.bloodType || "-";
+    document.getElementById("vID").textContent = patient.userID || "-";
+    document.getElementById("vDOB").textContent = formatDate(patient.dateOfBirth) || "-";
+    document.getElementById("vType").textContent = patient.patientType || "-";
+
+    document.getElementById("vAllergy").textContent = patient.allergy || "-";
+    document.getElementById("vChronic").textContent = patient.chronicCondition || "-";
+    document.getElementById("vMed").textContent = patient.currentMed || "-";
+}
+
+function formatDate(dateValue) {
+
+    if (!dateValue) return "-";
+
+    const date = new Date(dateValue);
+
+    if (isNaN(date)) return dateValue;
+
+    return date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+    });
+}
+
+/* =========================
+   DIAGNOSIS
+========================= */
+
+let clinicalData = {
+    reason: "",
+    diagnosis: "",
+    treatment: "",
+    observation: "",
+    test: ""
+};
+
+function saveClinical() {
+
+    clinicalData.reason = document.getElementById("reasonInput")?.value || "";
+    clinicalData.diagnosis = document.getElementById("diagnosisInput")?.value || "";
+    clinicalData.treatment = document.getElementById("treatmentInput")?.value || "";
+    clinicalData.observation = document.getElementById("observationInput")?.value || "";
+    clinicalData.test = document.getElementById("testInput")?.value || "";
+
+    if (selectedPatient) {
+        selectedPatient.clinical = clinicalData;
     }
 }
 
-// ==========================
-// DIAGNOSIS TAB
-// ==========================
 function addFinding() {
 
     const input = document.getElementById("newFinding");
     const output = document.getElementById("findingOutput");
 
-    if (!input || !output) {
-        console.log("Input or output not found");
-        return;
-    }
+    if (!input || !output) return;
 
     const value = input.value.trim();
 
-    if (value === "") {
-        return;
-    }
+    if (value === "") return;
 
     const div = document.createElement("div");
     div.className = "savedFinding";
@@ -288,33 +360,97 @@ function addFinding() {
     input.focus();
 }
 
+/* =========================
+   ADD MEDICAL INFO
+========================= */
 
-// ==========================
-//  PRESCRIPTION
-// ==========================
+function openAllergyInput() {
+    document.getElementById("allergyInputBox").style.display = "block";
+}
+
+function saveAllergy() {
+    saveNewEditableItem("allergyInput", "pAllergyList", "allergyInputBox");
+}
+
+function openChronicInput() {
+    document.getElementById("chronicInputBox").style.display = "block";
+}
+
+function saveChronic() {
+    saveNewEditableItem("chronicInput", "pChronicList", "chronicInputBox");
+}
+
+function openMedicationInput() {
+    document.getElementById("medInputBox").style.display = "block";
+}
+
+function saveMedication() {
+    saveNewEditableItem("medInput", "pMedList", "medInputBox");
+}
+
+function saveNewEditableItem(inputId, containerId, boxId) {
+
+    const input = document.getElementById(inputId);
+    const value = input.value.trim();
+
+    if (!value) return;
+
+    const container = document.getElementById(containerId);
+
+    const div = document.createElement("div");
+    div.className = "editableItem";
+
+    div.innerHTML = `
+        <input type="text" value="${value}" readonly>
+        <button type="button" onclick="editItem(this)">Edit</button>
+    `;
+
+    container.appendChild(div);
+
+    input.value = "";
+    document.getElementById(boxId).style.display = "none";
+}
+
+/* =========================
+   PRESCRIPTION
+========================= */
+
 function updateStock() {
-    const select = document.getElementById("medicine");
-    const stock = select.options[select.selectedIndex].dataset.stock;
 
-    document.getElementById("stockBox").innerText = stock + " tablets";
+    const select = document.getElementById("medicine");
+
+    if (!select || select.selectedIndex < 0) return;
+
+    const stock = select.options[select.selectedIndex].dataset.stock || "-";
+    const stockBox = document.getElementById("stockBox");
+
+    if (stockBox) {
+        stockBox.innerText = stock === "-" ? "-" : stock + " tablets";
+    }
 }
 
 function addPrescription() {
 
-    const med = document.getElementById("medicine").value;
+    const medSelect = document.getElementById("medicine");
     const dosage = document.getElementById("dosage").value;
     const freq = document.getElementById("frequency").value;
     const duration = document.getElementById("duration").value;
-    const notes = document.getElementById("notes").value;
-
+    const instruction = document.getElementById("instruction").value;
     const tbody = document.getElementById("rxTableBody");
 
-    if (!tbody) {
-        console.log("rxTableBody not found");
+    if (!medSelect.value || !dosage || !freq || !duration || !instruction) {
+        alert("⚠️ Please complete all fields before adding prescription");
         return;
     }
 
+    const emptyRow = document.getElementById("emptyRow");
+
+    if (emptyRow) {
+        emptyRow.remove();
+    }
+
     const no = tbody.querySelectorAll("tr").length + 1;
+    const med = medSelect.options[medSelect.selectedIndex].text;
 
     const tr = document.createElement("tr");
 
@@ -324,18 +460,17 @@ function addPrescription() {
         <td>${dosage}</td>
         <td>${freq}</td>
         <td>${duration}</td>
-        <td>${notes || "-"}</td>
+        <td>${instruction}</td>
         <td>
-            <button type="button" class="deleteRxBtn" onclick="deleteRx(this)">🗑</button>
+            <button type="button" onclick="deleteRx(this)">🗑</button>
         </td>
     `;
 
     tbody.appendChild(tr);
-
-    document.getElementById("notes").value = "";
 }
 
 function deleteRx(button) {
+
     button.closest("tr").remove();
 
     const rows = document.querySelectorAll("#rxTableBody tr");
@@ -343,396 +478,41 @@ function deleteRx(button) {
     rows.forEach((row, index) => {
         row.children[0].textContent = index + 1;
     });
-}
 
-
-// ==========================
-// SAVE COMPLETION
-// ==========================
-let selectedQueue = null;
-let selectedPatient = null;
-let visitHistory = [];
-
-// function saveCompletion() {
-
-//     if (!selectedPatient || !selectedQueue) {
-//         alert("Please select a patient first.");
-//         return;
-//     }
-
-//     // ambil reason
-//     const reason = document.getElementById("reasonVisitText")?.innerText || "-";
-
-//     // ambil clinical findings static
-//     let clinicalFindings = [];
-
-//     document.querySelectorAll(".findingBox").forEach(box => {
-//         const title = box.querySelector("strong")?.innerText || "";
-//         const value = box.querySelector("span")?.innerText || "";
-
-//         if (title && value) {
-//             clinicalFindings.push(title + ": " + value);
-//         }
-//     });
-
-//     // ambil additional findings yang doctor add
-//     document.querySelectorAll("#findingOutput .savedFinding").forEach(item => {
-//         clinicalFindings.push(item.innerText);
-//     });
-
-//     // ambil diagnosis
-//     const diagnosis = document.getElementById("diagnosisText")?.innerText || "-";
-
-//     // ambil treatment plan
-//     const treatment = document.getElementById("treatmentText")?.innerText || "-";
-
-//     // ambil prescription terbaru dari table
-//     let prescriptions = [];
-
-//     document.querySelectorAll("#rxTableBody tr").forEach(row => {
-//         const cells = row.children;
-
-//         if (cells.length >= 6) {
-//             prescriptions.push({
-//                 medicine: cells[1].innerText,
-//                 dosage: cells[2].innerText,
-//                 frequency: cells[3].innerText,
-//                 duration: cells[4].innerText,
-//                 notes: cells[5].innerText
-//             });
-//         }
-//     });
-
-//     // create visit record
-//     const visit = {
-//         patientName: selectedPatient.name,
-//         date: new Date().toLocaleString(),
-//         doctor: "Dr Anis",
-//         appointmentType: "Same-Day Consultation",
-//         status: "Completed",
-//         reason: reason,
-//         clinicalFindings: clinicalFindings,
-//         diagnosis: diagnosis,
-//         treatment: treatment,
-//         prescriptions: prescriptions
-//     };
-
-//     // latest masuk atas
-//     visitHistory.unshift(visit);
-
-//     // save dalam browser
-//     localStorage.setItem("visitHistory_" + selectedQueue, JSON.stringify(visitHistory));
-
-//     // display dekat Visits
-//     renderVisitHistory();
-
-//     alert("Consultation saved and added to Visits.");
-// }
-
-// function renderVisitHistory() {
-
-//     const container = document.getElementById("visitHistoryList");
-
-//     if (!container) {
-//         return;
-//     }
-
-//     container.innerHTML = "";
-
-//     visitHistory.forEach((visit) => {
-
-//         const prescriptionText = visit.prescriptions.length > 0
-//             ? visit.prescriptions.map(p => {
-//                 return `${p.medicine} | ${p.dosage} | ${p.frequency} | ${p.duration}`;
-//             }).join("<br>")
-//             : "-";
-
-//         const clinicalText = visit.clinicalFindings.length > 0
-//             ? visit.clinicalFindings.join("<br>")
-//             : "-";
-
-//         const card = document.createElement("div");
-//         card.className = "visitCard";
-
-//         card.innerHTML = `
-//             <h2 class="visitTitle">Medical Record</h2>
-
-//             <table class="visitTable">
-//                 <thead>
-//                     <tr>
-//                         <th>Time Slot</th>
-//                         <th>Doctor</th>
-//                         <th>Appointment Type</th>
-//                         <th>Status</th>
-//                     </tr>
-//                 </thead>
-
-//                 <tbody>
-//                     <tr>
-//                         <td>${visit.date}</td>
-//                         <td>${visit.doctor}</td>
-//                         <td>${visit.appointmentType}</td>
-//                         <td><span class="status done">${visit.status}</span></td>
-//                     </tr>
-//                 </tbody>
-//             </table>
-
-//             <div class="visitDetail">
-//                 <div><b>Reason for Visit:</b> ${visit.reason}</div>
-//                 <div><b>Clinical Findings:</b><br>${clinicalText}</div>
-//                 <div><b>Diagnosis:</b> ${visit.diagnosis}</div>
-//                 <div><b>Treatment Plan:</b> ${visit.treatment}</div>
-//                 <div><b>Prescription:</b><br>${prescriptionText}</div>
-//             </div>
-//         `;
-
-//         container.appendChild(card);
-//     });
-// }
-
-
-function renderVisits(visits) {
-
-    const box = document.getElementById("visitHistoryList");
-
-    box.innerHTML = "";
-
-    visits.forEach(v => {
-
-        const div = document.createElement("div");
-
-        div.className = "visitCard";
-
-        div.innerHTML = `
-            <h3>Medical Record</h3>
-
-            <p><b>Reason:</b> ${v.reason}</p>
-            <p><b>Diagnosis:</b> ${v.diagnosis}</p>
-            <p><b>Prescription:</b> ${v.prescription}</p>
-        `;
-
-        box.appendChild(div);
-    });
-}
-
-
-// ==========================
-// START SESSION
-// ==========================
-function startSession(queueId) {
-
-    selectedQueue = queueId;
-    selectedPatient = patients[queueId];
-
-    document.getElementById("placeholderText").style.display = "none";
-    document.getElementById("patientRecordDisplay").style.display = "block";
-    document.getElementById("viewOnlyRecordDisplay").style.display = "none";
-
-    const btn = document.querySelector(`.endBtn[data-queue="${queueId}"]`);
-    if (btn) btn.disabled = false;
-}
-
-
-
-// ==========================
-// SEARCH PATIENT - VIEW ONLY
-// ==========================
-function searchPatientLive() {
-    const input = document.getElementById("searchPatientInput").value.toLowerCase().trim();
-    const resultBox = document.getElementById("searchResultBox");
-
-    if (!resultBox) {
-        console.log("searchResultBox not found");
-        return;
-    }
-
-    if (input === "") {
-        resultBox.innerHTML = "";
-        return;
-    }
-
-    if ("amir bin amar".includes(input) || "d514698002".includes(input)) {
-        resultBox.innerHTML = `
-            <div class="patientSearchResult">
-                <div>
-                    <h4>Amir bin Amar</h4>
-                    <p>D514698002</p>
-                </div>
-
-                <button type="button" onclick="viewSearchedPatient()">
-                    View
-                </button>
-            </div>
-        `;
-    } else {
-        resultBox.innerHTML = `
-            <div class="noPatientFound">
-                No patient found
-            </div>
+    if (rows.length === 0) {
+        document.getElementById("rxTableBody").innerHTML = `
+            <tr id="emptyRow">
+                <td colspan="7" style="text-align:center;">
+                    No prescription added yet
+                </td>
+            </tr>
         `;
     }
 }
 
-function viewSearchedPatient() {
-    const placeholderText = document.getElementById("placeholderText");
-    const patientRecordDisplay = document.getElementById("patientRecordDisplay");
-    const searchPatientView = document.getElementById("searchPatientView");
+function savePrescription() {
 
-    if (!searchPatientView) {
-        alert("searchPatientView tak jumpa. Pastikan div searchPatientView ada dalam doctorWorkshop.php");
+    const rows = document.querySelectorAll("#rxTableBody tr");
+
+    if (rows.length === 0 || document.getElementById("emptyRow")) {
+        alert("⚠️ No prescription to save!");
         return;
     }
 
-    if (placeholderText) {
-        placeholderText.style.display = "none";
-    }
+    alert("✅ Prescription saved successfully!");
 
-    if (patientRecordDisplay) {
-        patientRecordDisplay.style.display = "none";
-    }
-
-    searchPatientView.style.display = "block";
-
-    searchPatientView.innerHTML = `
-        <div class="viewOnlyRecord">
-
-            <h2 class="recordTitle">
-                PATIENT RECORD <span style="color: green;">(VIEW ONLY)</span>
-            </h2>
-
-            <div class="viewOnlyAlert">
-                👁 You are viewing this patient record. Information shown below is for reference only.
-            </div>
-
-            <div class="patientInfo">
-                <p><strong>Full name:</strong> Amir bin Amar</p>
-                <p><strong>Gender:</strong> Male</p>
-                <p><strong>ID:</strong> D514698002</p>
-                <p><strong>Blood type:</strong> B+</p>
-            </div>
-
-            <h3 class="viewSectionTitle">OVERVIEW</h3>
-
-            <div class="infoBlock">
-                <div class="infoHeader">
-                    <h3>Allergies</h3>
-                    <button type="button" class="addSmallBtn" disabled>+ Add Allergy</button>
-                </div>
-
-                <p>• Dust (Patient Reported)</p>
-                <p>• Peanuts (Doctor Confirmed)</p>
-            </div>
-
-            <div class="infoBlock">
-                <div class="infoHeader">
-                    <h3>Chronic Diseases</h3>
-                    <button type="button" class="addSmallBtn" disabled>+ Add Condition</button>
-                </div>
-
-                <p>• Asthma</p>
-            </div>
-
-            <div class="infoBlock">
-                <div class="infoHeader">
-                    <h3>Current Medication</h3>
-                    <button type="button" class="addSmallBtn" disabled>+ Add Medication</button>
-                </div>
-
-                <p>• Ventolin Inhaler</p>
-            </div>
-
-            <h3 class="viewSectionTitle">VISITS (MEDICAL RECORD)</h3>
-
-                <details class="visitDropdown" open>
-                    <summary>
-                        <span>Visit 19/06/2026 </span>
-                        <small>02:30:45 pm</small>
-                    </summary>
-
-                    <div class="visitDropdownContent">
-                        <p><strong>Reason for Visit:</strong> Patient reports fever and headache.</p>
-                        <p><strong>Clinical Findings:</strong> Temperature 38.5°C, BP 120/80 mmHg, HR 92 bpm, RR 20/min, SpO2 98%, Additional: Throat redness.</p>
-                        <p><strong>Diagnosis:</strong> Influenza</p>
-                        <p><strong>Treatment Plan:</strong> Rest + fluids</p>
-                        <p><strong>Prescription:</strong> Paracetamol 500mg | 1 tablet | TDS | 5 days</p>
-                    </div>
-                </details>
-
-                <details class="visitDropdown">
-                    <summary>
-                        <span>Visit 2/05/2026</span>
-                        <small>11:35:20 pm</small>
-                    </summary>
-
-                    <div class="visitDropdownContent">
-                        <p><strong>Reason for Visit:</strong> Headache</p>
-                        <p><strong>Clinical Findings:</strong> BP 120/80, HR 88</p>
-                        <p><strong>Diagnosis:</strong> Tension Headache</p>
-                        <p><strong>Treatment Plan:</strong> Rest + hydration</p>
-                        <p><strong>Prescription:</strong> Ibuprofen 400mg</p>
-                    </div>
-                </details>
-
-                <details class="visitDropdown">
-                    <summary>
-                        <span>Visit 10/04/2026</span>
-                        <small>10:15:10 am</small>
-                    </summary>
-
-                    <div class="visitDropdownContent">
-                        <p><strong>Reason for Visit:</strong> Asthma review</p>
-                        <p><strong>Clinical Findings:</strong> Stable condition</p>
-                        <p><strong>Diagnosis:</strong> Chronic Asthma</p>
-                        <p><strong>Treatment Plan:</strong> Continue inhaler</p>
-                        <p><strong>Prescription:</strong> Ventolin Inhaler</p>
-                    </div>
-                </details>
-
-            <div class="viewOnlyNote">
-                🔒 This is a view only page. To create a new consultation, please start a session from the Current Consultations.
-            </div>
-
-        </div>
+    document.getElementById("rxTableBody").innerHTML = `
+        <tr id="emptyRow">
+            <td colspan="7" style="text-align:center;">
+                No prescription added yet
+            </td>
+        </tr>
     `;
 }
 
-function showPatientSession(patient, queue) {
-    selectedQueue = queue;
-    selectedPatient = patient;
-
-    const placeholderText = document.getElementById("placeholderText");
-    const patientRecordDisplay = document.getElementById("patientRecordDisplay");
-    const searchPatientView = document.getElementById("searchPatientView");
-    const viewOnlyRecordDisplay = document.getElementById("viewOnlyRecordDisplay");
-    const overview = document.querySelector(".overviewSection");
-
-    if (placeholderText) placeholderText.style.display = "none";
-    if (patientRecordDisplay) patientRecordDisplay.style.display = "block";
-    if (searchPatientView) searchPatientView.style.display = "none";
-    if (viewOnlyRecordDisplay) viewOnlyRecordDisplay.style.display = "none";
-
-    document.querySelectorAll(".tabSection").forEach(section => {
-        section.style.display = "none";
-    });
-
-    if (overview) overview.style.display = "block";
-
-    document.querySelectorAll(".miniTab").forEach(tab => {
-        tab.classList.remove("active");
-    });
-
-    const firstTab = document.querySelector(".miniTab");
-    if (firstTab) firstTab.classList.add("active");
-
-    document.getElementById("pName").textContent = patient.name;
-    document.getElementById("pGender").textContent = patient.gender;
-    document.getElementById("pID").textContent = patient.id;
-    document.getElementById("pBlood").textContent = patient.bloodType || patient.blood || "-";
-
-    renderEditableList("pAllergyList", patient.allergies || []);
-    renderEditableList("pChronicList", patient.chronicDiseases || patient.chronic || []);
-    renderEditableList("pMedList", patient.currentMedication || patient.medication || []);
-}
+/* =========================
+   END SESSION
+========================= */
 
 function endSession() {
 
@@ -742,125 +522,24 @@ function endSession() {
     }
 
     const confirmEnd = confirm("Are you sure you want to end this consultation?");
+
     if (!confirmEnd) return;
-
-    const completedQueue = selectedQueue;
-    const completedPatient = selectedPatient;
-
-    // ==========================
-    // COLLECT CONSULTATION DATA
-    // ==========================
-
-    const reason = document.getElementById("reasonVisitText")?.innerText || "-";
-
-    let clinicalFindings = [];
-
-    document.querySelectorAll(".findingBox").forEach(box => {
-        const title = box.querySelector("strong")?.innerText || "";
-        const value = box.querySelector("span")?.innerText || "";
-
-        if (title && value) {
-            clinicalFindings.push(title + ": " + value);
-        }
-    });
-
-    document.querySelectorAll("#findingOutput .savedFinding").forEach(item => {
-        clinicalFindings.push(item.innerText);
-    });
-
-    const diagnosis = document.getElementById("diagnosisText")?.innerText || "-";
-    const treatment = document.getElementById("treatmentText")?.innerText || "-";
-
-    let prescriptions = [];
-
-    document.querySelectorAll("#rxTableBody tr").forEach(row => {
-        const cells = row.children;
-
-        if (cells.length >= 6) {
-            prescriptions.push({
-                medicine: cells[1].innerText,
-                dosage: cells[2].innerText,
-                frequency: cells[3].innerText,
-                duration: cells[4].innerText,
-                notes: cells[5].innerText
-            });
-        }
-    });
-
-    const visit = {
-        patientName: completedPatient.name,
-        date: new Date().toLocaleString(),
-        doctor: "Dr Anis",
-        appointmentType: "Same-Day Consultation",
-        status: "Completed",
-        reason: reason,
-        clinicalFindings: clinicalFindings,
-        diagnosis: diagnosis,
-        treatment: treatment,
-        prescriptions: prescriptions
-    };
-
-    // ==========================
-    // SAVE TO VISIT HISTORY
-    // ==========================
-
-    visitHistory.unshift(visit);
-    localStorage.setItem("visitHistory_" + completedQueue, JSON.stringify(visitHistory));
-    renderVisitHistory();
-
-    // ==========================
-    // SAVE TO DATABASE
-    // ==========================
-
-    fetch("saveConsultation.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            queue: completedQueue,
-            patient: completedPatient,
-            visit: visit,
-            time: new Date().toISOString(),
-            status: "Completed"
-        })
-    }).catch(error => {
-        console.log("Save error:", error);
-    });
-
-    // ==========================
-    // RESET SESSION
-    // ==========================
 
     selectedQueue = null;
     selectedPatient = null;
 
     document.getElementById("patientRecordDisplay").style.display = "none";
     document.getElementById("viewOnlyRecordDisplay").style.display = "none";
-    document.getElementById("searchPatientView").style.display = "none";
 
-    document.querySelectorAll(".tabSection").forEach(section => {
-        section.style.display = "none";
-    });
-
-    const overview = document.querySelector(".overviewSection");
-    if (overview) overview.style.display = "block";
+    hideAllSections();
 
     const placeholderText = document.getElementById("placeholderText");
     placeholderText.textContent = "Session completed.";
     placeholderText.style.display = "block";
 
-    const endBtn = document.querySelector(`.endBtn[data-queue="${completedQueue}"]`);
-    if (endBtn) {
-        endBtn.disabled = true;
-        endBtn.textContent = "Completed";
-    }
-
-    const startBtn = document.querySelector(`.startBtn[data-queue="${completedQueue}"]`);
-    if (startBtn) {
-        startBtn.disabled = true;
-        startBtn.textContent = "Completed";
-    }
+    document.querySelectorAll(".endBtn").forEach(btn => {
+        btn.disabled = true;
+    });
 
     alert("Session completed successfully!");
 }

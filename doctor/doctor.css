@@ -372,6 +372,35 @@ button:disabled {
     margin: 0 auto;
 }
 
+.inputRow {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.inputRow input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    background: #FFFFFF;
+    font-size: 14px;
+}
+
+.inputRow button {
+    background: #22C55E;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.inputRow button:hover {
+    background: #16A34A;
+}
+
 /* Responsive untuk screen kecil */
 @media (max-width: 700px) {
     .infoHeader {
@@ -748,187 +777,143 @@ visitContainer{
 /* =========================
    DIAGNOSIS CLEAN TAB
 ========================= */
-body{
+body {
     font-family: Arial, sans-serif;
-    color:#1f2937;
+    color: #1f2937;
+    background: #f4f7fb;
 }
 
-/* CARD STYLE */
-.cardBox{
-    background:#f8fbff;
-    border:1px solid #E2E8F0;
-    border-radius:14px;
-    padding:18px;
-    color:#1f2937;
-}
-
-/* TITLE (Reason / Clinical / Diagnosis) */
-.cardBox h4{
-    margin:0 0 10px 0;
-    color:#1976d2;
-    font-size:16px;
-    font-weight:700;
-}
-
-/* TEXT INSIDE */
-.cardBox p{
-    margin:0;
-    color:#334155;
-    font-size:14px;
-    line-height:1.5;
-}
-
-/* CLINICAL HEADER */
-.cardHeader h4{
-    color:#1976d2;
-}
-
-/* ADD finidng BUTTON */
-.add-finding-btn{
-    background: linear-gradient(135deg, #e8f4ff, #d9efff);
-    border: 1px solid #cfe6ff;
-    color: #1d6fd6;
-    
-    padding: 8px 16px;
-    border-radius: 999px;   /* INI BUAT DIA PILL SHAPE */
-    
-    font-weight: 600;
-    font-size: 13px;
-    
-    cursor: pointer;
-    
-    transition: all 0.2s ease-in-out;
-    
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.add-finding-btn:hover{
-    background: #cfe9ff;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.add-finding-btn:active{
-    transform: scale(0.98);
-}
-
-/* VITAL BOXES */
-.findingBox{
-    background:#ffffff;
-    border:1px solid #dbe6f3;
-    border-radius:12px;
-    padding:10px;
-}
-
-.findingBox strong{
-    font-size:12px;
-    color:#1976d2;
-}
-
-.findingBox span{
-    font-size:15px;
-    font-weight:600;
-    color:#0f172a;
-}
-
-/* INPUT */
-.inputRow input{
-    border:1px solid #dbe6f3;
-    background:#ffffff;
-}
-
-/* SECTION DIVIDER TEXT */
-.findingText{
-    color:#334155;
-}
-
-/* CARD SHADOW (optional nicer UI like mockup) */
-.cardBox{
-    box-shadow:0 2px 10px rgba(15, 23, 42, 0.05);
-}
-
-.noteRow {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
-    margin-top: 10px;
+/* CARD*/
+.cardBox {
+    background: #ffffff;
+    border: 1px solid #e6edf5;
+    border-radius: 14px;
+    padding: 18px;
     margin-bottom: 16px;
-    width: 100%;
+
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+    transition: 0.2s ease;
 }
 
-.noteRow input {
+.cardBox:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+/* TITLE*/
+.cardBox h4 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1976d2;
+}
+
+/* INPUT SYSTEM */
+input, textarea {
     width: 100%;
     padding: 12px 14px;
+
     border: 1px solid #dbe6f3;
     border-radius: 12px;
-    background: #ffffff;
+
     font-size: 14px;
     color: #0f172a;
+
+    background: #ffffff;
+    transition: 0.2s ease;
 }
 
-.noteRow input:focus {
+input:focus, textarea:focus {
     outline: none;
     border-color: #1976d2;
     box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.12);
+}
+
+/*BUTTON  */
+.noteRow {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 .noteRow button {
     padding: 12px 18px;
     border: none;
     border-radius: 12px;
+
     background: #1976d2;
     color: white;
     font-weight: 700;
+
     cursor: pointer;
+    white-space: nowrap;
+
+    transition: 0.2s ease;
 }
 
 .noteRow button:hover {
     background: #0f5fb8;
 }
 
-#findingOutput {
+/*  SAVED LIST (DIAGNOSIS STYLE) */
+.savedList {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 10px;
-    margin: 10px 0 14px 0;
+
+    margin-bottom: 12px;
 }
 
-.savedFinding {
+.itemBox {
+    background: #f8fbff;
+    border: 1px solid #dbe6f3;
+
+    padding: 10px 14px;
+    border-radius: 12px;
+
+    font-weight: 600;
+    color: #0f172a;
+
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+/*VITAL BOX  */
+.findingBox {
     background: #ffffff;
     border: 1px solid #dbe6f3;
     border-radius: 12px;
-    padding: 12px 14px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.savedFinding strong {
-    display: block;
+.findingBox strong {
     font-size: 12px;
     color: #1976d2;
-    margin-bottom: 4px;
 }
 
-.savedFinding span {
-    display: block;
-    font-size: 15px;
-    font-weight: 600;
+.findingBox input {
+    width: 100%;
+    border: 1.5px solid #9fb6cf;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
     color: #0f172a;
 }
 
-/* =========================
-   SAVE COMPLETION
-========================= */
-.completeBtn {
-    background: #16A34A;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 13px 26px;
-    font-weight: 800;
-    cursor: pointer;
+/* TEXT LABEL  */
+.findingText {
+    color: #334155;
+    font-size: 14px;
 }
 
-.completeBtn:hover {
-    background: #15803D;
+.findingsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
 }
 
 
@@ -1152,259 +1137,53 @@ body{
 }
 
 /* =========================
-   SEARCH PATIENT
+   PATIENT SEARCH
 ========================= */
-.patientSearchResult {
-    margin-top: 20px;
-    padding: 14px 16px;
-    border: 1px solid #dbe6f0;
-    border-radius: 12px;
-    background: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+#searchResultBox{
+    margin-top:15px;
 }
 
-.patientSearchResult h4 {
-    margin: 0;
-    font-size: 16px;
-    color: #102033;
+.patientSearchResult{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px;
+    margin-bottom:12px;
+    background:#F8FAFC;
+    border:1px solid #E2E8F0;
+    border-radius:14px;
 }
 
-.patientSearchResult p {
-    margin: 4px 0 0;
-    font-size: 14px;
-    color: #102033;
+.patientSearchResult h4{
+    margin:0;
+    color:#0F172A;
 }
 
-.patientSearchResult button {
-    background: #0b8dca;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-weight: bold;
-    cursor: pointer;
+.patientSearchResult p{
+    margin:5px 0 0;
+    color:#64748B;
+    font-size:14px;
 }
 
-.patientSearchResult button:hover {
-    background: #006eb6;
+.patientSearchResult button{
+    background:#0284C7;
+    color:white;
+    border:none;
+    border-radius:999px;
+    padding:10px 18px;
+    cursor:pointer;
+    font-weight:600;
 }
 
-.noPatientFound {
-    margin-top: 15px;
-    padding: 12px;
-    border-radius: 10px;
-    background: #fff1f1;
-    color: #b00020;
-    font-size: 14px;
+.patientSearchResult button:hover{
+    background:#0369A1;
 }
 
-.viewOnlyAlert {
-    background: #e9f8ee;
-    color: #1f6b3b;
-    padding: 12px 15px;
-    border-radius: 8px;
-    margin: 20px 0;
-    font-size: 14px;
+.noPatientFound{
+    text-align:center;
+    padding:18px;
+    color:#64748B;
 }
-
-.viewSectionTitle {
-    color: #006eb6;
-    margin-top: 25px;
-    margin-bottom: 12px;
-}
-
-.visitViewCard {
-    border: 1px solid #bcd7f0;
-    background: #eef7ff;
-    border-radius: 10px;
-    padding: 18px;
-    margin-bottom: 12px;
-}
-
-.visitViewHeader,
-.visitMiniCard {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.visitMiniCard {
-    background: #f3f8fd;
-    border: 1px solid #dce7f2;
-    border-radius: 8px;
-    padding: 12px 18px;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.viewOnlyNote {
-    background: #fff7df;
-    color: #8a6500;
-    padding: 12px;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-size: 14px;
-}
-
-.visitDropdownList {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.visitDropdown {
-    background: #ffffff;
-    border: 1px solid #dbe6f0;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.visitDropdown summary {
-    list-style: none;
-    cursor: pointer;
-    padding: 15px 18px;
-    background: #f3f8fd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 800;
-    color: #0f172a;
-}
-
-.visitDropdown summary::-webkit-details-marker {
-    display: none;
-}
-
-.visitDropdown summary::before {
-    content: "▶";
-    margin-right: 10px;
-    color: #0284c7;
-    font-size: 13px;
-}
-
-.visitDropdown[open] summary::before {
-    content: "▼";
-}
-
-.visitDropdown summary span {
-    flex: 1;
-}
-
-.visitDropdown summary small {
-    color: #64748b;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.visitDropdownContent {
-    padding: 16px 20px;
-    background: #ffffff;
-    border-top: 1px solid #e2e8f0;
-}
-
-.visitDropdownContent p {
-    margin: 8px 0;
-    font-size: 14px;
-    color: #0f172a;
-    line-height: 1.5;
-}
-
-.visitDropdownContent strong {
-    color: #0069a6;
-}
-
-.search-card{
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 28px 24px;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-    border: 1px solid #e5e7eb;
-    width: 100%;
-    max-width: 360px;
-}
-
-.search-card h2{
-    margin: 0 0 20px;
-    font-size: 24px;
-    font-weight: 700;
-    color: #0f172a;
-}
-
-.search-box{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #f8fafc;
-    border: 1.5px solid #dbe3ee;
-    border-radius: 14px;
-    padding: 12px 14px;
-    transition: all 0.2s ease;
-}
-
-.search-box:focus-within{
-    border-color: #60a5fa;
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.15);
-}
-
-.search-icon{
-    font-size: 16px;
-    color: #64748b;
-    line-height: 1;
-}
-
-.search-box input{
-    border: none;
-    outline: none;
-    background: transparent;
-    width: 100%;
-    font-size: 15px;
-    color: #0f172a;
-    font-family: 'Inter', sans-serif;
-}
-
-.search-box input::placeholder{
-    color: #94a3b8;
-}
-
-.recent-search{
-    margin-top: 22px;
-}
-
-.recent-search p{
-    margin: 0 0 12px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #334155;
-}
-
-.recent-search ul{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.recent-search li{
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 10px 14px;
-    font-size: 15px;
-    color: #1e293b;
-    transition: all 0.2s ease;
-}
-
-.recent-search li:hover{
-    background: #eff6ff;
-    border-color: #bfdbfe;
-    color: #1d4ed8;
-}
-
 
 /* =========================
    RESPONSIVE
@@ -1420,6 +1199,103 @@ body{
         grid-template-columns: 1fr;
     }
 
+}
+
+/* =========================
+   VIEW ONLY PATIENT MEDICAL RECORD
+========================= */
+
+#viewOnlyRecordDisplay {
+    width: 90%;
+    margin: 0 auto;
+}
+
+#viewOnlyRecordDisplay .recordTitle {
+    text-align: center;
+    text-decoration: underline;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: #0F172A;
+}
+
+.viewOnlyNotice {
+    background: #E0FDFB;
+    border: 1px solid #A5F3FC;
+    color: #155E75;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin: 15px 0 22px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.viewOnlyGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.viewField {
+    background: #F8FAFC;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.viewField label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748B;
+    margin-bottom: 8px;
+}
+
+.viewField p {
+    margin: 0;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 13px 14px;
+    min-height: 45px;
+    color: #0F172A;
+    font-size: 15px;
+}
+
+.viewInfoBlock {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.viewInfoBlock h3 {
+    color: #0284C7;
+    font-size: 18px;
+    margin: 0 0 10px;
+}
+
+.viewInfoBlock p {
+    margin: 0;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 14px;
+    color: #0F172A;
+    min-height: 45px;
+}
+
+/* Mobile responsive */
+@media (max-width: 900px) {
+    #viewOnlyRecordDisplay {
+        width: 100%;
+    }
+
+    .viewOnlyGrid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ================= DOCTOR REPORT DASHBOARD ================= */
