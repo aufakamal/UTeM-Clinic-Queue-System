@@ -6,7 +6,6 @@ header("Content-Type: application/json");
 
 $today = date("Y-m-d");
 
-/* Check if today's slots already exist */
 $checkSql = "SELECT COUNT(*) AS total FROM time_slot WHERE slotDate = ?";
 $stmt = $conn->prepare($checkSql);
 $stmt->bind_param("s", $today);
@@ -22,7 +21,6 @@ if ((int)$row["total"] > 0) {
     exit;
 }
 
-/* 8 default slots */
 $slots = [
     ["08:00:00", "09:00:00", "Scheduled", 5],
     ["09:00:00", "10:00:00", "Scheduled", 5],
@@ -48,15 +46,7 @@ foreach ($slots as $slot) {
     $slotType = $slot[2];
     $capacity = $slot[3];
 
-    $stmt->bind_param(
-        "ssssi",
-        $today,
-        $startTime,
-        $endTime,
-        $slotType,
-        $capacity
-    );
-
+    $stmt->bind_param("ssssi", $today, $startTime, $endTime, $slotType, $capacity);
     $stmt->execute();
 }
 

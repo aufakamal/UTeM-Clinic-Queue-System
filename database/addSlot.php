@@ -10,7 +10,6 @@ $endTime = $_POST["endTime"];
 $slotType = $_POST["slotType"];
 $capacity = $_POST["capacity"];
 
-/* Prevent past date */
 if ($slotDate < date("Y-m-d")) {
     echo json_encode([
         "success" => false,
@@ -19,7 +18,6 @@ if ($slotDate < date("Y-m-d")) {
     exit;
 }
 
-/* Prevent duplicate slot */
 $checkSql = "
 SELECT slotID 
 FROM time_slot 
@@ -42,7 +40,6 @@ if ($result->num_rows > 0) {
     exit;
 }
 
-/* Insert new slot */
 $sql = "
 INSERT INTO time_slot 
 (slotDate, startTime, endTime, slotType, capacity, slotStatus)

@@ -537,7 +537,7 @@ function renderQueueTable(list = queueList) {
                 <td>Q${item.queueNo.toString().padStart(3, "0")}</td>
                 <td>${item.fullName}</td>
                 <td>${item.userID}</td>
-                <td class="room-cell">${item.roomNo || "-"}</td>
+                <td class="room-cell">-</td>
                 <td>${item.appointmentType}</td>
                 <td>${item.slotDate}</td>
                 <td>${item.startTime} - ${item.endTime}</td>
@@ -556,14 +556,16 @@ function renderRoomDashboard(list = queueList) {
 
     if (!dashboard) return;
 
-    const waitingQueue = list.filter(item => item.queueStatus === "Called");
+    const calledQueue = list.filter(item =>
+        item.queueStatus === "Called" &&
+        item.roomNo &&
+        item.roomNo !== "-"
+    );
 
     const rooms = {};
 
-    waitingQueue.forEach(item => {
-        if (!item.roomNo) return;
-
-const room = item.roomNo;
+    calledQueue.forEach(item => {
+        const room = item.roomNo;
 
         if (!rooms[room]) {
             rooms[room] = [];
@@ -573,6 +575,16 @@ const room = item.roomNo;
     });
 
     dashboard.innerHTML = "";
+
+    if (Object.keys(rooms).length === 0) {
+        dashboard.innerHTML = `
+            <div class="room-card">
+                <h3>-</h3>
+                <p>No patient called yet</p>
+            </div>
+        `;
+        return;
+    }
 
     Object.keys(rooms).forEach(room => {
         const firstPatient = rooms[room][0];
@@ -648,7 +660,6 @@ function renderSlotTable(list = slotList) {
 
         table.innerHTML += `
         <tr>
-
             <td>${slot.slotID}</td>
             <td>${slot.slotDate}</td>
             <td>${slot.startTime}</td>
@@ -657,24 +668,20 @@ function renderSlotTable(list = slotList) {
             <td>${slot.capacity}</td>
             <td>${slot.appointmentCount} / ${slot.capacity}</td>
             <td>
-    <span class="status-badge status-${slot.slotStatus.toLowerCase()}">
-        ${slot.slotStatus}
-    </span>
-</td>
-
+                <span class="status-badge status-${slot.slotStatus.toLowerCase()}">
+                    ${slot.slotStatus}
+                </span>
+            </td>
             <td>
                 ${
                     hasAppointment
-                    ? `<span class="locked-slot">
-🔒 Booked
-</span>`
+                    ? `<span class="locked-slot">🔒 Booked</span>`
                     : `
                         <button class="btn-edit" onclick="editSlot(${slot.slotID})">Edit</button>
                         <button class="btn-delete" onclick="deleteSlot(${slot.slotID})">Delete</button>
                       `
                 }
             </td>
-
         </tr>
         `;
     });
@@ -966,18 +973,17 @@ function renderUsers(data) {
 
 }
 async function viewPatientDetails(userID) {
-
     const response = await fetch("../database/getPatientDetails.php?userID=" + userID);
     const patient = await response.json();
 
     if (!patient.success) {
-        alert(patient.message || "Patient details not found.");
+        alert("Patient details not found.");
         return;
     }
 
     alert(
         "Patient Details\n\n" +
-        "Name: " + patient.fullName + "\n" +
+        "Name: " + (patient.fullName || "-") + "\n" +
         "Patient Type: " + (patient.patientType || "-") + "\n" +
         "Blood Type: " + (patient.bloodType || "-") + "\n" +
         "Allergy: " + (patient.allergy || "-") + "\n" +
@@ -1070,6 +1076,10 @@ if (document.getElementById("profileName")) {
 }
 
 function setMinimumSlotDate() {
+    const slotDate = document.getElementById("slotDate");
+
+    if (!slotDate) return;
+
     const today = new Date().toISOString().split("T")[0];
-    document.getElementById("slotDate").min = today;
+    slotDate.min = today;
 }

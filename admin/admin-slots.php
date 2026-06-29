@@ -63,16 +63,16 @@
         <table class="admin-table">
             <thead>
                 <tr>
-                    <th>Slot ID</th>
-                    <th>Date</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Slot Type</th>
-                    <th>Capacity</th>
-                    <th>Booked</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
+    <th>Slot ID</th>
+    <th>Date</th>
+    <th>Start Time</th>
+    <th>End Time</th>
+    <th>Slot Type</th>
+    <th>Capacity</th>
+    <th>Booked</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
             </thead>
 
             <tbody id="slotTableBody"></tbody>

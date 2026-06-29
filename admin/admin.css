@@ -751,3 +751,26 @@ select:focus {
 .btn-view{
     margin-left:auto;
 }
+
+.locked-slot{
+    display:inline-block;
+    padding:8px 14px;
+    background:#FEE2E2;
+    color:#B91C1C;
+    border-radius:20px;
+    font-weight:700;
+}
+
+.status-available {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.status-full {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.room-cell {
+    text-align: center;
+}
