@@ -14,34 +14,28 @@ function sendVerificationEmail($receiverEmail, $receiverName, $token) {
         $mail->isSMTP();
         $mail->Host = "smtp.gmail.com";
         $mail->SMTPAuth = true;
-
         $mail->Username = MAIL_USERNAME;
         $mail->Password = MAIL_PASSWORD;
-
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom(MAIL_USERNAME, MAIL_FROM_NAME);
+        $mail->setFrom(MAIL_USERNAME, "UTeM Clinic Queue");
         $mail->addAddress($receiverEmail, $receiverName);
 
-        $verifyLink = "http://localhost:8080/UTeM-Clinic-Queue-System/login_register/verifyEmail.php?token=" . $token;
+        $verifyLink = "http://localhost:8080/Project_Development_Workshop_Fixed/login_register/verifyEmail.php?token=" . $token;
 
-        $mail->isHTML(true);
-        $mail->Subject = "Verify Your UTeM PKU Clinic Account";
+        $mail->isHTML(false);
+        $mail->Subject = "Verify Account";
 
-        $mail->Body = "
-            <h2>UTeM PKU Clinic Email Verification</h2>
-            <p>Hello <b>$receiverName</b>,</p>
-            <p>Please click the button below to verify your account.</p>
+        $mail->Body =
+            "Hello $receiverName,
 
-            <a href='$verifyLink' 
-               style='background:#0F766E;color:white;padding:12px 18px;
-               text-decoration:none;border-radius:8px;display:inline-block;'>
-               Verify Email
-            </a>
+            Please verify your account.
 
-            <p>If you did not register, you may ignore this email.</p>
-        ";
+            Verification link:
+            $verifyLink
+
+            Thank you.";
 
         return $mail->send();
 
@@ -49,5 +43,4 @@ function sendVerificationEmail($receiverEmail, $receiverName, $token) {
         return false;
     }
 }
-
 ?>

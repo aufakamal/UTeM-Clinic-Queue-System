@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("dbconnect.php");
+include("../dbconnect.php");
 require_once("../mail/mailer.php");
 
 if (!isset($_SESSION['registerData'])) {
@@ -121,6 +121,13 @@ if ($stmt->execute()) {
                     window.location.href='login.php';
                   </script>";
         }
+        // if ($emailSent) {
+        //     echo "EMAIL SENT SUCCESSFULLY";
+        //     exit();
+        // } else {
+        //     echo "EMAIL FAILED";
+        //     exit();
+        // }
 
     } else {
         echo "<script>

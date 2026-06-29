@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../login_register/dbconnect.php");
+include("../dbconnect.php");
 
 if (!isset($_SESSION['userID'])) {
     header("Location: ../login_register/login.php");
