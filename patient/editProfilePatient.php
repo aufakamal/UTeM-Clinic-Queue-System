@@ -138,7 +138,7 @@ $medOther = getOtherValue($medArray, $fixedMed);
                     <input type="password" value="********" readonly>
 
                     <div class="changePasswordWrapper">
-                        <a href="changePassword.php" class="changePasswordLink">Change Password</a>
+                        <a href="../shared/changePassword.php" class="changePasswordLink">Change Password</a>
                     </div>
 
                     <div class="sectionDivider"></div>

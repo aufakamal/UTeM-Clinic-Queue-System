@@ -106,7 +106,7 @@ if (!empty($doctor['dateOfBirth'])) {
                     <input type="password" value="********" readonly>
 
                     <div class="changePasswordWrapper">
-                        <a href="changePasswordDoctor.php" class="changePasswordLink">Change Password</a>
+                        <a href="../shared/changePassword.php" class="changePasswordLink">Change Password</a>
                     </div>
 
                 </div>

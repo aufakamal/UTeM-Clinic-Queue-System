@@ -43,4 +43,90 @@ function sendVerificationEmail($receiverEmail, $receiverName, $token) {
         return false;
     }
 }
+
+function sendChangePasswordEmail($receiverEmail, $receiverName, $token) {
+
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host = "smtp.gmail.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = MAIL_USERNAME;
+        $mail->Password = MAIL_PASSWORD;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom(MAIL_USERNAME, "UTeM Clinic Queue");
+        $mail->addAddress($receiverEmail, $receiverName);
+
+        $verifyLink = "http://localhost:8080/Project_Development_Workshop_Fixed/shared/verifyChangePassword.php?token=" . $token;
+
+        $mail->isHTML(false);
+        $mail->Subject = "Verify Password Change";
+
+        $mail->Body =
+            "Hello $receiverName,
+
+            You requested to change your password.
+
+            Please verify your password change using this link:
+
+            $verifyLink
+
+            This link will expire in 15 minutes.
+
+            If you did not request this, please ignore this email.
+
+            Thank you.";
+
+        return $mail->send();
+
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
+function sendForgotPasswordEmail($receiverEmail, $receiverName, $token) {
+
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host = "smtp.gmail.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = MAIL_USERNAME;
+        $mail->Password = MAIL_PASSWORD;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom(MAIL_USERNAME, "UTeM Clinic Queue");
+        $mail->addAddress($receiverEmail, $receiverName);
+
+        $resetLink = "http://localhost:8080/Project_Development_Workshop_Fixed/login_register/resetPassword.php?token=" . $token;
+
+        $mail->isHTML(false);
+        $mail->Subject = "Reset Password";
+
+        $mail->Body =
+            "Hello $receiverName,
+
+            You requested to reset your password.
+
+            Please reset your password using this link:
+
+            $resetLink
+
+            This link will expire in 15 minutes.
+
+            If you did not request this, please ignore this email.
+
+            Thank you.";
+
+        return $mail->send();
+
+    } catch (Exception $e) {
+        return false;
+    }
+}
 ?>

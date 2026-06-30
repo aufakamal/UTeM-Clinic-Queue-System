@@ -101,7 +101,7 @@ if (!empty($admin['dateOfBirth'])) {
                     <input type="password" value="********" readonly>
 
                     <div class="changePasswordWrapper">
-                        <a href="changePasswordAdmin.php" class="changePasswordLink">Change Password</a>
+                        <a href="../shared/changePassword.php" class="changePasswordLink">Change Password</a>
                     </div>
 
                 </div>
