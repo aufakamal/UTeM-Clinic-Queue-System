@@ -54,9 +54,7 @@
 
         <div id="userDetailsContent" class="details-content"></div>
 
-        <div class="details-footer">
-            <button onclick="closeUserDetails()" class="btn-close-details">Close</button>
-        </div>
+        
     </div>
 </div>
 

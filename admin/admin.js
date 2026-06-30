@@ -752,15 +752,21 @@ function renderSlotTable(list = slotList) {
     });
 }
 
-function filterSlots(){
+function filterSlots() {
 
     const search =
-    document.getElementById("slotSearch").value.toLowerCase();
+        document.getElementById("slotSearch").value.toLowerCase();
 
     const type =
-    document.getElementById("slotTypeFilter").value;
+        document.getElementById("slotTypeFilter").value;
 
-    const filtered = slotList.filter(slot=>{
+    const fromDate =
+        document.getElementById("slotFromDate").value;
+
+    const toDate =
+        document.getElementById("slotToDate").value;
+
+    const filtered = slotList.filter(slot => {
 
         const matchesSearch =
 
@@ -774,11 +780,28 @@ function filterSlots(){
 
         const matchesType =
 
-            type==="All" ||
+            type === "All" ||
 
-            slot.slotType===type;
+            slot.slotType === type;
 
-        return matchesSearch && matchesType;
+        const matchesFrom =
+
+            !fromDate ||
+
+            slot.slotDate >= fromDate;
+
+        const matchesTo =
+
+            !toDate ||
+
+            slot.slotDate <= toDate;
+
+        return (
+            matchesSearch &&
+            matchesType &&
+            matchesFrom &&
+            matchesTo
+        );
 
     });
 
@@ -786,7 +809,16 @@ function filterSlots(){
 
 }
 
+function resetSlotFilter() {
 
+    document.getElementById("slotSearch").value = "";
+    document.getElementById("slotTypeFilter").value = "All";
+    document.getElementById("slotFromDate").value = "";
+    document.getElementById("slotToDate").value = "";
+
+    renderSlotTable(slotList);
+
+}
 
 /* =========================================
    ni page dashboard
@@ -1101,26 +1133,115 @@ function closeUserDetails() {
     document.getElementById("userDetailsModal").classList.add("hidden");
 }
 
-async function viewPatientDetails(userID) {
-    const response = await fetch("../database/getPatientDetails.php?userID=" + userID);
-    const patient = await response.json();
+async function viewUserDetails(userID, roleName) {
+    const response = await fetch("../database/getUserDetails.php?userID=" + userID + "&roleName=" + roleName);
+    const user = await response.json();
 
-    if (!patient.success) {
-        alert("Patient details not found.");
+    if (!user.success) {
+        alert("User details not found.");
         return;
     }
 
-    alert(
-        "Patient Details\n\n" +
-        "Name: " + (patient.fullName || "-") + "\n" +
-        "Patient Type: " + (patient.patientType || "-") + "\n" +
-        "Blood Type: " + (patient.bloodType || "-") + "\n" +
-        "Allergy: " + (patient.allergy || "-") + "\n" +
-        "Chronic Condition: " + (patient.chronicCondition || "-") + "\n" +
-        "Current Medication: " + (patient.currentMed || "-") + "\n" +
-        "Emergency Contact: " + (patient.emergencyContactName || "-") + "\n" +
-        "Emergency Phone: " + (patient.emergencyContactPhone || "-")
-    );
+    let icon = "👤";
+    let subtitle = user.roleName;
+
+    if (user.roleName === "Patient") {
+        icon = "🩺";
+        subtitle = `Patient • ${user.patientType || "-"}`;
+    } else if (user.roleName === "Doctor") {
+        icon = "👨‍⚕️";
+        subtitle = `Doctor • ${user.specialization || "-"}`;
+    } else if (user.roleName === "Pharmacist") {
+        icon = "💊";
+        subtitle = "Pharmacist";
+    } else if (user.roleName === "Admin") {
+        icon = "🛡️";
+        subtitle = "Administrator";
+    }
+
+    let extra = "";
+
+    if (user.roleName === "Patient") {
+        extra = `
+            <div class="detail-section">
+                <h3>Medical Information</h3>
+                ${detailRow("Patient Type", user.patientType)}
+                ${detailRow("Blood Type", user.bloodType)}
+                ${detailRow("Allergy", user.allergy)}
+                ${detailRow("Chronic Condition", user.chronicCondition)}
+                ${detailRow("Current Medication", user.currentMed)}
+            </div>
+
+            <div class="detail-section">
+                <h3>Emergency Contact</h3>
+                ${detailRow("Contact Name", user.emergencyContactName)}
+                ${detailRow("Contact Phone", user.emergencyContactPhone)}
+            </div>
+        `;
+    }
+
+    if (user.roleName === "Doctor") {
+        extra = `
+            <div class="detail-section">
+                <h3>Professional Information</h3>
+                ${detailRow("Doctor License No", user.docLicenseNo)}
+                ${detailRow("Specialization", user.specialization)}
+                ${detailRow("Room No", user.roomNo)}
+            </div>
+        `;
+    }
+
+    if (user.roleName === "Pharmacist") {
+        extra = `
+            <div class="detail-section">
+                <h3>Professional Information</h3>
+                ${detailRow("License No", user.licenseNo)}
+            </div>
+        `;
+    }
+
+    document.getElementById("userDetailsContent").innerHTML = `
+        <div class="profile-head">
+            <div class="profile-icon">${icon}</div>
+            <h2>${user.fullName || "-"}</h2>
+            <p>${subtitle}</p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Basic Information</h3>
+            ${detailRow("User ID", user.userID)}
+            ${detailRow("Full Name", user.fullName)}
+            ${detailRow("Role", user.roleName)}
+            ${detailRow("Gender", user.gender)}
+            ${detailRow("Date of Birth", user.dateOfBirth)}
+            ${detailRow("Email", user.email)}
+            ${detailRow("Phone No", user.phoneNo)}
+            ${detailRow("Address", user.address)}
+        </div>
+
+        ${extra}
+    `;
+
+    document.getElementById("userDetailsModal").classList.remove("hidden");
+}
+
+function detailRow(label, value) {
+    return `
+        <div class="detail-row">
+            <span>${label}</span>
+            <strong>${value || "-"}</strong>
+        </div>
+    `;
+}
+
+function closeUserDetails() {
+    document.getElementById("userDetailsModal").classList.add("hidden");
+}
+
+function closeUserDetailsOutside(event) {
+    if (event.target.id === "userDetailsModal") {
+        closeUserDetails();
+    }
 }
 
 async function deleteUser(userID) {

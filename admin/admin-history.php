@@ -61,8 +61,7 @@
 </div>
 
     <div class="table-card">
-
-        <table class="admin-table">
+    <table class="admin-table history-table">
 
             <thead>
 
