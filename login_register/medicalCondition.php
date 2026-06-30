@@ -22,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="main">
 
-
         <div class="medical-wrapper">
 
             <h2>REGISTER</h2>
@@ -32,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 You can edit or change this later in your profile.
             </p>
 
-            <form action="processRegister.php" method="post">
+            <form action="processRegister.php" method="post" id="medicalForm">
 
                 <div class="medical-card bloodtype-card">
                     <h3>Blood Type</h3>
@@ -61,7 +60,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label><input type="checkbox" name="allergy[]" value="Peanuts"> Peanuts</label>
                             <label><input type="checkbox" name="allergy[]" value="Penicillin"> Penicillin</label>
                             <label><input type="checkbox" name="allergy[]" value="Seafood"> Seafood</label>
-                            <label><input type="checkbox" name="allergy[]" value="Others"> Others</label>
+                            <label><input type="checkbox" name="allergy[]" value="Others" class="other-checkbox" data-target="allergyOtherBox"> Others</label>
+                        </div>
+
+                        <div id="allergyOtherBox" class="other-box">
+                            <input type="text" name="allergyOther" placeholder="Please specify allergy">
                         </div>
                     </div>
 
@@ -74,7 +77,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label><input type="checkbox" name="chronicCondition[]" value="Asthma"> Asthma</label>
                             <label><input type="checkbox" name="chronicCondition[]" value="Heart Disease"> Heart Disease</label>
                             <label><input type="checkbox" name="chronicCondition[]" value="Diabetes"> Diabetes</label>
-                            <label><input type="checkbox" name="chronicCondition[]" value="Others"> Others</label>
+                            <label><input type="checkbox" name="chronicCondition[]" value="Others" class="other-checkbox" data-target="chronicOtherBox"> Others</label>
+                        </div>
+
+                        <div id="chronicOtherBox" class="other-box">
+                            <input type="text" name="chronicConditionOther" placeholder="Please specify chronic disease">
                         </div>
                     </div>
 
@@ -87,7 +94,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label><input type="checkbox" name="currentMed[]" value="Ventolin"> Ventolin</label>
                             <label><input type="checkbox" name="currentMed[]" value="Painkiller"> Painkiller</label>
                             <label><input type="checkbox" name="currentMed[]" value="Metformin"> Metformin</label>
-                            <label><input type="checkbox" name="currentMed[]" value="Others"> Others</label>
+                            <label><input type="checkbox" name="currentMed[]" value="Others" class="other-checkbox" data-target="medOtherBox"> Others</label>
+                        </div>
+
+                        <div id="medOtherBox" class="other-box">
+                            <input type="text" name="currentMedOther" placeholder="Please specify medication">
                         </div>
                     </div>
 
@@ -121,6 +132,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </div>
 
-<script src="loginRegister.js"></script> 
+<script>
+document.querySelectorAll(".other-checkbox").forEach(function (checkbox) {
+    checkbox.addEventListener("change", function () {
+        const targetBox = document.getElementById(this.dataset.target);
+        const input = targetBox.querySelector("input");
+
+        if (this.checked) {
+            targetBox.style.display = "block";
+            input.required = true;
+        } else {
+            targetBox.style.display = "none";
+            input.required = false;
+            input.value = "";
+        }
+    });
+});
+</script>
+
 </body>
 </html>

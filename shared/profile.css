@@ -249,20 +249,22 @@ input:focus {
     background-color: #115E59;
 }
 
-.changePasswordLink {
-    display: inline-block;
-    margin-top: 6px;
-
-    color: #0369A1;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
+.changePasswordWrapper{
+    margin-top:8px;
+    margin-bottom:20px;
 }
 
-.changePasswordLink:hover {
-    text-decoration: underline;
+.changePasswordLink{
+    display:inline-block;
+    text-decoration:none;
+    color:#0284C7;
+    font-size:14px;
+    font-weight:600;
 }
 
+.changePasswordLink:hover{
+    text-decoration:underline;
+}
 /* SUCCESS PAGE */
 .messageCard {
     width: 100%;
@@ -503,4 +505,150 @@ select:focus {
     outline: none;
     border-color: #0284C7;
     box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+/* =========================
+   NEW PATIENT PROFILE LAYOUT
+========================= */
+
+.profileTwoColumn {
+    grid-template-columns: 1fr 1.25fr;
+    gap: 55px;
+    align-items: start;
+}
+
+.profileSection h3 {
+    font-size: 22px;
+    margin: 0 0 22px;
+    color: #0F172A;
+}
+
+.profileSection input {
+    max-width: 100%;
+    height: 48px;
+    font-size: 15px;
+    margin-bottom: 18px;
+}
+
+.medicalSection {
+    border-left: 1px solid #D7E3EA;
+    padding-left: 55px;
+}
+
+.sectionDivider,
+.miniDivider {
+    width: 100%;
+    height: 1px;
+    background-color: #D7E3EA;
+}
+
+.sectionDivider {
+    margin: 32px 0;
+}
+
+.miniDivider {
+    margin: 24px 0;
+}
+
+.profileCheckboxGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 70px;
+    margin-top: 12px;
+    margin-bottom: 14px;
+}
+
+.profileCheckboxGrid label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 0;
+
+    font-size: 15px;
+    font-weight: 600;
+    color: #0F172A;
+}
+
+.profileCheckboxGrid input[type="checkbox"] {
+    width: 20px;
+    max-width: 20px;
+    height: 20px;
+
+    margin: 0;
+    accent-color: #0284C7;
+}
+
+.profileCheckboxGrid input[type="checkbox"]:disabled {
+    cursor: default;
+    opacity: 1;
+}
+
+@media (max-width: 900px) {
+    .profileTwoColumn {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .medicalSection {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid #D7E3EA;
+        padding-top: 30px;
+    }
+
+    .profileCheckboxGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================
+   EDIT PROFILE WIDE LAYOUT
+========================= */
+
+.editProfileWide {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+.editProfileGrid {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 55px;
+    align-items: start;
+}
+
+.editProfileGrid .medicalSection {
+    border-left: 1px solid #D7E3EA;
+    padding-left: 55px;
+}
+
+.editProfileGrid select {
+    max-width: 100%;
+    height: 48px;
+    margin-bottom: 18px;
+}
+
+.editProfileGrid input {
+    max-width: 100%;
+}
+
+.editProfileGrid .profileCheckboxGrid {
+    margin-top: 12px;
+    margin-bottom: 14px;
+}
+
+@media (max-width: 900px) {
+    .editProfileGrid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .editProfileGrid .medicalSection {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid #D7E3EA;
+        padding-top: 30px;
+    }
 }

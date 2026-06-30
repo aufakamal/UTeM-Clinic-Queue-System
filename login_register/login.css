@@ -195,26 +195,47 @@ select:focus {
     text-decoration: none;
 }
 
+.buttonRow {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 26px 0 14px;
+}
+
+.backBtn,
 .loginBtn {
-    display: block;
+    display: inline-block;
 
-    width: 105px;
-    height: 36px;
+    width: 120px;
+    height: 42px;
 
-    margin: 26px auto 14px;
+    margin: 0;
 
-    background-color: #0F766E;
-    color: white;
+    border-radius: 10px;
+    border: none;
 
     text-align: center;
-    line-height: 36px;
+    line-height: 42px;
 
     text-decoration: none;
 
-    border-radius: 10px;
-
     font-size: 13px;
     font-weight: 700;
+    cursor: pointer;
+}
+
+.backBtn {
+    background-color: #94A3B8;
+    color: white;
+}
+
+.backBtn:hover {
+    background-color: #64748B;
+}
+
+.loginBtn {
+    background-color: #0F766E;
+    color: white;
 }
 
 .loginBtn:hover {
@@ -268,3 +289,4 @@ p a {
         max-width: 430px;
     }
 }
+
