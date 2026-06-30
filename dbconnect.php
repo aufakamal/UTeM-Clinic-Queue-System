@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
 $username = "root";
-$password = "1234";
-$database = "clinicc_database";
+$password = "";
+$database = "clinic_db";
 $port = 3306;
 
 $conn = new mysqli($host, $username, $password, $database, $port);
