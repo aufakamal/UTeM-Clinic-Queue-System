@@ -2,6 +2,8 @@
 
 include "database.php";
 
+header("Content-Type: application/json");
+
 $sql = "
 SELECT
     q.queueID,
@@ -25,9 +27,18 @@ ORDER BY q.queueNo ASC
 
 $result = $conn->query($sql);
 
+if (!$result) {
+    echo json_encode([
+        "success" => false,
+        "message" => $conn->error
+    ]);
+    exit;
+}
+
 $data = [];
 
 while($row = $result->fetch_assoc()){
+    $row["roomNo"] = "-";
     $data[] = $row;
 }
 
