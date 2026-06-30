@@ -219,7 +219,8 @@ if ($stmt) {
                             </div>
                         </div>
                     </div>
-                </div>
+</div>
+
 
                 <!-- VIEW ONLY PATIENT MEDICAL RECORD -->
                 <div id="viewOnlyRecordDisplay" style="display:none;">
@@ -229,7 +230,14 @@ if ($stmt) {
                     </h2>
 
                     <div class="viewOnlyNotice">
-                        You are viewing this patient's medical record. Information shown below is for reference only.
+                            <div class="noticeIcon">
+                                👁
+                            </div>
+
+                            <div class="noticeText">
+                                You are <strong>viewing</strong> this patient's medical record.
+                                Information shown below is for <strong>reference only</strong>.
+                            </div>
                     </div>
 
                 <div class="patientInfoCard">
@@ -297,7 +305,7 @@ if ($stmt) {
                     </div>
 
                     <!-- VISITS -->
-                   <div id="viewVisitsSection" class="viewTabSection" style="display:none;">
+                    <div id="viewVisitsSection" class="viewTabSection" style="display:none;">
                     <?php if ($visitResult && $visitResult->num_rows > 0): ?>
 
                         <?php while ($visit = $visitResult->fetch_assoc()): ?>
@@ -360,7 +368,7 @@ if ($stmt) {
                     </div>
 
                 </div>
-                </div>
+
 
                 <!-- VISITS SECTION -->
                 <div id="visitsSection" class="tabSection" style="display:none;">
@@ -421,12 +429,10 @@ if ($stmt) {
 
             </div>
 
-                    </div>
-                </div>
+        </div>
+    </div>
 
-                </div>
-                    </div>
-                </div>
+
 
                 <!-- DIAGNOSIS SECTION -->
                 <div id="diagnosisSection" class="tabSection" style="display:none;">
