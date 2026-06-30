@@ -8,6 +8,26 @@ if (!isset($_SESSION['registerData'])) {
     exit();
 }
 
+function combineMedicalOptions($options, $otherText) {
+    $final = [];
+
+    if (isset($options) && is_array($options)) {
+        foreach ($options as $option) {
+            if ($option != "Others") {
+                $final[] = $option;
+            }
+        }
+    }
+
+    $otherText = trim($otherText ?? "");
+
+    if ($otherText != "") {
+        $final[] = $otherText;
+    }
+
+    return count($final) > 0 ? implode(", ", $final) : "";
+}
+
 $data = $_SESSION['registerData'];
 
 $userID = $data['userID'];
@@ -22,7 +42,6 @@ $registerRole = $data['registerRole'];
 $emailVerified = 0;
 $verificationToken = bin2hex(random_bytes(32));
 
-// Convert DOB from dd/mm/yyyy to yyyy-mm-dd
 $dobInput = $data['dateOfBirth'];
 $dobObject = DateTime::createFromFormat('d/m/Y', $dobInput);
 
@@ -36,29 +55,18 @@ if ($dobObject == false) {
 
 $dateOfBirth = $dobObject->format('Y-m-d');
 
-// Medical condition data
 $bloodType = $_POST['bloodType'];
 
-$allergy = isset($_POST['allergy'])
-    ? implode(", ", $_POST['allergy'])
-    : NULL;
-
-$chronicCondition = isset($_POST['chronicCondition'])
-    ? implode(", ", $_POST['chronicCondition'])
-    : NULL;
-
-$currentMed = isset($_POST['currentMed'])
-    ? implode(", ", $_POST['currentMed'])
-    : NULL;
+$allergy = combineMedicalOptions($_POST['allergy'] ?? [], $_POST['allergyOther'] ?? "");
+$chronicCondition = combineMedicalOptions($_POST['chronicCondition'] ?? [], $_POST['chronicConditionOther'] ?? "");
+$currentMed = combineMedicalOptions($_POST['currentMed'] ?? [], $_POST['currentMedOther'] ?? "");
 
 $emergencyContactName = $_POST['emergencyContactName'];
 $emergencyContactPhone = $_POST['emergencyContactPhone'];
 
-// Student/Staff are both Patient role
 $roleID = 4;
 $patientType = ($registerRole == "student") ? "Student" : "Staff";
 
-// Insert into user table
 $sqlUser = "INSERT INTO user 
 (userID, fullName, gender, dateOfBirth, address, email, phoneNo, password, email_verified, verification_token)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -80,13 +88,11 @@ $stmt->bind_param(
 
 if ($stmt->execute()) {
 
-    // Insert into user_role table
     $sqlRole = "INSERT INTO user_role (userID, roleID) VALUES (?, ?)";
     $stmtRole = $conn->prepare($sqlRole);
     $stmtRole->bind_param("si", $userID, $roleID);
     $stmtRole->execute();
 
-    // Insert into patient_profile table
     $sqlPatient = "INSERT INTO patient_profile
     (userID, patientType, allergy, chronicCondition, currentMed, bloodType, emergencyContactName, emergencyContactPhone)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -121,13 +127,6 @@ if ($stmt->execute()) {
                     window.location.href='login.php';
                   </script>";
         }
-        // if ($emailSent) {
-        //     echo "EMAIL SENT SUCCESSFULLY";
-        //     exit();
-        // } else {
-        //     echo "EMAIL FAILED";
-        //     exit();
-        // }
 
     } else {
         echo "<script>

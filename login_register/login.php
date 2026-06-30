@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     name="roleID"
                     required
                 >
-                    <option value="">Dropdown</option>
+                    <option value="">Select</option>
                     <option value="1">Admin</option>
                     <option value="2">Doctor</option>
                     <option value="3">Pharmacist</option>
