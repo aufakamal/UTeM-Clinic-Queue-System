@@ -199,32 +199,29 @@ if ($topIllness !== 'No Data') {
         </div>
 
         <div class="date-box">
-            <form method="GET" style="display:flex; gap:10px; align-items:center; margin:0;">
-                
-                📅 
+                <form method="GET" style="display:flex; gap:10px; align-items:center; margin:0;">
+                    
+                    📅
 
-                <span style="font-weight:600;">
-                    <?= $selectedYear ?>
-                </span>
+                    <select name="month" onchange="this.form.submit()">
+                        <?php
+                        $months = [
+                            1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',
+                            5=>'May',6=>'Jun',7=>'Jul',8=>'Aug',
+                            9=>'Sep',10=>'Oct',11=>'Nov',12=>'Dec'
+                        ];
 
-                <select name="month" onchange="this.form.submit()">
-                    <?php
-                    $months = [
-                        1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',
-                        5=>'May',6=>'Jun',7=>'Jul',8=>'Aug',
-                        9=>'Sep',10=>'Oct',11=>'Nov',12=>'Dec'
-                    ];
+                        for ($m=1; $m<=12; $m++) {
+                            $selected = ($m == $selectedMonth) ? 'selected' : '';
+                            echo "<option value='$m' $selected>{$months[$m]}</option>";
+                        }
+                        ?>
+                    </select>
 
-                    for ($m=1; $m<=12; $m++) {
-                        $selected = ($m == $selectedMonth) ? 'selected' : '';
-                        echo "<option value='$m' $selected>{$months[$m]}</option>";
-                    }
-                    ?>
-                </select>
-
-                <input type="hidden" name="year" value="<?= $selectedYear ?>">
-            </form>
+                    <input type="hidden" name="year" value="<?= $selectedYear ?>">
+                </form>
         </div>
+</div>
 
     <!-- KPI CARDS -->
         <div class="kpi-row">
@@ -247,11 +244,12 @@ if ($topIllness !== 'No Data') {
                 <p>Per Month</p>
             </div>
 
+
+        </div>
+
             <div class="insight-box">
                 💡 <b>Insight:</b> <?= htmlspecialchars($insightText) ?>
             </div>
-
-        </div>
 
     </div>
 
