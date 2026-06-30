@@ -14,7 +14,6 @@
 
     <div class="main">
 
-
         <div class="register-wrapper">
 
             <h2>REGISTER</h2>

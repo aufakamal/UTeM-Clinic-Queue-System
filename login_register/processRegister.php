@@ -30,14 +30,34 @@ function combineMedicalOptions($options, $otherText) {
 
 $data = $_SESSION['registerData'];
 
-$userID = $data['userID'];
-$fullName = $data['fullName'];
-$gender = $data['gender'];
-$email = $data['email'];
-$phoneNo = $data['phoneNo'];
-$address = $data['address'];
+$userID = trim($data['userID']);
+$fullName = trim($data['fullName']);
+$gender = trim($data['gender']);
+$email = strtolower(trim($data['email']));
+$phoneNo = trim($data['phoneNo']);
+$address = trim($data['address']);
 $password = password_hash($data['password'], PASSWORD_DEFAULT);
 $registerRole = $data['registerRole'];
+
+if ($registerRole == "student") {
+    if (!str_ends_with($email, "@student.utem.edu.my")) {
+        echo "<script>
+                alert('Students must use UTeM student email ending with @student.utem.edu.my.');
+                window.location.href='register.php';
+              </script>";
+        exit();
+    }
+}
+
+if ($registerRole == "staff") {
+    if (!str_ends_with($email, "@utem.edu.my") || str_ends_with($email, "@student.utem.edu.my")) {
+        echo "<script>
+                alert('Staff must use UTeM staff email ending with @utem.edu.my.');
+                window.location.href='register.php';
+              </script>";
+        exit();
+    }
+}
 
 $emailVerified = 0;
 $verificationToken = bin2hex(random_bytes(32));
