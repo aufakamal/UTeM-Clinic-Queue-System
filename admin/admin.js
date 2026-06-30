@@ -113,13 +113,45 @@ function hideSlotForm() {
 }
 
 async function createSlot() {
+
+    const slotDate = document.getElementById("slotDate").value;
+    const startTime = document.getElementById("slotStartTime").value;
+    const endTime = document.getElementById("slotEndTime").value;
+    const slotType = document.getElementById("slotType").value;
+    const capacity = document.getElementById("slotCapacity").value;
+
+    if (!slotDate) {
+        alert("Please select a slot date.");
+        return;
+    }
+
+    if (!startTime) {
+        alert("Please select a start time.");
+        return;
+    }
+
+    if (!endTime) {
+        alert("Please select an end time.");
+        return;
+    }
+
+    if (!slotType) {
+        alert("Please select a slot type.");
+        return;
+    }
+
+    if (!capacity || capacity <= 0) {
+        alert("Please enter a valid slot capacity.");
+        return;
+    }
+
     const formData = new FormData();
 
-    formData.append("slotDate", document.getElementById("slotDate").value);
-    formData.append("startTime", document.getElementById("slotStartTime").value);
-    formData.append("endTime", document.getElementById("slotEndTime").value);
-    formData.append("slotType", document.getElementById("slotType").value);
-    formData.append("capacity", document.getElementById("slotCapacity").value);
+    formData.append("slotDate", slotDate);
+    formData.append("startTime", startTime);
+    formData.append("endTime", endTime);
+    formData.append("slotType", slotType);
+    formData.append("capacity", capacity);
 
     const response = await fetch("../database/addSlot.php", {
         method: "POST",
@@ -135,6 +167,7 @@ async function createSlot() {
     } else {
         alert(result.message || "Failed to add slot.");
     }
+
 }
 
 async function deleteSlot(slotID) {
@@ -345,32 +378,64 @@ async function loadAppointments() {
     });
 }
 function filterAppointments() {
+
     const search = document.getElementById("appointmentSearch").value.toLowerCase();
     const status = document.getElementById("appointmentStatusFilter").value;
     const type = document.getElementById("appointmentTypeFilter").value;
+    const fromDate = document.getElementById("appointmentFromDate").value;
+    const toDate = document.getElementById("appointmentToDate").value;
 
     const filtered = appointmentList.filter(appt => {
+
         const patientName =
             appt.appointmentFor === "Dependant"
                 ? appt.dependantName
                 : appt.fullName;
 
+        const appointmentDate = appt.slotDate;
+
         const matchesSearch =
-            appt.appointmentID.toString().toLowerCase().includes(search) ||
+            appt.appointmentID.toString().includes(search) ||
             appt.userID.toLowerCase().includes(search) ||
-            appt.appointmentType.toLowerCase().includes(search) ||
-            patientName.toLowerCase().includes(search);
+            patientName.toLowerCase().includes(search) ||
+            appt.appointmentType.toLowerCase().includes(search);
 
         const matchesStatus =
-            status === "All" || status === "" || appt.appointmentStatus === status;
+            status === "All" || appt.appointmentStatus === status;
 
         const matchesType =
-            type === "All" || type === "" || appt.appointmentType === type;
+            type === "All" || appt.appointmentType === type;
 
-        return matchesSearch && matchesStatus && matchesType;
+        const matchesFrom =
+            !fromDate || appointmentDate >= fromDate;
+
+        const matchesTo =
+            !toDate || appointmentDate <= toDate;
+
+        return (
+            matchesSearch &&
+            matchesStatus &&
+            matchesType &&
+            matchesFrom &&
+            matchesTo
+        );
+
     });
 
     renderAppointments(filtered);
+
+}
+
+function resetAppointmentFilter(){
+
+    document.getElementById("appointmentSearch").value = "";
+    document.getElementById("appointmentStatusFilter").value = "All";
+    document.getElementById("appointmentTypeFilter").value = "All";
+    document.getElementById("appointmentFromDate").value = "";
+    document.getElementById("appointmentToDate").value = "";
+
+    renderAppointments(appointmentList);
+
 }
 
 async function markNoShow(id) {
@@ -675,7 +740,7 @@ function renderSlotTable(list = slotList) {
             <td>
                 ${
                     hasAppointment
-                    ? `<span class="locked-slot">🔒 Booked</span>`
+                    ? `<span class="locked-slot">Booked</span>`
                     : `
                         <button class="btn-edit" onclick="editSlot(${slot.slotID})">Edit</button>
                         <button class="btn-delete" onclick="deleteSlot(${slot.slotID})">Delete</button>

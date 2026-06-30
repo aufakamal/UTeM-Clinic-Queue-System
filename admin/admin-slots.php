@@ -33,8 +33,10 @@
 
         <label>Type:
             <select id="slotType">
-    <option>Extra Slot</option>
-    <option>Emergency Slot</option>
+    <option value="">-- Select Slot Type --</option>
+    <option value="Same-Day Morning">Same-Day Morning</option>
+    <option value="Scheduled">Scheduled</option>
+    <option value="Same-Day Afternoon">Same-Day Afternoon</option>
 </select>
         </label>
 
@@ -52,10 +54,8 @@
         <select id="slotTypeFilter" onchange="filterSlots()">
     <option value="All">All Slot Types</option>
     <option value="Same-Day Morning">Same-Day Morning</option>
-    <option value="Same-Day Afternoon">Same-Day Afternoon</option>
     <option value="Scheduled">Scheduled</option>
-    <option value="Extra Slot">Extra Slot</option>
-    <option value="Emergency Slot">Emergency Slot</option>
+    <option value="Same-Day Afternoon">Same-Day Afternoon</option>
 </select>
     </div>
 
