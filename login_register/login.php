@@ -47,15 +47,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 switch ($row['roleID']) {
 
                     case 1:
-                        header("Location: ../admin/profileAdmin.html");
+                        header("Location: ../admin/admin-dashboard.php");
                         break;
 
                     case 2:
-                        header("Location: ../doctor/doctor.html");
+                        header("Location: ../doctor/doctorWorkspace.php");
                         break;
 
                     case 3:
-                        header("Location: ../pharmacist/workspace.html");
+                        header("Location: ../pharmacist/workspace.php");
                         break;
 
                     case 4:

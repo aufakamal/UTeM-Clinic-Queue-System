@@ -1,8 +1,8 @@
 <div id="header">
     <div id="leftSection">
-        <button class="iconBtn" onclick="history.back()">
+        <!-- <button class="iconBtn" onclick="history.back()">
             ←
-        </button>
+        </button> -->
 
         <h1>UTeM Clinic Queue System</h1>
     </div>
@@ -27,7 +27,7 @@
             </button>
 
             <div id="profileDropdown">
-                <a href="admin-profile.php">View Profile</a>
+                <a href="profileAdmin.php">View Profile</a>
                 <a href="../login_register/mainPage.php">Log Out</a>
             </div>
         </div>
