@@ -16,7 +16,20 @@ SELECT
     p.status,
     q.queueNo,
     patient.fullName AS patientName,
+    patient.userID AS patientID,
     doctor.fullName AS doctorName,
+    pp.allergy AS allergy,
+    pp.chronicCondition AS chronicCondition,
+    pp.currentMed AS currentMed,
+
+    MIN(m.medicineID) AS medicineID,
+    MIN(pi.quantity) AS quantity,
+    MIN(pi.dosage) AS dosage,
+    MIN(pi.frequency) AS frequency,
+    MIN(pi.duration) AS duration,
+    MIN(pi.instructions) AS instructions,
+    MIN(m.medicineID) AS medicineID,
+
     GROUP_CONCAT(
         CONCAT(
             m.medicineName,
@@ -35,11 +48,12 @@ INNER JOIN queue q ON c.queueID = q.queueID
 INNER JOIN attendance a ON q.attendanceID = a.attendanceID
 INNER JOIN appointment ap ON a.appointmentID = ap.appointmentID
 INNER JOIN user patient ON ap.userID = patient.userID
+INNER JOIN patient_profile pp ON patient.userID = pp.userID
 INNER JOIN user doctor ON c.doctorUserID = doctor.userID
 INNER JOIN prescription_item pi ON p.prescriptionID = pi.prescriptionID
 INNER JOIN medicine m ON pi.medicineID = m.medicineID
 WHERE p.status = 'Pending'
-GROUP BY p.prescriptionID, q.queueNo, patient.fullName, doctor.fullName, p.status
+GROUP BY p.prescriptionID, q.queueNo, patient.fullName, doctor.fullName, pp.allergy, p.status
 ORDER BY p.prescriptionID DESC
 ";
 
@@ -164,7 +178,32 @@ if ($historyResult && $historyResult->num_rows > 0)
     }
 }
 
+/* =========================
+   MEDICINE LIST
+========================= */
+
+$medicineSql = "
+SELECT
+    medicineID,
+    medicineName
+FROM medicine
+ORDER BY medicineName ASC
+";
+
+$medicineResult = $conn->query($medicineSql);
+
+$medicineList = array();
+
+if ($medicineResult && $medicineResult->num_rows > 0)
+{
+    while($medicineRow = $medicineResult->fetch_assoc())
+    {
+        $medicineList[] = $medicineRow;
+    }
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -173,6 +212,7 @@ if ($historyResult && $historyResult->num_rows > 0)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pharmacist Workspace</title>
     <link rel="stylesheet" href="pharmacist.css">
+    <link rel="icon" href="data:,">
 </head>
 
 <body>
@@ -186,6 +226,7 @@ if ($historyResult && $historyResult->num_rows > 0)
             <article class="pharmacyCard pendingCard">
                 <h2>Pending Prescriptions</h2>
                 <p class="pendingText">Showing latest pending prescriptions</p>
+                <div class="pendingList">
 
                 <?php
                 if ($result->num_rows > 0)
@@ -196,10 +237,19 @@ if ($historyResult && $historyResult->num_rows > 0)
 
                         $patients[$key] = array(
                             "name" => $row['patientName'],
+                            "userID" => $row['patientID'],
                             "queue" => "Q" . $row['queueNo'],
                             "doctor" => $row['doctorName'],
-                            "allergy" => "No Known Allergy",
-                            "prescription" => $row['prescriptionInfo']
+                            "allergy" => empty($row['allergy']) ? "No Known Allergy" : $row['allergy'],
+                            "chronicCondition" => empty($row['chronicCondition']) ? "-" : $row['chronicCondition'],
+                            "currentMed" => empty($row['currentMed']) ? "-" : $row['currentMed'],
+                            "prescription" => $row['prescriptionInfo'],
+                            "medicineID" => $row['medicineID'],
+                            "quantity" => $row['quantity'],
+                            "dosage" => $row['dosage'],
+                            "frequency" => $row['frequency'],
+                            "duration" => $row['duration'],
+                            "instructions" => $row['instructions']
                         );
                 ?>
 
@@ -221,6 +271,7 @@ if ($historyResult && $historyResult->num_rows > 0)
                     echo "<p class='recentText'>No pending prescription.</p>";
                 }
                 ?>
+                </div>
             </article>
 
             <article class="pharmacyCard">
@@ -257,69 +308,144 @@ if ($historyResult && $historyResult->num_rows > 0)
                         <p><b>Doctor:</b> <span class="doctorName"></span></p>
                     </div>
 
-                    <div class="prescriptionArea">
-                        <div>
-                            <h3>Allergies</h3>
-                            <p class="allergyInfo"></p>
-
-                            <h3>Prescription</h3>
-                            <p class="prescriptionInfo"></p>
-                        </div>
-
-                        <div>
-                            <h3>Safety Check</h3>
-                            <label><input type="checkbox"> Allergy checked</label>
-                            <label><input type="checkbox"> Dosage checked</label>
-                            <label><input type="checkbox"> Instruction clear</label>
-
-                            <h3>Remarks</h3>
-                            <textarea class="pharmacistNote" placeholder="Write remarks here..."></textarea>
-                        </div>
+                    <div class="workspaceTabs">
+                        <button type="button" class="overviewTab activeTab">Overview</button>
+                        <button type="button" class="visitsTab">Visits</button>
+                        <button type="button" class="prescriptionTab">Prescription</button>
                     </div>
-                    
-                    <div class="nextActionBox">
-                        <div>
-                            <b>What happens next?</b>
-                            <p><b>Mark as Ready:</b> After preparing the medication.</p>
-                            <p><b>Dispense:</b> When the patient collects the medication.</p>
+
+                    <div class="overviewPanel">
+
+                        <div class="medicalBlock">
+                            <h3>Allergies</h3>
+                            <p class="overviewAllergyInfo">-</p>
                         </div>
 
-                        <div class="actionButtons">
-                            <button class="readyBtn">Mark as Ready</button>
-                            <button class="dispenseBtn">Dispense</button>
+                        <div class="medicalBlock">
+                            <h3>Chronic Disease</h3>
+                            <p class="overviewChronicCondition">-</p>
                         </div>
+
+                        <div class="medicalBlock">
+                            <h3>Medicine</h3>
+                            <p class="overviewCurrentMed">-</p>
+                        </div>
+
+                    </div>
+
+                    <div class="visitsPanel" style="display:none;">
+
+                        <div class="medicalBlock">
+                            <h3>Prescription History</h3>
+
+                            <table class="historyTable">
+                                <tr>
+                                    <th>Queue No.</th>
+                                    <th>Date & Time</th>
+                                    <th>Doctor</th>
+                                    <th>Medicine</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                </tr>
+
+                                <tbody id="workspaceVisitsHistory">
+                                    <tr>
+                                        <td colspan="6">Please select a prescription to view history.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="prescriptionPanel" style="display:none;">
+
+                        <div class="prescriptionArea">
+                            <>
+                                <h3>Allergies</h3>
+                                <p class="allergyInfo"></p>
+
+                               <div class="editPrescriptionBox">
+
+                                <h3>Prescription (Editable)</h3>
+
+                                <label>Medicine</label>
+                                <select class="editMedicine" name="medicineID">
+                                    <?php foreach($medicineList as $medicine){ ?>
+                                        <option value="<?php echo $medicine['medicineID']; ?>">
+                                            <?php echo $medicine['medicineName']; ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+
+                                <div class="editTwoColumn">
+
+                                    <div>
+                                        <label>Quantity</label>
+                                        <input class="editQuantity" type="number">
+                                    </div>
+
+                                    <div>
+                                        <label>Dosage</label>
+                                        <input class="editDosage" type="text">
+                                    </div>
+
+                                    <div>
+                                        <label>Frequency</label>
+                                        <input class="editFrequency" type="text">
+                                    </div>
+
+                                    <div>
+                                        <label>Duration</label>
+                                        <input class="editDuration" type="text">
+                                    </div>
+
+                                </div>
+
+                                <label>Doctor Note</label>
+                                <textarea class="editInstructions"></textarea>
+
+                             <button type="submit" class="savePrescriptionBtn" onclick="setWorkspaceAction('save')">
+                                Save Changes
+                            </button>
+                        </div>
+
+                            <div>
+                                <h3>Safety Check</h3>
+                                <label><input type="checkbox"> Allergy checked</label>
+                                <label><input type="checkbox"> Dosage checked</label>
+                                <label><input type="checkbox"> Instruction clear</label>
+
+                                <h3>Remarks</h3>
+                                <textarea class="pharmacistNote" placeholder="Write remarks here..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="nextActionBox">
+                            <div>
+                                <b>What happens next?</b>
+                                <p><b>Mark as Ready:</b> After preparing the medication.</p>
+                                <p><b>Dispense:</b> When the patient collects the medication.</p>
+                            </div>
+
+                            <div class="actionButtons">
+                                <button type="submit" class="readyBtn" onclick="setWorkspaceAction('ready')">
+                                Mark as Ready
+                            </button>
+
+                            <button type="submit" class="dispenseBtn" onclick="setWorkspaceAction('dispense')">
+                                Dispense
+                            </button>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
                 <div id="patientRecordView" style="display:none;"></div>
 
             </article>
-
-            <article class="statusFlowBox">
-                <h2>Prescription Status Flow</h2>
-
-                <div class="statusFlow">
-                    <div class="flowCard pendingFlow">
-                        <h3>Pending</h3>
-                        <p>Prescription received</p>
-                    </div>
-
-                    <span>→</span>
-
-                    <div class="flowCard readyFlow">
-                        <h3>Ready</h3>
-                        <p>Medication prepared</p>
-                    </div>
-
-                    <span>→</span>
-
-                    <div class="flowCard dispensedFlow">
-                        <h3>Dispensed</h3>
-                        <p>Patient collected</p>
-                    </div>
-                </div>
-            </article>
-
         </div>
 
     </section>

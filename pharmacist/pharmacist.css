@@ -1192,16 +1192,18 @@ section {
 }
 
 .medicalInfoCard p{
-    margin:0;
+    font-size:14px;
     color:#64748B;
-    font-size:13px;
+    font-weight:500;
+    margin-bottom:6px;
 }
 
 .medicalInfoCard h3{
-    margin:6px 0 18px;
-    color:#0F172A;
-    font-size:120px;
+    margin:0;
+    font-size:24px;
     font-weight:600;
+    color:#0F172A;
+    line-height:1.4;
 }
 
 .medicalBlock{
@@ -1248,4 +1250,719 @@ section {
         grid-template-columns:1fr;
     }
 
+}
+
+/* =========================
+   REPORT DASHBOARD
+========================= */
+
+.dashboardGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+}
+
+.reportBox{
+    min-height:430px;
+}
+
+.bottomGrid{
+    display:grid;
+    grid-template-columns:1.5fr repeat(4,1fr);
+    gap:22px;
+}
+
+.reportTop{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.todayBox{
+    background:#EFF6FF;
+    border:1px solid #CBD5E1;
+    border-radius:12px;
+    padding:12px 20px;
+    font-weight:700;
+}
+
+.summaryCard{
+    border:1px solid #D7E3EA;
+    border-radius:18px;
+    background:#FFFFFF;
+    box-shadow:0 8px 20px rgba(15,23,42,.05);
+    transition:.25s;
+}
+
+.summaryCard:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 28px rgba(15,23,42,.08);
+}
+
+.reminderBox{
+    background:#FFF7ED;
+    border:1px solid #FDBA74;
+    border-radius:14px;
+    padding:18px 22px;
+    color:#9A3412;
+}
+
+.statusBox{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:22px;
+    margin-top:20px;
+}
+
+.chartCircle{
+    width:190px;
+    height:190px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.chartCenter{
+    width:105px;
+    height:105px;
+    background:white;
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    font-size:30px;
+    font-weight:700;
+}
+
+.chartCenter span{
+    font-size:13px;
+    color:#64748B;
+}
+
+.chartInfo{
+    flex:1;
+}
+
+.chartRow{
+    display:grid;
+    grid-template-columns:15px 1fr auto;
+    gap:10px;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.chartRow p{
+    margin:0;
+    font-weight:600;
+}
+
+.dot{
+    width:11px;
+    height:11px;
+    border-radius:50%;
+}
+
+.pendingDot{
+    background:#F59E0B;
+}
+
+.readyDot{
+    background:#0284C7;
+}
+
+.dispenseDot{
+    background:#16A34A;
+}
+
+.lineGraphBox{
+    height:230px;
+    border-left:1px solid #CBD5E1;
+    border-bottom:1px solid #CBD5E1;
+    padding:10px;
+    margin-top:25px;
+    position:relative;
+}
+
+.lineGraphBox svg{
+    width:100%;
+    height:180px;
+}
+
+.lineGraphBox polyline{
+    fill:none;
+    stroke:#0284C7;
+    stroke-width:3;
+}
+
+.graphLabels{
+    display:flex;
+    justify-content:space-between;
+    margin-top:8px;
+    color:#64748B;
+    font-weight:600;
+    font-size:13px;
+}
+
+.medicineBox{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    margin-top:20px;
+}
+
+.medicineNameRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.medicineNameRow h3{
+    margin:0;
+    font-size:15px;
+}
+
+.medicineBar{
+    width:100%;
+    height:10px;
+    background:#E2E8F0;
+    border-radius:999px;
+    margin-top:8px;
+    overflow:hidden;
+}
+
+.medicineBar div{
+    height:100%;
+    background:#0284C7;
+    border-radius:999px;
+}
+
+.lowStockTable{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+.lowStockTable th,
+.lowStockTable td{
+    padding:12px;
+    border-bottom:1px solid #E2E8F0;
+    text-align:left;
+}
+
+.lowStockTable th{
+    color:#475569;
+    font-size:13px;
+}
+
+.lowStockTable td:nth-child(2){
+    color:#DC2626;
+    font-weight:700;
+}
+
+.lowBar{
+    width:120px;
+    height:12px;
+    background:#E5E7EB;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.lowBar div{
+    height:100%;
+    background:#DC2626;
+}
+
+.bottomSummary{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+}
+
+.bottomSummary p{
+    color:#0284C7;
+}
+
+@media(max-width:900px){
+
+    .dashboardGrid,
+    .bottomGrid{
+        grid-template-columns:1fr;
+    }
+
+    .reportTop{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:14px;
+    }
+
+}
+
+#statusChart{
+    width:230px !important;
+    height:230px !important;
+    margin:20px auto;
+}
+
+#dailyChart{
+    width:100% !important;
+    height:260px !important;
+}
+
+.datePickerBox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 16px;
+    border:1px solid #E2E8F0;
+    border-radius:12px;
+    background:white;
+    box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
+
+.datePickerBox span{
+    font-size:18px;
+}
+
+.datePickerBox input{
+    border:none;
+    outline:none;
+    font-size:15px;
+    background:transparent;
+}
+
+.reminderBox{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.reminderBox a{
+    background:#2563EB;
+    color:white;
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:10px;
+    font-weight:600;
+}
+
+.reminderBox a:hover{
+    background:#1D4ED8;
+}
+
+.bottomReportBox{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+    background:white;
+    border:1px solid #D7E3EA;
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 8px 22px rgba(15,23,42,.05);
+}
+
+.bottomItem{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:16px;
+    border-right:1px solid #E2E8F0;
+}
+
+.bottomItem:last-child{
+    border-right:none;
+}
+
+.bottomIcon{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    background:#E0F2FE;
+}
+
+.bottomItem h3{
+    margin:0 0 8px;
+    font-size:17px;
+}
+
+.bottomItem p{
+    margin:0;
+    font-size:32px;
+    font-weight:700;
+    color:#0284C7;
+}
+
+.bottomItem span{
+    color:#64748B;
+}
+
+/* =========================
+   PENDING LIST SCROLL
+========================= */
+
+.pendingList{
+    max-height:420px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-right:6px;
+    margin-top:10px;
+}
+
+.pendingList::-webkit-scrollbar{
+    width:8px;
+}
+
+.pendingList::-webkit-scrollbar-track{
+    background:#EEF2F7;
+    border-radius:999px;
+}
+
+.pendingList::-webkit-scrollbar-thumb{
+    background:#0284C7;
+    border-radius:999px;
+}
+
+.pendingList::-webkit-scrollbar-thumb:hover{
+    background:#0369A1;
+}
+
+/* =========================
+   PRESCRIPTION EDITABLE
+========================= */
+
+.editPrescriptionBox{
+    margin-top:25px;
+    padding:20px;
+    border:1px solid #D7E3EA;
+    border-radius:16px;
+    background:#F8FAFC;
+}
+
+.editPrescriptionBox h3{
+    margin-top:0;
+    color:#0284C7;
+}
+
+.editPrescriptionBox label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:6px;
+    font-weight:600;
+    color:#334155;
+}
+
+.editPrescriptionBox input,
+.editPrescriptionBox select,
+.editPrescriptionBox textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #CBD5E1;
+    border-radius:12px;
+    font-size:15px;
+    background:white;
+    transition:.25s;
+}
+
+.editPrescriptionBox input:focus,
+.editPrescriptionBox select:focus,
+.editPrescriptionBox textarea:focus{
+    outline:none;
+    border-color:#0284C7;
+    box-shadow:0 0 0 3px rgba(2,132,199,.15);
+}
+
+.editPrescriptionBox textarea{
+    resize:vertical;
+    min-height:90px;
+}
+
+.savePrescriptionBtn{
+    margin-top:20px;
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:999px;
+    background:#0284C7;
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.savePrescriptionBtn:hover{
+    background:#0369A1;
+}
+
+/* =========================
+   SAFETY CHECK
+========================= */
+
+.prescriptionArea input[type="checkbox"]{
+    width:18px;
+    height:18px;
+    cursor:pointer;
+    accent-color:#0284C7;
+}
+
+.prescriptionArea label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+/* =========================
+   PHARMACIST NOTE
+========================= */
+
+.pharmacistNote{
+    margin-top:12px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .editPrescriptionBox{
+        margin-top:20px;
+    }
+
+}
+
+/* =========================
+   PRESCRIPTION WORKSPACE
+========================= */
+
+.prescriptionCleanLayout{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+    align-items:start;
+}
+
+.allergyBox{
+    background:#F8FAFC;
+    border:1px solid #D7E3EA;
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:18px;
+}
+
+.allergyBox p{
+    margin:0;
+}
+
+.editPrescriptionBox{
+    background:#F8FAFC;
+    border:1px solid #D7E3EA;
+    border-radius:16px;
+    padding:20px;
+}
+
+.editPrescriptionBox h3{
+    margin-top:0;
+    color:#0369A1;
+}
+
+.editPrescriptionBox label{
+    display:block;
+    margin-top:14px;
+    margin-bottom:6px;
+    font-weight:600;
+    color:#334155;
+}
+
+.editPrescriptionBox input,
+.editPrescriptionBox select,
+.editPrescriptionBox textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #CBD5E1;
+    border-radius:12px;
+    background:white;
+    font-size:15px;
+    font-family:Arial, sans-serif;
+}
+
+.editPrescriptionBox textarea{
+    min-height:85px;
+    resize:vertical;
+}
+
+.editTwoColumn{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.safetyBox{
+    background:#F8FAFC;
+    border:1px solid #D7E3EA;
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:20px;
+}
+
+.safetyBox label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+    font-weight:500;
+}
+
+.safetyBox input[type="checkbox"]{
+    width:18px;
+    height:18px;
+    accent-color:#0284C7;
+}
+
+.rightSafetyPanel .pharmacistNote{
+    min-height:150px;
+    font-size:15px;
+}
+
+.savePrescriptionBtn{
+    background:#0284C7;
+    color:white;
+    border:none;
+    border-radius:999px;
+    padding:12px 24px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.savePrescriptionBtn:hover{
+    background:#0369A1;
+}
+
+@media(max-width:900px){
+    .prescriptionCleanLayout,
+    .editTwoColumn{
+        grid-template-columns:1fr;
+    }
+}
+
+/* =========================
+   WORKSPACE ACTION BUTTONS
+========================= */
+
+.actionButtons{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:nowrap;
+}
+
+.actionButtons button{
+
+    width:165px;
+    height:52px;
+    border:none;
+    border-radius:50px;
+    color:white;
+    font-size:15px;
+    font-weight:700;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:.25s;
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+
+.actionButtons button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 25px rgba(0,0,0,.18);
+}
+
+.actionButtons button:active{
+    transform:scale(.96);
+}
+
+.savePrescriptionBtn{
+    background:#0284C7;
+}
+
+.savePrescriptionBtn:hover{
+    background:#0369A1;
+}
+
+.readyBtn{
+    background:#16A34A;
+}
+
+.readyBtn:hover{
+    background:#15803D;
+}
+
+.dispenseBtn{
+    background:#2563EB;
+}
+
+.dispenseBtn:hover{
+    background:#1D4ED8;
+}
+
+/* =========================
+   WORKSPACE TABS
+========================= */
+
+.workspaceTabs{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    background:#E0F2FE;
+    border:1px solid #BAE6FD;
+    border-radius:999px;
+    padding:6px;
+    width:max-content;
+    margin:20px auto 25px;
+}
+
+.workspaceTabs button{
+    border:none;
+    background:transparent;
+    color:#075985;
+    padding:11px 34px;
+    border-radius:999px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.workspaceTabs button:hover{
+    background:#BAE6FD;
+}
+
+.workspaceTabs button.activeTab{
+    background:#0284C7;
+    color:white;
+    box-shadow:0 5px 14px rgba(2,132,199,.25);
+}
+
+.overviewPanel,
+.visitsPanel,
+.prescriptionPanel{
+    margin-top:20px;
+}
+
+.overviewPanel .medicalBlock,
+.visitsPanel .medicalBlock{
+    margin-bottom:18px;
+}
+
+.overviewPanel .medicalInfoCard{
+    margin:18px 0;
 }

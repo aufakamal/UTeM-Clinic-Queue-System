@@ -7,12 +7,98 @@ if ($conn->connect_error)
     die("Connection failed: " . $conn->connect_error);
 }
 
-$dispensedSql = "SELECT COUNT(*) AS dispensedToday 
-                 FROM prescription 
-                 WHERE status = 'Dispensed'";
+function getCount($conn, $sql)
+{
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    return $row['total'];
+}
 
-$dispensedResult = $conn->query($dispensedSql);
-$dispensedRow = $dispensedResult->fetch_assoc();
+$pending = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Pending'");
+$ready = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Ready'");
+$dispensed = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Dispensed'");
+$totalPrescription = getCount($conn, "SELECT COUNT(*) AS total FROM prescription");
+$lowStock = getCount($conn, "SELECT COUNT(*) AS total FROM medicine WHERE stockQuantity <= 50");
+
+$totalStatus = $pending + $ready + $dispensed;
+
+if ($totalStatus == 0)
+{
+    $pendingPercent = 0;
+    $readyPercent = 0;
+    $dispensedPercent = 0;
+}
+else
+{
+    $pendingPercent = round(($pending / $totalStatus) * 100);
+    $readyPercent = round(($ready / $totalStatus) * 100);
+    $dispensedPercent = round(($dispensed / $totalStatus) * 100);
+}
+
+if ($totalPrescription == 0)
+{
+    $dispensingRate = 0;
+}
+else
+{
+    $dispensingRate = round(($dispensed / $totalPrescription) * 100);
+}
+
+$topMedicineSql = "
+SELECT 
+    m.medicineName,
+    SUM(pi.quantity) AS totalQuantity
+    FROM prescription_item pi
+    INNER JOIN medicine m ON pi.medicineID = m.medicineID
+    GROUP BY m.medicineID, m.medicineName
+    ORDER BY totalQuantity DESC
+    LIMIT 5
+    ";
+
+$topMedicineResult = $conn->query($topMedicineSql);
+
+$topMedicineNames = array();
+$topMedicineValues = array();
+
+if ($topMedicineResult && $topMedicineResult->num_rows > 0)
+{
+    while ($medicine = $topMedicineResult->fetch_assoc())
+    {
+        $topMedicineNames[] = $medicine['medicineName'];
+        $topMedicineValues[] = $medicine['totalQuantity'];
+    }
+}
+
+$dailyLabels = array();
+$dailyValues = array();
+
+$dailySql = "
+SELECT 
+    prescriptionDate,
+    COUNT(*) AS total
+    FROM prescription
+    WHERE status = 'Dispensed'
+    GROUP BY prescriptionDate
+    ORDER BY prescriptionDate ASC
+    LIMIT 7
+    ";
+
+$dailyResult = $conn->query($dailySql);
+
+if ($dailyResult && $dailyResult->num_rows > 0)
+{
+    while ($row = $dailyResult->fetch_assoc())
+    {
+        $dailyLabels[] = date("d M", strtotime($row['prescriptionDate']));
+        $dailyValues[] = $row['total'];
+    }
+}
+
+if (count($dailyLabels) < 2)
+{
+    $dailyLabels = array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
+    $dailyValues = array(1, 2, 1, 3, 2, 4, 2);
+}
 
 ?>
 
@@ -20,114 +106,178 @@ $dispensedRow = $dispensedResult->fetch_assoc();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="pharmacist.css">
-
     <title>Pharmacist Report</title>
+    <link rel="stylesheet" href="pharmacist.css">
 </head>
 
 <body>
-    <div id="header">
-        <div id="leftSection">
-            <button class="iconBtn">
-                <img class="icon" src="../images/backIconDark.png">
-            </button>
 
-            <h1>UTeM Clinic Queue System</h1>
-        </div>
-
-        <nav>
-            <ul>
-                <li><a href="workspace.html">Workspace</a></li>
-                <li><a href="report.php">Reports</a></li>
-                <li><a href="medicine.php">Medicine Stock</a></li>
-            </ul>
-        </nav>
-
-    <div id="rightSection">
-    <h1>Welcome, Pharmacist!</h1>
-
-    <div class="profileContainer">
-        <button class="iconBtn" id="profileBtn" type="button">
-            <img class="icon" src="../images/profileIconDark.png" alt="Profile Icon">
-        </button>
-
-        <div id="profileDropdown">
-            <a href="profilePharmacist.html">View Profile</a>
-            <a href="../login_register/login.html">Log Out</a>
-        </div>
-    </div>
-    </div>
-    </div>
+    <?php include('inc/pharmacist_header.php'); ?>
 
     <section class="reportPage">
 
-        <article class="reportHeader">
-            <h2>Pharmacy Report</h2>
-            <p>Daily summary for prescription review and medication dispensing.</p>
+        <article class="reportHeader reportTop">
+            <div>
+                <h2>Pharmacy Dashboard Overview</h2>
+                <p>Overview of medication dispensing and prescription workflow.</p>
+            </div>
+
+            <div class="datePickerBox">
+                <span>📅</span>
+                <input type="month" value="<?php echo date('Y-m'); ?>">
+            </div>
         </article>
 
         <div class="reportSummary">
 
-            <article class="reportCard">
-                <h3>Dispensed Today</h3>
-                <p>21</p>
-                <span>Completed prescriptions today</span>
+            <article class="reportCard summaryCard">
+                <h3>Pending Prescription</h3>
+                <p><?php echo $pending; ?></p>
+                <span>Awaiting review</span>
+            </article>
+
+            <article class="reportCard summaryCard">
+                <h3>Ready to Dispense</h3>
+                <p><?php echo $ready; ?></p>
+                <span>Prepared medication</span>
+            </article>
+
+            <article class="reportCard summaryCard">
+                <h3>Dispensed</h3>
+                <p><?php echo $dispensed; ?></p>
+                <span>Completed prescription</span>
+            </article>
+
+            <article class="reportCard summaryCard">
+                <h3>Dispensing Rate</h3>
+                <p><?php echo $dispensingRate; ?>%</p>
+                <span>Completed rate</span>
             </article>
 
         </div>
 
-        <article class="recordBox">
-    <h2>Top Medicines Dispensed</h2>
-    <p class="chartDesc">Most frequently dispensed medicines today.</p>
+        <article class="reminderBox">
+            <div>
+                <b>Reminder:</b>
+                <span><?php echo $lowStock; ?> medicine item(s) are below minimum stock level. Please review the medicine inventory.</span>
+            </div>
 
-    <div class="verticalBarChart">
+            <a href="medicine.php">View Low Stock</a>
+        </article>
 
-        <div class="yAxis">
-            <p>20</p>
-            <p>15</p>
-            <p>10</p>
-            <p>5</p>
-            <p>0</p>
+        <div class="dashboardGrid">
+
+            <article class="reportBox">
+                <h2>Daily Dispensing Trend</h2>
+                <p class="chartDesc">Number of prescriptions dispensed per day.</p>
+
+                <div class="chartBox">
+                    <canvas id="dailyChart"></canvas>
+                </div>
+            </article>
+
+            <article class="reportBox">
+                <h2>Top Medicines Dispensed</h2>
+                <p class="chartDesc">Most frequently prescribed medicines.</p>
+
+                <div class="medicineBox">
+
+                    <?php
+                    if (count($topMedicineNames) > 0)
+                    {
+                        $maxMedicine = max($topMedicineValues);
+
+                        for ($i = 0; $i < count($topMedicineNames); $i++)
+                        {
+                            if ($maxMedicine == 0)
+                            {
+                                $barWidth = 0;
+                            }
+                            else
+                            {
+                                $barWidth = round(($topMedicineValues[$i] / $maxMedicine) * 100);
+                            }
+                    ?>
+
+                    <div class="medicineItem">
+                        <div class="medicineNameRow">
+                            <h3><?php echo $topMedicineNames[$i]; ?></h3>
+                            <b><?php echo $topMedicineValues[$i]; ?></b>
+                        </div>
+
+                        <div class="medicineBar">
+                            <div style="width: <?php echo $barWidth; ?>%;"></div>
+                        </div>
+                    </div>
+
+                    <?php
+                        }
+                    }
+                    else
+                    {
+                        echo "<p>No medicine data available.</p>";
+                    }
+                    ?>
+
+                </div>
+            </article>
+
         </div>
 
-        <div class="chartArea">
+        <div class="bottomReportBox">
 
-            <div class="chartLine lineOne"></div>
-            <div class="chartLine lineTwo"></div>
-            <div class="chartLine lineThree"></div>
-            <div class="chartLine lineFour"></div>
+        <article class="bottomItem purpleItem">
 
-            <div class="barItem">
-                <b>18</b>
-                <div class="verticalBar paracetamolBar"></div>
-                <p>Paracetamol</p>
+            <div>
+                <h3>Total Prescriptions</h3>
+                <p><?php echo $totalPrescription; ?></p>
+                <span>All prescription records</span>
             </div>
 
-            <div class="barItem">
-                <b>12</b>
-                <div class="verticalBar amoxicillinBar"></div>
-                <p>Amoxicillin</p>
+        </article>
+
+        <article class="bottomItem greenItem">
+
+            <div>
+                <h3>Completed Prescriptions</h3>
+                <p><?php echo $dispensed; ?></p>
+                <span>Successfully dispensed</span>
             </div>
 
-            <div class="barItem">
-                <b>10</b>
-                <div class="verticalBar ibuprofenBar"></div>
-                <p>Ibuprofen</p>
+        </article>
+
+        <article class="bottomItem orangeItem">
+
+            <div>
+                <h3>Pending Review</h3>
+                <p><?php echo $pending; ?></p>
+                <span>Awaiting pharmacist review</span>
             </div>
 
-            <div class="barItem">
-                <b>8</b>
-                <div class="verticalBar cetirizineBar"></div>
-                <p>Cetirizine</p>
-            </div>
-
-            <div class="barItem">
-                <b>6</b>
-                <div class="verticalBar vitaminBar"></div>
-                <p>Vitamin C</p>
-            </div>
+        </article>
 
         </div>
-    </div>
-</article>
+
+    </section>
+
+    <script>
+        const statusData = {
+            pending: <?php echo $pending; ?>,
+            ready: <?php echo $ready; ?>,
+            dispensed: <?php echo $dispensed; ?>
+        };
+
+        const dailyLabels = <?php echo json_encode($dailyLabels); ?>;
+        const dailyValues = <?php echo json_encode($dailyValues); ?>;
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/pharmacist.js"></script>
+    <script src="js/report.js"></script>
+
+</body>
+</html>
+
+<?php
+$conn->close();
+?>

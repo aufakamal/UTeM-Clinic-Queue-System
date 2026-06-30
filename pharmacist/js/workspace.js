@@ -11,17 +11,125 @@ const patientName = document.querySelector(".patientName");
 const queueNo = document.querySelector(".queueNo");
 const doctorName = document.querySelector(".doctorName");
 const allergyInfo = document.querySelector(".allergyInfo");
-const prescriptionInfo = document.querySelector(".prescriptionInfo");
 
 const pharmacistNote = document.querySelector(".pharmacistNote");
+const prescriptionIDInput = document.querySelector(".prescriptionIDInput");
+const prescriptionItemIDInput = document.querySelector(".prescriptionItemIDInput");
+
+const editMedicine = document.querySelector(".editMedicine");
+const editQuantity = document.querySelector(".editQuantity");
+const editDosage = document.querySelector(".editDosage");
+const editFrequency = document.querySelector(".editFrequency");
+const editDuration = document.querySelector(".editDuration");
+const editInstructions = document.querySelector(".editInstructions");
+
 const safetyChecks = document.querySelectorAll(".prescriptionArea input[type='checkbox']");
 
 const readyBtn = document.querySelector(".readyBtn");
 const dispenseBtn = document.querySelector(".dispenseBtn");
 
-const messagePopup = document.querySelector(".messagePopup");
-const messageText = document.querySelector(".messageText");
-const okBtn = document.querySelector(".okBtn");
+const overviewTab = document.querySelector(".overviewTab");
+const visitsTab = document.querySelector(".visitsTab");
+const prescriptionTab = document.querySelector(".prescriptionTab");
+
+const overviewPanel = document.querySelector(".overviewPanel");
+const visitsPanel = document.querySelector(".visitsPanel");
+const prescriptionPanel = document.querySelector(".prescriptionPanel");
+
+const overviewAllergyInfo = document.querySelector(".overviewAllergyInfo");
+const overviewChronicCondition = document.querySelector(".overviewChronicCondition");
+const overviewCurrentMed = document.querySelector(".overviewCurrentMed");
+const workspaceVisitsHistory = document.getElementById("workspaceVisitsHistory");
+
+function showWorkspaceTab(tabName)
+{
+    if (overviewPanel) overviewPanel.style.display = "none";
+    if (visitsPanel) visitsPanel.style.display = "none";
+    if (prescriptionPanel) prescriptionPanel.style.display = "none";
+
+    if (overviewTab) overviewTab.classList.remove("activeTab");
+    if (visitsTab) visitsTab.classList.remove("activeTab");
+    if (prescriptionTab) prescriptionTab.classList.remove("activeTab");
+
+    if (tabName === "overview")
+    {
+        if (overviewPanel) overviewPanel.style.display = "block";
+        if (overviewTab) overviewTab.classList.add("activeTab");
+    }
+
+    if (tabName === "visits")
+    {
+        if (visitsPanel) visitsPanel.style.display = "block";
+        if (visitsTab) visitsTab.classList.add("activeTab");
+    }
+
+    if (tabName === "prescription")
+    {
+        if (prescriptionPanel) prescriptionPanel.style.display = "block";
+        if (prescriptionTab) prescriptionTab.classList.add("activeTab");
+    }
+}
+
+if (overviewTab)
+{
+    overviewTab.addEventListener("click", () =>
+    {
+        showWorkspaceTab("overview");
+    });
+}
+
+if (visitsTab)
+{
+    visitsTab.addEventListener("click", () =>
+    {
+        showWorkspaceTab("visits");
+    });
+}
+
+if (prescriptionTab)
+{
+    prescriptionTab.addEventListener("click", () =>
+    {
+        showWorkspaceTab("prescription");
+    });
+}
+
+function buildWorkspaceVisits(queue)
+{
+    let rows = "";
+    const userID = patients[queue].userID;
+    const record = patientRecordsData[userID];
+
+    if (record && record.history && record.history.length > 0)
+    {
+        record.history.forEach((item) =>
+        {
+            rows += `
+                <tr>
+                    <td>${formatValue(item.queueNo)}</td>
+                    <td>${formatValue(item.dateTime)}</td>
+                    <td>${formatValue(item.doctorName)}</td>
+                    <td>${formatValue(item.medicineName)}</td>
+                    <td>${formatValue(item.quantity)}</td>
+                    <td>${formatValue(item.status)}</td>
+                </tr>
+            `;
+        });
+    }
+    else
+    {
+        rows = `
+            <tr>
+                <td colspan="6">No prescription history found.</td>
+            </tr>
+        `;
+    }
+
+    if (workspaceVisitsHistory)
+    {
+        workspaceVisitsHistory.innerHTML = rows;
+    }
+}
 
 viewButtons.forEach((button) =>
 {
@@ -30,66 +138,47 @@ viewButtons.forEach((button) =>
         const queue = button.dataset.queue;
         selectedQueue = queue;
 
-        emptyWorkspace.style.display = "none";
-        prescriptionDetails.style.display = "block";
+        if (emptyWorkspace) emptyWorkspace.style.display = "none";
+        if (prescriptionDetails) prescriptionDetails.style.display = "block";
 
         if (patientRecordView)
         {
             patientRecordView.style.display = "none";
         }
 
-        patientName.textContent = patients[queue].name;
-        queueNo.textContent = patients[queue].queue;
-        doctorName.textContent = patients[queue].doctor;
-        allergyInfo.textContent = patients[queue].allergy;
-        prescriptionInfo.innerHTML = patients[queue].prescription;
+        if (patientName) patientName.textContent = patients[queue].name;
+        if (queueNo) queueNo.textContent = patients[queue].queue;
+        if (doctorName) doctorName.textContent = patients[queue].doctor;
+        if (allergyInfo) allergyInfo.textContent = patients[queue].allergy;
+
+        if (overviewAllergyInfo) overviewAllergyInfo.textContent = patients[queue].allergy;
+        if (overviewChronicCondition) overviewChronicCondition.textContent = patients[queue].chronicCondition;
+        if (overviewCurrentMed) overviewCurrentMed.textContent = patients[queue].currentMed;
+
+        if (prescriptionIDInput) prescriptionIDInput.value = patients[queue].prescriptionID;
+        if (prescriptionItemIDInput) prescriptionItemIDInput.value = patients[queue].prescriptionItemID;
+
+        if (editMedicine) editMedicine.value = patients[queue].medicineID;
+        if (editQuantity) editQuantity.value = patients[queue].quantity;
+        if (editDosage) editDosage.value = patients[queue].dosage;
+        if (editFrequency) editFrequency.value = patients[queue].frequency;
+        if (editDuration) editDuration.value = patients[queue].duration;
+        if (editInstructions) editInstructions.value = patients[queue].instructions;
+
+        if (pharmacistNote)
+        {
+            pharmacistNote.value = patients[queue].pharmacistNote || "";
+        }
 
         safetyChecks.forEach((check) =>
         {
             check.checked = false;
         });
 
-        pharmacistNote.value = "";
+        buildWorkspaceVisits(queue);
+        showWorkspaceTab("overview");
     });
 });
-
-if (readyBtn)
-{
-    readyBtn.addEventListener("click", () =>
-    {
-        if (selectedQueue === "")
-        {
-            alert("Please select a patient first.");
-            return;
-        }
-
-        messageText.textContent = "Prescription status updated to Ready.";
-        messagePopup.style.display = "block";
-    });
-}
-
-if (dispenseBtn)
-{
-    dispenseBtn.addEventListener("click", () =>
-    {
-        if (selectedQueue === "")
-        {
-            alert("Please select a patient first.");
-            return;
-        }
-
-        messageText.textContent = "Medication dispensed successfully.";
-        messagePopup.style.display = "block";
-    });
-}
-
-if (okBtn)
-{
-    okBtn.addEventListener("click", () =>
-    {
-        messagePopup.style.display = "none";
-    });
-}
 
 function searchPatientLive()
 {
@@ -169,6 +258,84 @@ function formatDate(dateValue)
         day: "2-digit",
         month: "short",
         year: "numeric"
+    });
+}
+
+function safetyChecked()
+{
+    let checked = false;
+
+    safetyChecks.forEach((check) =>
+    {
+        if (check.checked)
+        {
+            checked = true;
+        }
+    });
+
+    return checked;
+}
+
+function setWorkspaceAction(action)
+{
+    const workspaceActionInput = document.querySelector(".workspaceActionInput");
+
+    if (workspaceActionInput)
+    {
+        workspaceActionInput.value = action;
+    }
+}
+
+function validateWorkspaceForm()
+{
+    const workspaceActionInput = document.querySelector(".workspaceActionInput");
+
+    if (selectedQueue === "")
+    {
+        alert("Please select a patient first.");
+        return false;
+    }
+
+    if (workspaceActionInput && 
+        (workspaceActionInput.value === "ready" || workspaceActionInput.value === "dispense"))
+    {
+        if (!safetyChecked())
+        {
+            alert("Please complete the Safety Check before proceeding.");
+            return false;
+        }
+    }
+
+    if (editQuantity && editQuantity.value <= 0)
+    {
+        alert("Quantity must be more than 0.");
+        return false;
+    }
+
+    return true;
+}
+
+if (readyBtn)
+{
+    readyBtn.addEventListener("click", () =>
+    {
+        if (selectedQueue === "")
+        {
+            alert("Please select a patient first.");
+            return;
+        }
+    });
+}
+
+if (dispenseBtn)
+{
+    dispenseBtn.addEventListener("click", () =>
+    {
+        if (selectedQueue === "")
+        {
+            alert("Please select a patient first.");
+            return;
+        }
     });
 }
 
@@ -324,4 +491,42 @@ function viewPatientRecord(userID)
 
         </div>
     `;
+}
+
+function setWorkspaceAction(action)
+{
+    const workspaceActionInput = document.querySelector(".workspaceActionInput");
+
+    if (workspaceActionInput)
+    {
+        workspaceActionInput.value = action;
+    }
+}
+
+function validateWorkspaceForm()
+{
+    const workspaceActionInput = document.querySelector(".workspaceActionInput");
+
+    if (selectedQueue === "")
+    {
+        alert("Please select a patient first.");
+        return false;
+    }
+
+    if (workspaceActionInput.value === "ready" || workspaceActionInput.value === "dispense")
+    {
+        if (!safetyChecked())
+        {
+            alert("Please complete at least one Safety Check before proceeding.");
+            return false;
+        }
+    }
+
+    if (editQuantity && editQuantity.value <= 0)
+    {
+        alert("Quantity must be more than 0.");
+        return false;
+    }
+
+    return true;
 }
