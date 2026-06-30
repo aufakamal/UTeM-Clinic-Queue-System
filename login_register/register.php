@@ -12,12 +12,14 @@
 
     <?php include('inc/login_register_header.php'); ?>
 
-    <div class="main">
+    <main class="registerMain">
 
-        <div class="register-wrapper">
+        <div class="registerIntro">
+            <h1>REGISTER</h1>
+            <p>Create your account to continue using PKU Digital Clinic Queue.</p>
+        </div>
 
-            <h2>REGISTER</h2>
-            <p class="subtitle">Create your account to continue using PKU Digital Clinic Queue.</p>
+        <div class="registerCard">
 
             <form id="registerForm" action="medicalCondition.php" method="post">
 
@@ -96,7 +98,7 @@
 
         </div>
 
-    </div>
+    </main>
 
 </div>
 

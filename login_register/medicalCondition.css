@@ -5,147 +5,141 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #F8FAFC;
-    color: #1E293B;
-}
-
-.container {
-    width: 100%;
-    min-height: 100vh;
+    color: #0F172A;
     background-color: #EFF6FF;
 }
 
+.container {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #F8FBFF 0%, #EFF6FF 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
 .header {
-    height: 75px;
-    background-color: #1E3A8A;
+    height: 88px;
+    background-color: #FFFFFF;
     border-bottom: 1px solid #D7E3EA;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.10);
+
     display: flex;
     align-items: center;
-    padding: 0 14px;
+    padding: 0 18px;
+    flex-shrink: 0;
 }
 
 .logo-box {
-    background-color: white;
-    width: 90px;
-    height: 55px;
-    margin-right: 20px;
+    background-color: #FFFFFF;
+    width: 108px;
+    height: 62px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+    margin-right: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.logo-box img,
-.icons img {
-    width: 100%;
-    height: 100%;
+.logo-box img {
+    width: 95%;
+    height: 95%;
     object-fit: contain;
 }
 
 .title {
     flex: 1;
-    font-size: 24px;
+    font-size: 25px;
+    line-height: 1.25;
     font-weight: 700;
-    color: white;
+    color: #071A52;
 }
 
 .icons {
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 22px;
 }
 
 .icons img {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
 }
 
-/* MAIN LAYOUT */
-.main {
-    min-height: calc(100vh - 75px);
-    background-color: #EFF6FF;
-    padding: 35px 20px;
+/* MEDICAL PAGE */
+.medicalMain {
+    flex: 1;
+    min-height: calc(100vh - 88px);
 
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
 
-    position: relative;
+    padding: 48px 20px;
 }
 
-
-/* WRAPPER */
-.medical-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.medical-wrapper h2 {
+.medicalIntro {
     text-align: center;
-    font-size: 40px;
-    color: #0F172A;
-    margin: 0 0 10px;
+    margin-bottom: 26px;
 }
 
-.description {
+.medicalIntro h1 {
+    margin: 0 0 14px;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #071A52;
+}
+
+.medicalIntro p {
     max-width: 760px;
-    margin: 0 auto 28px;
-
-    font-size: 15px;
+    margin: 0 auto;
+    font-size: 16px;
     line-height: 1.5;
-    color: #475569;
-    text-align: center;
+    color: #334155;
 }
 
-/* OUTER FORM CARD */
-form {
+.medicalFormCard {
     width: 100%;
     max-width: 1050px;
-    margin: 0 auto;
 
     background-color: #FFFFFF;
-
-    padding: 35px;
-    border-radius: 22px;
     border: 1px solid #D7E3EA;
+    border-radius: 20px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.10);
 
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.09);
+    padding: 34px 38px;
 }
 
-/* BLOOD TYPE */
-.bloodtype-card {
-    margin-bottom: 22px;
+form {
+    width: 100%;
 }
 
-.bloodtype-card h3 {
-    text-align: left;
-}
-
-/* GRID BOXES */
 .medical-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 22px;
 }
 
-/* INNER CARDS */
 .medical-card {
     background-color: #FFFFFF;
     border: 1px solid #CBD5E1;
-    border-radius: 14px;
-
+    border-radius: 16px;
     padding: 24px;
 }
 
-.medical-card h3 {
-    font-size: 20px;
-    color: #0F172A;
-
-    margin: 0 0 20px;
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.bloodtype-card {
+    margin-bottom: 22px;
 }
 
-/* CHECKBOX GRID */
+.medical-card h3 {
+    margin: 0 0 18px;
+    font-size: 20px;
+    color: #071A52;
+}
+
 .checkbox-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -171,46 +165,60 @@ form {
     cursor: pointer;
 }
 
-/* TEXTBOX + DROPDOWN */
 .medical-card input[type="text"],
 .medical-card select {
     width: 100%;
-    height: 44px;
+    height: 48px;
 
     border: 1px solid #CBD5E1;
-    border-radius: 10px;
+    border-radius: 12px;
 
-    padding: 0 12px;
+    padding: 0 16px;
 
-    font-size: 14px;
+    font-size: 15px;
     font-family: Arial, sans-serif;
-    background-color: white;
+    background-color: #FFFFFF;
+    color: #0F172A;
 }
 
 .medical-card input[type="text"]:focus,
 .medical-card select:focus {
     outline: none;
-    border-color: #0284C7;
-    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    border-color: #93C5FD;
+    box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.35);
 }
 
-/* EMERGENCY CONTACT */
 .medical-card label.field-label {
     display: block;
-    margin: 14px 0 7px;
-    font-weight: 600;
+    margin: 14px 0 9px;
+    font-weight: 700;
+    color: #071A52;
 }
 
-/* BUTTONS */
+.other-box {
+    display: none;
+    margin-top: 14px;
+}
+
+.other-box input {
+    width: 100%;
+    height: 44px;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    padding: 0 14px;
+    font-size: 14px;
+}
+
+/* BUTTON ASAL DIKEKALKAN */
 .button-group {
     border-top: 1px solid #E2E8F0;
 
-    margin-top: 28px;
-    padding-top: 24px;
+    margin-top: 30px;
+    padding-top: 26px;
 
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 22px;
 }
 
 .back-button,
@@ -218,10 +226,11 @@ form {
     text-decoration: none;
     border: none;
 
-    min-width: 150px;
+    width: 160px;
+    height: 42px;
 
     text-align: center;
-    padding: 13px 24px;
+    line-height: 42px;
 
     border-radius: 10px;
 
@@ -250,24 +259,64 @@ form {
 
 .login-link {
     text-align: center;
-    font-size: 13px;
-    color: #475569;
-    margin-top: 15px;
+    font-size: 15px;
+    color: #334155;
+    margin: 22px 0 0;
 }
 
 .login-link a {
-    color: #0369A1;
+    color: #2563EB;
     text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
 }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
-    .medical-wrapper h2 {
-        font-size: 32px;
+
+    .header {
+        height: auto;
+        padding: 12px;
+        gap: 10px;
     }
 
-    form {
-        padding: 24px;
+    .logo-box {
+        width: 86px;
+        height: 52px;
+        margin-right: 10px;
+    }
+
+    .title {
+        font-size: 16px;
+    }
+
+    .icons {
+        gap: 10px;
+    }
+
+    .icons img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .medicalMain {
+        min-height: auto;
+        padding: 40px 18px;
+    }
+
+    .medicalIntro h1 {
+        font-size: 34px;
+    }
+
+    .medicalIntro p {
+        font-size: 15px;
+    }
+
+    .medicalFormCard {
+        padding: 28px 24px;
     }
 
     .medical-grid {
@@ -277,18 +326,9 @@ form {
     .checkbox-grid {
         grid-template-columns: 1fr;
     }
-}
 
-.other-box {
-    display: none;
-    margin-top: 14px;
-}
-
-.other-box input {
-    width: 100%;
-    height: 42px;
-    border: 1px solid #CBD5E1;
-    border-radius: 10px;
-    padding: 0 12px;
-    font-size: 14px;
+    .back-button,
+    .register-button {
+        width: 125px;
+    }
 }

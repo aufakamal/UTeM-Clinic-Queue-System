@@ -20,16 +20,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <?php include('inc/login_register_header.php'); ?>
 
-    <div class="main">
+    <main class="medicalMain">
 
-        <div class="medical-wrapper">
-
-            <h2>REGISTER</h2>
-
-            <p class="description">
+        <div class="medicalIntro">
+            <h1>REGISTER</h1>
+            <p>
                 Please select your allergies or existing medical conditions.
                 You can edit or change this later in your profile.
             </p>
+        </div>
+
+        <div class="medicalFormCard">
 
             <form action="processRegister.php" method="post" id="medicalForm">
 
@@ -128,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </div>
 
-    </div>
+    </main>
 
 </div>
 

@@ -12,14 +12,47 @@
 
     <?php include('inc/login_register_header.php'); ?>
 
-    <div class="mainContent">
+    <main class="mainContent">
 
         <img class="clinicLogo" src="loginRegisterImage/clinicLogoo.png" alt="Clinic Logo">
 
-        <a href="login.php" class="main-button">LOGIN</a>
-        <a href="register.php" class="main-button">REGISTER</a>
+        <h1 class="motto">
+            Your Health, <span>Our Priority</span>
+        </h1>
 
-    </div>
+
+        <p class="welcomeText">
+            Welcome to Pusat Kesihatan UTeM. Book appointments,<br>
+            manage your records, and access healthcare services with ease.
+        </p>
+
+        <div class="buttonWrapper">
+
+            <a href="login.php" class="actionCard">
+                <div class="iconCircle">
+                    <img src="loginRegisterImage/profileiconLogin.png" alt="Login Icon">
+                </div>
+
+                <div class="buttonText">
+                    <h2>LOGIN</h2>
+                    <p>Access your account</p>
+                </div>
+            </a>
+
+            <a href="register.php" class="actionCard">
+                <div class="iconCircle">
+                    <img src="loginRegisterImage/profileiconRegister.png" alt="Register Icon">
+                </div>
+
+                <div class="buttonText">
+                    <h2>REGISTER</h2>
+                    <p>Create a new account</p>
+                </div>
+            </a>
+
+        </div>
+
+    </main>
 
 </div>
 

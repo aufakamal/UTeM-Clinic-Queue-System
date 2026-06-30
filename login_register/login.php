@@ -33,10 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $row = $result->fetch_assoc();
 
             if ($row['roleID'] != $roleID) {
-
-                echo "<script>
-                        alert('Incorrect role selected.');
-                      </script>";
+                echo "<script>alert('Incorrect role selected.');</script>";
             }
             else if (password_verify($password, $row['password'])) {
 
@@ -45,19 +42,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['roleID'] = $row['roleID'];
 
                 switch ($row['roleID']) {
-
                     case 1:
                         header("Location: ../admin/admin-dashboard.php");
                         break;
-
                     case 2:
                         header("Location: ../doctor/doctorWorkspace.php");
                         break;
-
                     case 3:
                         header("Location: ../pharmacist/workspace.php");
                         break;
-
                     case 4:
                         header("Location: ../patient/dashboard.php");
                         break;
@@ -66,17 +59,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             }
             else {
-
-                echo "<script>
-                        alert('Wrong password.');
-                      </script>";
+                echo "<script>alert('Wrong password.');</script>";
             }
         }
         else {
-
-            echo "<script>
-                    alert('User ID not found.');
-                  </script>";
+            echo "<script>alert('User ID not found.');</script>";
         }
     }
 }
@@ -96,22 +83,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <?php include('inc/login_register_header.php'); ?>
 
-    <div class="main">
+    <main class="loginMain">
 
-        <div class="left-sec">
-
-            <h2>
-                Welcome To <br>
-                UTeM's PKU <br>
-                Digital Clinic <br>
-                Queue
-            </h2>
-
+        <div class="loginIntro">
+            <h1>LOGIN</h1>
+            <p>Welcome back!</p>
+            <p>Please sign in to continue using PKU Digital Clinic Queue.</p>
         </div>
 
-        <div class="right-sec">
-
-            <h2>LOGIN</h2>
+        <div class="loginCard">
 
             <form method="POST" action="login.php">
 
@@ -142,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     name="roleID"
                     required
                 >
-                    <option value="">Select</option>
+                    <option value="">Select role</option>
                     <option value="1">Admin</option>
                     <option value="2">Doctor</option>
                     <option value="3">Pharmacist</option>
@@ -151,11 +131,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="buttonRow">
                     <a href="mainPage.php" class="backBtn">BACK</a>
-
                     <button type="submit" class="loginBtn">LOGIN</button>
                 </div>
-                
-                <p>
+
+                <p class="registerText">
                     Don't have an account?
                     <a href="register.php">Register</a>
                 </p>
@@ -164,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </div>
 
-    </div>
+    </main>
 
 </div>
 
