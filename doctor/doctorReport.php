@@ -16,10 +16,10 @@ $totalPatientsQuery = $conn->query("
     SELECT COUNT(DISTINCT a.userID) AS total
     FROM appointment a
     INNER JOIN time_slot ts ON a.slotID = ts.slotID
-    WHERE YEAR(ts.slotDate) = $selectedYear
+    WHERE MONTH(ts.slotDate) = $selectedMonth
 ");
 
-$totalPatientsThisYear = $totalPatientsQuery->fetch_assoc()['total'] ?? 0;
+$totalPatientsThisMonth = $totalPatientsQuery->fetch_assoc()['total'] ?? 0;
 
 
 /* =========================
@@ -228,8 +228,8 @@ if ($topIllness !== 'No Data') {
 
             <div class="kpi-card blue">
                 <h4>Total Patients</h4>
-                <h2><?= number_format($totalPatientsThisYear) ?></h2>
-                <p>This Year</p>
+                <h2><?= number_format($totalPatientsThisMonth) ?></h2>
+                <p>This Month</p>
             </div>
 
             <div class="kpi-card green">
