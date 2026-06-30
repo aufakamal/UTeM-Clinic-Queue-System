@@ -17,6 +17,15 @@ try {
     $doctorUserID = $_SESSION["userID"] ?? null;
 
     if (!$doctorUserID) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Session userID not found",
+            "session" => $_SESSION
+        ]);
+        exit;
+    }
+
+    if (!$doctorUserID) {
         throw new Exception("Session expired. Please login again.");
     }
 
@@ -67,6 +76,19 @@ try {
 
         $stmt = $conn->prepare($sql);
 
+        echo json_encode([
+            "success" => false,
+            "debug" => [
+                "doctorUserID" => $doctorUserID,
+                "queueID" => $queueID,
+                "reason" => $reason,
+                "findings" => $findings,
+                "diagnosis" => $diagnosis,
+                "treatment" => $treatment
+            ]
+        ]);
+        exit;
+
         $stmt->bind_param(
             "iissss",
             $queueID,
@@ -77,8 +99,21 @@ try {
             $treatment
         );
 
+        var_dump($doctorUserID);
+        var_dump(gettype($doctorUserID));
+        exit;
+
         if (!$stmt->execute()) {
-            throw new Exception("Consultation Error: " . $stmt->error);
+
+            echo json_encode([
+                "success" => false,
+                "sql_error" => $stmt->error,
+                "sql_errno" => $stmt->errno,
+                "doctorUserID" => $doctorUserID,
+                "queueID" => $queueID
+            ]);
+
+            exit;
         }
 
         $consultationID = $conn->insert_id;

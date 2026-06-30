@@ -462,16 +462,33 @@ function endSession() {
         return data;
     })
 
+    // .then(data => {
+    //     if (data.success) {
+    //         alert(
+    //             "Consultation completed.\nThe queue has been updated successfully."
+    //         );
+    //         resetConsultation();
+    //     } else {
+    //         alert(data.message);
+    //         document.getElementById("endSessionBtn").disabled = false;
+    //     }
+    // })
+
     .then(data => {
+
+        console.log(data);
+        alert(JSON.stringify(data));
+
         if (data.success) {
             alert(
                 "Consultation completed.\nThe queue has been updated successfully."
             );
             resetConsultation();
         } else {
-            alert(data.message);
+            alert(JSON.stringify(data, null, 2));
             document.getElementById("endSessionBtn").disabled = false;
         }
+
     })
 
     .catch(error => {
