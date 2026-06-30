@@ -110,7 +110,9 @@ try {
 
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("i", $consultationID);
-            $stmt->execute();
+            if (!$stmt->execute()) {
+                throw new Exception($stmt->error);
+            }
 
             $prescriptionID = $conn->insert_id;
         }
@@ -166,27 +168,27 @@ try {
                     $instruction
                 );
 
-                $stmt->execute();
+                if (!$stmt->execute()) {
+                    throw new Exception($stmt->error);
+                }
 
                 /* -----------------------------
                    Deduct Stock
                 ----------------------------- */
 
-                $sql = "
-                UPDATE medicine
-                SET stockQuantity = stockQuantity - ?
-                WHERE medicineID = ?
-                ";
+                $sql = "SELECT stockQuantity
+                        FROM medicine
+                        WHERE medicineID=?";
 
                 $stmt = $conn->prepare($sql);
-
-                $stmt->bind_param(
-                    "ii",
-                    $quantity,
-                    $medicineID
-                );
-
+                $stmt->bind_param("i",$medicineID);
                 $stmt->execute();
+
+                $currentStock = $stmt->get_result()->fetch_assoc()['stockQuantity'];
+
+                if($currentStock < $quantity){
+                    throw new Exception("Not enough stock.");
+                }
             }
         }
 
@@ -204,7 +206,9 @@ try {
 
         $stmt->bind_param("i", $queueID);
 
-        $stmt->execute();
+        if (!$stmt->execute()) {
+                throw new Exception($stmt->error);
+            }
 
         $conn->commit();
 

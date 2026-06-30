@@ -264,22 +264,102 @@ if ($stmt) {
                         <span class="infoValue" id="vType">-</span>
                     </div>
 
-    </div>
+                    </div><div class="miniTabBar">
+                        <button class="miniTab active"
+                                onclick="switchViewTab('overview',this)">
+                            Overview
+                        </button>
 
-                    <div class="viewInfoBlock">
-                        <h3>Allergies</h3>
-                        <p id="vAllergy">-</p>
+                        <button class="miniTab"
+                                onclick="switchViewTab('visits',this)">
+                            Visits
+                        </button>
                     </div>
 
-                    <div class="viewInfoBlock">
-                        <h3>Chronic Condition</h3>
-                        <p id="vChronic">-</p>
+                    <!-- OVERVIEW -->
+                    <div id="viewOverviewSection" class="viewTabSection">
+
+                        <div class="viewInfoBlock">
+                            <h3>Allergies</h3>
+                            <p id="vAllergy">-</p>
+                        </div>
+
+                        <div class="viewInfoBlock">
+                            <h3>Chronic Diseases</h3>
+                            <p id="vChronic">-</p>
+                        </div>
+
+                        <div class="viewInfoBlock">
+                            <h3>Current Medication</h3>
+                            <p id="vMed">-</p>
+                        </div>
+
                     </div>
 
-                    <div class="viewInfoBlock">
-                        <h3>Current Medication</h3>
-                        <p id="vMed">-</p>
+                    <!-- VISITS -->
+                   <div id="viewVisitsSection" class="viewTabSection" style="display:none;">
+                    <?php if ($visitResult && $visitResult->num_rows > 0): ?>
+
+                        <?php while ($visit = $visitResult->fetch_assoc()): ?>
+
+                            <div class="visitCard">
+
+                                <h2 class="visitTitle">Medical Record</h2>
+
+                                <div class="visitDetail">
+
+                                    <div class="detailRow">
+                                        <div class="detailLabel">Doctor</div>
+                                        <div class="detailValue">
+                                            <?= $visit['doctor_name'] ?? '-' ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="detailRow">
+                                        <div class="detailLabel">Reason</div>
+                                        <div class="detailValue">
+                                            <?= $visit['reason'] ?? '-' ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="detailRow">
+                                        <div class="detailLabel">Diagnosis</div>
+                                        <div class="detailValue">
+                                            <?= $visit['diagnosis'] ?? '-' ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="detailRow">
+                                        <div class="detailLabel">Treatment</div>
+                                        <div class="detailValue">
+                                            <?= $visit['treatment'] ?? '-' ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="detailRow">
+                                        <div class="detailLabel">Prescription</div>
+                                        <div class="detailValue">
+                                            <?= $visit['prescription_text'] ?? 'No medication' ?>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        <?php endwhile; ?>
+
+                    <?php else: ?>
+
+                        <p style="text-align:center;">
+                            No visit history found.
+                        </p>
+
+                    <?php endif; ?>
+
                     </div>
+
+                </div>
                 </div>
 
                 <!-- VISITS SECTION -->

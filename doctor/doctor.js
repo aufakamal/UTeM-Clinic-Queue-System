@@ -187,6 +187,25 @@ function formatDate(dateValue) {
     });
 }
 
+function switchViewTab(tab, btn){
+
+    document
+        .querySelectorAll("#viewOnlyRecordDisplay .miniTab")
+        .forEach(b=>b.classList.remove("active"));
+
+    btn.classList.add("active");
+
+    document.getElementById("viewOverviewSection").style.display="none";
+    document.getElementById("viewVisitsSection").style.display="none";
+
+    if(tab==="overview"){
+        document.getElementById("viewOverviewSection").style.display="block";
+    }else{
+        document.getElementById("viewVisitsSection").style.display="block";
+    }
+
+}
+
 /* =========================
    DIAGNOSIS
 ========================= */
@@ -393,7 +412,6 @@ function submitConsultation() {
 /* =========================
    END SESSION
 ========================= */
-
 function endSession() {
     if (!currentQueue || !currentPatient) {
         alert("No active consultation.");
@@ -414,12 +432,12 @@ function endSession() {
         return;
     }
 
-        const findingsArray = getEditableValues("findingList");
+        const findings = getEditableValues("findingList");
 
         const payload = {
             queueID: currentQueue.queueID,
             reason: document.getElementById("reasonInput").value.trim(),
-            findings: findingsArray.join(", "),
+            findings: findings,
             diagnosis: document.getElementById("diagnosisInput").value.trim(),
             treatment: document.getElementById("treatmentInput").value.trim(),
             prescription: prescriptionList.length > 0 ? prescriptionList : []
@@ -433,7 +451,16 @@ function endSession() {
         body: JSON.stringify(payload)
     })
 
-    .then(response => response.json())
+    .then(async response => {
+
+        const data = await response.json();
+
+        if(!response.ok){
+            throw new Error(data.message);
+        }
+
+        return data;
+    })
 
     .then(data => {
         if (data.success) {
@@ -513,7 +540,7 @@ function resetConsultation() {
     document.querySelector(".startBtn").disabled = false;
 
     // Refresh queue count
-    location.reload();
+    loadQueue();
 }
 
 function hideAllSections() {
