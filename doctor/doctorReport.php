@@ -21,6 +21,20 @@ $totalPatientsQuery = $conn->query("
 
 $totalPatientsThisMonth = $totalPatientsQuery->fetch_assoc()['total'] ?? 0;
 
+/* =========================
+   TOTAL CONSULTATIONS YEAR
+========================= */
+$totalConsultationQuery = $conn->query("
+    SELECT COUNT(*) AS total
+    FROM consultation c
+    INNER JOIN `queue` q ON c.queueID = q.queueID
+    INNER JOIN attendance atd ON q.attendanceID = atd.attendanceID
+    INNER JOIN appointment a ON atd.appointmentID = a.appointmentID
+    INNER JOIN time_slot ts ON a.slotID = ts.slotID
+    WHERE YEAR(ts.slotDate) = $selectedYear
+");
+
+$totalConsultations = $totalConsultationQuery->fetch_assoc()['total'] ?? 0;
 
 /* =========================
    TOTAL APPOINTMENTS YEAR
@@ -92,6 +106,16 @@ $topIllnessPercent = $totalIllnessCases > 0
     ? number_format(($topIllnessCases / $totalIllnessCases) * 100, 1) 
     : 0;
 
+    /* DETECT TIE */
+        $highestCount = $topIllnessCases;
+
+        $tiedIllnesses = array_filter(
+            $allIllness,
+            function($item) use ($highestCount){
+                return $item['total'] == $highestCount;
+            }
+        );
+
 $illnessLabels = [];
 $illnessData = [];
 
@@ -110,7 +134,9 @@ if (empty($illnessLabels)) {
    MOST ACTIVE MONTH
 ========================= */
 $activeMonthQuery = $conn->query("
-    SELECT DATE_FORMAT(ts.slotDate, '%b') AS monthName, COUNT(*) AS total
+    SELECT
+        DATE_FORMAT(ts.slotDate, '%b') AS monthName,
+        COUNT(*) AS total
     FROM appointment a
     INNER JOIN time_slot ts ON a.slotID = ts.slotID
     WHERE YEAR(ts.slotDate) = $selectedYear
@@ -120,7 +146,9 @@ $activeMonthQuery = $conn->query("
 ");
 
 $activeMonthRow = $activeMonthQuery->fetch_assoc();
+
 $mostActiveMonth = $activeMonthRow['monthName'] ?? '-';
+$mostActiveCount = $activeMonthRow['total'] ?? 0;
 
 
 /* =========================
@@ -162,9 +190,11 @@ if ($previousMonthAppointments > 0) {
    INSIGHT
 ========================= */
 if ($topIllness !== 'No Data') {
-    $insightText = "$topIllness is the most common illness in $monthLabel with $topIllnessCases case(s).";
+    $insightText =
+        "$topIllness is the most common illness in $monthLabel with $topIllnessCases case(s).";
 } else {
-    $insightText = "No illness data recorded for $monthLabel.";
+    $insightText =
+        "No illness data recorded for $monthLabel.";
 }
 ?>
 
@@ -226,16 +256,16 @@ if ($topIllness !== 'No Data') {
     <!-- KPI CARDS -->
         <div class="kpi-row">
 
-            <div class="kpi-card blue">
-                <h4>Total Patients</h4>
-                <h2><?= number_format($totalPatientsThisMonth) ?></h2>
-                <p>This Month</p>
-            </div>
-
             <div class="kpi-card green">
                 <h4>Most Common Illness</h4>
                 <h2><?= htmlspecialchars($topIllness) ?></h2>
                 <p><?= $topIllnessCases ?> cases (<?= $topIllnessPercent ?>%)</p>
+            </div>
+
+            <div class="kpi-card blue">
+                <h4>Total Patients</h4>
+                <h2><?= number_format($totalPatientsThisMonth) ?></h2>
+                <p>This Month</p>
             </div>
 
             <div class="kpi-card purple">
@@ -244,6 +274,17 @@ if ($topIllness !== 'No Data') {
                 <p>Per Month</p>
             </div>
 
+            <div class="kpi-card orange">
+                <h4>Total Consultations</h4>
+                <h2><?= number_format($totalConsultations) ?></h2>
+                <p>This Year</p>
+            </div>
+
+            <div class="kpi-card purple">
+                <h4>Most Active Month</h4>
+                <h2><?= $mostActiveMonth ?></h2>
+                <p><?= $mostActiveCount ?> appointments</p>
+            </div>
 
         </div>
 
@@ -269,32 +310,6 @@ if ($topIllness !== 'No Data') {
         </div>
 
     </div>
-
-    <!-- FOOT KPI -->
-    <div class="bottom-kpi">
-
-        <div class="small-card">
-            <p>Total Appointments</p>
-            <h2><?= number_format($totalAppointmentsYear) ?></h2>
-        </div>
-
-        <div class="small-card">
-            <p>Avg / Month</p>
-            <h2><?= number_format($avgAppointments) ?></h2>
-        </div>
-
-        <div class="small-card">
-            <p>Most Active Month</p>
-            <h2><?= htmlspecialchars($mostActiveMonth) ?></h2>
-        </div>
-
-        <div class="small-card growth">
-            <p>Growth</p>
-            <h2><?= htmlspecialchars($growthText) ?></h2>
-        </div>
-
-    </div>
-
 </div>
 
 </section>
