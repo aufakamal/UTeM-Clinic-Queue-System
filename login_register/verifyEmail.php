@@ -1,5 +1,5 @@
 <?php
-include("dbconnect.php");
+include("../dbconnect.php");
 
 if (isset($_GET['token'])) {
 

@@ -2,88 +2,121 @@
 
 include "database.php";
 
-$appointmentID = $_POST["appointmentID"];
+header("Content-Type: application/json");
 
-/* 1. Update attendance */
-$sql = "
-UPDATE attendance
-SET attendanceStatus = 'Arrived',
-    checkInTime = NOW()
-WHERE appointmentID = ?
-AND attendanceStatus = 'Pending'
-LIMIT 1
-";
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $appointmentID);
-$stmt->execute();
-
-/* 2. Get latest attendanceID for this appointment */
-$getAttendance = "
-SELECT attendanceID 
-FROM attendance
-WHERE appointmentID = ?
-ORDER BY attendanceID DESC
-LIMIT 1
-";
-
-$stmt2 = $conn->prepare($getAttendance);
-$stmt2->bind_param("i", $appointmentID);
-$stmt2->execute();
-
-$result = $stmt2->get_result();
-$attendance = $result->fetch_assoc();
-
-if (!$attendance) {
-    echo json_encode(["success" => false, "message" => "Attendance not found"]);
+if (!isset($_POST["appointmentID"])) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Missing appointment ID."
+    ]);
     exit;
 }
 
-$attendanceID = $attendance["attendanceID"];
+$appointmentID = $_POST["appointmentID"];
 
-/* 3. Check if queue already exists */
-$checkQueue = "
+/* 1. Check if attendance already exists */
+$checkSql = "
+SELECT attendanceID, attendanceStatus
+FROM attendance
+WHERE appointmentID = ?
+LIMIT 1
+";
+
+$stmt = $conn->prepare($checkSql);
+$stmt->bind_param("i", $appointmentID);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+
+    $attendance = $result->fetch_assoc();
+    $attendanceID = $attendance["attendanceID"];
+
+    /* Update attendance to Arrived */
+    $updateSql = "
+    UPDATE attendance
+    SET attendanceStatus = 'Arrived',
+        checkInTime = NOW()
+    WHERE attendanceID = ?
+    ";
+
+    $stmt = $conn->prepare($updateSql);
+    $stmt->bind_param("i", $attendanceID);
+    $stmt->execute();
+
+} else {
+
+    /* Create attendance if it does not exist */
+    $insertAttendanceSql = "
+    INSERT INTO attendance
+    (appointmentID, attendanceStatus, checkInTime)
+    VALUES (?, 'Arrived', NOW())
+    ";
+
+    $stmt = $conn->prepare($insertAttendanceSql);
+    $stmt->bind_param("i", $appointmentID);
+    $stmt->execute();
+
+    $attendanceID = $conn->insert_id;
+}
+
+/* 2. Check if queue already exists for this attendance */
+$queueCheckSql = "
 SELECT queueID
 FROM queue
 WHERE attendanceID = ?
 LIMIT 1
 ";
 
-$stmt3 = $conn->prepare($checkQueue);
-$stmt3->bind_param("i", $attendanceID);
-$stmt3->execute();
-
-$queueResult = $stmt3->get_result();
+$stmt = $conn->prepare($queueCheckSql);
+$stmt->bind_param("i", $attendanceID);
+$stmt->execute();
+$queueResult = $stmt->get_result();
 
 if ($queueResult->num_rows > 0) {
-    echo json_encode(["success" => true, "message" => "Already in queue"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "This patient is already in the queue."
+    ]);
     exit;
 }
 
-/* 4. Get next queue number */
-$getNextQueue = "
-SELECT IFNULL(MAX(queueNo), 0) + 1 AS nextQueueNo
+/* 3. Generate next queue number */
+$queueNoSql = "
+SELECT COALESCE(MAX(queueNo), 0) + 1 AS nextQueueNo
 FROM queue
 ";
 
-$nextResult = $conn->query($getNextQueue);
-$nextRow = $nextResult->fetch_assoc();
+$result = $conn->query($queueNoSql);
+$row = $result->fetch_assoc();
 
-$nextQueueNo = $nextRow["nextQueueNo"];
+$queueNo = (int)$row["nextQueueNo"];
+
+/* 4. Assign room automatically */
+$roomNo = "Room " . (($queueNo - 1) % 3 + 1);
 
 /* 5. Insert queue record */
-$insertQueue = "
-INSERT INTO queue (attendanceID, queueNo, queueStatus)
+/* 4. Insert queue record without room assignment */
+$insertQueueSql = "
+INSERT INTO queue
+(attendanceID, queueNo, queueStatus)
 VALUES (?, ?, 'Waiting')
 ";
 
-$stmt4 = $conn->prepare($insertQueue);
-$stmt4->bind_param("ii", $attendanceID, $nextQueueNo);
+$stmt = $conn->prepare($insertQueueSql);
+$stmt->bind_param("ii", $attendanceID, $queueNo);
 
-if ($stmt4->execute()) {
-    echo json_encode(["success" => true, "queueNo" => $nextQueueNo]);
+if ($stmt->execute()) {
+    echo json_encode([
+        "success" => true,
+        "queueNo" => $queueNo,
+        "roomNo" => "-"
+    ]);
 } else {
-    echo json_encode(["success" => false, "message" => "Queue insert failed"]);
+    echo json_encode([
+        "success" => false,
+        "message" => $conn->error
+    ]);
 }
 
 ?>

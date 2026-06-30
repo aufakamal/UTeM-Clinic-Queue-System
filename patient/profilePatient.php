@@ -1,6 +1,6 @@
 <?php 
 session_start();
-include("../login_register/dbconnect.php");
+include("../dbconnect.php");
 
 if (!isset($_SESSION['userID'])) {
     header("Location: ../login_register/login.php");
@@ -12,6 +12,9 @@ $userID = $_SESSION['userID'];
 $sql = "SELECT 
             u.userID,
             u.fullName,
+            u.gender,
+            u.dateOfBirth,
+            u.address,
             u.email,
             u.phoneNo,
             p.bloodType,
@@ -38,6 +41,11 @@ if (!$patient) {
             window.location.href='dashboard.php';
           </script>";
     exit();
+}
+
+$dobDisplay = "";
+if (!empty($patient['dateOfBirth'])) {
+    $dobDisplay = date("d/m/Y", strtotime($patient['dateOfBirth']));
 }
 ?>
 
@@ -73,6 +81,10 @@ if (!$patient) {
 
             <div class="profileActions">
                 <span class="roleName">Patient</span>
+<<<<<<< HEAD
+=======
+                <span class="roleName"><?php echo htmlspecialchars($patient['gender']); ?></span>
+>>>>>>> origin/master
                 <a href="editProfilePatient.php" class="editBtn">Change Profile Information</a>
             </div>
         </div>
@@ -86,9 +98,21 @@ if (!$patient) {
                 <label>ID</label>
                 <input type="text" value="<?php echo htmlspecialchars($patient['userID']); ?>" readonly>
 
+<<<<<<< HEAD
                 <label>Phone Number</label>
                 <input type="text" value="<?php echo htmlspecialchars($patient['phoneNo']); ?>" readonly>
 
+=======
+                <label>Date of Birth</label>
+                <input type="text" value="<?php echo htmlspecialchars($dobDisplay); ?>" readonly>
+
+                <label>Phone Number</label>
+                <input type="text" value="<?php echo htmlspecialchars($patient['phoneNo']); ?>" readonly>
+
+                <label>Address</label>
+                <input type="text" value="<?php echo htmlspecialchars($patient['address'] ?? 'Not set'); ?>" readonly>
+
+>>>>>>> origin/master
                 <label>Password</label>
                 <input type="password" value="********" readonly>
 

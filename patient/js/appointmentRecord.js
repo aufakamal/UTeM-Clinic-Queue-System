@@ -1,6 +1,7 @@
 /* =========================
-   APPOINTMENT RECORD PAGE
+    APPOINTMENT RECORD PAGE
 ========================= */
+
 let upcomingTab = document.querySelector("#upcomingTab");
 let previousTab = document.querySelector("#previousTab");
 

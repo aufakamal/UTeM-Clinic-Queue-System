@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("dbconnect.php");
+include("../dbconnect.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         break;
 
                     case 3:
-                        header("Location: ../pharmacist/workspace.html");
+                        header("Location: ../pharmacist/workspace.php");
                         break;
 
                     case 4:
@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     name="roleID"
                     required
                 >
-                    <option value="">Dropdown</option>
+                    <option value="">Select</option>
                     <option value="1">Admin</option>
                     <option value="2">Doctor</option>
                     <option value="3">Pharmacist</option>
