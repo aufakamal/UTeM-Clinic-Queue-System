@@ -34,5 +34,3 @@
     </div>
 
 </div>
-
-<script src="doctor.js"></script>

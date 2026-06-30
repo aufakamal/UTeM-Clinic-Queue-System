@@ -1,15 +1,228 @@
 <?php
-include('../dbconnect.php');
 
-$data = json_decode(file_get_contents("php://input"), true);
+session_start();
+include("../dbconnect.php");
 
-$queue_id = $data['queue_id'];
+header("Content-Type: application/json");
 
-$conn->query("
-    UPDATE queue 
-    SET status='Completed'
-    WHERE queue_id='$queue_id'
-");
+try {
 
-// save diagnosis/prescription if needed here
+    // FIX 1: prevent double decode + ensure safe JSON
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!$data) {
+        throw new Exception("Invalid JSON payload");
+    }
+
+    $doctorUserID = $_SESSION["userID"] ?? null;
+
+    if (!$doctorUserID) {
+        throw new Exception("Session expired. Please login again.");
+    }
+
+    $queueID = $data["queueID"];
+    $reason = $data["reason"];
+    $findings = $data["findings"];
+    $diagnosis = $data["diagnosis"];
+    $treatment = $data["treatment"];
+
+    // FIX 2: SAFE prescription handling
+    $prescription = $data["prescription"] ?? [];
+    if (!is_array($prescription)) {
+        $prescription = [];
+    }
+
+    $conn->begin_transaction();
+
+    try {
+
+        /* -----------------------------
+           Consultation
+        ----------------------------- */
+
+        $sql = "
+        INSERT INTO consultation
+        (
+            queueID,
+            doctorUserID,
+            startTime,
+            endTime,
+            reasonForVisit,
+            clinicalFindings,
+            diagnosis,
+            treatmentPlan
+        )
+        VALUES
+        (
+            ?,
+            ?,
+            NOW(),
+            NOW(),
+            ?,
+            ?,
+            ?,
+            ?
+        )
+        ";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bind_param(
+            "iissss",
+            $queueID,
+            $doctorUserID,
+            $reason,
+            $findings,
+            $diagnosis,
+            $treatment
+        );
+
+        if (!$stmt->execute()) {
+            throw new Exception("Consultation Error: " . $stmt->error);
+        }
+
+        $consultationID = $conn->insert_id;
+
+        /* -----------------------------
+           Prescription (SAFE OPTIONAL)
+        ----------------------------- */
+
+        $prescriptionID = null;
+
+        if (!empty($prescription)) {
+
+            $sql = "
+            INSERT INTO prescription
+            (
+                consultationID,
+                prescriptionDate,
+                status,
+                note
+            )
+            VALUES
+            (
+                ?,
+                NOW(),
+                'Pending',
+                ''
+            )
+            ";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $consultationID);
+            $stmt->execute();
+
+            $prescriptionID = $conn->insert_id;
+        }
+
+        /* -----------------------------
+           Prescription Items
+        ----------------------------- */
+
+        if (!empty($prescriptionID)) {
+
+            foreach ($prescription as $item) {
+
+                $medicineID = $item["medicineID"];
+                $dosage = $item["dosage"];
+                $frequency = $item["frequency"];
+                $duration = $item["duration"];
+                $quantity = $item["quantity"];
+                $instruction = $item["instruction"];
+
+                $sql = "
+                INSERT INTO prescription_item
+                (
+                    prescriptionID,
+                    medicineID,
+                    quantity,
+                    dosage,
+                    frequency,
+                    duration,
+                    instructions
+                )
+                VALUES
+                (
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?
+                )
+                ";
+
+                $stmt = $conn->prepare($sql);
+
+                $stmt->bind_param(
+                    "iiissss",
+                    $prescriptionID,
+                    $medicineID,
+                    $quantity,
+                    $dosage,
+                    $frequency,
+                    $duration,
+                    $instruction
+                );
+
+                $stmt->execute();
+
+                /* -----------------------------
+                   Deduct Stock
+                ----------------------------- */
+
+                $sql = "
+                UPDATE medicine
+                SET stockQuantity = stockQuantity - ?
+                WHERE medicineID = ?
+                ";
+
+                $stmt = $conn->prepare($sql);
+
+                $stmt->bind_param(
+                    "ii",
+                    $quantity,
+                    $medicineID
+                );
+
+                $stmt->execute();
+            }
+        }
+
+        /* -----------------------------
+           Complete Queue
+        ----------------------------- */
+
+        $sql = "
+        UPDATE queue
+        SET queueStatus='Completed'
+        WHERE queueID=?
+        ";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bind_param("i", $queueID);
+
+        $stmt->execute();
+
+        $conn->commit();
+
+        echo json_encode([
+            "success" => true
+        ]);
+
+    } catch (Exception $e) {
+        $conn->rollback();
+        throw $e;
+    }
+
+} catch (Exception $e) {
+
+    echo json_encode([
+        "success" => false,
+        "message" => $e->getMessage()
+    ]);
+}
+
 ?>

@@ -174,86 +174,68 @@ section {
     box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
 }
 
-/* Update CSS untuk currentconstBox */
-.currentconstBox {
-    display: flex;
-    flex-direction: column; /* Butang akan jatuh ke bawah */
-    align-items: flex-start; /* Semua teks rata kiri */
-    gap: 10px; /* Jarak antara teks dan butang */
-    
-    background-color: #F8FAFC;
-    border: 1px solid #E2E8F0;
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 12px;
+.doctorCard h2{
+    margin:0;
+    font-size:18px;
+    color:#0F172A;
 }
 
-/* Pastikan butang Start Session ikut lebar penuh kotak */
-.currentconstBox .startBtn {
-    width: 100%; /* Butang jadi lebar penuh */
-    background-color: #0284C7;
-    color: white;
-    border: none;
-    border-radius: 8px; /* Sedikit kurang bulat untuk nampak profesional */
-    padding: 10px;
-    cursor: pointer;
-    font-weight: 600;
+.queueNumber{
+    font-size:64px;
+    font-weight:800;
+    color:#0284C7;
+    margin:18px 0 8px;
 }
 
-.currentconstBox .startBtn:hover {
-    background-color: #0369A1;
+.doctorCard p{
+    color:#64748B;
+    margin-bottom:22px;
 }
 
-/* Pastikan h3 dan p dalam kotak tidak ada margin yang pelik */
-.currentconstBox h3, .currentconstBox p {
-    margin: 0;
+.queueButtons{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
 }
 
-.searchInput {
-    width: 100%;
-
-    padding: 12px;
-
-    border: 1px solid #CBD5E1;
-    border-radius: 12px;
-
-    margin-bottom: 12px;
+.startBtn{
+    width:100%;
+    border:none;
+    border-radius:12px;
+    background:#0284C7;
+    color:white;
+    padding:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
 }
 
-.recentText {
-    color: #64748B;
-    font-size: 14px;
-    line-height: 1.6;
+.startBtn:hover{
+    background:#0369A1;
 }
 
-/* END BUTTON */
-.currentconstBox .endBtn {
-    width: 100%;
-    background-color: #EF4444;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 10px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 10px;
-    opacity: 0.6;
+.endBtn{
+    width:100%;
+    border:none;
+    border-radius:12px;
+    background:#EF4444;
+    color:white;
+    padding:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
 }
 
-/* hover */
-.currentconstBox .endBtn:hover {
-    background-color: #ef2020;
+.endBtn:hover{
+    background:#DC2626;
 }
 
-/* enabled state */
-.currentconstBox .endBtn:enabled {
-    opacity: 1;
+.endBtn:disabled{
+    background:#CBD5E1;
+    color:white;
+    cursor:not-allowed;
 }
 
-/* disabled */
-button:disabled {
-    cursor: not-allowed;
-}
 
 
 /* =========================
@@ -276,11 +258,22 @@ button:disabled {
     margin-bottom: 14px;
 }
 
-.infoHeader h3 {
-    color: #0069A6;
-    font-size: 20px;
-    font-weight: 700;
-    margin: 0;
+.infoBlock h3{
+    color:#0069A6;
+    font-size:20px;
+    font-weight:700;
+    margin:0 0 16px 0;
+}
+
+.infoBlock textarea{
+    display:block;
+    width:100%;
+    min-height:110px;
+    padding:14px 16px;
+    border:1px solid #D6E3F3;
+    border-radius:12px;
+    box-sizing:border-box;
+    resize:vertical;
 }
 
 /* Button Add Allergy / Add Condition / Add Medication */
@@ -366,12 +359,6 @@ button:disabled {
     border-color: #16A34A;
 }
 
-/* Bagi overview section nampak lebih kemas */
-.overviewSection {
-    width: 90%;
-    margin: 0 auto;
-}
-
 .inputRow {
     display: flex;
     gap: 10px;
@@ -417,145 +404,6 @@ button:disabled {
     .editableItem button {
         width: 100%;
     }
-}
-
-
-/* =========================
-   PHARMACY UPDATES 
-========================= */
-
-.pharmacyUpdateBox {
-    background-color: #FFFFFF; /* Putih bersih */
-    border: 1px solid #E2E8F0; /* Border kelabu lembut */
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 12px;
-}
-
-/* Susunan teks di dalam kotak */
-.pharmacyUpdateBox h3 {
-    margin: 0;
-    font-size: 16px;
-    color: #1E293B;
-}
-
-.pharmacyUpdateBox p {
-    margin: 4px 0;
-    font-weight: 700;
-    color: #2f3b4b;
-}
-
-/* Tag Biru-Kelabu Cair untuk Isu */
-.issueTag {
-    display: inline-block;
-    background-color: #E0F2FE; /* Biru cair */
-    color: #0369A1;            /* Teks biru gelap */
-    padding: 4px 10px;
-    border-radius: 999px;      /* Rounded rectangle */
-    font-size: 12px;
-    font-weight: 600;
-    margin: 8px 0;
-}
-
-/* Butang VIEW yang lebih kemas & subtle */
-.pharmacyUpdateBox .viewBtn {
-    display: block;
-    width: 100%;
-    margin-top: 8px;
-    background-color: #0284C7; /* Bright blue */
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.pharmacyUpdateBox .viewBtn:hover {
-    background-color: #3f7ccc;
-    color: #ffffff;
-}
-
-.pharmacyPopup {
-    background: #F1F5F9;
-    padding: 20px;
-    border-radius: 14px;
-    width: 600px;
-    margin: 20px auto;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-}
-
-.popupTitle {
-    text-align: center;
-    text-decoration: underline;
-    margin-bottom: 20px;
-    font-size: 18px;
-    color: #0F172A;
-}
-
-.popupHeaderBox p {
-    margin: 6px 0;
-}
-
-.popupBodyGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-.popupCard {
-    background: #FFFFFF;
-    border-radius: 12px;
-    padding: 14px;
-    border: 1px solid #CBD5E1;
-}
-
-.statusBtn {
-    margin-top: 8px;
-    background: #FDE68A;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-weight: 600;
-}
-.statusBtn[data-status="resolved"] {
-    background: #DCFCE7;
-    color: #166534;
-}
-
-.editResponseBtn {
-    margin-top: 6px;
-    background: #93C5FD;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.confirmResendBtn {
-    background: #22C55E;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 12px;
-    padding: 10px 24px;
-    cursor: pointer;
-    font-weight: 700;
-    margin-top: 12px;
-}
-.confirmResendBtn:hover { background: #16A34A; }
-
-textarea#doctorReply {
-    width: 100%;
-    min-height: 80px;
-    padding: 8px;
-    margin-top: 6px;
-    border-radius: 8px;
-    border: 1px solid #94A3B8;
-    resize: vertical;
 }
 
 
@@ -617,9 +465,9 @@ textarea#doctorReply {
     margin: 10px auto 28px auto;
     padding: 6px;
     gap: 6px;
-    border: 1px solid #99F6E4;
+    border:1px solid #BFDBFE;
+    background:#EFF6FF;
     border-radius: 18px;
-    background: #D1FAE5;
 }
 
 .miniTab {
@@ -635,18 +483,21 @@ textarea#doctorReply {
 }
 
 .miniTab:hover {
-    background: #A7F3D0;
+    background:#DBEAFE;
+
 }
 
 .miniTab.active {
-    background: #86EFAC;
-    border-radius: 14px;
+    background:#60A5FA;
+    color:white;
 }
 
-/* Bahagian details bawah tab */
-.overviewSection {
-    width: 90%;
-    margin: 0 auto;
+.overviewSection,
+#diagnosisSection,
+#prescriptionSection,
+#viewOnlyRecordDisplay{
+    width:90%;
+    margin:0 auto;
 }
 
 
@@ -666,40 +517,11 @@ textarea#doctorReply {
     line-height: 1.45;
 }
 
-/* =========================
-   CONSULTATION BOTTOM ACTIONS
-========================= */
-
-.consultationBottomActions {
-    width: 90%;
-    margin: 30px auto 10px auto;
-    padding-top: 20px;
-    border-top: 1px solid #E2E8F0;
-
-    display: flex;
-    justify-content: flex-start;
-    gap: 14px;
-}
-
-.consultationBottomActions .saveBtn,
-.consultationBottomActions .completeBtn {
-    min-width: 190px;
-}
-
-.currentconstBox.completedConsultation {
-    opacity: 0.65;
-    border-color: #22C55E;
-}
-
-.currentconstBox.completedConsultation .startBtn {
-    background-color: #94A3B8;
-    cursor: not-allowed;
-}
 
 /* =========================
-   medical RECORD TAB
+   VISIT HISTORY
 ========================= */
-visitContainer{
+.visitContainer{
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -728,19 +550,26 @@ visitContainer{
 }
 
 .visitTable th{
-    background: #E2E8F0;
-    text-align: left;
-    padding: 10px;
-    font-size: 13px;
+    background:#F8FAFC;
+    color:#0284C7;
+    font-weight:700;
 }
 
 .visitTable td{
-    padding: 10px;
+    padding: 14px;
     border-bottom: 1px solid #F1F5F9;
     font-size: 13px;
 }
 
 /* STATUS */
+.status{
+    display:inline-block;
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+}
+
 .status.done{
     background: #DCFCE7;
     color: #166534;
@@ -751,13 +580,41 @@ visitContainer{
 
 /* DETAIL BOX */
 .visitDetail{
-    background: #F8FAFC;
-    padding: 12px;
-    border-radius: 10px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 6px;
-    font-size: 13px;
+    margin-top:16px;
+    border:1px solid #E2E8F0;
+    border-radius:14px;
+    overflow:hidden;
+}
+
+/* ROW STYLE */
+.detailRow{
+    display:flex;
+    border-bottom:1px solid #E2E8F0;
+}
+
+.detailRow:last-child{
+    border-bottom:none;
+}
+
+/* LEFT LABEL (same style as Reason for Visit) */
+.detailLabel{
+    width:220px;
+    background:#DFF1FB;
+    color:#075985;
+    font-weight:700;
+    padding:14px 16px;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+}
+
+/* RIGHT VALUE */
+.detailValue{
+    flex:1;
+    padding:14px 16px;
+    font-size:13px;
+    color:#1F2937;
+    background:#fff;
 }
 
 /* =========================
@@ -771,42 +628,9 @@ visitContainer{
     display: none;
 }
 
-.tabSection.active {
-    display: block;
-}
 /* =========================
    DIAGNOSIS CLEAN TAB
 ========================= */
-body {
-    font-family: Arial, sans-serif;
-    color: #1f2937;
-    background: #f4f7fb;
-}
-
-/* CARD*/
-.cardBox {
-    background: #ffffff;
-    border: 1px solid #e6edf5;
-    border-radius: 14px;
-    padding: 18px;
-    margin-bottom: 16px;
-
-    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
-    transition: 0.2s ease;
-}
-
-.cardBox:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
-}
-
-/* TITLE*/
-.cardBox h4 {
-    margin: 0 0 12px 0;
-    font-size: 16px;
-    font-weight: 700;
-    color: #1976d2;
-}
 
 /* INPUT SYSTEM */
 input, textarea {
@@ -829,198 +653,97 @@ input:focus, textarea:focus {
     box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.12);
 }
 
-/*BUTTON  */
-.noteRow {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.noteRow button {
-    padding: 12px 18px;
-    border: none;
-    border-radius: 12px;
-
-    background: #1976d2;
-    color: white;
-    font-weight: 700;
-
-    cursor: pointer;
-    white-space: nowrap;
-
-    transition: 0.2s ease;
-}
-
-.noteRow button:hover {
-    background: #0f5fb8;
-}
-
-/*  SAVED LIST (DIAGNOSIS STYLE) */
-.savedList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-
-    margin-bottom: 12px;
-}
-
-.itemBox {
-    background: #f8fbff;
-    border: 1px solid #dbe6f3;
-
-    padding: 10px 14px;
-    border-radius: 12px;
-
-    font-weight: 600;
-    color: #0f172a;
-
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-}
-
-/*VITAL BOX  */
-.findingBox {
-    background: #ffffff;
-    border: 1px solid #dbe6f3;
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.findingBox strong {
-    font-size: 12px;
-    color: #1976d2;
-}
-
-.findingBox input {
-    width: 100%;
-    border: 1.5px solid #9fb6cf;
-    background: #ffffff;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 14px;
-    color: #0f172a;
-}
-
-/* TEXT LABEL  */
-.findingText {
-    color: #334155;
-    font-size: 14px;
-}
-
-.findingsGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-
 /* =========================
    FIX PRESCRIPTION SECTION
 ========================= */
 
-#prescriptionSection {
-    width: 90%;
-    margin: 0 auto;
+#prescriptionSection .formCard{
+    background:#FFFFFF;
+    border:1px solid #E2E8F0;
+    border-radius:18px;
+    padding:28px;
+    margin-bottom:24px;
+    box-shadow:0 8px 24px rgba(15,23,42,.05);
 }
 
-#prescriptionSection .prescriptionTitle {
-    text-align: center;
-    text-decoration: underline;
-    color: #0f172a;
-    font-size: 20px;
-    font-weight: 800;
-    margin: 10px 0 24px 0;
+#prescriptionSection .rowTop{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
 }
 
-#prescriptionSection .formCard {
-    background: #ffffff;
-    border: 1px solid #86efac;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 20px;
+#prescriptionSection .rowTop h3{
+    margin:0;
+    color:#0069A6;
+    font-size:22px;
+    font-weight:700;
 }
 
-#prescriptionSection .rowTop {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 22px;
+#prescriptionSection .adminBtn{
+    background:#E0F2FE;
+    color:#0369A1;
+    border:none;
+    border-radius:999px;
+    padding:10px 18px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
 }
 
-#prescriptionSection .rowTop h3 {
-    margin: 0;
-    font-size: 16px;
-    color: #0f172a;
-    font-weight: 800;
+#prescriptionSection .adminBtn:hover{
+    background:#BAE6FD;
 }
 
-#prescriptionSection .infoIcon {
-    color: #2563eb;
-    font-size: 13px;
+#prescriptionSection .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
 }
 
-#prescriptionSection .adminBtn {
-    background: #ffffff;
-    border: 1px solid #2563eb;
-    color: #2563eb;
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
+#prescriptionSection .field{
+    background:#FFFFFF;
+    border:1px solid #DBE6F3;
+    border-radius:14px;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
 }
 
-#prescriptionSection .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 28px;
+#prescriptionSection .field label{
+    color:#1976D2;
+    font-size:13px;
+    font-weight:700;
 }
 
-#prescriptionSection .field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+#prescriptionSection .field input,
+#prescriptionSection .field select{
+    height:48px;
+    border:1px solid #CBD5E1;
+    border-radius:12px;
+    padding:0 14px;
+    background:white;
+    font-size:14px;
 }
 
-#prescriptionSection .field label {
-    font-size: 13px;
-    font-weight: 800;
-    color: #0f172a;
+#prescriptionSection .field input:focus,
+#prescriptionSection .field select:focus{
+    outline:none;
+    border-color:#1976D2;
+    box-shadow:0 0 0 3px rgba(25,118,210,.12);
 }
 
-#prescriptionSection .field select,
-#prescriptionSection .field input {
-    width: 100%;
-    height: 44px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    background: #ffffff;
-    padding: 0 12px;
-    font-size: 14px;
-    color: #0f172a;
-}
-
-#prescriptionSection .field select:focus,
-#prescriptionSection .field input:focus {
-    outline: none;
-    border-color: #0284c7;
-    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
-}
-
-#prescriptionSection .stockBox {
-    height: 44px;
-    display: flex;
-    align-items: center;
-    background: #dcfce7;
-    border: 1px solid #bbf7d0;
-    color: #16a34a;
-    border-radius: 8px;
-    padding: 0 12px;
-    font-weight: 800;
-    font-size: 14px;
+#prescriptionSection .stockBox{
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#EFF6FF;
+    border:1px solid #BFDBFE;
+    border-radius:12px;
+    color:#0369A1;
+    font-weight:700;
 }
 
 #prescriptionSection .addPrescriptionWrap {
@@ -1029,28 +752,31 @@ input:focus, textarea:focus {
     margin-top: 24px;
 }
 
-#prescriptionSection .addBtn {
-    background: #22c55e;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 13px 34px;
-    font-weight: 800;
-    cursor: pointer;
+#prescriptionSection .addBtn{
+    background:#0284C7;
+    color:white;
+    border:none;
+    border-radius:999px;
+    padding:12px 30px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
+    box-shadow:0 4px 10px rgba(2,132,199,.18);
 }
 
-#prescriptionSection .addBtn:hover {
-    background: #16a34a;
+#prescriptionSection .addBtn:hover{
+    background:#0369A1;
+    transform:translateY(-2px);
 }
 
 /* PRESCRIPTION LIST */
-
-#prescriptionSection .prescriptionListBox {
-    background: #ffffff;
-    border: 1px solid #bfdbfe;
-    border-radius: 12px;
-    padding: 22px;
-    margin-bottom: 18px;
+#prescriptionSection .prescriptionListBox{
+    background:#FFFFFF;
+    border:1px solid #E2E8F0;
+    border-radius:18px;
+    padding:26px;
+    box-shadow:0 8px 24px rgba(15,23,42,.05);
 }
 
 #prescriptionSection .prescriptionListBox h3 {
@@ -1070,13 +796,10 @@ input:focus, textarea:focus {
     border-collapse: collapse;
 }
 
-#prescriptionSection .rxTable th {
-    text-align: left;
-    color: #475569;
-    font-size: 13px;
-    font-weight: 800;
-    padding: 12px;
-    border-bottom: 1px solid #e2e8f0;
+#prescriptionSection .rxTable th{
+    background:#F8FAFC;
+    color:#0069A6;
+    font-weight:700;
 }
 
 #prescriptionSection .rxTable td {
@@ -1086,39 +809,34 @@ input:focus, textarea:focus {
     border-bottom: 1px solid #f1f5f9;
 }
 
-#prescriptionSection .deleteRxBtn {
-    border: none;
-    background: #fee2e2;
-    color: #ef4444;
-    border-radius: 6px;
-    padding: 6px 8px;
-    cursor: pointer;
+#prescriptionSection .deleteRxBtn{
+    background:#FEE2E2;
+    color:#DC2626;
+    border:none;
+    border-radius:10px;
+    padding:8px 12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+#prescriptionSection .deleteRxBtn:hover{
+    background:#FECACA;
 }
 
 /* IMPORTANT BOX */
-
-#prescriptionSection .importantBox {
-    background: #fffbeb;
-    border: 1px solid #facc15;
-    border-radius: 12px;
-    padding: 18px 22px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 20px;
+#prescriptionSection .importantBox{
+    background:#EFF6FF;
+    border:1px solid #BFDBFE;
+    border-radius:18px;
+    padding:22px;
 }
 
-#prescriptionSection .importantBox h4 {
-    margin: 0 0 10px 0;
-    color: #b45309;
-    font-size: 14px;
+#prescriptionSection .importantBox h4{
+    color:#0369A1;
 }
 
-#prescriptionSection .importantBox p {
-    margin: 6px 0;
-    color: #0f172a;
-    font-size: 13px;
+#prescriptionSection .importantBox p{
+    color:#475569;
 }
 
 #prescriptionSection .savePrescriptionBtn {
@@ -1134,6 +852,26 @@ input:focus, textarea:focus {
 
 #prescriptionSection .savePrescriptionBtn:hover {
     background: #1d4ed8;
+}
+
+.prescriptionRow3{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.prescriptionRow2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+#prescriptionSection .stockQtyRow{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
 }
 
 /* =========================
@@ -1186,38 +924,8 @@ input:focus, textarea:focus {
 }
 
 /* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 900px) {
-
-    .pharmacistWorkspace {
-        grid-template-columns: 1fr;
-    }
-
-    .prescriptionArea {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-/* =========================
    VIEW ONLY PATIENT MEDICAL RECORD
 ========================= */
-
-#viewOnlyRecordDisplay {
-    width: 90%;
-    margin: 0 auto;
-}
-
-#viewOnlyRecordDisplay .recordTitle {
-    text-align: center;
-    text-decoration: underline;
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 18px;
-    color: #0F172A;
-}
 
 .viewOnlyNotice {
     background: #E0FDFB;
@@ -1230,37 +938,35 @@ input:focus, textarea:focus {
     font-weight: 500;
 }
 
-.viewOnlyGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin-bottom: 22px;
-}
-
-.viewField {
+.patientInfoCard {
     background: #F8FAFC;
-    border: 1px solid #E5E7EB;
-    border-radius: 14px;
-    padding: 16px;
+    border: 1px solid #DDE5ED;
+    border-radius: 10px;
+    padding: 18px 20px;
 }
 
-.viewField label {
-    display: block;
-    font-size: 13px;
-    font-weight: 700;
-    color: #64748B;
-    margin-bottom: 8px;
+.infoLine {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
-.viewField p {
-    margin: 0;
-    background: #FFFFFF;
-    border: 1px solid #E5E7EB;
-    border-radius: 12px;
-    padding: 13px 14px;
-    min-height: 45px;
-    color: #0F172A;
+.infoLine:last-child {
+    margin-bottom: 0;
+}
+
+.infoLabel {
+    width: 140px;
     font-size: 15px;
+    font-weight: 700;
+    color: #0D6EFD;
+    flex-shrink: 0;
+}
+
+.infoValue {
+    font-size: 15px;
+    color: #1F2937;
+    font-weight: bold;
 }
 
 .viewInfoBlock {
@@ -1268,42 +974,40 @@ input:focus, textarea:focus {
     border: 1px solid #E5E7EB;
     border-radius: 14px;
     padding: 18px;
-    margin-bottom: 18px;
+    margin-top: 18px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .viewInfoBlock h3 {
-    color: #0284C7;
+    margin: 0 0 12px;
     font-size: 18px;
-    margin: 0 0 10px;
+    font-weight: 700;
+    color: #2763e5;
 }
 
 .viewInfoBlock p {
     margin: 0;
-    background: #F8FAFC;
-    border: 1px solid #E2E8F0;
-    border-radius: 12px;
-    padding: 14px;
-    color: #0F172A;
-    min-height: 45px;
+    padding: 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: #374151;
+    min-height: 22px;
 }
 
 /* Mobile responsive */
-@media (max-width: 900px) {
-    #viewOnlyRecordDisplay {
-        width: 100%;
+@media (max-width: 768px) {
+    .infoLine {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
     }
 
-    .viewOnlyGrid {
-        grid-template-columns: 1fr;
+    .infoLabel {
+        width: auto;
     }
 }
 
 /* ================= DOCTOR REPORT DASHBOARD ================= */
-body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: #f4f6fb;
-}
 
 .report-wrapper{
     padding:20px;
@@ -1378,11 +1082,6 @@ body {
     padding:20px;
     border-radius:16px;
     box-shadow:0 8px 25px rgba(0,0,0,0.05);
-}
-
-/* FIX CHART SIZE */
-canvas{
-    max-height:300px;
 }
 
 /* BOTTOM KPI */
