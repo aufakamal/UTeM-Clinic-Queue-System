@@ -45,11 +45,18 @@
     </div>
 </section>
 
-<div id="confirmBox" class="modal hidden">
-    <div class="modal-card">
-        <b id="confirmText">Are you sure?</b>
-        <button class="green" onclick="confirmYes()">Confirm</button>
-        <button class="red" onclick="closeConfirm()">Cancel</button>
+<div id="userDetailsModal" class="details-modal hidden">
+    <div class="details-card">
+        <div class="details-header">
+            <h2>User Details</h2>
+            <button onclick="closeUserDetails()" class="close-modal">×</button>
+        </div>
+
+        <div id="userDetailsContent" class="details-content"></div>
+
+        <div class="details-footer">
+            <button onclick="closeUserDetails()" class="btn-close-details">Close</button>
+        </div>
     </div>
 </div>
 

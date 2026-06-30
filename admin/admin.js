@@ -864,17 +864,41 @@ function renderHistoryTable(list = historyList) {
 
 function filterHistory() {
     const search = document.getElementById("historySearch").value.toLowerCase();
+    const status = document.getElementById("historyStatusFilter").value;
+    const fromDate = document.getElementById("historyFromDate").value;
+    const toDate = document.getElementById("historyToDate").value;
 
     const filtered = historyList.filter(item => {
-        return (
-            item.consultationID.toString().includes(search) ||
+        const startDate = item.startTime ? item.startTime.substring(0, 10) : "";
+
+        const matchesSearch =
+            item.consultationID.toString().toLowerCase().includes(search) ||
+            item.queueNo.toString().toLowerCase().includes(search) ||
             item.patientName.toLowerCase().includes(search) ||
-            item.doctorName.toLowerCase().includes(search) ||
-            item.queueNo.toString().includes(search)
-        );
+            item.doctorName.toLowerCase().includes(search);
+
+        const matchesStatus =
+            status === "All" || item.queueStatus === status;
+
+        const matchesFromDate =
+            !fromDate || startDate >= fromDate;
+
+        const matchesToDate =
+            !toDate || startDate <= toDate;
+
+        return matchesSearch && matchesStatus && matchesFromDate && matchesToDate;
     });
 
     renderHistoryTable(filtered);
+}
+
+function resetHistoryFilter() {
+    document.getElementById("historySearch").value = "";
+    document.getElementById("historyStatusFilter").value = "All";
+    document.getElementById("historyFromDate").value = "";
+    document.getElementById("historyToDate").value = "";
+
+    renderHistoryTable(historyList);
 }
 
 // ================= ni page users =================
@@ -914,64 +938,104 @@ function renderUsers(data) {
     };
 
     const tbody = document.getElementById("usersTableBody");
-
     if (!tbody) return;
 
     tbody.innerHTML = "";
 
     data.forEach(user => {
-
         tbody.innerHTML += `
-        <tr>
-
-            <td>${user.userID}</td>
-            <td>${user.fullName}</td>
-            <td>${user.roleName}</td>
-            <td>${user.gender}</td>
-            <td>${user.email}</td>
-            <td>${user.phoneNo}</td>
-
-            <td class="action-cell">
-
-                <div class="action-left">
-
-                    <button class="btn-edit"
-                        onclick="editUser(
-                            '${user.userID}',
-                            '${user.fullName}',
-                            '${user.gender}',
-                            '${user.email}',
-                            '${user.phoneNo}'
-                        )">
-                        Edit
+            <tr>
+                <td>${user.userID}</td>
+                <td>${user.fullName}</td>
+                <td>${user.roleName}</td>
+                <td>${user.gender}</td>
+                <td>${user.email}</td>
+                <td>${user.phoneNo}</td>
+                <td>
+                    <button class="btn-view" onclick="viewUserDetails('${user.userID}', '${user.roleName}')">
+                        View Details
                     </button>
+                </td>
+            </tr>
+        `;
+    });
+}
 
-                    <button class="btn-delete"
-                        onclick="deleteUser('${user.userID}')">
-                        Delete
-                    </button>
+async function viewUserDetails(userID, roleName) {
+    try {
+        const response = await fetch("../database/getUserDetails.php?userID=" + userID + "&roleName=" + roleName);
+        const user = await response.json();
 
+        if (!user.success) {
+            alert(user.message || "User details not found.");
+            return;
+        }
+
+        let extraDetails = "";
+
+        if (user.roleName === "Patient") {
+            extraDetails = `
+                <h3>Patient Information</h3>
+                <div class="details-grid">
+                    <p><b>Patient Type:</b> ${user.patientType || "-"}</p>
+                    <p><b>Blood Type:</b> ${user.bloodType || "-"}</p>
+                    <p><b>Allergy:</b> ${user.allergy || "-"}</p>
+                    <p><b>Chronic Condition:</b> ${user.chronicCondition || "-"}</p>
+                    <p><b>Current Medication:</b> ${user.currentMed || "-"}</p>
+                    <p><b>Emergency Contact:</b> ${user.emergencyContactName || "-"}</p>
+                    <p><b>Emergency Phone:</b> ${user.emergencyContactPhone || "-"}</p>
                 </div>
+            `;
+        }
 
-                ${
-                    user.roleName === "Patient"
-                    ? `
-                        <button class="btn-view"
-                            onclick="viewPatientDetails('${user.userID}')">
-                            View Details
-                        </button>
-                    `
-                    : ""
-                }
+        if (user.roleName === "Doctor") {
+            extraDetails = `
+                <h3>Doctor Information</h3>
+                <div class="details-grid">
+                    <p><b>License No:</b> ${user.docLicenseNo || "-"}</p>
+                    <p><b>Specialization:</b> ${user.specialization || "-"}</p>
+                    <p><b>Room No:</b> ${user.roomNo || "-"}</p>
+                </div>
+            `;
+        }
 
-            </td>
+        if (user.roleName === "Pharmacist") {
+            extraDetails = `
+                <h3>Pharmacist Information</h3>
+                <div class="details-grid">
+                    <p><b>License No:</b> ${user.licenseNo || "-"}</p>
+                </div>
+            `;
+        }
 
-        </tr>
+        document.getElementById("userDetailsContent").innerHTML = `
+            <h3>Basic Information</h3>
+            <div class="details-grid">
+                <p><b>User ID:</b> ${user.userID || "-"}</p>
+                <p><b>Full Name:</b> ${user.fullName || "-"}</p>
+                <p><b>Role:</b> ${user.roleName || "-"}</p>
+                <p><b>Gender:</b> ${user.gender || "-"}</p>
+                <p><b>Date of Birth:</b> ${user.dateOfBirth || "-"}</p>
+                <p><b>Email:</b> ${user.email || "-"}</p>
+                <p><b>Phone No:</b> ${user.phoneNo || "-"}</p>
+                <p><b>Address:</b> ${user.address || "-"}</p>
+            </div>
+
+            ${extraDetails}
         `;
 
-    });
+        document.getElementById("userDetailsModal").classList.remove("hidden");
 
+    } catch (err) {
+        console.error(err);
+        alert("Unable to load user details.");
+    }
 }
+
+function closeUserDetails() {
+    document.getElementById("userDetailsModal").classList.add("hidden");
+}
+
 async function viewPatientDetails(userID) {
     const response = await fetch("../database/getPatientDetails.php?userID=" + userID);
     const patient = await response.json();

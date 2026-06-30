@@ -2,6 +2,8 @@
 
 include "database.php";
 
+header("Content-Type: application/json");
+
 $sql = "
 SELECT
     c.consultationID,
@@ -17,17 +19,19 @@ JOIN attendance att ON q.attendanceID = att.attendanceID
 JOIN appointment ap ON att.appointmentID = ap.appointmentID
 JOIN user patient ON ap.userID = patient.userID
 JOIN user doctor ON c.doctorUserID = doctor.userID
+WHERE q.queueStatus = 'Completed'
+AND c.endTime <= NOW()
 ORDER BY c.startTime DESC
 ";
 
 $result = $conn->query($sql);
 
-$data = [];
-
 if (!$result) {
     echo json_encode(["error" => $conn->error]);
     exit;
 }
+
+$data = [];
 
 while($row = $result->fetch_assoc()){
     $data[] = $row;

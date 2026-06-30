@@ -19,13 +19,46 @@
         View completed consultations and previous clinic visits.
     </p>
 
-    <div class="filter-bar single-filter">
+    <div class="filter-card">
+
+    <div class="filter-row">
+
         <input
             type="text"
             id="historySearch"
+            class="filter-search"
             placeholder="Search consultation ID, queue no, patient, or doctor..."
             onkeyup="filterHistory()">
+
+        <select id="historyStatusFilter" onchange="filterHistory()">
+            <option value="All">All Status</option>
+            <option value="Completed">Completed</option>
+            <option value="Called">Called</option>
+            <option value="Waiting">Waiting</option>
+        </select>
+
+        <div class="date-group">
+            <label>From</label>
+            <input type="date"
+                   id="historyFromDate"
+                   onchange="filterHistory()">
+        </div>
+
+        <div class="date-group">
+            <label>To</label>
+            <input type="date"
+                   id="historyToDate"
+                   onchange="filterHistory()">
+        </div>
+
+        <button class="reset-filter-btn"
+                onclick="resetHistoryFilter()">
+            Reset
+        </button>
+
     </div>
+
+</div>
 
     <div class="table-card">
 
