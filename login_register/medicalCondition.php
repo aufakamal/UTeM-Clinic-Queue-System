@@ -20,16 +20,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <?php include('inc/login_register_header.php'); ?>
 
-    <div class="main">
+    <main class="medicalMain">
 
-        <div class="medical-wrapper">
-
-            <h2>REGISTER</h2>
-
-            <p class="description">
+        <div class="medicalIntro">
+            <h1>REGISTER</h1>
+            <p>
                 Please select your allergies or existing medical conditions.
                 You can edit or change this later in your profile.
             </p>
+        </div>
+
+        <div class="medicalFormCard">
 
             <form action="processRegister.php" method="post" id="medicalForm">
 
@@ -128,26 +129,138 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </div>
 
-    </div>
+    </main>
 
 </div>
-
 <script>
-document.querySelectorAll(".other-checkbox").forEach(function (checkbox) {
-    checkbox.addEventListener("change", function () {
-        const targetBox = document.getElementById(this.dataset.target);
-        const input = targetBox.querySelector("input");
 
-        if (this.checked) {
+// ==========================
+// NONE LOGIC
+// ==========================
+
+function setupNoneCheckbox(groupName){
+
+    const checkboxes = document.querySelectorAll('input[name="' + groupName + '[]"]');
+
+    checkboxes.forEach(function(checkbox){
+
+        checkbox.addEventListener("change", function(){
+
+            if(this.value === "None" && this.checked){
+
+                checkboxes.forEach(function(item){
+
+                    if(item.value !== "None"){
+                        item.checked = false;
+                    }
+
+                });
+
+            }
+
+            if(this.value !== "None" && this.checked){
+
+                checkboxes.forEach(function(item){
+
+                    if(item.value === "None"){
+                        item.checked = false;
+                    }
+
+                });
+
+            }
+
+        });
+
+    });
+
+}
+
+setupNoneCheckbox("allergy");
+setupNoneCheckbox("chronicCondition");
+setupNoneCheckbox("currentMed");
+
+
+
+// ==========================
+// VALIDATION
+// ==========================
+
+document.getElementById("medicalForm").addEventListener("submit", function(event){
+
+    let allergyChecked =
+    document.querySelectorAll('input[name="allergy[]"]:checked').length;
+
+    let chronicChecked =
+    document.querySelectorAll('input[name="chronicCondition[]"]:checked').length;
+
+    let medChecked =
+    document.querySelectorAll('input[name="currentMed[]"]:checked').length;
+
+    if(allergyChecked === 0){
+
+        event.preventDefault();
+
+        alert("Please select Allergy. If none, tick None.");
+
+        return;
+    }
+
+    if(chronicChecked === 0){
+
+        event.preventDefault();
+
+        alert("Please select Chronic Disease. If none, tick None.");
+
+        return;
+    }
+
+    if(medChecked === 0){
+
+        event.preventDefault();
+
+        alert("Please select Current Medication. If none, tick None.");
+
+        return;
+    }
+
+});
+
+
+
+// ==========================
+// OTHERS TEXTBOX
+// ==========================
+
+document.querySelectorAll(".other-checkbox").forEach(function(checkbox){
+
+    checkbox.addEventListener("change", function(){
+
+        const targetBox =
+        document.getElementById(this.dataset.target);
+
+        const input =
+        targetBox.querySelector("input");
+
+        if(this.checked){
+
             targetBox.style.display = "block";
             input.required = true;
-        } else {
+
+        }
+
+        else{
+
             targetBox.style.display = "none";
             input.required = false;
             input.value = "";
+
         }
+
     });
+
 });
+
 </script>
 
 </body>

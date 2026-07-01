@@ -7,107 +7,115 @@ body {
     margin: 0;
     min-height: 100%;
     font-family: Arial, sans-serif;
+    color: #0F172A;
     background-color: #EFF6FF;
-    color: #1E293B;
 }
 
 .container {
     min-height: 100vh;
-    background-color: #EFF6FF;
+    background: linear-gradient(180deg, #F8FBFF 0%, #EFF6FF 100%);
     display: flex;
     flex-direction: column;
 }
 
+/* HEADER */
 .header {
-    height: 75px;
-    background-color: #1E3A8A;
+    height: 88px;
+    background-color: #FFFFFF;
     border-bottom: 1px solid #D7E3EA;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.10);
+
     display: flex;
     align-items: center;
-    padding: 0 14px;
+    padding: 0 18px;
     flex-shrink: 0;
 }
 
 .logo-box {
-    background-color: white;
-    width: 90px;
-    height: 55px;
-    margin-right: 20px;
+    background-color: #FFFFFF;
+    width: 108px;
+    height: 62px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+    margin-right: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.logo-box img,
-.icons img {
-    width: 100%;
-    height: 100%;
+.logo-box img {
+    width: 95%;
+    height: 95%;
     object-fit: contain;
 }
 
 .title {
     flex: 1;
-    font-size: 24px;
+    font-size: 25px;
+    line-height: 1.25;
     font-weight: 700;
-    color: white;
+    color: #071A52;
 }
 
 .icons {
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 22px;
 }
 
 .icons img {
-    width: 32px;
-    height: 32px;
-}
-
-.main {
-    flex: 1;
-    position: relative;
-    background-color: #EFF6FF;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 35px 20px;
-}
-
-.back {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-}
-
-.back img {
-    width: 22px;
-    height: 22px;
+    width: 34px;
+    height: 34px;
     object-fit: contain;
 }
 
-.register-wrapper {
+/* REGISTER PAGE */
+.registerMain {
+    flex: 1;
+    min-height: calc(100vh - 88px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 48px 20px;
+}
+
+.registerIntro {
+    text-align: center;
+    margin-bottom: 26px;
+}
+
+.registerIntro h1 {
+    margin: 0 0 14px;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #071A52;
+}
+
+.registerIntro p {
+    margin: 0;
+    font-size: 16px;
+    color: #334155;
+}
+
+.registerCard {
     width: 100%;
     max-width: 760px;
-}
 
-.register-wrapper h2 {
-    text-align: center;
-    font-size: 32px;
-    color: #0F172A;
-    margin: 0 0 8px;
-}
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 20px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.10);
 
-.subtitle {
-    text-align: center;
-    font-size: 14px;
-    color: #475569;
-    margin: 0 0 25px;
+    padding: 34px 38px;
 }
 
 form {
     width: 100%;
-    background-color: #FFFFFF;
-    padding: 34px 38px;
-    border-radius: 24px;
-    border: 1px solid #D7E3EA;
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.09);
 }
 
 .form-grid {
@@ -126,10 +134,10 @@ form {
 }
 
 label {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
-    color: #0F172A;
-    margin-bottom: 7px;
+    color: #071A52;
+    margin-bottom: 9px;
 }
 
 input,
@@ -137,21 +145,22 @@ select,
 textarea {
     width: 100%;
     border: 1px solid #CBD5E1;
-    border-radius: 10px;
-    background-color: white;
-    padding: 0 14px;
-    font-size: 14px;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    padding: 0 16px;
+    font-size: 15px;
     font-family: Arial, sans-serif;
+    color: #0F172A;
 }
 
 input,
 select {
-    height: 42px;
+    height: 48px;
 }
 
 textarea {
-    height: 80px;
-    padding-top: 12px;
+    height: 82px;
+    padding-top: 13px;
     resize: none;
 }
 
@@ -159,65 +168,16 @@ input:focus,
 select:focus,
 textarea:focus {
     outline: none;
-    border-color: #0F766E;
-    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.13);
-}
-
-.submit-button {
-    display: block;
-    width: 70%;
-    height: 42px;
-    margin: 28px auto 14px;
-    background-color: #0F766E;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.submit-button:hover {
-    background-color: #115E59;
-}
-
-.login-link {
-    margin: 0;
-    margin-top: 25px;
-    text-align: center;
-    font-size: 13px;
-    color: #475569;
-}
-
-.login-link a {
-    color: #0369A1;
-    text-decoration: none;
-}
-
-@media (max-width: 700px) {
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .input-group.full {
-        grid-column: span 1;
-    }
-
-    form {
-        padding: 28px 24px;
-    }
-
-    .submit-button {
-        width: 100%;
-    }
+    border-color: #93C5FD;
+    box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.35);
 }
 
 .button-group {
     display: flex;
     justify-content: center;
-    gap: 18px;
-    margin-top: 30px;
-    margin-bottom: 20px;
+    gap: 22px;
+    margin-top: 34px;
+    margin-bottom: 22px;
 }
 
 .back-button {
@@ -228,7 +188,6 @@ textarea:focus {
     color: white;
 
     border-radius: 10px;
-
     text-decoration: none;
 
     display: flex;
@@ -262,4 +221,85 @@ textarea:focus {
 
 .submit-button:hover {
     background-color: #115E59;
+}
+
+.login-link {
+    margin: 0;
+    text-align: center;
+    font-size: 15px;
+    color: #334155;
+}
+
+.login-link a {
+    color: #2563EB;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+    .header {
+        height: auto;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .logo-box {
+        width: 86px;
+        height: 52px;
+        margin-right: 10px;
+    }
+
+    .title {
+        font-size: 16px;
+    }
+
+    .icons {
+        gap: 10px;
+    }
+
+    .icons img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .registerMain {
+        min-height: auto;
+        padding: 40px 18px;
+    }
+
+    .registerIntro h1 {
+        font-size: 34px;
+    }
+
+    .registerIntro p {
+        font-size: 15px;
+    }
+
+    .registerCard {
+        max-width: 430px;
+        padding: 32px 26px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .input-group.full {
+        grid-column: span 1;
+    }
+
+    .button-group {
+        gap: 14px;
+    }
+
+    .back-button,
+    .submit-button {
+        width: 125px;
+    }
 }

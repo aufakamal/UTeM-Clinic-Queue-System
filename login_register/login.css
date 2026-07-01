@@ -5,209 +5,179 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #F8FAFC;
-    color: #1E293B;
+    color: #0F172A;
+    background-color: #EFF6FF;
 }
 
 .container {
     min-height: 100vh;
-    background-color: #EFF6FF;
-
+    background: linear-gradient(180deg, #F8FBFF 0%, #EFF6FF 100%);
     display: flex;
     flex-direction: column;
 }
 
+/* HEADER */
 .header {
-    height: 75px;
-
-    background-color: #1E3A8A;
+    height: 88px;
+    background-color: #FFFFFF;
     border-bottom: 1px solid #D7E3EA;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.10);
 
     display: flex;
     align-items: center;
-
-    padding: 0 14px;
+    padding: 0 18px;
 }
 
 .logo-box {
-    background-color: white;
+    background-color: #FFFFFF;
+    width: 108px;
+    height: 62px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+    margin-right: 24px;
 
-    width: 90px;
-    height: 55px;
-
-    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.logo-box img,
-.icons img {
-    width: 100%;
-    height: 100%;
+.logo-box img {
+    width: 95%;
+    height: 95%;
     object-fit: contain;
 }
 
 .title {
     flex: 1;
-
-    font-size: 24px;
+    font-size: 25px;
+    line-height: 1.25;
     font-weight: 700;
-
-    color: white;
+    color: #071A52;
 }
 
 .icons {
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 22px;
 }
 
 .icons img {
-    width: 32px;
-    height: 32px;
-}
-
-/* FIXED */
-.main {
-    flex: 1;
-
-    display: flex;
-
-    background-color: #EFF6FF;
-}
-
-.left-sec,
-.right-sec {
-    width: 50%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.left-sec {
-    border-right: 1px solid #D7E3EA;
-
-    position: relative;
-
-    gap: 28px;
-}
-
-.back {
-    position: absolute;
-
-    top: 18px;
-    left: 18px;
-
     width: 34px;
     height: 34px;
-
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-
-    cursor: pointer;
-}
-
-.back img {
-    width: 22px;
-    height: 22px;
     object-fit: contain;
 }
 
-.left-sec h2 {
-    font-size: 40px;
-    font-weight: 400;
+/* LOGIN PAGE */
+.loginMain {
+    flex: 1;
+    min-height: calc(100vh - 88px);
 
-    text-align: center;
-    line-height: 1.25;
-
-    color: #0F172A;
-}
-
-.right-sec {
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 55px 20px;
 }
 
-.right-sec h1 {
-    font-size: 50px;
-    font-weight: 400;
+.loginIntro {
+    text-align: center;
+    margin-bottom: 34px;
+}
 
-    color: #0F172A;
+.loginIntro h1 {
+    margin: 0 0 18px;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #071A52;
+}
 
-    margin: 0 0 30px;
+.loginIntro p {
+    margin: 8px 0;
+    font-size: 18px;
+    color: #334155;
+}
+
+.loginCard {
+    width: 100%;
+    max-width: 590px;
+
+    background-color: #FFFFFF;
+    border: 1px solid #D7E3EA;
+    border-radius: 20px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.10);
+
+    padding: 42px 52px;
 }
 
 form {
-    width: 430px;
-
-    background-color: #FFFFFF;
-
-    padding: 38px;
-
-    border-radius: 20px;
-    border: 1px solid #D7E3EA;
-
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.09);
+    width: 100%;
 }
 
 label {
     display: block;
+    font-size: 17px;
+    font-weight: 700;
+    color: #071A52;
+    margin-bottom: 10px;
+}
 
-    font-size: 15px;
-    font-weight: 600;
-
-    color: #0F172A;
-
-    margin-top: 14px;
-    margin-bottom: 7px;
+label:not(:first-child) {
+    margin-top: 24px;
 }
 
 input,
 select {
     width: 100%;
-    height: 46px;
+    height: 58px;
 
     border: 1px solid #CBD5E1;
-    border-radius: 10px;
+    border-radius: 12px;
 
     background-color: #FFFFFF;
 
-    padding: 0 14px;
+    padding: 0 16px;
 
-    font-size: 15px;
+    font-size: 16px;
+    color: #0F172A;
 }
 
 input:focus,
 select:focus {
     outline: none;
-
-    border-color: #0284C7;
-    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    border-color: #93C5FD;
+    box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.35);
 }
 
 .forgot {
-    display: block;
+    display: inline-block;
+    margin-top: 12px;
 
-    margin-top: 8px;
-
-    font-size: 12px;
-
-    color: #0369A1;
+    font-size: 15px;
+    color: #2563EB;
     text-decoration: none;
+}
+
+.forgot:hover,
+.registerText a:hover {
+    text-decoration: underline;
 }
 
 .buttonRow {
     display: flex;
     justify-content: center;
-    gap: 14px;
-    margin: 26px 0 14px;
+    gap: 22px;
+    margin: 34px 0 22px;
 }
 
+/* BUTTON WARNA ASAL DIKEKALKAN */
 .backBtn,
 .loginBtn {
     display: inline-block;
 
-    width: 120px;
-    height: 42px;
+    width: 150px;
+    height: 48px;
 
     margin: 0;
 
@@ -215,11 +185,11 @@ select:focus {
     border: none;
 
     text-align: center;
-    line-height: 42px;
+    line-height: 48px;
 
     text-decoration: none;
 
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
 }
@@ -242,51 +212,71 @@ select:focus {
     background-color: #115E59;
 }
 
-p {
+.registerText {
     margin: 0;
-
-    font-size: 12px;
+    font-size: 15px;
     text-align: center;
-
-    color: #475569;
+    color: #334155;
 }
 
-p a {
-    color: #0369A1;
+.registerText a {
+    color: #2563EB;
     text-decoration: none;
+    font-weight: 600;
 }
 
 /* RESPONSIVE */
+@media (max-width: 768px) {
 
-@media (max-width: 900px) {
-
-    .main {
-        flex-direction: column;
+    .header {
+        height: auto;
+        padding: 12px;
+        gap: 10px;
     }
 
-    .left-sec,
-    .right-sec {
-        width: 100%;
-        padding: 30px 20px;
+    .logo-box {
+        width: 86px;
+        height: 52px;
+        margin-right: 10px;
     }
 
-    .left-sec {
-        border-right: none;
-        border-bottom: 1px solid #D7E3EA;
+    .title {
+        font-size: 16px;
     }
 
-    .left-sec h2 {
-        font-size: 28px;
+    .icons {
+        gap: 10px;
     }
 
-    .right-sec h1 {
-        font-size: 36px;
-        text-align: center;
+    .icons img {
+        width: 28px;
+        height: 28px;
     }
 
-    form {
-        width: 100%;
+    .loginMain {
+        min-height: auto;
+        padding: 45px 18px;
+    }
+
+    .loginIntro h1 {
+        font-size: 32px;
+    }
+
+    .loginIntro p {
+        font-size: 15px;
+    }
+
+    .loginCard {
         max-width: 430px;
+        padding: 32px 26px;
+    }
+
+    .buttonRow {
+        gap: 14px;
+    }
+
+    .backBtn,
+    .loginBtn {
+        width: 125px;
     }
 }
-
