@@ -81,10 +81,7 @@ if (!empty($patient['dateOfBirth'])) {
 
             <div class="profileActions">
                 <span class="roleName">Patient</span>
-<<<<<<< HEAD
-=======
                 <span class="roleName"><?php echo htmlspecialchars($patient['gender']); ?></span>
->>>>>>> origin/master
                 <a href="editProfilePatient.php" class="editBtn">Change Profile Information</a>
             </div>
         </div>
@@ -98,11 +95,6 @@ if (!empty($patient['dateOfBirth'])) {
                 <label>ID</label>
                 <input type="text" value="<?php echo htmlspecialchars($patient['userID']); ?>" readonly>
 
-<<<<<<< HEAD
-                <label>Phone Number</label>
-                <input type="text" value="<?php echo htmlspecialchars($patient['phoneNo']); ?>" readonly>
-
-=======
                 <label>Date of Birth</label>
                 <input type="text" value="<?php echo htmlspecialchars($dobDisplay); ?>" readonly>
 
@@ -112,7 +104,6 @@ if (!empty($patient['dateOfBirth'])) {
                 <label>Address</label>
                 <input type="text" value="<?php echo htmlspecialchars($patient['address'] ?? 'Not set'); ?>" readonly>
 
->>>>>>> origin/master
                 <label>Password</label>
                 <input type="password" value="********" readonly>
 

@@ -64,11 +64,8 @@ $emergencyContactPhone = trim($_POST['emergencyContactPhone']);
 
 $sqlUser = "UPDATE user
             SET fullName = ?,
-<<<<<<< HEAD
-=======
                 gender = ?,
                 dateOfBirth = ?,
->>>>>>> origin/master
                 email = ?,
                 phoneNo = ?,
                 address = ?
@@ -76,15 +73,10 @@ $sqlUser = "UPDATE user
 
 $stmtUser = $conn->prepare($sqlUser);
 $stmtUser->bind_param(
-<<<<<<< HEAD
-    "sssss",
-    $fullName,
-=======
     "sssssss",
     $fullName,
     $gender,
     $dateOfBirth,
->>>>>>> origin/master
     $email,
     $phoneNo,
     $address,
