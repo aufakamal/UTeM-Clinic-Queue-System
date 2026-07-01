@@ -55,18 +55,38 @@ $patient_id = $_GET['patient_id'] ?? 0;
 
 $visitSql = "
     SELECT
-        v.visitID,
-        v.reason,
-        v.findings,
-        v.diagnosis,
-        v.treatment,
-        v.prescription_text,
-        v.visitDate,
+        c.consultationID AS visitID,
+        c.reasonForVisit AS reason,
+        c.clinicalFindings AS findings,
+        c.diagnosis,
+        c.treatmentPlan AS treatment,
+        COALESCE(
+            GROUP_CONCAT(
+                CONCAT(m.medicineName, ' - ', pi.dosage)
+                SEPARATOR ', '
+            ),
+            'No medication'
+        ) AS prescription_text,
+        c.startTime AS visitDate,
         u.fullName AS doctor_name
-    FROM visits v
-    LEFT JOIN user u ON v.doctorID = u.userID
-    WHERE v.patientID = ?
-    ORDER BY v.visitDate DESC
+    FROM appointment ap
+    INNER JOIN attendance a ON ap.appointmentID = a.appointmentID
+    INNER JOIN queue q ON a.attendanceID = q.attendanceID
+    INNER JOIN consultation c ON q.queueID = c.queueID
+    INNER JOIN user u ON c.doctorUserID = u.userID
+    LEFT JOIN prescription p ON p.consultationID = c.consultationID
+    LEFT JOIN prescription_item pi ON p.prescriptionID = pi.prescriptionID
+    LEFT JOIN medicine m ON pi.medicineID = m.medicineID
+    WHERE ap.userID = ?
+    GROUP BY
+        c.consultationID,
+        c.reasonForVisit,
+        c.clinicalFindings,
+        c.diagnosis,
+        c.treatmentPlan,
+        c.startTime,
+        u.fullName
+    ORDER BY c.startTime DESC
 ";
 
 $stmt = $conn->prepare($visitSql);
@@ -75,7 +95,7 @@ $visitResult = null;
 
 if ($stmt) {
 
-    $stmt->bind_param("i", $patient_id);
+    $stmt->bind_param("s", $patient_id);
     $stmt->execute();
     $visitResult = $stmt->get_result();
 
