@@ -361,7 +361,7 @@ if ($medicineResult && $medicineResult->num_rows > 0)
                     <div class="prescriptionPanel" style="display:none;">
 
                         <div class="prescriptionArea">
-                            <>
+                            <div>
                                 <h3>Allergies</h3>
                                 <p class="allergyInfo"></p>
 
@@ -405,10 +405,15 @@ if ($medicineResult && $medicineResult->num_rows > 0)
                                 <label>Doctor Note</label>
                                 <textarea class="editInstructions"></textarea>
 
-                             <button type="submit" class="savePrescriptionBtn" onclick="setWorkspaceAction('save')">
-                                Save Changes
-                            </button>
-                        </div>
+                                <button
+                                    type="submit"
+                                    class="savePrescriptionBtn"
+                                    onclick="setWorkspaceAction('save')">
+                                    Save Changes
+                                </button>
+
+                            </div>
+                            </div>
 
                             <div>
                                 <h3>Safety Check</h3>
@@ -429,14 +434,8 @@ if ($medicineResult && $medicineResult->num_rows > 0)
                             </div>
 
                             <div class="actionButtons">
-                                <button type="submit" class="readyBtn" onclick="setWorkspaceAction('ready')">
-                                Mark as Ready
-                            </button>
-
-                            <button type="submit" class="dispenseBtn" onclick="setWorkspaceAction('dispense')">
-                                Dispense
-                            </button>
-
+                                <button class="readyBtn">Mark as Ready</button>
+                                <button class="dispenseBtn">Dispense</button>
                             </div>
                         </div>
 

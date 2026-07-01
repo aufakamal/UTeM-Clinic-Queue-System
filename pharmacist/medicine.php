@@ -155,12 +155,12 @@ $result = $conn->query($sql);
 
                         <div class="searchMedicineBox">
                             <label>Search Medicine</label>
-                            <input 
-                                type="text" 
-                                name="search" 
-                                placeholder="Search by medicine name or generic name..." 
-                                value="<?php echo $search; ?>"
-                            >
+                          <input 
+                            type="text" 
+                            id="medicineSearchInput"
+                            placeholder="Search by medicine name or generic name..."
+                            onkeyup="searchMedicineLive()"
+                        >
                         </div>
 
                         <div class="filterMedicineBox">
@@ -239,7 +239,7 @@ $result = $conn->query($sql);
                 {
                     while ($row = $result->fetch_assoc())
                     {
-                        echo "<tr>";
+                        echo "<tr class='medicineRow' data-search='" . strtolower($row['medicineName'] . " " . $row['genericName']) . "'>";
                         echo "<td>" . $row['medicineID'] . "</td>";
                         echo "<td>" . $row['medicineName'] . "</td>";
                         echo "<td>" . $row['genericName'] . "</td>";

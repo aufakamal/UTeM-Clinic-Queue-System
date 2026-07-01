@@ -39,3 +39,9 @@ if (dailyChart)
         }
     });
 }
+
+function changeReportMonth()
+{
+    const month = document.getElementById("reportMonth").value;
+    window.location.href = "report.php?month=" + month;
+}

@@ -11,6 +11,7 @@ const patientName = document.querySelector(".patientName");
 const queueNo = document.querySelector(".queueNo");
 const doctorName = document.querySelector(".doctorName");
 const allergyInfo = document.querySelector(".allergyInfo");
+const prescriptionInfo = document.querySelector(".prescriptionInfo");
 
 const pharmacistNote = document.querySelector(".pharmacistNote");
 const prescriptionIDInput = document.querySelector(".prescriptionIDInput");
@@ -22,11 +23,14 @@ const editDosage = document.querySelector(".editDosage");
 const editFrequency = document.querySelector(".editFrequency");
 const editDuration = document.querySelector(".editDuration");
 const editInstructions = document.querySelector(".editInstructions");
-
 const safetyChecks = document.querySelectorAll(".prescriptionArea input[type='checkbox']");
 
 const readyBtn = document.querySelector(".readyBtn");
 const dispenseBtn = document.querySelector(".dispenseBtn");
+
+const messagePopup = document.querySelector(".messagePopup");
+const messageText = document.querySelector(".messageText");
+const okBtn = document.querySelector(".okBtn");
 
 const overviewTab = document.querySelector(".overviewTab");
 const visitsTab = document.querySelector(".visitsTab");
@@ -41,58 +45,50 @@ const overviewChronicCondition = document.querySelector(".overviewChronicConditi
 const overviewCurrentMed = document.querySelector(".overviewCurrentMed");
 const workspaceVisitsHistory = document.getElementById("workspaceVisitsHistory");
 
+
 function showWorkspaceTab(tabName)
 {
-    if (overviewPanel) overviewPanel.style.display = "none";
-    if (visitsPanel) visitsPanel.style.display = "none";
-    if (prescriptionPanel) prescriptionPanel.style.display = "none";
+    overviewPanel.style.display = "none";
+    visitsPanel.style.display = "none";
+    prescriptionPanel.style.display = "none";
 
-    if (overviewTab) overviewTab.classList.remove("activeTab");
-    if (visitsTab) visitsTab.classList.remove("activeTab");
-    if (prescriptionTab) prescriptionTab.classList.remove("activeTab");
+    overviewTab.classList.remove("activeTab");
+    visitsTab.classList.remove("activeTab");
+    prescriptionTab.classList.remove("activeTab");
 
     if (tabName === "overview")
     {
-        if (overviewPanel) overviewPanel.style.display = "block";
-        if (overviewTab) overviewTab.classList.add("activeTab");
+        overviewPanel.style.display = "block";
+        overviewTab.classList.add("activeTab");
     }
 
     if (tabName === "visits")
     {
-        if (visitsPanel) visitsPanel.style.display = "block";
-        if (visitsTab) visitsTab.classList.add("activeTab");
+        visitsPanel.style.display = "block";
+        visitsTab.classList.add("activeTab");
     }
 
     if (tabName === "prescription")
     {
-        if (prescriptionPanel) prescriptionPanel.style.display = "block";
-        if (prescriptionTab) prescriptionTab.classList.add("activeTab");
+        prescriptionPanel.style.display = "block";
+        prescriptionTab.classList.add("activeTab");
     }
 }
 
-if (overviewTab)
+overviewTab.addEventListener("click", () =>
 {
-    overviewTab.addEventListener("click", () =>
-    {
-        showWorkspaceTab("overview");
-    });
-}
+    showWorkspaceTab("overview");
+});
 
-if (visitsTab)
+visitsTab.addEventListener("click", () =>
 {
-    visitsTab.addEventListener("click", () =>
-    {
-        showWorkspaceTab("visits");
-    });
-}
+    showWorkspaceTab("visits");
+});
 
-if (prescriptionTab)
+prescriptionTab.addEventListener("click", () =>
 {
-    prescriptionTab.addEventListener("click", () =>
-    {
-        showWorkspaceTab("prescription");
-    });
-}
+    showWorkspaceTab("prescription");
+});
 
 function buildWorkspaceVisits(queue)
 {
@@ -125,10 +121,7 @@ function buildWorkspaceVisits(queue)
         `;
     }
 
-    if (workspaceVisitsHistory)
-    {
-        workspaceVisitsHistory.innerHTML = rows;
-    }
+    document.getElementById("workspaceVisitsHistory").innerHTML = rows;
 }
 
 viewButtons.forEach((button) =>
@@ -138,43 +131,33 @@ viewButtons.forEach((button) =>
         const queue = button.dataset.queue;
         selectedQueue = queue;
 
-        if (emptyWorkspace) emptyWorkspace.style.display = "none";
-        if (prescriptionDetails) prescriptionDetails.style.display = "block";
+        emptyWorkspace.style.display = "none";
+        prescriptionDetails.style.display = "block";
 
         if (patientRecordView)
         {
             patientRecordView.style.display = "none";
         }
 
-        if (patientName) patientName.textContent = patients[queue].name;
-        if (queueNo) queueNo.textContent = patients[queue].queue;
-        if (doctorName) doctorName.textContent = patients[queue].doctor;
-        if (allergyInfo) allergyInfo.textContent = patients[queue].allergy;
+        patientName.textContent = patients[queue].name;
+        queueNo.textContent = patients[queue].queue;
+        doctorName.textContent = patients[queue].doctor;
+        allergyInfo.textContent = patients[queue].allergy;
 
-        if (overviewAllergyInfo) overviewAllergyInfo.textContent = patients[queue].allergy;
-        if (overviewChronicCondition) overviewChronicCondition.textContent = patients[queue].chronicCondition;
-        if (overviewCurrentMed) overviewCurrentMed.textContent = patients[queue].currentMed;
+        overviewAllergyInfo.textContent = patients[queue].allergy;
+        overviewChronicCondition.textContent = patients[queue].chronicCondition;
+        overviewCurrentMed.textContent = patients[queue].currentMed;
+        prescriptionIDInput.value = patients[queue].prescriptionID;
+        prescriptionItemIDInput.value = patients[queue].prescriptionItemID;
 
-        if (prescriptionIDInput) prescriptionIDInput.value = patients[queue].prescriptionID;
-        if (prescriptionItemIDInput) prescriptionItemIDInput.value = patients[queue].prescriptionItemID;
+        editMedicine.value = patients[queue].medicineID;
+        editQuantity.value = patients[queue].quantity;
+        editDosage.value = patients[queue].dosage;
+        editFrequency.value = patients[queue].frequency;
+        editDuration.value = patients[queue].duration;
+        editInstructions.value = patients[queue].instructions;
 
-        if (editMedicine) editMedicine.value = patients[queue].medicineID;
-        if (editQuantity) editQuantity.value = patients[queue].quantity;
-        if (editDosage) editDosage.value = patients[queue].dosage;
-        if (editFrequency) editFrequency.value = patients[queue].frequency;
-        if (editDuration) editDuration.value = patients[queue].duration;
-        if (editInstructions) editInstructions.value = patients[queue].instructions;
-
-        if (pharmacistNote)
-        {
-            pharmacistNote.value = patients[queue].pharmacistNote || "";
-        }
-
-        safetyChecks.forEach((check) =>
-        {
-            check.checked = false;
-        });
-
+        pharmacistNote.value = patients[queue].pharmacistNote;
         buildWorkspaceVisits(queue);
         showWorkspaceTab("overview");
     });
@@ -261,84 +244,6 @@ function formatDate(dateValue)
     });
 }
 
-function safetyChecked()
-{
-    let checked = false;
-
-    safetyChecks.forEach((check) =>
-    {
-        if (check.checked)
-        {
-            checked = true;
-        }
-    });
-
-    return checked;
-}
-
-function setWorkspaceAction(action)
-{
-    const workspaceActionInput = document.querySelector(".workspaceActionInput");
-
-    if (workspaceActionInput)
-    {
-        workspaceActionInput.value = action;
-    }
-}
-
-function validateWorkspaceForm()
-{
-    const workspaceActionInput = document.querySelector(".workspaceActionInput");
-
-    if (selectedQueue === "")
-    {
-        alert("Please select a patient first.");
-        return false;
-    }
-
-    if (workspaceActionInput && 
-        (workspaceActionInput.value === "ready" || workspaceActionInput.value === "dispense"))
-    {
-        if (!safetyChecked())
-        {
-            alert("Please complete the Safety Check before proceeding.");
-            return false;
-        }
-    }
-
-    if (editQuantity && editQuantity.value <= 0)
-    {
-        alert("Quantity must be more than 0.");
-        return false;
-    }
-
-    return true;
-}
-
-if (readyBtn)
-{
-    readyBtn.addEventListener("click", () =>
-    {
-        if (selectedQueue === "")
-        {
-            alert("Please select a patient first.");
-            return;
-        }
-    });
-}
-
-if (dispenseBtn)
-{
-    dispenseBtn.addEventListener("click", () =>
-    {
-        if (selectedQueue === "")
-        {
-            alert("Please select a patient first.");
-            return;
-        }
-    });
-}
-
 function viewPatientRecord(userID)
 {
     const record = patientRecordsData[userID];
@@ -351,22 +256,8 @@ function viewPatientRecord(userID)
 
     selectedQueue = "";
 
-    if (emptyWorkspace)
-    {
-        emptyWorkspace.style.display = "none";
-    }
-
-    if (prescriptionDetails)
-    {
-        prescriptionDetails.style.display = "none";
-    }
-
-    if (!patientRecordView)
-    {
-        alert("patientRecordView not found.");
-        return;
-    }
-
+    emptyWorkspace.style.display = "none";
+    prescriptionDetails.style.display = "none";
     patientRecordView.style.display = "block";
 
     let historyRows = "";
@@ -375,29 +266,12 @@ function viewPatientRecord(userID)
     {
         record.history.forEach((item) =>
         {
-            let statusClass = "pendingStatus";
-
-            if (item.status === "Dispensed")
-            {
-                statusClass = "doneStatus";
-            }
-            else if (item.status === "Ready")
-            {
-                statusClass = "doneStatus";
-            }
-            else if (item.status === "Pending")
-            {
-                statusClass = "waitingStatus";
-            }
-
             historyRows += `
                 <tr>
-                    <td>${formatValue(item.queueNo)}</td>
                     <td>${formatValue(item.dateTime)}</td>
                     <td>${formatValue(item.doctorName)}</td>
                     <td>${formatValue(item.medicineName)}</td>
                     <td>${formatValue(item.quantity)}</td>
-                    <td><span class="${statusClass}">${formatValue(item.status)}</span></td>
                 </tr>
             `;
         });
@@ -406,127 +280,143 @@ function viewPatientRecord(userID)
     {
         historyRows = `
             <tr>
-                <td colspan="6">No prescription history found.</td>
+                <td colspan="6">No visit history found.</td>
             </tr>
         `;
     }
 
     patientRecordView.innerHTML = `
-        <div class="viewOnlyRecord">
+        <div class="searchPatientRecord">
 
-            <div class="recordTop">
-                <h2>Patient Medical Record <span>(View Only)</span></h2>
-            </div>
+            <h2 class="searchRecordTitle">
+                Patient Medical Record <span>(View Only)</span>
+            </h2>
 
-            <div class="viewOnlyAlert">
+            <div class="searchNotice">
                 You are viewing this patient's medical record. Information shown below is for reference only.
             </div>
 
-            <div class="medicalInfoCard">
-                <div>
-                    <p>Full Name</p>
-                    <div class="recordValue">${formatValue(record.fullName)}</div>
+            <div class="searchPatientInfo">
+                <p><b>Full Name:</b> ${formatValue(record.fullName)}</p>
+                <p><b>Gender:</b> ${formatValue(record.gender)}</p>
+                <p><b>ID:</b> ${formatValue(record.userID)}</p>
+                <p><b>Blood Type:</b> ${formatValue(record.bloodType)}</p>
+                <p><b>Date of Birth:</b> ${formatDate(record.dateOfBirth)}</p>
+                <p><b>Patient Type:</b> ${formatValue(record.patientType)}</p>
+            </div>
 
-                    <p>Patient ID</p>
-                    <div class="recordValue">${formatValue(record.userID)}</div>
+            <div class="searchMiniTabs">
+                <button class="active" onclick="switchSearchTab('overview', this)">Overview</button>
+                <button onclick="switchSearchTab('visits', this)">Visits</button>
+                <button onclick="switchSearchTab('prescription', this)">Prescription</button>
+            </div>
+
+            <div id="searchOverviewSection">
+                <div class="searchViewBlock">
+                    <h3>Allergies</h3>
+                    <p>${formatValue(record.allergy)}</p>
                 </div>
 
-                <div>
-                    <p>Gender</p>
-                    <div class="recordValue">${formatValue(record.gender)}</div>
-
-                    <p>Date of Birth</p>
-                    <div class="recordValue">${formatDate(record.dateOfBirth)}</div>
+                <div class="searchViewBlock">
+                    <h3>Chronic Diseases</h3>
+                    <p>${formatValue(record.chronicCondition)}</p>
                 </div>
 
-                <div>
-                    <p>Blood Type</p>
-                    <div class="recordValue">${formatValue(record.bloodType)}</div>
-
-                    <p>Patient Type</p>
-                    <div class="recordValue">${formatValue(record.patientType)}</div>
+                <div class="searchViewBlock">
+                    <h3>Current Medication</h3>
+                    <p>${formatValue(record.currentMed)}</p>
                 </div>
             </div>
 
-            <div class="medicalBlock">
-                <h3>Allergies</h3>
-                <p>${formatValue(record.allergy)}</p>
+            <div id="searchVisitsSection" style="display:none;">
+                <div class="searchViewBlock">
+                    <h3>Prescription History</h3>
+                    <table class="historyTable">
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Doctor</th>
+                            <th>Medicine</th>
+                            <th>Quantity</th>
+                        </tr>
+                        ${historyRows}
+                    </table>
+                </div>
             </div>
 
-            <div class="medicalBlock">
-                <h3>Chronic Condition</h3>
-                <p>${formatValue(record.chronicCondition)}</p>
-            </div>
-
-            <div class="medicalBlock">
-                <h3>Current Medication</h3>
-                <p>${formatValue(record.currentMed)}</p>
-            </div>
-
-            <div class="medicalBlock">
-                <h3>Prescription History</h3>
-
-                <table class="historyTable">
-                    <tr>
-                        <th>Queue No.</th>
-                        <th>Date & Time</th>
-                        <th>Doctor</th>
-                        <th>Medicine</th>
-                        <th>Quantity</th>
-                        <th>Status</th>
-                    </tr>
-
-                    ${historyRows}
-                </table>
-            </div>
-
-            <div class="medicalBlock">
-                <h3>Pharmacy Note (Read Only)</h3>
-                <p>No additional notes for this patient.</p>
-            </div>
-
-            <div class="viewOnlyNote">
-                This is a read-only medical record. Only doctors are allowed to edit medical information.
+            <div id="searchPrescriptionSection" style="display:none;">
+                <div class="searchViewBlock">
+                    <h3>Prescription</h3>
+                    <table class="historyTable">
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Quantity</th>
+                            <th>Dosage</th>
+                            <th>Frequency</th>
+                            <th>Duration</th>
+                            <th>Doctor Note</th>
+                        </tr>
+                        ${buildSearchPrescriptionRows(record)}
+                    </table>
+                </div>
             </div>
 
         </div>
     `;
 }
 
-function setWorkspaceAction(action)
+function switchSearchTab(tab, btn)
 {
-    const workspaceActionInput = document.querySelector(".workspaceActionInput");
-
-    if (workspaceActionInput)
+    document.querySelectorAll(".searchMiniTabs button").forEach((button) =>
     {
-        workspaceActionInput.value = action;
+        button.classList.remove("active");
+    });
+
+    btn.classList.add("active");
+
+    document.getElementById("searchOverviewSection").style.display = "none";
+    document.getElementById("searchVisitsSection").style.display = "none";
+    document.getElementById("searchPrescriptionSection").style.display = "none";
+
+    if (tab === "overview")
+    {
+        document.getElementById("searchOverviewSection").style.display = "block";
+    }
+    else if (tab === "visits")
+    {
+        document.getElementById("searchVisitsSection").style.display = "block";
+    }
+    else
+    {
+        document.getElementById("searchPrescriptionSection").style.display = "block";
     }
 }
 
-function validateWorkspaceForm()
+function buildSearchPrescriptionRows(record)
 {
-    const workspaceActionInput = document.querySelector(".workspaceActionInput");
-
-    if (selectedQueue === "")
+    if (!record.history || record.history.length === 0)
     {
-        alert("Please select a patient first.");
-        return false;
+        return `
+            <tr>
+                <td colspan="6">No prescription found.</td>
+            </tr>
+        `;
     }
 
-    if (workspaceActionInput.value === "ready" || workspaceActionInput.value === "dispense")
-    {
-        if (!safetyChecked())
-        {
-            alert("Please complete at least one Safety Check before proceeding.");
-            return false;
-        }
-    }
+    let rows = "";
 
-    if (editQuantity && editQuantity.value <= 0)
+    record.history.forEach((item) =>
     {
-        alert("Quantity must be more than 0.");
-        return false;
-    }
+        rows += `
+            <tr>
+                <td>${formatValue(item.medicineName)}</td>
+                <td>${formatValue(item.quantity)}</td>
+                <td>${formatValue(item.dosage)}</td>
+                <td>${formatValue(item.frequency)}</td>
+                <td>${formatValue(item.duration)}</td>
+                <td>${formatValue(item.instructions)}</td
+            </tr>
+        `;
+    });
 
-    return true;
+    return rows;
 }

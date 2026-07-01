@@ -13,11 +13,14 @@ function getCount($conn, $sql)
     $row = $result->fetch_assoc();
     return $row['total'];
 }
-
-$pending = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Pending'");
-$ready = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Ready'");
-$dispensed = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Dispensed'");
-$totalPrescription = getCount($conn, "SELECT COUNT(*) AS total FROM prescription");
+$selectedMonth = isset($_GET['month']) ? $_GET['month'] : date('m');
+$selectedYear = date('Y');
+$monthFilter = "MONTH(prescriptionDate) = '$selectedMonth' 
+                AND YEAR(prescriptionDate) = '$selectedYear'";
+$pending = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Pending' AND $monthFilter");
+$ready = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Ready' AND $monthFilter");
+$dispensed = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Dispensed' AND $monthFilter");
+$totalPrescription = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE $monthFilter");
 $lowStock = getCount($conn, "SELECT COUNT(*) AS total FROM medicine WHERE stockQuantity <= 50");
 
 $totalStatus = $pending + $ready + $dispensed;
@@ -45,15 +48,17 @@ else
 }
 
 $topMedicineSql = "
-SELECT 
+SELECT
     m.medicineName,
     SUM(pi.quantity) AS totalQuantity
-    FROM prescription_item pi
-    INNER JOIN medicine m ON pi.medicineID = m.medicineID
-    GROUP BY m.medicineID, m.medicineName
-    ORDER BY totalQuantity DESC
-    LIMIT 5
-    ";
+FROM prescription_item pi
+INNER JOIN prescription p ON pi.prescriptionID = p.prescriptionID
+INNER JOIN medicine m ON pi.medicineID = m.medicineID
+WHERE $monthFilter
+GROUP BY m.medicineID, m.medicineName
+ORDER BY totalQuantity DESC
+LIMIT 5
+";
 
 $topMedicineResult = $conn->query($topMedicineSql);
 
@@ -78,9 +83,9 @@ SELECT
     COUNT(*) AS total
     FROM prescription
     WHERE status = 'Dispensed'
+    AND $monthFilter
     GROUP BY prescriptionDate
     ORDER BY prescriptionDate ASC
-    LIMIT 7
     ";
 
 $dailyResult = $conn->query($dailySql);
@@ -92,12 +97,6 @@ if ($dailyResult && $dailyResult->num_rows > 0)
         $dailyLabels[] = date("d M", strtotime($row['prescriptionDate']));
         $dailyValues[] = $row['total'];
     }
-}
-
-if (count($dailyLabels) < 2)
-{
-    $dailyLabels = array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
-    $dailyValues = array(1, 2, 1, 3, 2, 4, 2);
 }
 
 ?>
@@ -123,9 +122,33 @@ if (count($dailyLabels) < 2)
             </div>
 
             <div class="datePickerBox">
-                <span>📅</span>
-                <input type="month" value="<?php echo date('Y-m'); ?>">
-            </div>
+            <span>🗓️</span>
+            <select id="reportMonth" onchange="changeReportMonth()">
+
+                <?php
+                $selectedMonth = isset($_GET['month']) ? $_GET['month'] : date('m');
+                $months = [
+                    "01" => "Jan",
+                    "02" => "Feb",
+                    "03" => "Mar",
+                    "04" => "Apr",
+                    "05" => "May",
+                    "06" => "Jun",
+                    "07" => "Jul",
+                    "08" => "Aug",
+                    "09" => "Sep",
+                    "10" => "Oct",
+                    "11" => "Nov",
+                    "12" => "Dec"
+                ];
+                foreach($months as $value => $name)
+                {
+                    $selected = ($selectedMonth == $value) ? "selected" : "";
+                    echo "<option value='$value' $selected>$name</option>";
+                }
+                ?>
+            </select>
+        </div>
         </article>
 
         <div class="reportSummary">
@@ -169,11 +192,20 @@ if (count($dailyLabels) < 2)
 
             <article class="reportBox">
                 <h2>Daily Dispensing Trend</h2>
-                <p class="chartDesc">Number of prescriptions dispensed per day.</p>
+                <p class="chartDesc">Daily dispensed prescription count for the selected month.</p>
 
                 <div class="chartBox">
+                <?php 
+                if (count($dailyLabels) == 0) { ?>
+                    <div class="noChartData">
+                        No dispensed prescription record for this month.
+                    </div>
+                <?php 
+                } else { ?>
                     <canvas id="dailyChart"></canvas>
-                </div>
+                <?php } ?>
+            </div>
+
             </article>
 
             <article class="reportBox">
@@ -242,16 +274,6 @@ if (count($dailyLabels) < 2)
                 <h3>Completed Prescriptions</h3>
                 <p><?php echo $dispensed; ?></p>
                 <span>Successfully dispensed</span>
-            </div>
-
-        </article>
-
-        <article class="bottomItem orangeItem">
-
-            <div>
-                <h3>Pending Review</h3>
-                <p><?php echo $pending; ?></p>
-                <span>Awaiting pharmacist review</span>
             </div>
 
         </article>
