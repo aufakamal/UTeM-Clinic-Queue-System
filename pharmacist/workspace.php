@@ -823,9 +823,9 @@ if(isset($_POST["action"]))
                         </div>
 
                     </div>
-                </div>
 
                 <div id="patientRecordView" style="display:none;"></div>
+
 
             </article>
         </div>

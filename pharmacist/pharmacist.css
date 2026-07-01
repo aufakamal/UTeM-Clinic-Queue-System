@@ -2220,3 +2220,137 @@ button:disabled
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* =========================
+   SEARCH PATIENT RECORD VIEW
+========================= */
+
+#patientRecordView {
+    width: 100%;
+}
+
+.searchPatientRecord {
+    background-color: #FFFFFF;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    color: #1E293B;
+}
+
+.searchRecordTitle {
+    margin: 0 0 12px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+.searchRecordTitle span {
+    color: #16A34A;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.searchNotice {
+    background-color: #ECFEFF;
+    border: 1px solid #A5F3FC;
+    color: #155E75;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.searchPatientInfo {
+    background-color: #F8FAFC;
+    border: 1px solid #D7E3EA;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 22px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 24px;
+}
+
+.searchPatientInfo p {
+    margin: 0;
+    color: #334155;
+}
+
+.searchPatientInfo b {
+    color: #0F172A;
+}
+
+.searchMiniTabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    width: max-content;
+    margin: 20px auto 25px;
+    padding: 6px;
+
+    background-color: #E0F2FE;
+    border: 1px solid #BAE6FD;
+    border-radius: 999px;
+}
+
+.searchMiniTabs button {
+    border: none;
+    background-color: transparent;
+    color: #075985;
+
+    padding: 11px 34px;
+    border-radius: 999px;
+
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.searchMiniTabs button:hover {
+    background-color: #BAE6FD;
+}
+
+.searchMiniTabs button.active {
+    background-color: #0284C7;
+    color: white;
+    box-shadow: 0 5px 14px rgba(2, 132, 199, 0.25);
+}
+
+.searchViewBlock {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.searchViewBlock h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #0284C7;
+}
+
+.searchViewBlock p {
+    margin-bottom: 0;
+    color: #334155;
+}
+
+#searchVisitsSection .historyTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+
+#searchVisitsSection .historyTable th {
+    background-color: #E0F2FE;
+    color: #075985;
+    padding: 14px;
+    text-align: left;
+}
+
+#searchVisitsSection .historyTable td {
+    padding: 14px;
+    border-bottom: 1px solid #E2E8F0;
+    color: #334155;
+}

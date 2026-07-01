@@ -430,158 +430,153 @@ if (dispenseBtn)
     });
 }
 
-function viewPatientRecord(userID)
+// function viewPatientRecord(userID)
+// {
+//     const record = patientRecordsData[userID];
+
+//     if (!record)
+//     {
+//         alert("Patient record not found.");
+//         return;
+//     }
+
+//     selectedQueue = "";
+
+//     if (emptyWorkspace)
+//     {
+//         emptyWorkspace.style.display = "none";
+//     }
+
+//     if (prescriptionDetails)
+//     {
+//         prescriptionDetails.style.display = "none";
+//     }
+
+//     if (!patientRecordView)
+//     {
+//         alert("patientRecordView not found.");
+//         return;
+//     }
+
+//     patientRecordView.style.display = "block";
+
+//     let historyRows = "";
+
+//     if (record.history && record.history.length > 0)
+//     {
+//         record.history.forEach((item) =>
+//         {
+//             historyRows += `
+//                 <tr>
+//                     <td>${formatValue(item.queueNo)}</td>
+//                     <td>${formatValue(item.dateTime)}</td>
+//                     <td>${formatValue(item.doctorName)}</td>
+//                     <td>${formatValue(item.medicineName)}</td>
+//                     <td>${formatValue(item.quantity)}</td>
+//                     <td>${formatValue(item.status)}</td>
+//                 </tr>
+//             `;
+//         });
+//     }
+//     else
+//     {
+//         historyRows = `
+//             <tr>
+//                 <td colspan="6">No prescription history found.</td>
+//             </tr>
+//         `;
+//     }
+
+//     patientRecordView.innerHTML = `
+//         <div class="searchPatientRecord">
+
+//             <h2 class="searchRecordTitle">
+//                 Patient Medical Record <span>(View Only)</span>
+//             </h2>
+
+//             <div class="searchNotice">
+//                 You are viewing this patient's medical record. Information shown below is for reference only.
+//             </div>
+
+//             <div class="searchPatientInfo">
+//                 <p><b>Full Name:</b> ${formatValue(record.fullName)}</p>
+//                 <p><b>Patient ID:</b> ${formatValue(record.userID)}</p>
+//                 <p><b>Gender:</b> ${formatValue(record.gender)}</p>
+//                 <p><b>Date of Birth:</b> ${formatDate(record.dateOfBirth)}</p>
+//                 <p><b>Blood Type:</b> ${formatValue(record.bloodType)}</p>
+//                 <p><b>Patient Type:</b> ${formatValue(record.patientType)}</p>
+//             </div>
+
+//             <div class="searchMiniTabs">
+//                 <button type="button" class="active" onclick="switchSearchTab('overview', this)">
+//                     Overview
+//                 </button>
+
+//                 <button type="button" onclick="switchSearchTab('visits', this)">
+//                     Visits
+//                 </button>
+//             </div>
+
+//             <div id="searchOverviewSection">
+//                 <div class="searchViewBlock">
+//                     <h3>Allergies</h3>
+//                     <p>${formatValue(record.allergy)}</p>
+//                 </div>
+
+//                 <div class="searchViewBlock">
+//                     <h3>Chronic Diseases</h3>
+//                     <p>${formatValue(record.chronicCondition)}</p>
+//                 </div>
+
+//                 <div class="searchViewBlock">
+//                     <h3>Current Medication</h3>
+//                     <p>${formatValue(record.currentMed)}</p>
+//                 </div>
+//             </div>
+
+//             <div id="searchVisitsSection" style="display:none;">
+//                 <div class="searchViewBlock">
+//                     <h3>Prescription History</h3>
+
+//                     <table class="historyTable">
+//                         <tr>
+//                             <th>Queue No.</th>
+//                             <th>Date & Time</th>
+//                             <th>Doctor</th>
+//                             <th>Medicine</th>
+//                             <th>Quantity</th>
+//                             <th>Status</th>
+//                         </tr>
+
+//                         ${historyRows}
+//                     </table>
+//                 </div>
+//             </div>
+
+//         </div>
+//     `;
+// }
+
+function switchSearchTab(tab, btn)
 {
-    const record = patientRecordsData[userID];
-
-    if (!record)
+    document.querySelectorAll(".searchMiniTabs button").forEach((button) =>
     {
-        alert("Patient record not found.");
-        return;
-    }
+        button.classList.remove("active");
+    });
 
-    selectedQueue = "";
+    btn.classList.add("active");
 
-    if (emptyWorkspace)
+    document.getElementById("searchOverviewSection").style.display = "none";
+    document.getElementById("searchVisitsSection").style.display = "none";
+
+    if (tab === "overview")
     {
-        emptyWorkspace.style.display = "none";
+        document.getElementById("searchOverviewSection").style.display = "block";
     }
-
-    if (prescriptionDetails)
+    else if (tab === "visits")
     {
-        prescriptionDetails.style.display = "none";
+        document.getElementById("searchVisitsSection").style.display = "block";
     }
-
-    if (!patientRecordView)
-    {
-        alert("patientRecordView not found.");
-        return;
-    }
-
-    patientRecordView.style.display = "block";
-
-    let historyRows = "";
-
-    if (record.history && record.history.length > 0)
-    {
-        record.history.forEach((item) =>
-        {
-            let statusClass = "pendingStatus";
-
-            if (item.status === "Dispensed")
-            {
-                statusClass = "doneStatus";
-            }
-            else if (item.status === "Ready")
-            {
-                statusClass = "doneStatus";
-            }
-            else if (item.status === "Pending")
-            {
-                statusClass = "waitingStatus";
-            }
-
-            historyRows += `
-                <tr>
-                    <td>${formatValue(item.queueNo)}</td>
-                    <td>${formatValue(item.dateTime)}</td>
-                    <td>${formatValue(item.doctorName)}</td>
-                    <td>${formatValue(item.medicineName)}</td>
-                    <td>${formatValue(item.quantity)}</td>
-                    <td><span class="${statusClass}">${formatValue(item.status)}</span></td>
-                </tr>
-            `;
-        });
-    }
-    else
-    {
-        historyRows = `
-            <tr>
-                <td colspan="6">No prescription history found.</td>
-            </tr>
-        `;
-    }
-
-    patientRecordView.innerHTML = `
-        <div class="viewOnlyRecord">
-
-            <div class="recordTop">
-                <h2>Patient Medical Record <span>(View Only)</span></h2>
-            </div>
-
-            <div class="viewOnlyAlert">
-                You are viewing this patient's medical record. Information shown below is for reference only.
-            </div>
-
-            <div class="medicalInfoCard">
-                <div>
-                    <p>Full Name</p>
-                    <div class="recordValue">${formatValue(record.fullName)}</div>
-
-                    <p>Patient ID</p>
-                    <div class="recordValue">${formatValue(record.userID)}</div>
-                </div>
-
-                <div>
-                    <p>Gender</p>
-                    <div class="recordValue">${formatValue(record.gender)}</div>
-
-                    <p>Date of Birth</p>
-                    <div class="recordValue">${formatDate(record.dateOfBirth)}</div>
-                </div>
-
-                <div>
-                    <p>Blood Type</p>
-                    <div class="recordValue">${formatValue(record.bloodType)}</div>
-
-                    <p>Patient Type</p>
-                    <div class="recordValue">${formatValue(record.patientType)}</div>
-                </div>
-            </div>
-
-            <div class="medicalBlock">
-                <h3>Allergies</h3>
-                <p>${formatValue(record.allergy)}</p>
-            </div>
-
-            <div class="medicalBlock">
-                <h3>Chronic Condition</h3>
-                <p>${formatValue(record.chronicCondition)}</p>
-            </div>
-
-            <div class="medicalBlock">
-                <h3>Current Medication</h3>
-                <p>${formatValue(record.currentMed)}</p>
-            </div>
-
-            <div class="medicalBlock">
-                <h3>Prescription History</h3>
-
-                <table class="historyTable">
-                    <tr>
-                        <th>Queue No.</th>
-                        <th>Date & Time</th>
-                        <th>Doctor</th>
-                        <th>Medicine</th>
-                        <th>Quantity</th>
-                        <th>Status</th>
-                    </tr>
-
-                    ${historyRows}
-                </table>
-            </div>
-
-            <div class="medicalBlock">
-                <h3>Pharmacy Note (Read Only)</h3>
-                <p>No additional notes for this patient.</p>
-            </div>
-
-            <div class="viewOnlyNote">
-                This is a read-only medical record. Only doctors are allowed to edit medical information.
-            </div>
-
-        </div>
-    `;
 }
 
 function setWorkspaceAction(action)
@@ -829,4 +824,170 @@ dispenseBtn.onclick = () => {
 if (workspaceError === "notready")
 {
     alert("Prescription must be marked Ready before dispensing.");
+}
+
+/* =========================
+   FORCE FIX SEARCH PATIENT VIEW
+========================= */
+
+function viewPatientRecord(userID)
+{
+    const record = patientRecordsData[userID];
+
+    if (!record)
+    {
+        alert("Patient record not found.");
+        return;
+    }
+
+    selectedQueue = "";
+
+    if (emptyWorkspace)
+    {
+        emptyWorkspace.style.display = "none";
+    }
+
+    if (prescriptionDetails)
+    {
+        prescriptionDetails.style.display = "none";
+    }
+
+    if (!patientRecordView)
+    {
+        alert("patientRecordView not found.");
+        return;
+    }
+
+    let historyRows = "";
+
+    const historyList = Array.isArray(record.history) ? record.history : [];
+
+    if (historyList.length > 0)
+    {
+        historyList.forEach((item) =>
+        {
+            historyRows += `
+                <tr>
+                    <td>${formatValue(item.queueNo)}</td>
+                    <td>${formatValue(item.dateTime)}</td>
+                    <td>${formatValue(item.doctorName)}</td>
+                    <td>${formatValue(item.medicineName)}</td>
+                    <td>${formatValue(item.quantity)}</td>
+                    <td>${formatValue(item.status)}</td>
+                </tr>
+            `;
+        });
+    }
+    else
+    {
+        historyRows = `
+            <tr>
+                <td colspan="6">No prescription history found.</td>
+            </tr>
+        `;
+    }
+
+    patientRecordView.innerHTML = `
+        <div class="searchPatientRecord">
+
+            <h2 class="searchRecordTitle">
+                Patient Medical Record <span>(View Only)</span>
+            </h2>
+
+            <div class="searchNotice">
+                You are viewing this patient's medical record. Information shown below is for reference only.
+            </div>
+
+            <div class="searchPatientInfo">
+                <p><b>Full Name:</b> ${formatValue(record.fullName)}</p>
+                <p><b>Patient ID:</b> ${formatValue(record.userID)}</p>
+                <p><b>Gender:</b> ${formatValue(record.gender)}</p>
+                <p><b>Date of Birth:</b> ${formatDate(record.dateOfBirth)}</p>
+                <p><b>Blood Type:</b> ${formatValue(record.bloodType)}</p>
+                <p><b>Patient Type:</b> ${formatValue(record.patientType)}</p>
+            </div>
+
+            <div class="searchMiniTabs">
+                <button type="button" class="active" onclick="switchSearchTab('overview', this)">
+                    Overview
+                </button>
+
+                <button type="button" onclick="switchSearchTab('visits', this)">
+                    Visits
+                </button>
+            </div>
+
+            <div id="searchOverviewSection">
+                <div class="searchViewBlock">
+                    <h3>Allergies</h3>
+                    <p>${formatValue(record.allergy)}</p>
+                </div>
+
+                <div class="searchViewBlock">
+                    <h3>Chronic Diseases</h3>
+                    <p>${formatValue(record.chronicCondition)}</p>
+                </div>
+
+                <div class="searchViewBlock">
+                    <h3>Current Medication</h3>
+                    <p>${formatValue(record.currentMed)}</p>
+                </div>
+            </div>
+
+            <div id="searchVisitsSection" style="display:none;">
+                <div class="searchViewBlock">
+                    <h3>Prescription History</h3>
+
+                    <table class="historyTable">
+                        <tr>
+                            <th>Queue No.</th>
+                            <th>Date & Time</th>
+                            <th>Doctor</th>
+                            <th>Medicine</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                        </tr>
+
+                        ${historyRows}
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    `;
+
+    patientRecordView.style.display = "block";
+}
+
+
+function switchSearchTab(tab, btn)
+{
+    document.querySelectorAll(".searchMiniTabs button").forEach((button) =>
+    {
+        button.classList.remove("active");
+    });
+
+    btn.classList.add("active");
+
+    const overviewSection = document.getElementById("searchOverviewSection");
+    const visitsSection = document.getElementById("searchVisitsSection");
+
+    if (overviewSection)
+    {
+        overviewSection.style.display = "none";
+    }
+
+    if (visitsSection)
+    {
+        visitsSection.style.display = "none";
+    }
+
+    if (tab === "overview" && overviewSection)
+    {
+        overviewSection.style.display = "block";
+    }
+    else if (tab === "visits" && visitsSection)
+    {
+        visitsSection.style.display = "block";
+    }
 }
