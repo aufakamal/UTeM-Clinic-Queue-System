@@ -89,6 +89,7 @@ if ($stmt) {
 </head>
 
 <body>
+<?php include('inc/doctor_header.php'); ?>
 
     <section class="doctorWorkspace">
         <!-- LEFT COLUMN -->
