@@ -30,7 +30,7 @@
 
             <a href="login.php" class="actionCard">
                 <div class="iconCircle">
-                    <img src="loginRegisterImage/profileiconLogin.png" alt="Login Icon">
+                    <img src="loginRegisterImage/profile_icon_login-removebg-preview.png" alt="Login Icon">
                 </div>
 
                 <div class="buttonText">
@@ -41,7 +41,7 @@
 
             <a href="register.php" class="actionCard">
                 <div class="iconCircle">
-                    <img src="loginRegisterImage/profileiconRegister.png" alt="Register Icon">
+                    <img src="loginRegisterImage/profile_icon_register-removebg-preview.png" alt="Register Icon">
                 </div>
 
                 <div class="buttonText">

@@ -4,9 +4,7 @@
         </div>
 
         <div class="title">
-            DIGITAL CLINIC QUEUE MANAGEMENT SYSTEM 
-            <br>
-            FOR PKU UTeM
+            PKUTeM Clinic Queue System
         </div>
 
         <div class="icons">
