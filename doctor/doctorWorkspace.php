@@ -752,7 +752,5 @@ window.searchPatientsData = <?php echo json_encode($searchPatients); ?>;
 window.patientRecordsData = <?php echo json_encode($patientRecords); ?>;
 </script>
 
-<script src="doctor.js"></script>
-
 </body>
 </html>
