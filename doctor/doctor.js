@@ -474,18 +474,6 @@ function endSession() {
         return data;
     })
 
-    // .then(data => {
-    //     if (data.success) {
-    //         alert(
-    //             "Consultation completed.\nThe queue has been updated successfully."
-    //         );
-    //         resetConsultation();
-    //     } else {
-    //         alert(data.message);
-    //         document.getElementById("endSessionBtn").disabled = false;
-    //     }
-    // })
-
     .then(data => {
 
         console.log(data);
@@ -495,7 +483,8 @@ function endSession() {
                 "Consultation completed.\nThe queue has been updated successfully."
             );
             resetConsultation();
-        } else {
+        }
+        else {
             alert(JSON.stringify(data, null, 2));
             document.getElementById("endSessionBtn").disabled = false;
         }
@@ -581,7 +570,15 @@ function resetConsultation() {
     document.querySelector(".startBtn").disabled = false;
 
     // Refresh queue count
-    loadQueue();
+    //loadQueue();
+    const queueDisplay = document.querySelector(".queueNumber"); // tukar ikut id sebenar
+
+    if(queueDisplay){
+        const current = parseInt(queueDisplay.textContent);
+        if(current > 0){
+            queueDisplay.textContent = current - 1;
+        }
+}
 }
 
 function hideAllSections() {
@@ -620,6 +617,7 @@ function switchTab(tabName, button) {
             break;
     }
 }
+
 
 function renderEditableList(containerId, items){
 

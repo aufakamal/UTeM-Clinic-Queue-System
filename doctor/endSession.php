@@ -196,9 +196,29 @@ try {
                     $instruction
                 );
 
-                if (!$stmt->execute()) {
+                /*if (!$stmt->execute()) {
                     throw new Exception($stmt->error);
-                }
+                }*/
+
+                if (!$stmt->execute()) {
+
+                echo json_encode([
+                    "success" => false,
+                    "step" => "prescription_item",
+                    "error" => $stmt->error,
+                    "errno" => $stmt->errno,
+                    "medicineID" => $medicineID,
+                    "quantity" => $quantity,
+                    "dosage" => $dosage,
+                    "frequency" => $frequency,
+                    "duration" => $duration,
+                    "instruction" => $instruction
+                ]);
+
+                exit;
+            }
+
+
 
                 /* -----------------------------
                    Deduct Stock
