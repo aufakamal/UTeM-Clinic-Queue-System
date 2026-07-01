@@ -233,4 +233,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </main>
 
 </body>
+
+<script src="admin.js"></script>
 </html>
