@@ -14,13 +14,19 @@
     <h2>Appointment Management</h2>
     <p>Search, filter, and update today’s clinic appointments.</p>
 
-    <div class="filter-bar">
-        <input type="text" id="appointmentSearch" placeholder="Search by patient name, ID, or type..." onkeyup="filterAppointments()">
+    <div class="filter-card">
 
-        <input type="date" id="appointmentDateFilter" onchange="filterAppointments()">
+    <div class="filter-row">
+
+        <input
+            type="text"
+            id="appointmentSearch"
+            class="filter-search"
+            placeholder="Search appointment ID, patient, user ID or type..."
+            onkeyup="filterAppointments()">
 
         <select id="appointmentStatusFilter" onchange="filterAppointments()">
-            <option value="">All Status</option>
+            <option value="All">All Status</option>
             <option value="Booked">Booked</option>
             <option value="Completed">Completed</option>
             <option value="Cancelled">Cancelled</option>
@@ -32,7 +38,31 @@
             <option value="Same-Day">Same-Day</option>
             <option value="Scheduled">Scheduled</option>
         </select>
+
+        <div class="date-group">
+            <label>From</label>
+            <input
+                type="date"
+                id="appointmentFromDate"
+                onchange="filterAppointments()">
+        </div>
+
+        <div class="date-group">
+            <label>To</label>
+            <input
+                type="date"
+                id="appointmentToDate"
+                onchange="filterAppointments()">
+        </div>
+
+        <button class="reset-filter-btn"
+                onclick="resetAppointmentFilter()">
+            Reset
+        </button>
+
     </div>
+
+</div>
 
     <div class="table-card">
         <table class="admin-table">

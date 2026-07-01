@@ -113,13 +113,45 @@ function hideSlotForm() {
 }
 
 async function createSlot() {
+
+    const slotDate = document.getElementById("slotDate").value;
+    const startTime = document.getElementById("slotStartTime").value;
+    const endTime = document.getElementById("slotEndTime").value;
+    const slotType = document.getElementById("slotType").value;
+    const capacity = document.getElementById("slotCapacity").value;
+
+    if (!slotDate) {
+        alert("Please select a slot date.");
+        return;
+    }
+
+    if (!startTime) {
+        alert("Please select a start time.");
+        return;
+    }
+
+    if (!endTime) {
+        alert("Please select an end time.");
+        return;
+    }
+
+    if (!slotType) {
+        alert("Please select a slot type.");
+        return;
+    }
+
+    if (!capacity || capacity <= 0) {
+        alert("Please enter a valid slot capacity.");
+        return;
+    }
+
     const formData = new FormData();
 
-    formData.append("slotDate", document.getElementById("slotDate").value);
-    formData.append("startTime", document.getElementById("slotStartTime").value);
-    formData.append("endTime", document.getElementById("slotEndTime").value);
-    formData.append("slotType", document.getElementById("slotType").value);
-    formData.append("capacity", document.getElementById("slotCapacity").value);
+    formData.append("slotDate", slotDate);
+    formData.append("startTime", startTime);
+    formData.append("endTime", endTime);
+    formData.append("slotType", slotType);
+    formData.append("capacity", capacity);
 
     const response = await fetch("../database/addSlot.php", {
         method: "POST",
@@ -135,6 +167,7 @@ async function createSlot() {
     } else {
         alert(result.message || "Failed to add slot.");
     }
+
 }
 
 async function deleteSlot(slotID) {
@@ -345,32 +378,64 @@ async function loadAppointments() {
     });
 }
 function filterAppointments() {
+
     const search = document.getElementById("appointmentSearch").value.toLowerCase();
     const status = document.getElementById("appointmentStatusFilter").value;
     const type = document.getElementById("appointmentTypeFilter").value;
+    const fromDate = document.getElementById("appointmentFromDate").value;
+    const toDate = document.getElementById("appointmentToDate").value;
 
     const filtered = appointmentList.filter(appt => {
+
         const patientName =
             appt.appointmentFor === "Dependant"
                 ? appt.dependantName
                 : appt.fullName;
 
+        const appointmentDate = appt.slotDate;
+
         const matchesSearch =
-            appt.appointmentID.toString().toLowerCase().includes(search) ||
+            appt.appointmentID.toString().includes(search) ||
             appt.userID.toLowerCase().includes(search) ||
-            appt.appointmentType.toLowerCase().includes(search) ||
-            patientName.toLowerCase().includes(search);
+            patientName.toLowerCase().includes(search) ||
+            appt.appointmentType.toLowerCase().includes(search);
 
         const matchesStatus =
-            status === "All" || status === "" || appt.appointmentStatus === status;
+            status === "All" || appt.appointmentStatus === status;
 
         const matchesType =
-            type === "All" || type === "" || appt.appointmentType === type;
+            type === "All" || appt.appointmentType === type;
 
-        return matchesSearch && matchesStatus && matchesType;
+        const matchesFrom =
+            !fromDate || appointmentDate >= fromDate;
+
+        const matchesTo =
+            !toDate || appointmentDate <= toDate;
+
+        return (
+            matchesSearch &&
+            matchesStatus &&
+            matchesType &&
+            matchesFrom &&
+            matchesTo
+        );
+
     });
 
     renderAppointments(filtered);
+
+}
+
+function resetAppointmentFilter(){
+
+    document.getElementById("appointmentSearch").value = "";
+    document.getElementById("appointmentStatusFilter").value = "All";
+    document.getElementById("appointmentTypeFilter").value = "All";
+    document.getElementById("appointmentFromDate").value = "";
+    document.getElementById("appointmentToDate").value = "";
+
+    renderAppointments(appointmentList);
+
 }
 
 async function markNoShow(id) {
@@ -675,7 +740,7 @@ function renderSlotTable(list = slotList) {
             <td>
                 ${
                     hasAppointment
-                    ? `<span class="locked-slot">🔒 Booked</span>`
+                    ? `<span class="locked-slot">Booked</span>`
                     : `
                         <button class="btn-edit" onclick="editSlot(${slot.slotID})">Edit</button>
                         <button class="btn-delete" onclick="deleteSlot(${slot.slotID})">Delete</button>
@@ -687,15 +752,21 @@ function renderSlotTable(list = slotList) {
     });
 }
 
-function filterSlots(){
+function filterSlots() {
 
     const search =
-    document.getElementById("slotSearch").value.toLowerCase();
+        document.getElementById("slotSearch").value.toLowerCase();
 
     const type =
-    document.getElementById("slotTypeFilter").value;
+        document.getElementById("slotTypeFilter").value;
 
-    const filtered = slotList.filter(slot=>{
+    const fromDate =
+        document.getElementById("slotFromDate").value;
+
+    const toDate =
+        document.getElementById("slotToDate").value;
+
+    const filtered = slotList.filter(slot => {
 
         const matchesSearch =
 
@@ -709,11 +780,28 @@ function filterSlots(){
 
         const matchesType =
 
-            type==="All" ||
+            type === "All" ||
 
-            slot.slotType===type;
+            slot.slotType === type;
 
-        return matchesSearch && matchesType;
+        const matchesFrom =
+
+            !fromDate ||
+
+            slot.slotDate >= fromDate;
+
+        const matchesTo =
+
+            !toDate ||
+
+            slot.slotDate <= toDate;
+
+        return (
+            matchesSearch &&
+            matchesType &&
+            matchesFrom &&
+            matchesTo
+        );
 
     });
 
@@ -721,7 +809,16 @@ function filterSlots(){
 
 }
 
+function resetSlotFilter() {
 
+    document.getElementById("slotSearch").value = "";
+    document.getElementById("slotTypeFilter").value = "All";
+    document.getElementById("slotFromDate").value = "";
+    document.getElementById("slotToDate").value = "";
+
+    renderSlotTable(slotList);
+
+}
 
 /* =========================================
    ni page dashboard
@@ -736,50 +833,37 @@ async function loadDashboard() {
         document.getElementById("totalToday").textContent = data.totalAppointments;
         document.getElementById("waitingPatients").textContent = data.waitingPatients;
         document.getElementById("activeConsult").textContent = data.activeConsultations;
-        document.getElementById("availableDoctors").textContent = data.availableDoctors;
+        document.getElementById("completedToday").textContent = data.completedToday;
 
     } catch (err) {
         console.error("Dashboard error:", err);
     }
 }
 
-async function loadWeeklyAppointments() {
-
-    const response = await fetch("../database/getWeeklyAppointments.php");
+async function loadMonthlyAppointments() {
+    const response = await fetch("../database/getMonthlyAppointments.php");
     const data = await response.json();
-    console.log("Weekly Data:", data);
 
-    const values = [
-        data[2],
-        data[3],
-        data[4],
-        data[5],
-        data[6],
-        data[7],
-        data[1]
-    ];
-
-    const days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-
-    const chart = document.getElementById("weeklyChart");
+    const chart = document.getElementById("monthlyChart");
+    if (!chart) return;
 
     chart.innerHTML = "";
+
+    const values = Object.values(data);
     const maxValue = Math.max(...values, 1);
 
+    Object.keys(data).forEach(label => {
+        const value = data[label];
+        const height = value === 0 ? 12 : (value / maxValue) * 170;
 
-    values.forEach((value, index) => {
-    const barHeight = value === 0 ? 25 : (value / maxValue) * 120;
-
-    chart.innerHTML += `
-        <div class="chart-item">
-            <div class="chart-bar" style="height:${barHeight}px">
-                ${value}
+        chart.innerHTML += `
+            <div class="dashboard-chart-item">
+                <div class="dashboard-chart-value">${value}</div>
+                <div class="dashboard-chart-bar" style="height:${height}px"></div>
+                <div class="dashboard-chart-label">${label}</div>
             </div>
-            <div class="chart-label">${days[index]}</div>
-        </div>
-    `;
-});
-
+        `;
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -807,8 +891,8 @@ if (document.getElementById("totalToday")) {
     loadDashboard();
 }
 
-if (document.getElementById("weeklyChart")) {
-    loadWeeklyAppointments();
+if (document.getElementById("monthlyChart")) {
+    loadMonthlyAppointments();
 }
 
 if (document.getElementById("profileName")) {
@@ -864,17 +948,41 @@ function renderHistoryTable(list = historyList) {
 
 function filterHistory() {
     const search = document.getElementById("historySearch").value.toLowerCase();
+    const status = document.getElementById("historyStatusFilter").value;
+    const fromDate = document.getElementById("historyFromDate").value;
+    const toDate = document.getElementById("historyToDate").value;
 
     const filtered = historyList.filter(item => {
-        return (
-            item.consultationID.toString().includes(search) ||
+        const startDate = item.startTime ? item.startTime.substring(0, 10) : "";
+
+        const matchesSearch =
+            item.consultationID.toString().toLowerCase().includes(search) ||
+            item.queueNo.toString().toLowerCase().includes(search) ||
             item.patientName.toLowerCase().includes(search) ||
-            item.doctorName.toLowerCase().includes(search) ||
-            item.queueNo.toString().includes(search)
-        );
+            item.doctorName.toLowerCase().includes(search);
+
+        const matchesStatus =
+            status === "All" || item.queueStatus === status;
+
+        const matchesFromDate =
+            !fromDate || startDate >= fromDate;
+
+        const matchesToDate =
+            !toDate || startDate <= toDate;
+
+        return matchesSearch && matchesStatus && matchesFromDate && matchesToDate;
     });
 
     renderHistoryTable(filtered);
+}
+
+function resetHistoryFilter() {
+    document.getElementById("historySearch").value = "";
+    document.getElementById("historyStatusFilter").value = "All";
+    document.getElementById("historyFromDate").value = "";
+    document.getElementById("historyToDate").value = "";
+
+    renderHistoryTable(historyList);
 }
 
 // ================= ni page users =================
@@ -914,84 +1022,213 @@ function renderUsers(data) {
     };
 
     const tbody = document.getElementById("usersTableBody");
-
     if (!tbody) return;
 
     tbody.innerHTML = "";
 
     data.forEach(user => {
-
         tbody.innerHTML += `
-        <tr>
-
-            <td>${user.userID}</td>
-            <td>${user.fullName}</td>
-            <td>${user.roleName}</td>
-            <td>${user.gender}</td>
-            <td>${user.email}</td>
-            <td>${user.phoneNo}</td>
-
-            <td class="action-cell">
-
-                <div class="action-left">
-
-                    <button class="btn-edit"
-                        onclick="editUser(
-                            '${user.userID}',
-                            '${user.fullName}',
-                            '${user.gender}',
-                            '${user.email}',
-                            '${user.phoneNo}'
-                        )">
-                        Edit
+            <tr>
+                <td>${user.userID}</td>
+                <td>${user.fullName}</td>
+                <td>${user.roleName}</td>
+                <td>${user.gender}</td>
+                <td>${user.email}</td>
+                <td>${user.phoneNo}</td>
+                <td>
+                    <button class="btn-view" onclick="viewUserDetails('${user.userID}', '${user.roleName}')">
+                        View Details
                     </button>
+                </td>
+            </tr>
+        `;
+    });
+}
 
-                    <button class="btn-delete"
-                        onclick="deleteUser('${user.userID}')">
-                        Delete
-                    </button>
+async function viewUserDetails(userID, roleName) {
+    try {
+        const response = await fetch("../database/getUserDetails.php?userID=" + userID + "&roleName=" + roleName);
+        const user = await response.json();
 
+        if (!user.success) {
+            alert(user.message || "User details not found.");
+            return;
+        }
+
+        let extraDetails = "";
+
+        if (user.roleName === "Patient") {
+            extraDetails = `
+                <h3>Patient Information</h3>
+                <div class="details-grid">
+                    <p><b>Patient Type:</b> ${user.patientType || "-"}</p>
+                    <p><b>Blood Type:</b> ${user.bloodType || "-"}</p>
+                    <p><b>Allergy:</b> ${user.allergy || "-"}</p>
+                    <p><b>Chronic Condition:</b> ${user.chronicCondition || "-"}</p>
+                    <p><b>Current Medication:</b> ${user.currentMed || "-"}</p>
+                    <p><b>Emergency Contact:</b> ${user.emergencyContactName || "-"}</p>
+                    <p><b>Emergency Phone:</b> ${user.emergencyContactPhone || "-"}</p>
                 </div>
+            `;
+        }
 
-                ${
-                    user.roleName === "Patient"
-                    ? `
-                        <button class="btn-view"
-                            onclick="viewPatientDetails('${user.userID}')">
-                            View Details
-                        </button>
-                    `
-                    : ""
-                }
+        if (user.roleName === "Doctor") {
+            extraDetails = `
+                <h3>Doctor Information</h3>
+                <div class="details-grid">
+                    <p><b>License No:</b> ${user.docLicenseNo || "-"}</p>
+                    <p><b>Specialization:</b> ${user.specialization || "-"}</p>
+                    <p><b>Room No:</b> ${user.roomNo || "-"}</p>
+                </div>
+            `;
+        }
 
-            </td>
+        if (user.roleName === "Pharmacist") {
+            extraDetails = `
+                <h3>Pharmacist Information</h3>
+                <div class="details-grid">
+                    <p><b>License No:</b> ${user.licenseNo || "-"}</p>
+                </div>
+            `;
+        }
 
-        </tr>
+        document.getElementById("userDetailsContent").innerHTML = `
+            <h3>Basic Information</h3>
+            <div class="details-grid">
+                <p><b>User ID:</b> ${user.userID || "-"}</p>
+                <p><b>Full Name:</b> ${user.fullName || "-"}</p>
+                <p><b>Role:</b> ${user.roleName || "-"}</p>
+                <p><b>Gender:</b> ${user.gender || "-"}</p>
+                <p><b>Date of Birth:</b> ${user.dateOfBirth || "-"}</p>
+                <p><b>Email:</b> ${user.email || "-"}</p>
+                <p><b>Phone No:</b> ${user.phoneNo || "-"}</p>
+                <p><b>Address:</b> ${user.address || "-"}</p>
+            </div>
+
+            ${extraDetails}
         `;
 
-    });
+        document.getElementById("userDetailsModal").classList.remove("hidden");
 
+    } catch (err) {
+        console.error(err);
+        alert("Unable to load user details.");
+    }
 }
-async function viewPatientDetails(userID) {
-    const response = await fetch("../database/getPatientDetails.php?userID=" + userID);
-    const patient = await response.json();
 
-    if (!patient.success) {
-        alert("Patient details not found.");
+function closeUserDetails() {
+    document.getElementById("userDetailsModal").classList.add("hidden");
+}
+
+async function viewUserDetails(userID, roleName) {
+    const response = await fetch("../database/getUserDetails.php?userID=" + userID + "&roleName=" + roleName);
+    const user = await response.json();
+
+    if (!user.success) {
+        alert("User details not found.");
         return;
     }
 
-    alert(
-        "Patient Details\n\n" +
-        "Name: " + (patient.fullName || "-") + "\n" +
-        "Patient Type: " + (patient.patientType || "-") + "\n" +
-        "Blood Type: " + (patient.bloodType || "-") + "\n" +
-        "Allergy: " + (patient.allergy || "-") + "\n" +
-        "Chronic Condition: " + (patient.chronicCondition || "-") + "\n" +
-        "Current Medication: " + (patient.currentMed || "-") + "\n" +
-        "Emergency Contact: " + (patient.emergencyContactName || "-") + "\n" +
-        "Emergency Phone: " + (patient.emergencyContactPhone || "-")
-    );
+    let icon = "👤";
+    let subtitle = user.roleName;
+
+    if (user.roleName === "Patient") {
+        icon = "🩺";
+        subtitle = `Patient • ${user.patientType || "-"}`;
+    } else if (user.roleName === "Doctor") {
+        icon = "👨‍⚕️";
+        subtitle = `Doctor • ${user.specialization || "-"}`;
+    } else if (user.roleName === "Pharmacist") {
+        icon = "💊";
+        subtitle = "Pharmacist";
+    } else if (user.roleName === "Admin") {
+        icon = "🛡️";
+        subtitle = "Administrator";
+    }
+
+    let extra = "";
+
+    if (user.roleName === "Patient") {
+        extra = `
+            <div class="detail-section">
+                <h3>Medical Information</h3>
+                ${detailRow("Patient Type", user.patientType)}
+                ${detailRow("Blood Type", user.bloodType)}
+                ${detailRow("Allergy", user.allergy)}
+                ${detailRow("Chronic Condition", user.chronicCondition)}
+                ${detailRow("Current Medication", user.currentMed)}
+            </div>
+
+            <div class="detail-section">
+                <h3>Emergency Contact</h3>
+                ${detailRow("Contact Name", user.emergencyContactName)}
+                ${detailRow("Contact Phone", user.emergencyContactPhone)}
+            </div>
+        `;
+    }
+
+    if (user.roleName === "Doctor") {
+        extra = `
+            <div class="detail-section">
+                <h3>Professional Information</h3>
+                ${detailRow("Doctor License No", user.docLicenseNo)}
+                ${detailRow("Specialization", user.specialization)}
+                ${detailRow("Room No", user.roomNo)}
+            </div>
+        `;
+    }
+
+    if (user.roleName === "Pharmacist") {
+        extra = `
+            <div class="detail-section">
+                <h3>Professional Information</h3>
+                ${detailRow("License No", user.licenseNo)}
+            </div>
+        `;
+    }
+
+    document.getElementById("userDetailsContent").innerHTML = `
+        <div class="profile-head">
+            <div class="profile-icon">${icon}</div>
+            <h2>${user.fullName || "-"}</h2>
+            <p>${subtitle}</p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Basic Information</h3>
+            ${detailRow("User ID", user.userID)}
+            ${detailRow("Full Name", user.fullName)}
+            ${detailRow("Role", user.roleName)}
+            ${detailRow("Gender", user.gender)}
+            ${detailRow("Date of Birth", user.dateOfBirth)}
+            ${detailRow("Email", user.email)}
+            ${detailRow("Phone No", user.phoneNo)}
+            ${detailRow("Address", user.address)}
+        </div>
+
+        ${extra}
+    `;
+
+    document.getElementById("userDetailsModal").classList.remove("hidden");
+}
+
+function detailRow(label, value) {
+    return `
+        <div class="detail-row">
+            <span>${label}</span>
+            <strong>${value || "-"}</strong>
+        </div>
+    `;
+}
+
+function closeUserDetails() {
+    document.getElementById("userDetailsModal").classList.add("hidden");
+}
+
+function closeUserDetailsOutside(event) {
+    if (event.target.id === "userDetailsModal") {
+        closeUserDetails();
+    }
 }
 
 async function deleteUser(userID) {

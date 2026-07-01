@@ -33,8 +33,10 @@
 
         <label>Type:
             <select id="slotType">
-    <option>Extra Slot</option>
-    <option>Emergency Slot</option>
+    <option value="">-- Select Slot Type --</option>
+    <option value="Same-Day Morning">Same-Day Morning</option>
+    <option value="Scheduled">Scheduled</option>
+    <option value="Same-Day Afternoon">Same-Day Afternoon</option>
 </select>
         </label>
 
@@ -46,18 +48,48 @@
         <button class="red" onclick="hideSlotForm()">Cancel</button>
     </div>
 
-    <div class="filter-bar">
-        <input type="text" id="slotSearch" placeholder="Search by date, type, or time..." onkeyup="filterSlots()">
+    <div class="filter-card">
+
+    <div class="filter-row">
+
+        <input
+            type="text"
+            id="slotSearch"
+            class="filter-search"
+            placeholder="Search date, type or time..."
+            onkeyup="filterSlots()">
 
         <select id="slotTypeFilter" onchange="filterSlots()">
-    <option value="All">All Slot Types</option>
-    <option value="Same-Day Morning">Same-Day Morning</option>
-    <option value="Same-Day Afternoon">Same-Day Afternoon</option>
-    <option value="Scheduled">Scheduled</option>
-    <option value="Extra Slot">Extra Slot</option>
-    <option value="Emergency Slot">Emergency Slot</option>
-</select>
+            <option value="All">All Slot Types</option>
+            <option value="Same-Day Morning">Same-Day Morning</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Same-Day Afternoon">Same-Day Afternoon</option>
+        </select>
+
+        <div class="date-group">
+            <label>From</label>
+            <input
+                type="date"
+                id="slotFromDate"
+                onchange="filterSlots()">
+        </div>
+
+        <div class="date-group">
+            <label>To</label>
+            <input
+                type="date"
+                id="slotToDate"
+                onchange="filterSlots()">
+        </div>
+
+        <button class="reset-filter-btn"
+                onclick="resetSlotFilter()">
+            Reset
+        </button>
+
     </div>
+
+</div>
 
     <div class="table-card">
         <table class="admin-table">

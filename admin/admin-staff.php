@@ -13,6 +13,7 @@
 <section id="users" class="page active">
     <h2>User Management</h2>
     <p>View and filter all system users.</p>
+    <a href="add-staff-user.php" class="addStaffBtn">Add Clinic Staff User +</a>
 
     <div class="filter-bar">
         <input type="text" id="userSearch" placeholder="Search user ID, name, email, or phone..." onkeyup="filterUsers()">
@@ -45,11 +46,16 @@
     </div>
 </section>
 
-<div id="confirmBox" class="modal hidden">
-    <div class="modal-card">
-        <b id="confirmText">Are you sure?</b>
-        <button class="green" onclick="confirmYes()">Confirm</button>
-        <button class="red" onclick="closeConfirm()">Cancel</button>
+<div id="userDetailsModal" class="details-modal hidden">
+    <div class="details-card">
+        <div class="details-header">
+            <h2>User Details</h2>
+            <button onclick="closeUserDetails()" class="close-modal">×</button>
+        </div>
+
+        <div id="userDetailsContent" class="details-content"></div>
+
+        
     </div>
 </div>
 

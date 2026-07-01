@@ -7,7 +7,9 @@ SELECT
 DAYOFWEEK(t.slotDate) AS dayNo,
 COUNT(*) AS total
 FROM appointment a
-JOIN time_slot t ON a.slotID = t.slotID
+JOIN time_slot t
+ON a.slotID = t.slotID
+WHERE YEARWEEK(t.slotDate,1)=YEARWEEK(CURDATE(),1)
 GROUP BY DAYOFWEEK(t.slotDate)
 ";
 

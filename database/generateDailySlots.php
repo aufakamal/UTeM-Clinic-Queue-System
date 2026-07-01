@@ -4,23 +4,6 @@ include "database.php";
 
 header("Content-Type: application/json");
 
-$today = date("Y-m-d");
-
-$checkSql = "SELECT COUNT(*) AS total FROM time_slot WHERE slotDate = ?";
-$stmt = $conn->prepare($checkSql);
-$stmt->bind_param("s", $today);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-
-if ((int)$row["total"] > 0) {
-    echo json_encode([
-        "success" => true,
-        "message" => "Today's slots already exist."
-    ]);
-    exit;
-}
-
 $slots = [
     ["08:00:00", "09:00:00", "Scheduled", 5],
     ["09:00:00", "10:00:00", "Scheduled", 5],
@@ -38,21 +21,58 @@ INSERT INTO time_slot
 VALUES (?, ?, ?, ?, ?, 'Available')
 ";
 
-$stmt = $conn->prepare($insertSql);
+$stmtInsert = $conn->prepare($insertSql);
 
-foreach ($slots as $slot) {
-    $startTime = $slot[0];
-    $endTime = $slot[1];
-    $slotType = $slot[2];
-    $capacity = $slot[3];
+$checkSql = "
+SELECT COUNT(*) AS total
+FROM time_slot
+WHERE slotDate = ?
+";
 
-    $stmt->bind_param("ssssi", $today, $startTime, $endTime, $slotType, $capacity);
-    $stmt->execute();
+$stmtCheck = $conn->prepare($checkSql);
+
+$generated = 0;
+
+for($i = 0; $i < 30; $i++) {
+
+    $slotDate = date("Y-m-d", strtotime("+$i day"));
+
+    $stmtCheck->bind_param("s", $slotDate);
+    $stmtCheck->execute();
+
+    $result = $stmtCheck->get_result();
+    $row = $result->fetch_assoc();
+
+    if($row["total"] > 0){
+        continue;
+    }
+
+    foreach($slots as $slot){
+
+        $startTime = $slot[0];
+        $endTime = $slot[1];
+        $slotType = $slot[2];
+        $capacity = $slot[3];
+
+        $stmtInsert->bind_param(
+            "ssssi",
+            $slotDate,
+            $startTime,
+            $endTime,
+            $slotType,
+            $capacity
+        );
+
+        $stmtInsert->execute();
+    }
+
+    $generated++;
+
 }
 
 echo json_encode([
     "success" => true,
-    "message" => "8 slots generated for today."
+    "message" => "$generated day(s) of slots generated."
 ]);
 
 ?>
