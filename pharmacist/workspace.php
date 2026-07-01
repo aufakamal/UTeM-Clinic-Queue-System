@@ -1,26 +1,174 @@
 <?php
 
-$conn = new mysqli("localhost", "root", "", "clinic_db", 3306);
+session_start();
+include('../dbconnect.php');
 
-if ($conn->connect_error)
+/* ============================
+   UPDATE PRESCRIPTION ITEM
+=============================== */
+
+if (isset($_POST["savePrescription"]))
 {
-    die("Connection failed: " . $conn->connect_error);
+    $prescriptionItemID = (int)$_POST["prescriptionItemID"];
+    $medicineID         = (int)$_POST["medicineID"];
+    $quantity           = (int)$_POST["quantity"];
+    $dosage             = trim($_POST["dosage"]);
+    $frequency          = trim($_POST["frequency"]);
+    $duration           = trim($_POST["duration"]);
+    $instruction        = trim($_POST["instruction"]);
+
+    /* ============================
+       CHECK STOCK
+    =============================== */
+
+    $stockStmt = $conn->prepare("
+        SELECT stockQuantity
+        FROM medicine
+        WHERE medicineID = ?
+    ");
+
+    $stockStmt->bind_param("i", $medicineID);
+    $stockStmt->execute();
+
+    $stockResult = $stockStmt->get_result();
+
+    if ($stockResult->num_rows == 0)
+    {
+        die("Medicine not found.");
+    }
+
+    $medicine = $stockResult->fetch_assoc();
+
+    if ($quantity > $medicine["stockQuantity"])
+    {
+        echo "<script>
+                alert('Quantity exceeds available stock.');
+                window.history.back();
+              </script>";
+        exit;
+    }
+
+    $stockStmt->close();
+
+    /* ============================
+       UPDATE PRESCRIPTION ITEM
+    =============================== */
+
+    $updateStmt = $conn->prepare("
+        UPDATE prescription_item
+
+        SET
+            medicineID = ?,
+            quantity = ?,
+            dosage = ?,
+            frequency = ?,
+            duration = ?,
+            instructions = ?
+
+        WHERE prescriptionItemID = ?
+    ");
+
+    $updateStmt->bind_param(
+        "iissssi",
+        $medicineID,
+        $quantity,
+        $dosage,
+        $frequency,
+        $duration,
+        $instruction,
+        $prescriptionItemID
+    );
+
+    if (!$updateStmt->execute())
+    {
+        die("Update failed: " . $updateStmt->error);
+    }
+
+    $updateStmt->close();
+
+    /* ============================
+    UPDATE PHARMACIST NOTE
+    =============================== */
+
+    $getNoteStmt = $conn->prepare("
+        SELECT
+            p.prescriptionID,
+            p.note
+        FROM prescription p
+        INNER JOIN prescription_item pi
+            ON p.prescriptionID = pi.prescriptionID
+        WHERE pi.prescriptionItemID = ?
+    ");
+
+    $getNoteStmt->bind_param("i", $prescriptionItemID);
+    $getNoteStmt->execute();
+
+    $noteResult = $getNoteStmt->get_result()->fetch_assoc();
+
+    $getNoteStmt->close();
+
+    $pharmacistName = $_SESSION["fullName"];
+
+    $editNote = "Edited by " . $pharmacistName;
+
+    $currentNote = $noteResult["note"] ?? "";
+
+    /* Remove previous "Edited by ..." line */
+    $currentNote = preg_replace(
+        '/\n?Edited by .*/',
+        '',
+        $currentNote
+    );
+
+    $currentNote = trim($currentNote);
+
+    if (!empty($currentNote))
+    {
+        $newNote = $currentNote . "\n" . $editNote;
+    }
+    else
+    {
+        $newNote = $editNote;
+    }
+
+    $updateNoteStmt = $conn->prepare("
+        UPDATE prescription
+        SET note = ?
+        WHERE prescriptionID = ?
+    ");
+
+    $updateNoteStmt->bind_param(
+        "si",
+        $newNote,
+        $noteResult["prescriptionID"]
+    );
+
+    $updateNoteStmt->execute();
+
+    $updateNoteStmt->close();
+
+    $queue = $_POST["queueKey"];
+
+    header("Location: workspace.php?queue=" . urlencode($queue) . "&tab=prescription");
+
+    exit;
 }
 
-/* =========================
-   PENDING PRESCRIPTIONS
-========================= */
+/* ============================
+   PENDING & READY PRESCRIPTIONS
+=============================== */
 $sql = "
 SELECT
     p.prescriptionID,
     p.status,
+    p.note,
     q.queueNo,
     patient.fullName AS patientName,
     patient.userID AS patientID,
     doctor.fullName AS doctorName,
-    pp.allergy AS allergy,
-    pp.chronicCondition AS chronicCondition,
-    pp.currentMed AS currentMed,
+    pp.allergy,
+    pp.chronicCondition,
+    pp.currentMed,
 
     MIN(m.medicineID) AS medicineID,
     MIN(pi.quantity) AS quantity,
@@ -28,33 +176,49 @@ SELECT
     MIN(pi.frequency) AS frequency,
     MIN(pi.duration) AS duration,
     MIN(pi.instructions) AS instructions,
-    MIN(m.medicineID) AS medicineID,
 
     GROUP_CONCAT(
         CONCAT(
             m.medicineName,
-            '<br>Quantity: ', pi.quantity,
-            '<br>Current Stock: ', m.stockQuantity,
-            '<br><br>Dosage: ', pi.dosage,
-            '<br>Frequency: ', pi.frequency,
-            '<br>Duration: ', pi.duration,
-            '<br>Doctor Note: ', pi.instructions
+            '<br>Quantity: ',pi.quantity,
+            '<br>Current Stock: ',m.stockQuantity,
+            '<br><br>Dosage: ',pi.dosage,
+            '<br>Frequency: ',pi.frequency,
+            '<br>Duration: ',pi.duration,
+            '<br>Doctor Note: ',pi.instructions
         )
         SEPARATOR '<br><br>'
     ) AS prescriptionInfo
+
 FROM prescription p
-INNER JOIN consultation c ON p.consultationID = c.consultationID
-INNER JOIN queue q ON c.queueID = q.queueID
-INNER JOIN attendance a ON q.attendanceID = a.attendanceID
-INNER JOIN appointment ap ON a.appointmentID = ap.appointmentID
-INNER JOIN user patient ON ap.userID = patient.userID
-INNER JOIN patient_profile pp ON patient.userID = pp.userID
-INNER JOIN user doctor ON c.doctorUserID = doctor.userID
-INNER JOIN prescription_item pi ON p.prescriptionID = pi.prescriptionID
-INNER JOIN medicine m ON pi.medicineID = m.medicineID
-WHERE p.status = 'Pending'
-GROUP BY p.prescriptionID, q.queueNo, patient.fullName, doctor.fullName, pp.allergy, p.status
-ORDER BY p.prescriptionID DESC
+INNER JOIN consultation c ON p.consultationID=c.consultationID
+INNER JOIN queue q ON c.queueID=q.queueID
+INNER JOIN attendance a ON q.attendanceID=a.attendanceID
+INNER JOIN appointment ap ON a.appointmentID=ap.appointmentID
+INNER JOIN user patient ON ap.userID=patient.userID
+INNER JOIN patient_profile pp ON patient.userID=pp.userID
+INNER JOIN user doctor ON c.doctorUserID=doctor.userID
+INNER JOIN prescription_item pi ON p.prescriptionID=pi.prescriptionID
+INNER JOIN medicine m ON pi.medicineID=m.medicineID
+
+WHERE p.status IN ('Pending','Ready')
+
+GROUP BY
+p.prescriptionID,
+q.queueNo,
+patient.fullName,
+doctor.fullName,
+pp.allergy,
+pp.chronicCondition,
+pp.currentMed,
+p.status
+
+ORDER BY
+CASE
+WHEN p.status='Pending' THEN 1
+ELSE 2
+END,
+p.prescriptionID DESC
 ";
 
 $result = $conn->query($sql);
@@ -65,6 +229,42 @@ if (!$result)
 }
 
 $patients = array();
+
+/* =========================
+   PRESCRIPTION ITEMS
+========================= */
+
+$itemSql = "
+SELECT
+
+    pi.prescriptionItemID,
+    pi.prescriptionID,
+
+    m.medicineID,
+    m.medicineName,
+    m.stockQuantity,
+
+    pi.quantity,
+    pi.dosage,
+    pi.frequency,
+    pi.duration,
+    pi.instructions
+
+FROM prescription_item pi
+
+INNER JOIN medicine m
+ON pi.medicineID = m.medicineID
+
+ORDER BY pi.prescriptionID,
+         pi.prescriptionItemID
+";
+
+$itemResult = $conn->query($itemSql);
+
+if(!$itemResult)
+{
+    die("Prescription Item Query Error: ".$conn->error);
+}
 
 /* =========================
    SEARCH PATIENT DATA
@@ -185,7 +385,8 @@ if ($historyResult && $historyResult->num_rows > 0)
 $medicineSql = "
 SELECT
     medicineID,
-    medicineName
+    medicineName,
+    stockQuantity
 FROM medicine
 ORDER BY medicineName ASC
 ";
@@ -200,6 +401,97 @@ if ($medicineResult && $medicineResult->num_rows > 0)
     {
         $medicineList[] = $medicineRow;
     }
+}
+
+if(isset($_POST["action"]))
+{
+    $prescriptionID = (int)$_POST["prescriptionID"];
+    $action = $_POST["action"];
+
+    if($action == "ready")
+    {
+        $stmt = $conn->prepare("
+            UPDATE prescription
+            SET status='Ready'
+            WHERE prescriptionID=?
+        ");
+
+        $stmt->bind_param("i", $prescriptionID);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    else if($action == "dispense")
+    {
+        $statusStmt = $conn->prepare("
+            SELECT status
+            FROM prescription
+            WHERE prescriptionID = ?
+        ");
+
+        $statusStmt->bind_param("i", $prescriptionID);
+        $statusStmt->execute();
+
+        $currentStatus = $statusStmt->get_result()->fetch_assoc()["status"];
+
+        $statusStmt->close();
+
+        if($currentStatus != "Ready")
+        {
+            header("Location: workspace.php?error=notready");
+            exit;
+        }
+
+        /* Get all medicines in this prescription */
+
+        $stmt = $conn->prepare("
+            SELECT medicineID, quantity
+            FROM prescription_item
+            WHERE prescriptionID=?
+        ");
+
+        $stmt->bind_param("i", $prescriptionID);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        /* Deduct stock */
+
+        while($row = $result->fetch_assoc())
+        {
+            $updateStock = $conn->prepare("
+                UPDATE medicine
+                SET stockQuantity = stockQuantity - ?
+                WHERE medicineID = ?
+            ");
+
+            $updateStock->bind_param(
+                "ii",
+                $row["quantity"],
+                $row["medicineID"]
+            );
+
+            $updateStock->execute();
+            $updateStock->close();
+        }
+
+        $stmt->close();
+
+        /* Update prescription status */
+
+        $updateStatus = $conn->prepare("
+            UPDATE prescription
+            SET status='Dispensed'
+            WHERE prescriptionID=?
+        ");
+
+        $updateStatus->bind_param("i", $prescriptionID);
+        $updateStatus->execute();
+        $updateStatus->close();
+    }
+
+    header("Location: workspace.php");
+    exit;
 }
 
 ?>
@@ -224,53 +516,126 @@ if ($medicineResult && $medicineResult->num_rows > 0)
         <div class="leftColumn">
 
             <article class="pharmacyCard pendingCard">
-                <h2>Pending Prescriptions</h2>
-                <p class="pendingText">Showing latest pending prescriptions</p>
+                <h2>Prescription Queue</h2>
+                <p class="pendingText">Pending and Ready prescriptions</p>
+                <div class="queueFilter">
+
+                    <button class="activeFilter" data-filter="All">
+                        All
+                    </button>
+
+                    <button data-filter="Pending">
+                        Pending
+                    </button>
+
+                    <button data-filter="Ready">
+                        Ready
+                    </button>
+
+                </div>
+
                 <div class="pendingList">
 
                 <?php
-                if ($result->num_rows > 0)
+
+                if($result->num_rows > 0)
                 {
-                    while ($row = $result->fetch_assoc())
+                    while($row = $result->fetch_assoc())
                     {
-                        $key = "P" . $row['prescriptionID'];
+
+                        $key = "P".$row['prescriptionID'];
 
                         $patients[$key] = array(
+
+                            "pharmacistNote" => $row["note"],
+
+                            "status" => $row['status'],
+
+                            "prescriptionID" => $row["prescriptionID"],
+
                             "name" => $row['patientName'],
+
                             "userID" => $row['patientID'],
-                            "queue" => "Q" . $row['queueNo'],
+
+                            "queue" => "Q".$row['queueNo'],
+
                             "doctor" => $row['doctorName'],
+
                             "allergy" => empty($row['allergy']) ? "No Known Allergy" : $row['allergy'],
+
                             "chronicCondition" => empty($row['chronicCondition']) ? "-" : $row['chronicCondition'],
+
                             "currentMed" => empty($row['currentMed']) ? "-" : $row['currentMed'],
-                            "prescription" => $row['prescriptionInfo'],
-                            "medicineID" => $row['medicineID'],
-                            "quantity" => $row['quantity'],
-                            "dosage" => $row['dosage'],
-                            "frequency" => $row['frequency'],
-                            "duration" => $row['duration'],
-                            "instructions" => $row['instructions']
+
+                            "items" => array()
+
                         );
+
                 ?>
 
-                <div class="queueBox">
+                <div class="queueBox"
+                    data-status="<?php echo $row['status']; ?>">
+
                     <div>
-                        <h3><?php echo "Q" . $row['queueNo']; ?></h3>
+
+                        <h3><?php echo "Q".$row['queueNo']; ?></h3>
+
                         <p><?php echo $row['patientName']; ?></p>
-                        <span class="queueStatus">Pending</span>
+
+                        <span class="<?php echo strtolower($row['status']); ?>Status">
+                            <?php echo $row['status']; ?>
+                        </span>
+
                     </div>
 
-                    <button class="viewBtn" data-queue="<?php echo $key; ?>">View</button>
+                    <button
+                        class="viewBtn"
+                        data-queue="<?php echo $key; ?>">
+                        View
+                    </button>
+
                 </div>
 
                 <?php
+
                     }
+                    while($item = $itemResult->fetch_assoc())
+                        {
+                            $key = "P".$item["prescriptionID"];
+
+                            if(isset($patients[$key]))
+                            {
+                                $patients[$key]["items"][] = array(
+
+                                    "prescriptionItemID" => $item["prescriptionItemID"],
+
+                                    "medicineID" => $item["medicineID"],
+
+                                    "medicineName" => $item["medicineName"],
+
+                                    "stockQuantity" => $item["stockQuantity"],
+
+                                    "quantity" => $item["quantity"],
+
+                                    "dosage" => $item["dosage"],
+
+                                    "frequency" => $item["frequency"],
+
+                                    "duration" => $item["duration"],
+
+                                    "instruction" => $item["instructions"]
+
+                                );
+                            }
+                        }
                 }
                 else
                 {
-                    echo "<p class='recentText'>No pending prescription.</p>";
+                    echo "<p class='recentText'>No prescription found.</p>";
                 }
+
                 ?>
+
                 </div>
             </article>
 
@@ -357,87 +722,104 @@ if ($medicineResult && $medicineResult->num_rows > 0)
                         </div>
 
                     </div>
+                        <div class="prescriptionPanel" style="display:none;">
 
-                    <div class="prescriptionPanel" style="display:none;">
-
-                        <div class="prescriptionArea">
-                            <>
-                                <h3>Allergies</h3>
-                                <p class="allergyInfo"></p>
-
-                               <div class="editPrescriptionBox">
-
-                                <h3>Prescription (Editable)</h3>
-
-                                <label>Medicine</label>
-                                <select class="editMedicine" name="medicineID">
-                                    <?php foreach($medicineList as $medicine){ ?>
-                                        <option value="<?php echo $medicine['medicineID']; ?>">
-                                            <?php echo $medicine['medicineName']; ?>
-                                        </option>
-                                    <?php } ?>
-                                </select>
-
-                                <div class="editTwoColumn">
-
-                                    <div>
-                                        <label>Quantity</label>
-                                        <input class="editQuantity" type="number">
-                                    </div>
-
-                                    <div>
-                                        <label>Dosage</label>
-                                        <input class="editDosage" type="text">
-                                    </div>
-
-                                    <div>
-                                        <label>Frequency</label>
-                                        <input class="editFrequency" type="text">
-                                    </div>
-
-                                    <div>
-                                        <label>Duration</label>
-                                        <input class="editDuration" type="text">
-                                    </div>
-
-                                </div>
-
-                                <label>Doctor Note</label>
-                                <textarea class="editInstructions"></textarea>
-
-                             <button type="submit" class="savePrescriptionBtn" onclick="setWorkspaceAction('save')">
-                                Save Changes
-                            </button>
-                        </div>
-
-                            <div>
+                            <!-- SAFETY CHECK -->
+                            <div class="medicalBlock">
                                 <h3>Safety Check</h3>
-                                <label><input type="checkbox"> Allergy checked</label>
-                                <label><input type="checkbox"> Dosage checked</label>
-                                <label><input type="checkbox"> Instruction clear</label>
 
-                                <h3>Remarks</h3>
-                                <textarea class="pharmacistNote" placeholder="Write remarks here..."></textarea>
+                                <label>
+                                    <input type="checkbox">
+                                    Allergy Checked
+                                </label>
+
+                                <label>
+                                    <input type="checkbox">
+                                    Prescription Checked
+                                </label>
+
+                                <label>
+                                    <input type="checkbox">
+                                    Allergy Checked
+                                </label>
                             </div>
+
+                            
+
+                        <!-- PRESCRIPTION TABLE -->
+                        <div class="medicalBlock">
+
+                            <h3>Prescription List</h3>
+
+                            <table class="historyTable">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>Medicine</th>
+                                        <th>Quantity</th>
+                                        <th>Dosage</th>
+                                        <th>Frequency</th>
+                                        <th>Duration</th>
+                                        <th>Instruction</th>
+                                        <th>Action</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="prescriptionListTable">
+
+                                </tbody>
+
+                            </table>
+
+                            <div class="prescriptionNoteSection">
+
+                                <label for="pharmacistNote">
+
+                                    Pharmacist Note
+
+                                </label>
+
+                                <textarea
+                                    id="pharmacistNote"
+                                    class="pharmacistNote"
+                                    name="pharmacistNote"
+                                    placeholder="Optional note..."></textarea>
+
+                            </div>
+
                         </div>
-                        
-                        <div class="nextActionBox">
-                            <div>
-                                <b>What happens next?</b>
-                                <p><b>Mark as Ready:</b> After preparing the medication.</p>
-                                <p><b>Dispense:</b> When the patient collects the medication.</p>
+
+
+                            <!-- ACTION BUTTONS -->
+
+                            <div class="buttonArea">
+
+                                <form method="POST" id="workspaceForm">
+
+                                    <input type="hidden" name="prescriptionID" id="workspacePrescriptionID">
+
+                                    <input type="hidden" name="action" id="workspaceAction">
+
+                                    <button
+                                        type="button"
+                                        class="readyBtn">
+                                        Mark As Ready
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="dispenseBtn">
+                                        Dispense
+                                    </button>
+
+                                </form>
+
                             </div>
 
-                            <div class="actionButtons">
-                                <button type="submit" class="readyBtn" onclick="setWorkspaceAction('ready')">
-                                Mark as Ready
-                            </button>
-
-                            <button type="submit" class="dispenseBtn" onclick="setWorkspaceAction('dispense')">
-                                Dispense
-                            </button>
-
-                            </div>
                         </div>
 
                     </div>
@@ -455,10 +837,113 @@ if ($medicineResult && $medicineResult->num_rows > 0)
         <button class="okBtn">OK</button>
     </div>
 
+    <div class="stockPopup" id="prescriptionPopup">
+
+        <div class="stockPopupContent prescriptionPopupContent">
+
+            <button type="button" class="closePrescriptionBtn closePrescriptionBtn">
+                &times;
+            </button>
+
+            <h2>Edit Prescription</h2>
+
+            <form
+                id="editPrescriptionForm"
+                method="POST">
+
+                <input
+                type="hidden"
+                name="queueKey"
+                id="popupQueueKey">
+
+                <input type="hidden" id="popupPrescriptionItemID" name="prescriptionItemID">
+
+                <label>Medicine</label>
+
+                <select
+                        id="popupMedicine"
+                        name="medicineID">
+
+                    <?php foreach($medicineList as $medicine){ ?>
+
+                        <option value="<?php echo $medicine['medicineID']; ?>">
+
+                            <?php echo $medicine['medicineName']; ?>
+
+                        </option>
+
+                    <?php } ?>
+
+                </select>
+
+                <div class="popupStockBox">
+                    <span>Current Stock</span>
+
+                    <strong id="popupCurrentStock"></strong>
+                </div>
+
+                <label>Quantity</label>
+                <input
+                type="number"
+                id="popupQuantity"
+                name="quantity">
+
+                <p class="popupRemaining">
+                    Remaining Stock:
+                    <span id="popupRemainingStock">-</span>
+                </p>
+
+                <input
+                type="text"
+                id="popupDosage"
+                name="dosage">
+
+                <input
+                type="text"
+                id="popupFrequency"
+                name="frequency">
+
+                <input
+                type="text"
+                id="popupDuration"
+                name="duration">
+
+                <textarea
+                id="popupInstruction"
+                name="instruction"></textarea>
+
+
+
+                <button
+                        type="submit"
+                        name="savePrescription"
+                        id="savePopupBtn" class="saveStockBtn">
+
+                    Save Changes
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
     <script>
         const patientsData = <?php echo json_encode($patients); ?>;
         const searchPatientsData = <?php echo json_encode($searchPatients); ?>;
         const patientRecordsData = <?php echo json_encode($patientRecords); ?>;
+        const medicineListData = <?php echo json_encode($medicineList); ?>;
+    </script>
+
+    <script>
+
+    const reopenQueue =
+    "<?php echo $_GET['queue'] ?? ''; ?>";
+
+    const workspaceError =
+    "<?php echo $_GET['error'] ?? ''; ?>";
+
     </script>
 
     <script src="js/pharmacist.js"></script>

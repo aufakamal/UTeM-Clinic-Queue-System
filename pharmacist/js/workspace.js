@@ -1,6 +1,7 @@
 let selectedQueue = "";
 
 const patients = patientsData;
+const medicineList = medicineListData;
 
 const viewButtons = document.querySelectorAll(".viewBtn");
 const emptyWorkspace = document.querySelector(".emptyWorkspace");
@@ -23,7 +24,7 @@ const editFrequency = document.querySelector(".editFrequency");
 const editDuration = document.querySelector(".editDuration");
 const editInstructions = document.querySelector(".editInstructions");
 
-const safetyChecks = document.querySelectorAll(".prescriptionArea input[type='checkbox']");
+const safetyChecks = document.querySelectorAll(".prescriptionPanel input[type='checkbox']");
 
 const readyBtn = document.querySelector(".readyBtn");
 const dispenseBtn = document.querySelector(".dispenseBtn");
@@ -131,6 +132,84 @@ function buildWorkspaceVisits(queue)
     }
 }
 
+function buildPrescriptionTable(queue)
+{
+    const prescriptionListTable =
+        document.getElementById("prescriptionListTable");
+
+    if (!prescriptionListTable)
+    {
+        return;
+    }
+
+    let rows = "";
+
+    const items = patients[queue].items;
+
+    if (!items || items.length === 0)
+    {
+        prescriptionListTable.innerHTML = `
+            <tr>
+                <td colspan="7">No medicine added.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    items.forEach(item =>
+    {
+        rows += `
+        <tr>
+
+            <td>${item.medicineName}</td>
+
+            <td>${item.quantity}</td>
+
+            <td>${item.dosage}</td>
+
+            <td>${item.frequency}</td>
+
+            <td>${item.duration}</td>
+
+            <td>${item.instruction}</td>
+
+            <td>
+
+                <button
+                    type="button"
+                    class="editPrescriptionBtn actionBtn"
+
+                    data-id="${item.prescriptionItemID}"
+
+                    data-medicine="${item.medicineID}"
+
+                    data-quantity="${item.quantity}"
+
+                    data-dosage="${item.dosage}"
+
+                    data-frequency="${item.frequency}"
+
+                    data-duration="${item.duration}"
+
+                    data-instruction="${item.instruction}"
+
+                    data-stock="${item.stockQuantity}">
+
+                    Edit
+
+                </button>
+
+            </td>
+
+        </tr>
+        `;
+    });
+
+    prescriptionListTable.innerHTML = rows;
+
+    initialiseEditButtons();
+}
+
 viewButtons.forEach((button) =>
 {
     button.addEventListener("click", () =>
@@ -149,6 +228,9 @@ viewButtons.forEach((button) =>
         if (patientName) patientName.textContent = patients[queue].name;
         if (queueNo) queueNo.textContent = patients[queue].queue;
         if (doctorName) doctorName.textContent = patients[queue].doctor;
+
+        document.getElementById("workspacePrescriptionID").value = patients[queue].prescriptionID;
+
         if (allergyInfo) allergyInfo.textContent = patients[queue].allergy;
 
         if (overviewAllergyInfo) overviewAllergyInfo.textContent = patients[queue].allergy;
@@ -170,13 +252,32 @@ viewButtons.forEach((button) =>
             pharmacistNote.value = patients[queue].pharmacistNote || "";
         }
 
-        safetyChecks.forEach((check) =>
+        if (patients[queue].status === "Ready")
         {
-            check.checked = false;
-        });
+            safetyChecks.forEach(check =>
+            {
+                check.checked = true;
+                check.disabled = true;
+            });
+
+            readyBtn.disabled = true;
+            dispenseBtn.disabled = false;
+        }
+        else
+        {
+            safetyChecks.forEach(check =>
+            {
+                check.checked = false;
+                check.disabled = false;
+            });
+
+            readyBtn.disabled = false;
+            dispenseBtn.disabled = true;
+        }
 
         buildWorkspaceVisits(queue);
-        showWorkspaceTab("overview");
+        buildPrescriptionTable(queue);
+        showWorkspaceTab("prescription");
     });
 });
 
@@ -263,32 +364,26 @@ function formatDate(dateValue)
 
 function safetyChecked()
 {
-    let checked = false;
-
-    safetyChecks.forEach((check) =>
+    for (const check of safetyChecks)
     {
-        if (check.checked)
+        if (!check.checked)
         {
-            checked = true;
+            return false;
         }
-    });
+    }
 
-    return checked;
+    return true;
 }
 
 function setWorkspaceAction(action)
 {
-    const workspaceActionInput = document.querySelector(".workspaceActionInput");
-
-    if (workspaceActionInput)
-    {
-        workspaceActionInput.value = action;
-    }
+    document.getElementById("workspaceAction").value = action;
 }
 
 function validateWorkspaceForm()
 {
-    const workspaceActionInput = document.querySelector(".workspaceActionInput");
+    const workspaceActionInput =
+        document.getElementById("workspaceAction");
 
     if (selectedQueue === "")
     {
@@ -296,20 +391,16 @@ function validateWorkspaceForm()
         return false;
     }
 
-    if (workspaceActionInput && 
-        (workspaceActionInput.value === "ready" || workspaceActionInput.value === "dispense"))
+    if (
+        workspaceActionInput.value === "ready" ||
+        workspaceActionInput.value === "dispense"
+    )
     {
         if (!safetyChecked())
         {
-            alert("Please complete the Safety Check before proceeding.");
+            alert("Please complete all Safety Checks before proceeding.");
             return false;
         }
-    }
-
-    if (editQuantity && editQuantity.value <= 0)
-    {
-        alert("Quantity must be more than 0.");
-        return false;
     }
 
     return true;
@@ -495,38 +586,247 @@ function viewPatientRecord(userID)
 
 function setWorkspaceAction(action)
 {
-    const workspaceActionInput = document.querySelector(".workspaceActionInput");
+    document.getElementById("workspaceAction").value = action;
+}
 
-    if (workspaceActionInput)
+/* =========================
+   QUEUE FILTER
+========================= */
+
+const filterButtons = document.querySelectorAll(".queueFilter button");
+const queueBoxes = document.querySelectorAll(".queueBox");
+
+filterButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        // Active button
+        filterButtons.forEach(btn => btn.classList.remove("activeFilter"));
+        button.classList.add("activeFilter");
+
+        const filter = button.dataset.filter;
+
+        queueBoxes.forEach(box => {
+
+            const status = box.dataset.status;
+
+            if (filter === "All" || status === filter)
+            {
+                box.style.display = "flex";
+            }
+            else
+            {
+                box.style.display = "none";
+            }
+
+        });
+
+    });
+
+});
+
+/* ===========================
+   EDIT PRESCRIPTION POPUP
+=========================== */
+
+const prescriptionPopup = document.getElementById("prescriptionPopup");
+
+const closePrescriptionBtn =
+document.querySelector(".closePrescriptionBtn");
+
+const popupMedicine =
+document.getElementById("popupMedicine");
+
+const popupCurrentStock =
+document.getElementById("popupCurrentStock");
+
+const popupRemainingStock =
+document.getElementById("popupRemainingStock");
+
+const popupQuantity =
+document.getElementById("popupQuantity");
+
+const popupDosage =
+document.getElementById("popupDosage");
+
+const popupFrequency =
+document.getElementById("popupFrequency");
+
+const popupDuration =
+document.getElementById("popupDuration");
+
+const popupInstruction =
+document.getElementById("popupInstruction");
+
+const popupPrescriptionItemID =
+document.getElementById("popupPrescriptionItemID");
+
+const savePopupBtn =
+document.getElementById("savePopupBtn");
+
+if (closePrescriptionBtn)
+{
+    closePrescriptionBtn.addEventListener("click", () =>
     {
-        workspaceActionInput.value = action;
+        prescriptionPopup.style.display = "none";
+    });
+}
+
+function initialiseEditButtons()
+{
+    document.querySelectorAll(".editPrescriptionBtn").forEach(button =>
+    {
+        button.onclick = () =>
+        {
+
+            document.getElementById("popupQueueKey").value = selectedQueue;
+            
+            popupPrescriptionItemID.value =
+                button.dataset.id;
+
+            popupMedicine.value =
+                button.dataset.medicine;
+
+            updateStockInfo(
+                parseInt(button.dataset.stock)
+            );
+
+            popupQuantity.value =
+                button.dataset.quantity;
+
+            popupDosage.value =
+                button.dataset.dosage;
+
+            popupFrequency.value =
+                button.dataset.frequency;
+
+            popupDuration.value =
+                button.dataset.duration;
+
+            popupInstruction.value =
+                button.dataset.instruction;
+
+            prescriptionPopup.style.display = "flex";
+        };
+    });
+}
+
+if (popupMedicine)
+{
+    popupMedicine.addEventListener("change", () =>
+    {
+        const selectedMedicine =
+            medicineList.find(medicine =>
+                medicine.medicineID == popupMedicine.value
+            );
+
+        if (selectedMedicine)
+        {
+            updateStockInfo(
+                parseInt(selectedMedicine.stockQuantity)
+            );
+        }
+    });
+}
+
+function updateStockInfo(stock)
+{
+    popupCurrentStock.textContent = stock + " units";
+
+    if (stock < 10)
+    {
+        popupCurrentStock.style.color = "#dc2626";
+    }
+    else if (stock < 50)
+    {
+        popupCurrentStock.style.color = "#d97706";
+    }
+    else
+    {
+        popupCurrentStock.style.color = "#16a34a";
+    }
+
+    popupQuantity.max = stock;
+
+    const quantity = parseInt(popupQuantity.value) || 0;
+
+    let remaining = stock - quantity;
+
+    if (remaining < 0)
+    {
+        remaining = 0;
+    }
+
+    popupRemainingStock.textContent =
+        remaining + " units";
+}
+
+if (popupQuantity)
+{
+    popupQuantity.addEventListener("input", () =>
+    {
+        const selectedMedicine = medicineList.find(medicine =>
+            medicine.medicineID == popupMedicine.value
+        );
+
+        if (selectedMedicine)
+        {
+            updateStockInfo(
+                parseInt(selectedMedicine.stockQuantity)
+            );
+        }
+    });
+}
+
+if (typeof reopenQueue !== "undefined" &&
+    reopenQueue !== "")
+{
+    const button =
+        document.querySelector(
+            `.viewBtn[data-queue="${reopenQueue}"]`
+        );
+
+    if (button)
+    {
+        button.click();
     }
 }
 
-function validateWorkspaceForm()
-{
-    const workspaceActionInput = document.querySelector(".workspaceActionInput");
+readyBtn.onclick = () => {
+
+    setWorkspaceAction("ready");
+
+    if (!validateWorkspaceForm())
+        return;
+
+    document.getElementById("workspaceForm").submit();
+
+};
+
+dispenseBtn.onclick = () => {
 
     if (selectedQueue === "")
     {
         alert("Please select a patient first.");
-        return false;
+        return;
     }
 
-    if (workspaceActionInput.value === "ready" || workspaceActionInput.value === "dispense")
+    if (patients[selectedQueue].status !== "Ready")
     {
-        if (!safetyChecked())
-        {
-            alert("Please complete at least one Safety Check before proceeding.");
-            return false;
-        }
+        alert("Prescription must be marked Ready before dispensing.");
+        return;
     }
 
-    if (editQuantity && editQuantity.value <= 0)
-    {
-        alert("Quantity must be more than 0.");
-        return false;
-    }
+    setWorkspaceAction("dispense");
 
-    return true;
+    if (!validateWorkspaceForm())
+        return;
+
+    document.getElementById("workspaceForm").submit();
+
+};
+
+if (workspaceError === "notready")
+{
+    alert("Prescription must be marked Ready before dispensing.");
 }

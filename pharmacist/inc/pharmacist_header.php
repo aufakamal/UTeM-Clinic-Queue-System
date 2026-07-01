@@ -1,9 +1,9 @@
 <div id="header">
 
     <div id="leftSection">
-        <button class="iconBtn">
+        <!-- <button class="iconBtn">
             <img class="icon" src="../images/backIconDark.png" alt="Back">
-        </button>
+        </button> -->
 
         <h1>UTeM Clinic Queue System</h1>
     </div>
@@ -24,5 +24,4 @@
             <img class="icon" src="../images/profileIconDark.png" alt="Profile">
         </button>
     </div>
-
 </div>

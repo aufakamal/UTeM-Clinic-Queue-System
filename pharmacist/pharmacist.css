@@ -294,6 +294,39 @@ section {
     margin-bottom: 10px;
 }
 
+.prescriptionHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.prescriptionPanel{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.prescriptionPanel .medicalBlock{
+    background:#fff;
+    border:1px solid #E2E8F0;
+    border-radius:14px;
+    padding:20px;
+}
+
+.medicalBlock label{
+    display:block;
+    margin:12px 0;
+}
+
+.medicalBlock input[type="checkbox"]{
+    margin-right:10px;
+}
+
+#prescriptionListTable td{
+    text-align:center;
+}
+
 .pharmacistNote {
     width: 100%;
     min-height: 90px;
@@ -1952,17 +1985,238 @@ section {
     box-shadow:0 5px 14px rgba(2,132,199,.25);
 }
 
-.overviewPanel,
-.visitsPanel,
-.prescriptionPanel{
-    margin-top:20px;
-}
-
 .overviewPanel .medicalBlock,
-.visitsPanel .medicalBlock{
+.visitsPanel .medicalBlock,
+.prescriptionPanel .medicalBlock{
     margin-bottom:18px;
 }
 
 .overviewPanel .medicalInfoCard{
     margin:18px 0;
+}
+
+.queueSectionTitle{
+
+    margin:20px 0 12px;
+
+    color:#0369A1;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    border-bottom:1px solid #E2E8F0;
+
+    padding-bottom:8px;
+
+}
+
+.readyStatus{
+
+    display:inline-block;
+
+    background:#DCFCE7;
+
+    color:#166534;
+
+    padding:4px 10px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+.popupStock,
+.popupRemaining
+{
+    margin: 8px 0 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+#popupCurrentStock,
+#popupRemainingStock
+{
+    font-weight: 700;
+}
+
+/* ====================================
+   PRESCRIPTION POPUP ONLY
+==================================== */
+
+.prescriptionPopupContent
+{
+    width:520px;
+}
+
+.prescriptionPopupContent h2
+{
+    margin-bottom:25px;
+}
+
+.prescriptionPopupContent select,
+.prescriptionPopupContent textarea
+{
+    width:100%;
+    padding:10px;
+    border:1px solid #CBD5E1;
+    border-radius:10px;
+    margin-top:6px;
+    font-size:15px;
+    box-sizing:border-box;
+}
+
+.prescriptionPopupContent textarea
+{
+    min-height:90px;
+    resize:vertical;
+}
+
+.prescriptionPopupContent .popupRow
+{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.prescriptionPopupContent .popupStockBox
+{
+    background:#EFF6FF;
+    border:1px solid #BFDBFE;
+    border-radius:12px;
+    text-align:center;
+    padding:14px;
+    margin-top:15px;
+    margin-bottom:5px;
+}
+
+.prescriptionPopupContent .popupStockBox span
+{
+    display:block;
+    font-size:13px;
+    color:#64748B;
+}
+
+.prescriptionPopupContent .popupStockBox strong
+{
+    display:block;
+    margin-top:6px;
+    font-size:22px;
+    color:#0284C7;
+    font-weight:700;
+}
+
+/* ===========================
+   PRESCRIPTION NOTE
+=========================== */
+
+.prescriptionNoteSection
+{
+    margin-top:20px;
+    padding-top:18px;
+    border-top:1px solid #E2E8F0;
+}
+
+.prescriptionNoteSection label
+{
+    display:block;
+    margin-bottom:8px;
+    font-size:14px;
+    font-weight:600;
+    color:#334155;
+}
+
+.pharmacistNote
+{
+    width:100%;
+    min-height:90px;
+    padding:12px 14px;
+    border:1px solid #CBD5E1;
+    border-radius:10px;
+    resize:vertical;
+    box-sizing:border-box;
+    font-size:14px;
+    font-family:inherit;
+}
+
+.pharmacistNote:focus
+{
+    outline:none;
+    border-color:#0EA5E9;
+    box-shadow:0 0 0 3px rgba(14,165,233,.15);
+}
+
+.editPrescriptionBtn
+{
+    background:#FEF3C7;
+    color:#B45309;
+    border:1px solid #FCD34D;
+    border-radius:8px;
+    padding:7px 15px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.editPrescriptionBtn:hover
+{
+    background:#FDE68A;
+    transform:translateY(-2px);
+}
+
+/* ===========================
+   QUEUE FILTER
+=========================== */
+
+.queueFilter
+{
+    display:flex;
+    gap:8px;
+    margin:12px 0 15px;
+}
+
+.queueFilter button
+{
+    padding:6px 14px;
+
+    border:1px solid #b8cbe0;
+
+    background:#ffffff;
+
+    color:#1e3a5f;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:500;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.queueFilter button:hover
+{
+    background:#eef7ff;
+    border-color:#7fb7e8;
+}
+
+.queueFilter button.activeFilter
+{
+    background:#d9efff;
+    border-color:#5ea9e6;
+    color:#0069b4;
+    font-weight:600;
+}
+
+button:disabled
+{
+    opacity: 0.5;
+    cursor: not-allowed;
 }
