@@ -833,50 +833,37 @@ async function loadDashboard() {
         document.getElementById("totalToday").textContent = data.totalAppointments;
         document.getElementById("waitingPatients").textContent = data.waitingPatients;
         document.getElementById("activeConsult").textContent = data.activeConsultations;
-        document.getElementById("availableDoctors").textContent = data.availableDoctors;
+        document.getElementById("completedToday").textContent = data.completedToday;
 
     } catch (err) {
         console.error("Dashboard error:", err);
     }
 }
 
-async function loadWeeklyAppointments() {
-
-    const response = await fetch("../database/getWeeklyAppointments.php");
+async function loadMonthlyAppointments() {
+    const response = await fetch("../database/getMonthlyAppointments.php");
     const data = await response.json();
-    console.log("Weekly Data:", data);
 
-    const values = [
-        data[2],
-        data[3],
-        data[4],
-        data[5],
-        data[6],
-        data[7],
-        data[1]
-    ];
-
-    const days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-
-    const chart = document.getElementById("weeklyChart");
+    const chart = document.getElementById("monthlyChart");
+    if (!chart) return;
 
     chart.innerHTML = "";
+
+    const values = Object.values(data);
     const maxValue = Math.max(...values, 1);
 
+    Object.keys(data).forEach(label => {
+        const value = data[label];
+        const height = value === 0 ? 12 : (value / maxValue) * 170;
 
-    values.forEach((value, index) => {
-    const barHeight = value === 0 ? 25 : (value / maxValue) * 120;
-
-    chart.innerHTML += `
-        <div class="chart-item">
-            <div class="chart-bar" style="height:${barHeight}px">
-                ${value}
+        chart.innerHTML += `
+            <div class="dashboard-chart-item">
+                <div class="dashboard-chart-value">${value}</div>
+                <div class="dashboard-chart-bar" style="height:${height}px"></div>
+                <div class="dashboard-chart-label">${label}</div>
             </div>
-            <div class="chart-label">${days[index]}</div>
-        </div>
-    `;
-});
-
+        `;
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -904,8 +891,8 @@ if (document.getElementById("totalToday")) {
     loadDashboard();
 }
 
-if (document.getElementById("weeklyChart")) {
-    loadWeeklyAppointments();
+if (document.getElementById("monthlyChart")) {
+    loadMonthlyAppointments();
 }
 
 if (document.getElementById("profileName")) {

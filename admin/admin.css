@@ -996,3 +996,47 @@ select:focus {
 .history-table td:nth-child(4) {
     text-align: left;
 }
+
+.chart {
+    padding: 28px 34px;
+}
+
+#monthlyChart{
+    height:260px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    gap:55px;
+    padding:20px 40px 10px;
+}
+
+.dashboard-chart-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.dashboard-chart-value{
+    margin-bottom:8px;
+    font-size:13px;
+    font-weight:700;
+    color:#64748B;
+}
+
+.dashboard-chart-bar{
+    width:58px;
+    background:linear-gradient(180deg,#0EA5E9,#0F766E);
+    border-radius:14px 14px 6px 6px;
+    transition:.2s;
+}
+
+.dashboard-chart-bar:hover{
+    transform:translateY(-3px);
+}
+
+.dashboard-chart-label{
+    margin-top:10px;
+    font-size:13px;
+    font-weight:700;
+    color:#1E293B;
+}

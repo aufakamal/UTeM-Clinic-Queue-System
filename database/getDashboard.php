@@ -32,13 +32,15 @@ WHERE queueStatus = 'Called'
 ");
 $data["activeConsultations"] = $result->fetch_assoc()["total"];
 
-/* Available doctors */
+/* Completed consultations today */
 $result = $conn->query("
 SELECT COUNT(*) AS total
-FROM user_role
-WHERE roleID = 2
+FROM consultation c
+JOIN queue q ON c.queueID = q.queueID
+WHERE q.queueStatus = 'Completed'
+AND DATE(c.endTime) = CURDATE()
 ");
-$data["availableDoctors"] = $result->fetch_assoc()["total"];
+$data["completedToday"] = $result->fetch_assoc()["total"];
 
 echo json_encode($data);
 

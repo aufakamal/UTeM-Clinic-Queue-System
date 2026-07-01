@@ -31,14 +31,14 @@
         </div>
 
         <div class="stat">
-            <b>Available<br>doctors</b>
-            <span id="availableDoctors">7</span>
-        </div>
+    <b>Completed<br>consultations<br>today</b>
+    <span id="completedToday">0</span>
+</div>
     </div>
 
     <article class="chart">
-        <h2>Weekly Appointments</h2>
-        <div id="weeklyChart" class="weekly-chart"></div>
+        <h2>Monthly Appointments</h2>
+<div id="monthlyChart" class="weekly-chart"></div>
     </article>
 </section>
 
