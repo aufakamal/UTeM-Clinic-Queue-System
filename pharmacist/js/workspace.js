@@ -308,7 +308,6 @@ function viewPatientRecord(userID)
             <div class="searchMiniTabs">
                 <button class="active" onclick="switchSearchTab('overview', this)">Overview</button>
                 <button onclick="switchSearchTab('visits', this)">Visits</button>
-                <button onclick="switchSearchTab('prescription', this)">Prescription</button>
             </div>
 
             <div id="searchOverviewSection">
@@ -342,24 +341,6 @@ function viewPatientRecord(userID)
                     </table>
                 </div>
             </div>
-
-            <div id="searchPrescriptionSection" style="display:none;">
-                <div class="searchViewBlock">
-                    <h3>Prescription</h3>
-                    <table class="historyTable">
-                        <tr>
-                            <th>Medicine</th>
-                            <th>Quantity</th>
-                            <th>Dosage</th>
-                            <th>Frequency</th>
-                            <th>Duration</th>
-                            <th>Doctor Note</th>
-                        </tr>
-                        ${buildSearchPrescriptionRows(record)}
-                    </table>
-                </div>
-            </div>
-
         </div>
     `;
 }
@@ -375,7 +356,6 @@ function switchSearchTab(tab, btn)
 
     document.getElementById("searchOverviewSection").style.display = "none";
     document.getElementById("searchVisitsSection").style.display = "none";
-    document.getElementById("searchPrescriptionSection").style.display = "none";
 
     if (tab === "overview")
     {
@@ -384,10 +364,6 @@ function switchSearchTab(tab, btn)
     else if (tab === "visits")
     {
         document.getElementById("searchVisitsSection").style.display = "block";
-    }
-    else
-    {
-        document.getElementById("searchPrescriptionSection").style.display = "block";
     }
 }
 
