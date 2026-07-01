@@ -331,7 +331,6 @@ function addPrescription() {
         duration: duration,
         quantity: quantity,
         instruction: instruction,
-        quantity: 1
     });
 
     tr.dataset.id = medicineID;
@@ -432,6 +431,19 @@ function endSession() {
         return;
     }
 
+    if (prescriptionList.length === 0) {
+
+    const confirmNoRx = confirm(
+        "No prescription has been added.\n\n" +
+        "Do you want to complete this consultation without prescribing medication?"
+    );
+
+    if (!confirmNoRx) {
+        document.getElementById("endSessionBtn").disabled = false;
+        return;
+    }
+    }
+
         const findings = getEditableValues("findingList");
 
         const payload = {
@@ -477,7 +489,6 @@ function endSession() {
     .then(data => {
 
         console.log(data);
-        alert(JSON.stringify(data));
 
         if (data.success) {
             alert(
@@ -491,11 +502,10 @@ function endSession() {
 
     })
 
-    .catch(error => {
-        console.error(error);
-        alert("Failed to save consultation.");
-        document.getElementById("endSessionBtn").disabled = false;
-    });
+        .catch(error => {
+            console.error(error);
+            document.getElementById("endSessionBtn").disabled = false;
+        });
 
 }
 
@@ -544,6 +554,20 @@ function resetConsultation() {
     document.getElementById("duration").value = "";
     document.getElementById("quantity").value = "";
     document.getElementById("instruction").value = "";
+
+    // Hide consultation panel
+    document.getElementById("patientRecordDisplay").style.display = "none";
+    document.getElementById("viewOnlyRecordDisplay").style.display = "none";
+
+    // Show placeholder
+    document.getElementById("placeholderText").style.display = "block";
+
+    hideAllSections();
+
+    // Remove active tab
+    document.querySelectorAll(".miniTab").forEach(tab => {
+        tab.classList.remove("active");
+    });
 
     // Hide consultation panel
     document.getElementById("patientRecordDisplay").style.display = "none";

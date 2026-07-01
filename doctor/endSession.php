@@ -37,8 +37,8 @@ try {
 
     // FIX 2: SAFE prescription handling
     $prescription = $data["prescription"] ?? [];
-    if (!is_array($prescription)) {
-        $prescription = [];
+        if (!empty($prescription)) {
+        // save prescription
     }
 
     $conn->begin_transaction();
@@ -49,74 +49,57 @@ try {
            Consultation
         ----------------------------- */
 
-        $sql = "
-        INSERT INTO consultation
-        (
-            queueID,
-            doctorUserID,
-            startTime,
-            endTime,
-            reasonForVisit,
-            clinicalFindings,
-            diagnosis,
-            treatmentPlan
-        )
-        VALUES
-        (
-            ?,
-            ?,
-            NOW(),
-            NOW(),
-            ?,
-            ?,
-            ?,
-            ?
-        )
-        ";
+            $sql = "
+            INSERT INTO consultation
+            (
+                queueID,
+                doctorUserID,
+                startTime,
+                endTime,
+                reasonForVisit,
+                clinicalFindings,
+                diagnosis,
+                treatmentPlan
+            )
+            VALUES
+            (
+                ?,
+                ?,
+                NOW(),
+                NOW(),
+                ?,
+                ?,
+                ?,
+                ?
+            )
+            ";
 
-        $stmt = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-        echo json_encode([
-            "success" => false,
-            "debug" => [
-                "doctorUserID" => $doctorUserID,
-                "queueID" => $queueID,
-                "reason" => $reason,
-                "findings" => $findings,
-                "diagnosis" => $diagnosis,
-                "treatment" => $treatment
-            ]
-        ]);
-        exit;
+            $stmt->bind_param(
+                "isssss",
+                $queueID,
+                $doctorUserID,
+                $reason,
+                $findings,
+                $diagnosis,
+                $treatment
+            );
 
-        $stmt->bind_param(
-            "iissss",
-            $queueID,
-            $doctorUserID,
-            $reason,
-            $findings,
-            $diagnosis,
-            $treatment
-        );
+            if (!$stmt->execute()) {
 
-        var_dump($doctorUserID);
-        var_dump(gettype($doctorUserID));
-        exit;
+                echo json_encode([
+                    "success" => false,
+                    "sql_error" => $stmt->error,
+                    "sql_errno" => $stmt->errno,
+                    "doctorUserID" => $doctorUserID,
+                    "queueID" => $queueID
+                ]);
 
-        if (!$stmt->execute()) {
+                exit;
+            }
 
-            echo json_encode([
-                "success" => false,
-                "sql_error" => $stmt->error,
-                "sql_errno" => $stmt->errno,
-                "doctorUserID" => $doctorUserID,
-                "queueID" => $queueID
-            ]);
-
-            exit;
-        }
-
-        $consultationID = $conn->insert_id;
+            $consultationID = $conn->insert_id;
 
         /* -----------------------------
            Prescription (SAFE OPTIONAL)
@@ -145,8 +128,18 @@ try {
 
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("i", $consultationID);
+
             if (!$stmt->execute()) {
-                throw new Exception($stmt->error);
+
+                echo json_encode([
+                    "success" => false,
+                    "step" => "prescription",
+                    "error" => $stmt->error,
+                    "errno" => $stmt->errno,
+                    "consultationID" => $consultationID
+                ]);
+
+                exit;
             }
 
             $prescriptionID = $conn->insert_id;
