@@ -1,22 +1,21 @@
 <?php
 
-$conn = new mysqli("localhost", "root", "", "clinic_db", 3306);
+session_start();
+include('../dbconnect.php');
 
-if ($conn->connect_error)
-{
-    die("Connection failed: " . $conn->connect_error);
-}
-
-function getCount($conn, $sql)
-{
+function getCount($conn, $sql) {
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
+
     return $row['total'];
 }
+
 $selectedMonth = isset($_GET['month']) ? $_GET['month'] : date('m');
 $selectedYear = date('Y');
+
 $monthFilter = "MONTH(prescriptionDate) = '$selectedMonth' 
                 AND YEAR(prescriptionDate) = '$selectedYear'";
+
 $pending = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Pending' AND $monthFilter");
 $ready = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Ready' AND $monthFilter");
 $dispensed = getCount($conn, "SELECT COUNT(*) AS total FROM prescription WHERE status = 'Dispensed' AND $monthFilter");
@@ -25,25 +24,21 @@ $lowStock = getCount($conn, "SELECT COUNT(*) AS total FROM medicine WHERE stockQ
 
 $totalStatus = $pending + $ready + $dispensed;
 
-if ($totalStatus == 0)
-{
+if ($totalStatus == 0) {
     $pendingPercent = 0;
     $readyPercent = 0;
     $dispensedPercent = 0;
 }
-else
-{
+else {
     $pendingPercent = round(($pending / $totalStatus) * 100);
     $readyPercent = round(($ready / $totalStatus) * 100);
     $dispensedPercent = round(($dispensed / $totalStatus) * 100);
 }
 
-if ($totalPrescription == 0)
-{
+if ($totalPrescription == 0) {
     $dispensingRate = 0;
 }
-else
-{
+else {
     $dispensingRate = round(($dispensed / $totalPrescription) * 100);
 }
 
@@ -65,10 +60,8 @@ $topMedicineResult = $conn->query($topMedicineSql);
 $topMedicineNames = array();
 $topMedicineValues = array();
 
-if ($topMedicineResult && $topMedicineResult->num_rows > 0)
-{
-    while ($medicine = $topMedicineResult->fetch_assoc())
-    {
+if ($topMedicineResult && $topMedicineResult->num_rows > 0) {
+    while ($medicine = $topMedicineResult->fetch_assoc()) {
         $topMedicineNames[] = $medicine['medicineName'];
         $topMedicineValues[] = $medicine['totalQuantity'];
     }
@@ -81,19 +74,17 @@ $dailySql = "
 SELECT 
     prescriptionDate,
     COUNT(*) AS total
-    FROM prescription
-    WHERE status = 'Dispensed'
-    AND $monthFilter
-    GROUP BY prescriptionDate
-    ORDER BY prescriptionDate ASC
-    ";
+FROM prescription
+WHERE status = 'Dispensed'
+AND $monthFilter
+GROUP BY prescriptionDate
+ORDER BY prescriptionDate ASC
+";
 
 $dailyResult = $conn->query($dailySql);
 
-if ($dailyResult && $dailyResult->num_rows > 0)
-{
-    while ($row = $dailyResult->fetch_assoc())
-    {
+if ($dailyResult && $dailyResult->num_rows > 0) {
+    while ($row = $dailyResult->fetch_assoc()) {
         $dailyLabels[] = date("d M", strtotime($row['prescriptionDate']));
         $dailyValues[] = $row['total'];
     }
@@ -122,33 +113,38 @@ if ($dailyResult && $dailyResult->num_rows > 0)
             </div>
 
             <div class="datePickerBox">
-            <span>🗓️</span>
-            <select id="reportMonth" onchange="changeReportMonth()">
+                <span>🗓️</span>
 
-                <?php
-                $selectedMonth = isset($_GET['month']) ? $_GET['month'] : date('m');
-                $months = [
-                    "01" => "Jan",
-                    "02" => "Feb",
-                    "03" => "Mar",
-                    "04" => "Apr",
-                    "05" => "May",
-                    "06" => "Jun",
-                    "07" => "Jul",
-                    "08" => "Aug",
-                    "09" => "Sep",
-                    "10" => "Oct",
-                    "11" => "Nov",
-                    "12" => "Dec"
-                ];
-                foreach($months as $value => $name)
-                {
-                    $selected = ($selectedMonth == $value) ? "selected" : "";
-                    echo "<option value='$value' $selected>$name</option>";
-                }
-                ?>
-            </select>
-        </div>
+                <select id="reportMonth" onchange="changeReportMonth()">
+
+                    <?php
+
+                    $selectedMonth = isset($_GET['month']) ? $_GET['month'] : date('m');
+
+                    $months = [
+                        "01" => "Jan",
+                        "02" => "Feb",
+                        "03" => "Mar",
+                        "04" => "Apr",
+                        "05" => "May",
+                        "06" => "Jun",
+                        "07" => "Jul",
+                        "08" => "Aug",
+                        "09" => "Sep",
+                        "10" => "Oct",
+                        "11" => "Nov",
+                        "12" => "Dec"
+                    ];
+
+                    foreach ($months as $value => $name) {
+                        $selected = ($selectedMonth == $value) ? "selected" : "";
+                        echo "<option value='$value' $selected>$name</option>";
+                    }
+
+                    ?>
+
+                </select>
+            </div>
         </article>
 
         <div class="reportSummary">
@@ -195,17 +191,20 @@ if ($dailyResult && $dailyResult->num_rows > 0)
                 <p class="chartDesc">Daily dispensed prescription count for the selected month.</p>
 
                 <div class="chartBox">
-                <?php 
-                if (count($dailyLabels) == 0) { ?>
-                    <div class="noChartData">
-                        No dispensed prescription record for this month.
-                    </div>
-                <?php 
-                } else { ?>
-                    <canvas id="dailyChart"></canvas>
-                <?php } ?>
-            </div>
 
+                    <?php if (count($dailyLabels) == 0) { ?>
+
+                        <div class="noChartData">
+                            No dispensed prescription record for this month.
+                        </div>
+
+                    <?php } else { ?>
+
+                        <canvas id="dailyChart"></canvas>
+
+                    <?php } ?>
+
+                </div>
             </article>
 
             <article class="reportBox">
@@ -215,20 +214,18 @@ if ($dailyResult && $dailyResult->num_rows > 0)
                 <div class="medicineBox">
 
                     <?php
-                    if (count($topMedicineNames) > 0)
-                    {
+
+                    if (count($topMedicineNames) > 0) {
                         $maxMedicine = max($topMedicineValues);
 
-                        for ($i = 0; $i < count($topMedicineNames); $i++)
-                        {
-                            if ($maxMedicine == 0)
-                            {
+                        for ($i = 0; $i < count($topMedicineNames); $i++) {
+                            if ($maxMedicine == 0) {
                                 $barWidth = 0;
                             }
-                            else
-                            {
+                            else {
                                 $barWidth = round(($topMedicineValues[$i] / $maxMedicine) * 100);
                             }
+
                     ?>
 
                     <div class="medicineItem">
@@ -243,12 +240,13 @@ if ($dailyResult && $dailyResult->num_rows > 0)
                     </div>
 
                     <?php
+
                         }
                     }
-                    else
-                    {
+                    else {
                         echo "<p>No medicine data available.</p>";
                     }
+
                     ?>
 
                 </div>
@@ -258,25 +256,21 @@ if ($dailyResult && $dailyResult->num_rows > 0)
 
         <div class="bottomReportBox">
 
-        <article class="bottomItem purpleItem">
+            <article class="bottomItem purpleItem">
+                <div>
+                    <h3>Total Prescriptions</h3>
+                    <p><?php echo $totalPrescription; ?></p>
+                    <span>All prescription records</span>
+                </div>
+            </article>
 
-            <div>
-                <h3>Total Prescriptions</h3>
-                <p><?php echo $totalPrescription; ?></p>
-                <span>All prescription records</span>
-            </div>
-
-        </article>
-
-        <article class="bottomItem greenItem">
-
-            <div>
-                <h3>Completed Prescriptions</h3>
-                <p><?php echo $dispensed; ?></p>
-                <span>Successfully dispensed</span>
-            </div>
-
-        </article>
+            <article class="bottomItem greenItem">
+                <div>
+                    <h3>Completed Prescriptions</h3>
+                    <p><?php echo $dispensed; ?></p>
+                    <span>Successfully dispensed</span>
+                </div>
+            </article>
 
         </div>
 

@@ -7,8 +7,7 @@ include('../dbconnect.php');
    UPDATE PRESCRIPTION ITEM
 =============================== */
 
-if (isset($_POST["savePrescription"]))
-{
+if (isset($_POST["savePrescription"])) {
     $prescriptionItemID = (int)$_POST["prescriptionItemID"];
     $medicineID         = (int)$_POST["medicineID"];
     $quantity           = (int)$_POST["quantity"];
@@ -32,15 +31,13 @@ if (isset($_POST["savePrescription"]))
 
     $stockResult = $stockStmt->get_result();
 
-    if ($stockResult->num_rows == 0)
-    {
+    if ($stockResult->num_rows == 0) {
         die("Medicine not found.");
     }
 
     $medicine = $stockResult->fetch_assoc();
 
-    if ($quantity > $medicine["stockQuantity"])
-    {
+    if ($quantity > $medicine["stockQuantity"]) {
         echo "<script>
                 alert('Quantity exceeds available stock.');
                 window.history.back();
@@ -79,8 +76,7 @@ if (isset($_POST["savePrescription"]))
         $prescriptionItemID
     );
 
-    if (!$updateStmt->execute())
-    {
+    if (!$updateStmt->execute()) {
         die("Update failed: " . $updateStmt->error);
     }
 
@@ -122,12 +118,10 @@ if (isset($_POST["savePrescription"]))
 
     $currentNote = trim($currentNote);
 
-    if (!empty($currentNote))
-    {
+    if (!empty($currentNote)) {
         $newNote = $currentNote . "\n" . $editNote;
     }
-    else
-    {
+    else {
         $newNote = $editNote;
     }
 
@@ -223,8 +217,7 @@ p.prescriptionID DESC
 
 $result = $conn->query($sql);
 
-if (!$result)
-{
+if (!$result) {
     die("Query error: " . $conn->error);
 }
 
@@ -261,8 +254,7 @@ ORDER BY pi.prescriptionID,
 
 $itemResult = $conn->query($itemSql);
 
-if(!$itemResult)
-{
+if (!$itemResult) {
     die("Prescription Item Query Error: ".$conn->error);
 }
 
@@ -292,10 +284,8 @@ $searchPatientResult = $conn->query($searchPatientSql);
 $searchPatients = array();
 $patientRecords = array();
 
-if ($searchPatientResult && $searchPatientResult->num_rows > 0)
-{
-    while ($patientRow = $searchPatientResult->fetch_assoc())
-    {
+if ($searchPatientResult && $searchPatientResult->num_rows > 0) {
+    while ($patientRow = $searchPatientResult->fetch_assoc()) {
         $userID = $patientRow['userID'];
 
         $searchPatients[] = array(
@@ -354,14 +344,11 @@ ORDER BY c.startTime DESC
 
 $historyResult = $conn->query($historySql);
 
-if ($historyResult && $historyResult->num_rows > 0)
-{
-    while ($historyRow = $historyResult->fetch_assoc())
-    {
+if ($historyResult && $historyResult->num_rows > 0) {
+    while ($historyRow = $historyResult->fetch_assoc()) {
         $userID = $historyRow['userID'];
 
-        if (isset($patientRecords[$userID]))
-        {
+        if (isset($patientRecords[$userID])) {
             $patientRecords[$userID]["history"][] = array(
                 "queueNo" => "Q" . $historyRow['queueNo'],
                 "dateTime" => $historyRow['startTime'],
@@ -395,21 +382,17 @@ $medicineResult = $conn->query($medicineSql);
 
 $medicineList = array();
 
-if ($medicineResult && $medicineResult->num_rows > 0)
-{
-    while($medicineRow = $medicineResult->fetch_assoc())
-    {
+if ($medicineResult && $medicineResult->num_rows > 0) {
+    while ($medicineRow = $medicineResult->fetch_assoc()) {
         $medicineList[] = $medicineRow;
     }
 }
 
-if(isset($_POST["action"]))
-{
+if (isset($_POST["action"])) {
     $prescriptionID = (int)$_POST["prescriptionID"];
     $action = $_POST["action"];
 
-    if($action == "ready")
-    {
+    if ($action == "ready") {
         $stmt = $conn->prepare("
             UPDATE prescription
             SET status='Ready'
@@ -421,8 +404,7 @@ if(isset($_POST["action"]))
         $stmt->close();
     }
 
-    else if($action == "dispense")
-    {
+    else if ($action == "dispense") {
         $statusStmt = $conn->prepare("
             SELECT status
             FROM prescription
@@ -436,8 +418,7 @@ if(isset($_POST["action"]))
 
         $statusStmt->close();
 
-        if($currentStatus != "Ready")
-        {
+        if ($currentStatus != "Ready") {
             header("Location: workspace.php?error=notready");
             exit;
         }
@@ -457,8 +438,7 @@ if(isset($_POST["action"]))
 
         /* Deduct stock */
 
-        while($row = $result->fetch_assoc())
-        {
+        while ($row = $result->fetch_assoc()) {
             $updateStock = $conn->prepare("
                 UPDATE medicine
                 SET stockQuantity = stockQuantity - ?
@@ -496,7 +476,6 @@ if(isset($_POST["action"]))
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -504,6 +483,7 @@ if(isset($_POST["action"]))
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pharmacist Workspace</title>
     <link rel="stylesheet" href="pharmacist.css">
+    
     <link rel="icon" href="data:,">
 </head>
 
@@ -538,10 +518,8 @@ if(isset($_POST["action"]))
 
                 <?php
 
-                if($result->num_rows > 0)
-                {
-                    while($row = $result->fetch_assoc())
-                    {
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
 
                         $key = "P".$row['prescriptionID'];
 
@@ -599,12 +577,10 @@ if(isset($_POST["action"]))
                 <?php
 
                     }
-                    while($item = $itemResult->fetch_assoc())
-                        {
+                    while ($item = $itemResult->fetch_assoc()) {
                             $key = "P".$item["prescriptionID"];
 
-                            if(isset($patients[$key]))
-                            {
+                            if (isset($patients[$key])) {
                                 $patients[$key]["items"][] = array(
 
                                     "prescriptionItemID" => $item["prescriptionItemID"],
@@ -629,8 +605,7 @@ if(isset($_POST["action"]))
                             }
                         }
                 }
-                else
-                {
+                else {
                     echo "<p class='recentText'>No prescription found.</p>";
                 }
 
@@ -793,7 +768,6 @@ if(isset($_POST["action"]))
 
                         </div>
 
-
                             <!-- ACTION BUTTONS -->
 
                             <div class="buttonArea">
@@ -825,7 +799,6 @@ if(isset($_POST["action"]))
                     </div>
 
                 <div id="patientRecordView" style="display:none;"></div>
-
 
             </article>
         </div>
@@ -864,7 +837,7 @@ if(isset($_POST["action"]))
                         id="popupMedicine"
                         name="medicineID">
 
-                    <?php foreach($medicineList as $medicine){ ?>
+                    <?php foreach ($medicineList as $medicine) { ?>
 
                         <option value="<?php echo $medicine['medicineID']; ?>">
 
@@ -911,8 +884,6 @@ if(isset($_POST["action"]))
                 <textarea
                 id="popupInstruction"
                 name="instruction"></textarea>
-
-
 
                 <button
                         type="submit"

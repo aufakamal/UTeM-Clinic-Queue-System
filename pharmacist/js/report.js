@@ -1,7 +1,6 @@
-const dailyChart = document.getElementById("dailyChart");
+const dailyChart = document.querySelector("#dailyChart");
 
-if (dailyChart)
-{
+if (dailyChart) {
     new Chart(dailyChart, {
         type: "line",
         data: {
@@ -40,8 +39,8 @@ if (dailyChart)
     });
 }
 
-function changeReportMonth()
-{
-    const month = document.getElementById("reportMonth").value;
+function changeReportMonth() {
+    const month = document.querySelector("#reportMonth").value;
+
     window.location.href = "report.php?month=" + month;
 }

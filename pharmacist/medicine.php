@@ -1,21 +1,15 @@
 <?php
 
-$conn = new mysqli("localhost", "root", "", "clinic_db", 3306);
+session_start();
+include('../dbconnect.php');
 
-if ($conn->connect_error)
-{
-    die("Connection failed: " . $conn->connect_error);
-}
-
-if (isset($_POST['addMedicine']))
-{
+if (isset($_POST['addMedicine'])) {
     $medicineName = $_POST['medicineName'];
     $genericName = $_POST['genericName'];
     $description = $_POST['description'];
     $stockQuantity = $_POST['stockQuantity'];
 
-    if ($medicineName != "" && $genericName != "" && $description != "" && $stockQuantity >= 0)
-    {
+    if ($medicineName != "" && $genericName != "" && $description != "" && $stockQuantity >= 0) {
         $insertSql = "INSERT INTO medicine (medicineName, genericName, description, stockQuantity)
                       VALUES ('$medicineName', '$genericName', '$description', $stockQuantity)";
 
@@ -26,22 +20,18 @@ if (isset($_POST['addMedicine']))
     exit();
 }
 
-if (isset($_POST['updateStock']))
-{
+if (isset($_POST['updateStock'])) {
     $medicineID = $_POST['medicineID'];
     $quantity = $_POST['quantity'];
     $stockAction = $_POST['stockAction'];
 
-    if ($quantity > 0)
-    {
-        if ($stockAction == "add")
-        {
+    if ($quantity > 0) {
+        if ($stockAction == "add") {
             $updateSql = "UPDATE medicine 
                           SET stockQuantity = stockQuantity + $quantity 
                           WHERE medicineID = $medicineID";
         }
-        else
-        {
+        else {
             $updateSql = "UPDATE medicine 
                           SET stockQuantity = GREATEST(stockQuantity - $quantity, 0) 
                           WHERE medicineID = $medicineID";
@@ -57,13 +47,11 @@ if (isset($_POST['updateStock']))
 $search = "";
 $filter = "all";
 
-if (isset($_GET['search']))
-{
+if (isset($_GET['search'])) {
     $search = $_GET['search'];
 }
 
-if (isset($_GET['filter']))
-{
+if (isset($_GET['filter'])) {
     $filter = $_GET['filter'];
 }
 
@@ -85,12 +73,10 @@ $lowAlertResult = $conn->query($lowAlertSql);
 $sql = "SELECT * FROM medicine 
         WHERE (medicineName LIKE '%$search%' OR genericName LIKE '%$search%')";
 
-if ($filter == "available")
-{
+if ($filter == "available") {
     $sql .= " AND stockQuantity >= 60";
 }
-else if ($filter == "low")
-{
+else if ($filter == "low") {
     $sql .= " AND stockQuantity < 60";
 }
 
@@ -155,12 +141,13 @@ $result = $conn->query($sql);
 
                         <div class="searchMedicineBox">
                             <label>Search Medicine</label>
-                          <input 
-                            type="text" 
-                            id="medicineSearchInput"
-                            placeholder="Search by medicine name or generic name..."
-                            onkeyup="searchMedicineLive()"
-                        >
+
+                            <input
+                                type="text"
+                                id="medicineSearchInput"
+                                placeholder="Search by medicine name or generic name..."
+                                onkeyup="searchMedicineLive()"
+                            >
                         </div>
 
                         <div class="filterMedicineBox">
@@ -193,20 +180,19 @@ $result = $conn->query($sql);
                 <p>Medicines that need to be restocked soon.</p>
 
                 <?php
-                if ($lowAlertResult->num_rows > 0)
-                {
-                    while ($alert = $lowAlertResult->fetch_assoc())
-                    {
+
+                if ($lowAlertResult->num_rows > 0) {
+                    while ($alert = $lowAlertResult->fetch_assoc()) {
                         echo "<div class='alertRow'>";
                         echo "<span>" . $alert['medicineName'] . "</span>";
                         echo "<b>" . $alert['stockQuantity'] . " units</b>";
                         echo "</div>";
                     }
                 }
-                else
-                {
+                else {
                     echo "<p>No low stock medicines.</p>";
                 }
+
                 ?>
             </article>
 
@@ -235,10 +221,8 @@ $result = $conn->query($sql);
 
                 <?php
 
-                if ($result->num_rows > 0)
-                {
-                    while ($row = $result->fetch_assoc())
-                    {
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
                         echo "<tr class='medicineRow' data-search='" . strtolower($row['medicineName'] . " " . $row['genericName']) . "'>";
                         echo "<td>" . $row['medicineID'] . "</td>";
                         echo "<td>" . $row['medicineName'] . "</td>";
@@ -246,18 +230,16 @@ $result = $conn->query($sql);
                         echo "<td>" . $row['description'] . "</td>";
                         echo "<td>" . $row['stockQuantity'] . "</td>";
 
-                        if ($row['stockQuantity'] < 60)
-                        {
+                        if ($row['stockQuantity'] < 60) {
                             echo "<td><span class='waitingStatus'>Low Stock</span></td>";
                         }
-                        else
-                        {
+                        else {
                             echo "<td><span class='doneStatus'>Available</span></td>";
                         }
 
                         echo "<td>
-                                <button 
-                                    class='viewMedicineBtn updateStockBtn' 
+                                <button
+                                    class='viewMedicineBtn updateStockBtn'
                                     type='button'
                                     data-id='" . $row['medicineID'] . "'
                                     data-name='" . $row['medicineName'] . "'
@@ -270,8 +252,7 @@ $result = $conn->query($sql);
                         echo "</tr>";
                     }
                 }
-                else
-                {
+                else {
                     echo "<tr>";
                     echo "<td colspan='7'>No medicine record found.</td>";
                     echo "</tr>";
@@ -285,39 +266,52 @@ $result = $conn->query($sql);
     </section>
 
     <div class="stockPopup" id="stockPopup">
-    <div class="stockPopupContent">
-        <button class="closeStockBtn" type="button">&times;</button>
+        <div class="stockPopupContent">
+            <button class="closeStockBtn" type="button">&times;</button>
 
-        <h2>Update Stock</h2>
+            <h2>Update Stock</h2>
 
-        <form method="POST" action="medicine.php">
-            <input type="hidden" name="medicineID" id="popupMedicineID">
+            <form method="POST" action="medicine.php">
+                <input type="hidden" name="medicineID" id="popupMedicineID">
 
-            <p>
-                <b>Medicine Name:</b>
-                <span id="popupMedicineName">-</span>
-            </p>
+                <p>
+                    <b>Medicine Name:</b>
+                    <span id="popupMedicineName">-</span>
+                </p>
 
-            <p>
-                <b>Current Stock:</b>
-                <span id="popupCurrentStock">0 units</span>
-            </p>
+                <p>
+                    <b>Current Stock:</b>
+                    <span id="popupCurrentStock">0 units</span>
+                </p>
 
-            <label>Action</label>
-            <div class="stockActionChoice">
-                <label><input type="radio" name="stockAction" value="add" checked> Add Stock</label>
-                <label><input type="radio" name="stockAction" value="reduce"> Reduce Stock</label>
-            </div>
+                <label>Action</label>
 
-            <label>Quantity</label>
-            <input type="number" name="quantity" id="stockQuantityInput" min="1" required>
+                <div class="stockActionChoice">
+                    <label>
+                        <input type="radio" name="stockAction" value="add" checked>
+                        Add Stock
+                    </label>
 
-            <p><b>New Stock:</b> <span id="newStockPreview">0 units</span></p>
+                    <label>
+                        <input type="radio" name="stockAction" value="reduce">
+                        Reduce Stock
+                    </label>
+                </div>
 
-            <button class="saveStockBtn" type="submit" name="updateStock">Save</button>
-        </form>
+                <label>Quantity</label>
+                <input type="number" name="quantity" id="stockQuantityInput" min="1" required>
+
+                <p>
+                    <b>New Stock:</b>
+                    <span id="newStockPreview">0 units</span>
+                </p>
+
+                <button class="saveStockBtn" type="submit" name="updateStock">
+                    Save
+                </button>
+            </form>
+        </div>
     </div>
-</div>
 
     <div class="stockPopup" id="addMedicinePopup">
         <div class="stockPopupContent">
@@ -338,7 +332,9 @@ $result = $conn->query($sql);
                 <label>Stock Quantity</label>
                 <input type="number" name="stockQuantity" min="0" required>
 
-                <button class="saveStockBtn" type="submit" name="addMedicine">Save</button>
+                <button class="saveStockBtn" type="submit" name="addMedicine">
+                    Save
+                </button>
             </form>
         </div>
     </div>

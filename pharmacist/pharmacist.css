@@ -363,17 +363,17 @@ section {
     color: #92400E;
 }
 
-.dispenseBtn {
-    background-color: #0284C7;
-    color: white;
-}
-
 .readyBtn:hover {
     background-color: #FDE68A;
 }
 
+
+.dispenseBtn {
+    background: #0284C7;
+}
+
 .dispenseBtn:hover {
-    background-color: #0369A1;
+    background: #0369A1;
 }
 
 /* =========================
@@ -1574,7 +1574,7 @@ section {
 }
 
 .reminderBox a{
-    background:#2563EB;
+    background: #0284C7;
     color:white;
     text-decoration:none;
     padding:10px 18px;
@@ -1582,8 +1582,8 @@ section {
     font-weight:600;
 }
 
-.reminderBox a:hover{
-    background:#1D4ED8;
+.reminderBox a:hover {
+    background: #0369A1;
 }
 
 .bottomReportBox{
@@ -2180,39 +2180,28 @@ section {
     margin:12px 0 15px;
 }
 
-.queueFilter button
-{
-    padding:6px 14px;
-
-    border:1px solid #b8cbe0;
-
-    background:#ffffff;
-
-    color:#1e3a5f;
-
-    border-radius:20px;
-
-    font-size:13px;
-
-    font-weight:500;
-
-    cursor:pointer;
-
-    transition:.2s;
+.queueFilter button {
+    padding: 6px 14px;
+    border: 1px solid #BAE6FD;
+    background: #FFFFFF;
+    color: #0369A1;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
 }
 
-.queueFilter button:hover
-{
-    background:#eef7ff;
-    border-color:#7fb7e8;
+.queueFilter button:hover {
+    background: #E0F2FE;
+    border-color: #BAE6FD;
 }
 
-.queueFilter button.activeFilter
-{
-    background:#d9efff;
-    border-color:#5ea9e6;
-    color:#0069b4;
-    font-weight:600;
+.queueFilter button.activeFilter {
+    background: #0284C7;
+    border-color: #0284C7;
+    color: #FFFFFF;
+    font-weight: 600;
 }
 
 button:disabled
@@ -2353,4 +2342,29 @@ button:disabled
     padding: 14px;
     border-bottom: 1px solid #E2E8F0;
     color: #334155;
+}
+
+.logoBox{
+    width:62px;
+    height:40px;
+
+    background:#FFFFFF;
+
+    border-radius:6px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:3px;
+
+    box-shadow:0 2px 8px rgba(15,23,42,.08);
+
+    flex-shrink:0;
+}
+
+.logoBox img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
 }

@@ -8,12 +8,9 @@ const closeStockBtn = document.querySelector(".closeStockBtn");
 
 let currentStock = 0;
 
-if (stockPopup)
-{
-    document.querySelectorAll(".updateStockBtn").forEach((button) =>
-    {
-        button.addEventListener("click", () =>
-        {
+if (stockPopup) {
+    document.querySelectorAll(".updateStockBtn").forEach((button) => {
+        button.addEventListener("click", () => {
             popupMedicineID.value = button.dataset.id;
             popupMedicineName.textContent = button.dataset.name;
 
@@ -28,89 +25,73 @@ if (stockPopup)
             stockPopup.style.display = "flex";
         });
     });
+}
 
-    function updateStockPreview()
-    {
-        const quantity = parseInt(stockQuantityInput.value) || 0;
-        const action = document.querySelector("input[name='stockAction']:checked").value;
+function updateStockPreview() {
+    const quantity = parseInt(stockQuantityInput.value) || 0;
+    const action = document.querySelector("input[name='stockAction']:checked").value;
 
-        let newStock = currentStock;
+    let newStock = currentStock;
 
-        if (action === "add")
-        {
-            newStock = currentStock + quantity;
+    if (action === "add") {
+        newStock = currentStock + quantity;
+    }
+    else {
+        newStock = currentStock - quantity;
+
+        if (newStock < 0) {
+            newStock = 0;
         }
-        else
-        {
-            newStock = currentStock - quantity;
-
-            if (newStock < 0)
-            {
-                newStock = 0;
-            }
-        }
-
-        newStockPreview.textContent = newStock + " units";
     }
 
-    stockQuantityInput.addEventListener("input", updateStockPreview);
+    newStockPreview.textContent = newStock + " units";
+}
 
-    document.querySelectorAll("input[name='stockAction']").forEach((radio) =>
-    {
-        radio.addEventListener("change", updateStockPreview);
-    });
+stockQuantityInput.addEventListener("input", updateStockPreview);
 
-    if (closeStockBtn)
-{
-    closeStockBtn.addEventListener("click", () =>
-    {
+document.querySelectorAll("input[name='stockAction']").forEach((radio) => {
+    radio.addEventListener("change", updateStockPreview);
+});
+
+if (closeStockBtn) {
+    closeStockBtn.addEventListener("click", () => {
         stockPopup.style.display = "none";
     });
-}
 }
 
 const addMedicineBtn = document.getElementById("addMedicineBtn");
 const addMedicinePopup = document.getElementById("addMedicinePopup");
 const closeAddMedicineBtn = document.querySelector(".closeAddMedicineBtn");
 
-if (addMedicineBtn)
-{
-    addMedicineBtn.addEventListener("click", () =>
-    {
+if (addMedicineBtn) {
+    addMedicineBtn.addEventListener("click", () => {
         addMedicinePopup.style.display = "flex";
     });
 }
 
-if (closeAddMedicineBtn)
-{
-    closeAddMedicineBtn.addEventListener("click", () =>
-    {
+if (closeAddMedicineBtn) {
+    closeAddMedicineBtn.addEventListener("click", () => {
         addMedicinePopup.style.display = "none";
     });
 }
 
-function searchMedicineLive()
-{
+function searchMedicineLive() {
     const input = document.getElementById("medicineSearchInput");
     const rows = document.querySelectorAll(".medicineRow");
 
-    if (!input || rows.length === 0)
-    {
+    if (!input || rows.length === 0) {
         return;
     }
 
     const keyword = input.value.toLowerCase().trim();
 
-    rows.forEach((row) =>
-    {
+    rows.forEach((row) => {
         const text = row.dataset.search;
 
-        if (text.includes(keyword))
-        {
+        if (text.includes(keyword)) {
             row.style.display = "";
         }
-        else
-        {
+        else {
             row.style.display = "none";
         }
     });
