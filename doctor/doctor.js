@@ -1,3 +1,15 @@
+const profileBtn = document.getElementById("profileBtn");
+const profileDropdown = document.getElementById("profileDropdown");
+
+profileBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    profileDropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", function () {
+    profileDropdown.classList.remove("show");
+});
+
 /* =========================
    CONSULTATION
 ========================= */
@@ -9,7 +21,6 @@ let prescriptionList = [];
 /* =========================
    START SESSION
 ========================= */
-
 function startSession() {
 
     fetch("getNextQueue.php")
@@ -17,6 +28,7 @@ function startSession() {
     .then(res => res.json())
 
     .then(data => {
+
         if (!data) {
             alert("No patients waiting.");
             return;
@@ -38,6 +50,7 @@ function startSession() {
         })
 
         .then(res => res.json())
+
         .then(result => {
 
             if (!result.success) {
@@ -45,12 +58,35 @@ function startSession() {
                 return;
             }
 
-            // Load patient into workspace
-            loadCurrentPatient(data);
+            // Create consultation record
+            fetch("createConsultation.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    queueID: data.queueID
+                })
+            })
 
-            // Enable End Session button
-            document.getElementById("endSessionBtn").disabled = false;
-            document.querySelector(".startBtn").disabled = true;
+            .then(res => res.json())
+
+            .then(consultation => {
+
+                if (!consultation.success) {
+                    alert(consultation.message);
+                    return;
+                }
+
+                // Load patient into workspace
+                loadCurrentPatient(data);
+
+                // Enable End Session button
+                document.getElementById("endSessionBtn").disabled = false;
+                document.querySelector(".startBtn").disabled = true;
+
+            });
+
         });
 
     })
@@ -59,6 +95,7 @@ function startSession() {
         console.error(error);
         alert("Failed to retrieve next patient.");
     });
+
 }
 
 function loadCurrentPatient(patient){

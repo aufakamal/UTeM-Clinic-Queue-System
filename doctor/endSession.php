@@ -45,62 +45,62 @@ try {
 
     try {
 
-        /* -----------------------------
-           Consultation
-        ----------------------------- */
+    /* -----------------------------
+    Update Consultation
+    ----------------------------- */
 
-            $sql = "
-            INSERT INTO consultation
-            (
-                queueID,
-                doctorUserID,
-                startTime,
-                endTime,
-                reasonForVisit,
-                clinicalFindings,
-                diagnosis,
-                treatmentPlan
-            )
-            VALUES
-            (
-                ?,
-                ?,
-                NOW(),
-                NOW(),
-                ?,
-                ?,
-                ?,
-                ?
-            )
-            ";
+    $sql = "
+    UPDATE consultation
+    SET
+        endTime = NOW(),
+        reasonForVisit = ?,
+        clinicalFindings = ?,
+        diagnosis = ?,
+        treatmentPlan = ?
+    WHERE queueID = ?
+    ";
 
-            $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare($sql);
 
-            $stmt->bind_param(
-                "isssss",
-                $queueID,
-                $doctorUserID,
-                $reason,
-                $findings,
-                $diagnosis,
-                $treatment
-            );
+    $stmt->bind_param(
+        "ssssi",
+        $reason,
+        $findings,
+        $diagnosis,
+        $treatment,
+        $queueID
+    );
 
-            if (!$stmt->execute()) {
+    if (!$stmt->execute()) {
+        throw new Exception($stmt->error);
+    }
 
-                echo json_encode([
-                    "success" => false,
-                    "sql_error" => $stmt->error,
-                    "sql_errno" => $stmt->errno,
-                    "doctorUserID" => $doctorUserID,
-                    "queueID" => $queueID
-                ]);
+    /* -----------------------------
+    Get Consultation ID
+    ----------------------------- */
 
-                exit;
-            }
+    $sql = "
+    SELECT consultationID
+    FROM consultation
+    WHERE queueID = ?
+    ";
 
-            $consultationID = $conn->insert_id;
+    $stmt = $conn->prepare($sql);
 
+    $stmt->bind_param("i", $queueID);
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_assoc();
+
+    if (!$row) {
+        throw new Exception("Consultation record not found.");
+    }
+
+    $consultationID = $row["consultationID"];
+    
         /* -----------------------------
            Prescription (SAFE OPTIONAL)
         ----------------------------- */

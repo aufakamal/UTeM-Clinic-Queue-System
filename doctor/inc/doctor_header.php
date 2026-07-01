@@ -17,7 +17,7 @@
     </nav>
 
     <div id="rightSection">
-        <h1>Dr. Anis | Room 3</h1>
+        <h1></h1>
 
         <div class="profileContainer">
 
@@ -26,7 +26,7 @@
             </button>
 
             <div id="profileDropdown">
-                <a href="profileDoctor.html">View Profile</a>
+                <a href="profileDoctor.php">View Profile</a>
                 <a href="../login_register/mainPage.php">Log Out</a>
             </div>
 
@@ -34,3 +34,5 @@
     </div>
 
 </div>
+
+<script src="doctor.js"></script>

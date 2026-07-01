@@ -53,9 +53,13 @@ if (!empty($doctor['dateOfBirth'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Doctor Page</title>
     <link rel="stylesheet" href="../shared/profile.css">
+    <link rel="stylesheet" href="doctor.css">
+    
 </head>
 
 <body>
+
+<?php include('inc/doctor_header.php'); ?>
 
 <div class="profilePage">
 

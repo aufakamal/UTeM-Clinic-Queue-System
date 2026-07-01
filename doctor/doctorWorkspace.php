@@ -1,5 +1,4 @@
 <?php
-include('inc/doctor_header.php'); 
 include('../dbconnect.php');
 
 $searchPatientSql = "

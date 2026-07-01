@@ -85,6 +85,43 @@ body {
     object-fit: contain;
 }
 
+.profileContainer {
+    position: relative;
+}
+
+#profileDropdown {
+    display: none;
+
+    position: absolute;
+    top: 55px;
+    right: 0;
+
+    min-width: 180px;
+
+    background: white;
+    border: 1px solid #D7E3EA;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.12);
+
+    overflow: hidden;
+    z-index: 999;
+}
+
+#profileDropdown a {
+    display: block;
+    padding: 12px 16px;
+    color: #1E293B;
+    text-decoration: none;
+}
+
+#profileDropdown a:hover {
+    background: #F1F5F9;
+}
+
+#profileDropdown.show {
+    display: block;
+}
+
 /* =========================
    NAVBAR
 ========================= */
