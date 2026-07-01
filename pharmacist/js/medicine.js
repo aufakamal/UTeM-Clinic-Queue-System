@@ -88,3 +88,30 @@ if (closeAddMedicineBtn)
         addMedicinePopup.style.display = "none";
     });
 }
+
+function searchMedicineLive()
+{
+    const input = document.getElementById("medicineSearchInput");
+    const rows = document.querySelectorAll(".medicineRow");
+
+    if (!input || rows.length === 0)
+    {
+        return;
+    }
+
+    const keyword = input.value.toLowerCase().trim();
+
+    rows.forEach((row) =>
+    {
+        const text = row.dataset.search;
+
+        if (text.includes(keyword))
+        {
+            row.style.display = "";
+        }
+        else
+        {
+            row.style.display = "none";
+        }
+    });
+}
