@@ -13,6 +13,7 @@
 <section id="users" class="page active">
     <h2>User Management</h2>
     <p>View and filter all system users.</p>
+    <a href="add-staff-user.php" class="addStaffBtn">Add Clinic Staff User +</a>
 
     <div class="filter-bar">
         <input type="text" id="userSearch" placeholder="Search user ID, name, email, or phone..." onkeyup="filterUsers()">

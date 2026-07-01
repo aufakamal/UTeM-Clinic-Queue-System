@@ -14,34 +14,115 @@ function sendVerificationEmail($receiverEmail, $receiverName, $token) {
         $mail->isSMTP();
         $mail->Host = "smtp.gmail.com";
         $mail->SMTPAuth = true;
-
         $mail->Username = MAIL_USERNAME;
         $mail->Password = MAIL_PASSWORD;
-
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom(MAIL_USERNAME, MAIL_FROM_NAME);
+        $mail->setFrom(MAIL_USERNAME, "UTeM Clinic Queue");
         $mail->addAddress($receiverEmail, $receiverName);
 
-        $verifyLink = "http://localhost:8080/UTeM-Clinic-Queue-System/login_register/verifyEmail.php?token=" . $token;
+        $verifyLink = "http://localhost:8080/Project_Development_Workshop/login_register/verifyEmail.php?token=" . $token;
 
-        $mail->isHTML(true);
-        $mail->Subject = "Verify Your UTeM PKU Clinic Account";
+        $mail->isHTML(false);
+        $mail->Subject = "Verify Account";
 
-        $mail->Body = "
-            <h2>UTeM PKU Clinic Email Verification</h2>
-            <p>Hello <b>$receiverName</b>,</p>
-            <p>Please click the button below to verify your account.</p>
+        $mail->Body =
+            "Hello $receiverName,
 
-            <a href='$verifyLink' 
-               style='background:#0F766E;color:white;padding:12px 18px;
-               text-decoration:none;border-radius:8px;display:inline-block;'>
-               Verify Email
-            </a>
+            Please verify your account by clicking or copying the link below:
 
-            <p>If you did not register, you may ignore this email.</p>
-        ";
+            $verifyLink
+
+            Thank you.";
+
+        return $mail->send();
+
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
+
+function sendChangePasswordEmail($receiverEmail, $receiverName, $token) {
+
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host = "smtp.gmail.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = MAIL_USERNAME;
+        $mail->Password = MAIL_PASSWORD;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom(MAIL_USERNAME, "UTeM Clinic Queue");
+        $mail->addAddress($receiverEmail, $receiverName);
+
+        $verifyLink = "http://localhost:8080/Project_Development_Workshop_Fixed/shared/verifyChangePassword.php?token=" . $token;
+
+        $mail->isHTML(false);
+        $mail->Subject = "Verify Password Change";
+
+        $mail->Body =
+            "Hello $receiverName,
+
+            You requested to change your password.
+
+            Please verify your password change using this link:
+
+            $verifyLink
+
+            This link will expire in 15 minutes.
+
+            If you did not request this, please ignore this email.
+
+            Thank you.";
+
+        return $mail->send();
+
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
+
+function sendForgotPasswordEmail($receiverEmail, $receiverName, $token) {
+
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host = "smtp.gmail.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = MAIL_USERNAME;
+        $mail->Password = MAIL_PASSWORD;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom(MAIL_USERNAME, "UTeM Clinic Queue");
+        $mail->addAddress($receiverEmail, $receiverName);
+
+        $resetLink = "http://localhost:8080/Project_Development_Workshop_Fixed/login_register/resetPassword.php?token=" . $token;
+
+        $mail->isHTML(false);
+        $mail->Subject = "Reset Password";
+
+        $mail->Body =
+            "Hello $receiverName,
+
+            You requested to reset your password.
+
+            Please reset your password using this link:
+
+            $resetLink
+
+            This link will expire in 15 minutes.
+
+            If you did not request this, please ignore this email.
+
+            Thank you.";
 
         return $mail->send();
 

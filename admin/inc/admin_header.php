@@ -1,6 +1,11 @@
 <div id="header">
     <div id="leftSection">
-    <h1>UTeM Clinic Queue System</h1>
+    
+    <div class="logoBox">
+        <img src="../login_register/loginRegisterImage/utemLogo.png" alt="UTeM Logo">
+    </div>
+
+    <h1>PKUTeM Clinic Queue System</h1>
 </div>
 
     <nav>
@@ -15,15 +20,20 @@
     </nav>
 
     <div id="rightSection">
-        <h1>Welcome, Admin!</h1>
+        <h1>Admin</h1>
 
         <div class="profileContainer">
-            <button class="iconBtn" type="button" onclick="toggleMenu()">
-                👤
+            <button class="iconBtn" id="profileBtn" type="button" onclick="toggleMenu()">
+                <img
+                    class="icon"
+                    id="profileIcon"
+                    src="../patient/patientImages/profileIconDark.png"
+                    alt="Profile Icon">
             </button>
 
             <div id="profileDropdown">
                 
+                <a href="profileAdmin.php">View Profile</a>
                 <a href="../login_register/mainPage.php">Log Out</a>
             </div>
         </div>
