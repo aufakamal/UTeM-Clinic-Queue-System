@@ -30,7 +30,7 @@ $admin = $result->fetch_assoc();
 if (!$admin) {
     echo "<script>
             alert('Admin profile not found.');
-            window.location.href='dashboard.php';
+            window.location.href='admin-dashboard.php';
           </script>";
     exit();
 }

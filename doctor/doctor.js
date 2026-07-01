@@ -512,9 +512,6 @@ function endSession() {
     })
 
     .then(data => {
-
-        console.log(data);
-
         if (data.success) {
             alert(
                 "Consultation completed.\nThe queue has been updated successfully."

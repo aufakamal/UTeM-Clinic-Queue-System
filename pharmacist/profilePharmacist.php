@@ -33,7 +33,7 @@ $pharmacist = $result->fetch_assoc();
 if (!$pharmacist) {
     echo "<script>
             alert('Pharmacist profile not found.');
-            window.location.href='workspace.html';
+            window.location.href='workspace.php';
           </script>";
     exit();
 }

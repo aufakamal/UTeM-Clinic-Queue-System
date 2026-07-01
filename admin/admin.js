@@ -307,17 +307,12 @@ let appointmentList = [];
 
 async function loadAppointments() {
     try {
-        console.log("Loading appointments...");
-
         const response = await fetch("../database/getAppointments.php");
         appointmentList = await response.json();
-
-        console.log("Appointments from database:", appointmentList);
 
         renderAppointments();
 
     } catch (err) {
-        console.log("Appointment error:", err);
     }
 }
     function renderAppointments(list = appointmentList) {
@@ -561,10 +556,7 @@ function generateDefaultSlots() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("Admin JS loaded");
-
     if (document.getElementById("appointmentTableBody")) {
-        console.log("Appointment table found");
         loadAppointments();
     }
 });
@@ -581,7 +573,6 @@ async function loadQueue() {
         queueList = await response.json();
         renderQueueTable();
     } catch (err) {
-        console.log("Queue error:", err);
     }
 }
 
@@ -694,7 +685,6 @@ async function generateDailySlots() {
     try {
         await fetch("../database/generateDailySlots.php");
     } catch (err) {
-        console.log("Generate slots error:", err);
     }
 }
 
@@ -913,7 +903,6 @@ async function loadHistory() {
         historyList = await response.json();
         renderHistoryTable();
     } catch (err) {
-        console.log("History error:", err);
     }
 }
 
