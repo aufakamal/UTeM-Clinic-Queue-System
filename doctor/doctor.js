@@ -1,5 +1,5 @@
-const profileBtn = document.getElementById("profileBtn");
-const profileDropdown = document.getElementById("profileDropdown");
+const profileBtn = document.querySelector("#profileBtn");
+const profileDropdown = document.querySelector("#profileDropdown");
 
 profileBtn.addEventListener("click", function (e) {
     e.stopPropagation();
@@ -82,7 +82,7 @@ function startSession() {
                 loadCurrentPatient(data);
 
                 // Enable End Session button
-                document.getElementById("endSessionBtn").disabled = false;
+                document.querySelector("#endSessionBtn").disabled = false;
                 document.querySelector(".startBtn").disabled = true;
 
             });
@@ -99,9 +99,9 @@ function startSession() {
 }
 
 function loadCurrentPatient(patient){
-    document.getElementById("placeholderText").style.display="none";
-    document.getElementById("patientRecordDisplay").style.display="block";
-    document.getElementById("viewOnlyRecordDisplay").style.display="none";
+    document.querySelector("#placeholderText").style.display="none";
+    document.querySelector("#patientRecordDisplay").style.display="block";
+    document.querySelector("#viewOnlyRecordDisplay").style.display="none";
 
     hideAllSections();
 
@@ -112,10 +112,10 @@ function loadCurrentPatient(patient){
 
     document.querySelector(".miniTab").classList.add("active");
 
-    document.getElementById("pName").innerText=patient.fullName;
-    document.getElementById("pGender").innerText=patient.gender;
-    document.getElementById("pID").innerText=patient.userID;
-    document.getElementById("pBlood").innerText=patient.bloodType;
+    document.querySelector("#pName").innerText=patient.fullName;
+    document.querySelector("#pGender").innerText=patient.gender;
+    document.querySelector("#pID").innerText=patient.userID;
+    document.querySelector("#pBlood").innerText=patient.bloodType;
 
     renderEditableList(
         "pAllergyList",
@@ -140,8 +140,8 @@ function loadCurrentPatient(patient){
 
 function searchPatientLive() {
 
-    const input = document.getElementById("searchPatientInput");
-    const box = document.getElementById("searchResultBox");
+    const input = document.querySelector("#searchPatientInput");
+    const box = document.querySelector("#searchResultBox");
 
     if (!input || !box || !window.searchPatientsData) return;
 
@@ -186,10 +186,10 @@ function viewPatientRecord(userID) {
     currentQueue = null;
     currentPatient = null;
 
-    const placeholderText = document.getElementById("placeholderText");
-    const patientRecordDisplay = document.getElementById("patientRecordDisplay");
-    const viewOnlyRecordDisplay = document.getElementById("viewOnlyRecordDisplay");
-    const searchPatientView = document.getElementById("searchPatientView");
+    const placeholderText = document.querySelector("#placeholderText");
+    const patientRecordDisplay = document.querySelector("#patientRecordDisplay");
+    const viewOnlyRecordDisplay = document.querySelector("#viewOnlyRecordDisplay");
+    const searchPatientView = document.querySelector("#searchPatientView");
 
     if (placeholderText) placeholderText.style.display = "none";
     if (patientRecordDisplay) patientRecordDisplay.style.display = "none";
@@ -198,16 +198,16 @@ function viewPatientRecord(userID) {
 
     hideAllSections();
 
-    document.getElementById("vName").textContent = patient.fullName || "-";
-    document.getElementById("vGender").textContent = patient.gender || "-";
-    document.getElementById("vBlood").textContent = patient.bloodType || "-";
-    document.getElementById("vID").textContent = patient.userID || "-";
-    document.getElementById("vDOB").textContent = formatDate(patient.dateOfBirth) || "-";
-    document.getElementById("vType").textContent = patient.patientType || "-";
+    document.querySelector("#vName").textContent = patient.fullName || "-";
+    document.querySelector("#vGender").textContent = patient.gender || "-";
+    document.querySelector("#vBlood").textContent = patient.bloodType || "-";
+    document.querySelector("#vID").textContent = patient.userID || "-";
+    document.querySelector("#vDOB").textContent = formatDate(patient.dateOfBirth) || "-";
+    document.querySelector("#vType").textContent = patient.patientType || "-";
 
-    document.getElementById("vAllergy").textContent = patient.allergy || "-";
-    document.getElementById("vChronic").textContent = patient.chronicCondition || "-";
-    document.getElementById("vMed").textContent = patient.currentMed || "-";
+    document.querySelector("#vAllergy").textContent = patient.allergy || "-";
+    document.querySelector("#vChronic").textContent = patient.chronicCondition || "-";
+    document.querySelector("#vMed").textContent = patient.currentMed || "-";
 }
 
 function formatDate(dateValue) {
@@ -232,13 +232,13 @@ function switchViewTab(tab, btn){
 
     btn.classList.add("active");
 
-    document.getElementById("viewOverviewSection").style.display="none";
-    document.getElementById("viewVisitsSection").style.display="none";
+    document.querySelector("#viewOverviewSection").style.display="none";
+    document.querySelector("#viewVisitsSection").style.display="none";
 
     if(tab==="overview"){
-        document.getElementById("viewOverviewSection").style.display="block";
+        document.querySelector("#viewOverviewSection").style.display="block";
     }else{
-        document.getElementById("viewVisitsSection").style.display="block";
+        document.querySelector("#viewVisitsSection").style.display="block";
     }
 
 }
@@ -248,19 +248,19 @@ function switchViewTab(tab, btn){
 ========================= */
 
 function openFindingInput() {
-    document.getElementById("findingInputBox").style.display = "flex";
-    document.getElementById("findingInput").focus();
+    document.querySelector("#findingInputBox").style.display = "flex";
+    document.querySelector("#findingInput").focus();
 }
 
 function saveFinding() {
-    const input = document.getElementById("findingInput");
+    const input = document.querySelector("#findingInput");
     const value = input.value.trim();
 
     if (value === "") {
         return;
     }
 
-    const list = document.getElementById("findingList");
+    const list = document.querySelector("#findingList");
     const item = document.createElement("div");
 
     item.className = "editableItem";
@@ -276,7 +276,7 @@ function saveFinding() {
 
     input.value = "";
 
-    document.getElementById("findingInputBox").style.display = "none";
+    document.querySelector("#findingInputBox").style.display = "none";
 }
 
 
@@ -309,9 +309,9 @@ function deleteEditable(button) {
 ========================= */
 
 function updateStock() {
-    const select = document.getElementById("medicine");
-    const stockBox = document.getElementById("stockBox");
-    const quantity = document.getElementById("quantity");
+    const select = document.querySelector("#medicine");
+    const stockBox = document.querySelector("#stockBox");
+    const quantity = document.querySelector("#quantity");
 
     const selectedOption = select.options[select.selectedIndex];
     const stock = selectedOption.getAttribute("data-stock");
@@ -327,15 +327,15 @@ function updateStock() {
 
 function addPrescription() {
 
-    const medSelect = document.getElementById("medicine");
-    const dosage = document.getElementById("dosage").value.trim();
-    const freq = document.getElementById("frequency").value.trim();
-    const duration = document.getElementById("duration").value.trim();
-    const quantity = document.getElementById("quantity").value.trim();
-    const instruction = document.getElementById("instruction").value.trim();
-    const tbody = document.getElementById("rxTableBody");
+    const medSelect = document.querySelector("#medicine");
+    const dosage = document.querySelector("#dosage").value.trim();
+    const freq = document.querySelector("#frequency").value.trim();
+    const duration = document.querySelector("#duration").value.trim();
+    const quantity = document.querySelector("#quantity").value.trim();
+    const instruction = document.querySelector("#instruction").value.trim();
+    const tbody = document.querySelector("#rxTableBody");
 
-    const emptyRow = document.getElementById("emptyRow");
+    const emptyRow = document.querySelector("#emptyRow");
 
     if (emptyRow) {
         emptyRow.remove();
@@ -381,7 +381,7 @@ function addPrescription() {
         <td>${quantity}</td>
         <td>${instruction}</td>
         <td>
-            <button type="button" onclick="deleteRx(this)">🗑</button>
+            <button type="button" onclick="deleteRx(this)">Delete</button>
         </td>
     `;
 
@@ -409,7 +409,7 @@ function deleteRx(button){
     });
 
     if(rows.length===0){
-        document.getElementById("rxTableBody").innerHTML=`
+        document.querySelector("#rxTableBody").innerHTML=`
             <tr id="emptyRow">
                 <td colspan="8" style="text-align:center;">
                     No prescription added yet
@@ -454,17 +454,17 @@ function endSession() {
         return;
     }
 
-    document.getElementById("endSessionBtn").disabled = true;
+    document.querySelector("#endSessionBtn").disabled = true;
 
-    if (!document.getElementById("reasonInput").value.trim()) {
+    if (!document.querySelector("#reasonInput").value.trim()) {
         alert("Please enter the patient's reason for visit.");
-        document.getElementById("endSessionBtn").disabled = false;
+        document.querySelector("#endSessionBtn").disabled = false;
         return;
     }
 
-    if (!document.getElementById("diagnosisInput").value.trim()) {
+    if (!document.querySelector("#diagnosisInput").value.trim()) {
         alert("Please enter the diagnosis.");
-        document.getElementById("endSessionBtn").disabled = false;
+        document.querySelector("#endSessionBtn").disabled = false;
         return;
     }
 
@@ -476,7 +476,7 @@ function endSession() {
     );
 
     if (!confirmNoRx) {
-        document.getElementById("endSessionBtn").disabled = false;
+        document.querySelector("#endSessionBtn").disabled = false;
         return;
     }
     }
@@ -485,10 +485,10 @@ function endSession() {
 
         const payload = {
             queueID: currentQueue.queueID,
-            reason: document.getElementById("reasonInput").value.trim(),
+            reason: document.querySelector("#reasonInput").value.trim(),
             findings: findings,
-            diagnosis: document.getElementById("diagnosisInput").value.trim(),
-            treatment: document.getElementById("treatmentInput").value.trim(),
+            diagnosis: document.querySelector("#diagnosisInput").value.trim(),
+            treatment: document.querySelector("#treatmentInput").value.trim(),
             prescription: prescriptionList.length > 0 ? prescriptionList : []
         };
 
@@ -523,14 +523,14 @@ function endSession() {
         }
         else {
             alert(JSON.stringify(data, null, 2));
-            document.getElementById("endSessionBtn").disabled = false;
+            document.querySelector("#endSessionBtn").disabled = false;
         }
 
     })
 
         .catch(error => {
             console.error(error);
-            document.getElementById("endSessionBtn").disabled = false;
+            document.querySelector("#endSessionBtn").disabled = false;
         });
 
 }
@@ -542,27 +542,27 @@ function resetConsultation() {
     prescriptionList = [];
 
     // Clear consultation inputs
-    document.getElementById("reasonInput").value = "";
-    document.getElementById("diagnosisInput").value = "";
-    document.getElementById("treatmentInput").value = "";
+    document.querySelector("#reasonInput").value = "";
+    document.querySelector("#diagnosisInput").value = "";
+    document.querySelector("#treatmentInput").value = "";
 
     // Clear findings
-    document.getElementById("findingList").innerHTML = "";
-    document.getElementById("findingInput").value = "";
-    document.getElementById("findingInputBox").style.display = "none";
+    document.querySelector("#findingList").innerHTML = "";
+    document.querySelector("#findingInput").value = "";
+    document.querySelector("#findingInputBox").style.display = "none";
 
     // Clear patient details
-    document.getElementById("pName").textContent = "";
-    document.getElementById("pGender").textContent = "";
-    document.getElementById("pID").textContent = "";
-    document.getElementById("pBlood").textContent = "";
+    document.querySelector("#pName").textContent = "";
+    document.querySelector("#pGender").textContent = "";
+    document.querySelector("#pID").textContent = "";
+    document.querySelector("#pBlood").textContent = "";
 
-    document.getElementById("pAllergyList").innerHTML = "";
-    document.getElementById("pChronicList").innerHTML = "";
-    document.getElementById("pMedList").innerHTML = "";
+    document.querySelector("#pAllergyList").innerHTML = "";
+    document.querySelector("#pChronicList").innerHTML = "";
+    document.querySelector("#pMedList").innerHTML = "";
 
     // Reset prescription table
-    document.getElementById("rxTableBody").innerHTML = `
+    document.querySelector("#rxTableBody").innerHTML = `
         <tr id="emptyRow">
             <td colspan="8" style="text-align:center;">
                 No prescription added yet
@@ -571,22 +571,22 @@ function resetConsultation() {
     `;
 
     // Reset prescription form
-    document.getElementById("medicine").selectedIndex = 0;
+    document.querySelector("#medicine").selectedIndex = 0;
     updateStock();
 
-    document.getElementById("stockBox").textContent = "-";
-    document.getElementById("dosage").value = "";
-    document.getElementById("frequency").value = "";
-    document.getElementById("duration").value = "";
-    document.getElementById("quantity").value = "";
-    document.getElementById("instruction").value = "";
+    document.querySelector("#stockBox").textContent = "-";
+    document.querySelector("#dosage").value = "";
+    document.querySelector("#frequency").value = "";
+    document.querySelector("#duration").value = "";
+    document.querySelector("#quantity").value = "";
+    document.querySelector("#instruction").value = "";
 
     // Hide consultation panel
-    document.getElementById("patientRecordDisplay").style.display = "none";
-    document.getElementById("viewOnlyRecordDisplay").style.display = "none";
+    document.querySelector("#patientRecordDisplay").style.display = "none";
+    document.querySelector("#viewOnlyRecordDisplay").style.display = "none";
 
     // Show placeholder
-    document.getElementById("placeholderText").style.display = "block";
+    document.querySelector("#placeholderText").style.display = "block";
 
     hideAllSections();
 
@@ -596,14 +596,14 @@ function resetConsultation() {
     });
 
     // Hide consultation panel
-    document.getElementById("patientRecordDisplay").style.display = "none";
-    document.getElementById("viewOnlyRecordDisplay").style.display = "none";
+    document.querySelector("#patientRecordDisplay").style.display = "none";
+    document.querySelector("#viewOnlyRecordDisplay").style.display = "none";
 
     // Show placeholder
-    document.getElementById("placeholderText").style.display = "block";
+    document.querySelector("#placeholderText").style.display = "block";
 
     // Disable End Session button
-    document.getElementById("endSessionBtn").disabled = true;
+    document.querySelector("#endSessionBtn").disabled = true;
     document.querySelector(".startBtn").disabled = false;
 
     // Refresh queue count
@@ -642,15 +642,15 @@ function switchTab(tabName, button) {
             break;
 
         case "visits":
-            document.getElementById("visitsSection").style.display = "block";
+            document.querySelector("#visitsSection").style.display = "block";
             break;
 
         case "diagnosis":
-            document.getElementById("diagnosisSection").style.display = "block";
+            document.querySelector("#diagnosisSection").style.display = "block";
             break;
 
         case "prescription":
-            document.getElementById("prescriptionSection").style.display = "block";
+            document.querySelector("#prescriptionSection").style.display = "block";
             break;
     }
 }

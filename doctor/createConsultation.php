@@ -22,18 +22,18 @@ try {
     $queueID = $data["queueID"];
 
     $sql = "
-    INSERT INTO consultation
-    (
-        queueID,
-        doctorUserID,
-        startTime
-    )
-    VALUES
-    (
-        ?,
-        ?,
-        NOW()
-    )
+        INSERT INTO consultation
+        (
+            queueID,
+            doctorUserID,
+            startTime
+        )
+        VALUES
+        (
+            ?,
+            ?,
+            NOW()
+        )
     ";
 
     $stmt = $conn->prepare($sql);
@@ -58,4 +58,5 @@ try {
         "success" => false,
         "message" => $e->getMessage()
     ]);
+
 }

@@ -1,17 +1,19 @@
 <?php
+
 include('../dbconnect.php'); // ubah path kalau dbconnect lain folder
 
 date_default_timezone_set('Asia/Kuala_Lumpur');
 
 $selectedMonth = isset($_GET['month']) ? (int)$_GET['month'] : (int)date('m');
-$selectedYear  = isset($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');
+$selectedYear = isset($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');
 
 $monthStart = sprintf('%04d-%02d-01', $selectedYear, $selectedMonth);
 $monthLabel = date('F Y', strtotime($monthStart));
 
 /* =========================
-   TOTAL PATIENTS THIS YEAR
+   TOTAL PATIENTS THIS MONTH
 ========================= */
+
 $totalPatientsQuery = $conn->query("
     SELECT COUNT(DISTINCT a.userID) AS total
     FROM appointment a
@@ -24,6 +26,7 @@ $totalPatientsThisMonth = $totalPatientsQuery->fetch_assoc()['total'] ?? 0;
 /* =========================
    TOTAL CONSULTATIONS YEAR
 ========================= */
+
 $totalConsultationQuery = $conn->query("
     SELECT COUNT(*) AS total
     FROM consultation c
@@ -39,6 +42,7 @@ $totalConsultations = $totalConsultationQuery->fetch_assoc()['total'] ?? 0;
 /* =========================
    TOTAL APPOINTMENTS YEAR
 ========================= */
+
 $totalAppointmentQuery = $conn->query("
     SELECT COUNT(*) AS total
     FROM appointment a
@@ -49,11 +53,25 @@ $totalAppointmentQuery = $conn->query("
 $totalAppointmentsYear = $totalAppointmentQuery->fetch_assoc()['total'] ?? 0;
 $avgAppointments = round($totalAppointmentsYear / 12);
 
-
 /* =========================
    MONTHLY APPOINTMENT TREND
 ========================= */
-$monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+$monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+];
+
 $monthlyData = array_fill(0, 12, 0);
 
 $monthlyQuery = $conn->query("
@@ -66,16 +84,18 @@ $monthlyQuery = $conn->query("
 ");
 
 while ($row = $monthlyQuery->fetch_assoc()) {
+
     $index = (int)$row['monthNo'] - 1;
     $monthlyData[$index] = (int)$row['total'];
-}
 
+}
 
 /* =========================
    ILLNESS DISTRIBUTION
 ========================= */
+
 $illnessQuery = $conn->query("
-    SELECT 
+    SELECT
         COALESCE(NULLIF(TRIM(c.diagnosis), ''), 'Unknown') AS illness,
         COUNT(*) AS total
     FROM consultation c
@@ -92,47 +112,57 @@ $illnessQuery = $conn->query("
 $allIllness = [];
 
 while ($row = $illnessQuery->fetch_assoc()) {
+
     $allIllness[] = [
         'illness' => $row['illness'],
         'total' => (int)$row['total']
     ];
+
 }
 
 $totalIllnessCases = array_sum(array_column($allIllness, 'total'));
 
 $topIllness = $allIllness[0]['illness'] ?? 'No Data';
 $topIllnessCases = $allIllness[0]['total'] ?? 0;
-$topIllnessPercent = $totalIllnessCases > 0 
-    ? number_format(($topIllnessCases / $totalIllnessCases) * 100, 1) 
+
+$topIllnessPercent = $totalIllnessCases > 0
+    ? number_format(($topIllnessCases / $totalIllnessCases) * 100, 1)
     : 0;
 
-    /* DETECT TIE */
-        $highestCount = $topIllnessCases;
+/* =========================
+   DETECT TIE
+========================= */
 
-        $tiedIllnesses = array_filter(
-            $allIllness,
-            function($item) use ($highestCount){
-                return $item['total'] == $highestCount;
-            }
-        );
+$highestCount = $topIllnessCases;
+
+$tiedIllnesses = array_filter(
+    $allIllness,
+    function($item) use ($highestCount) {
+        return $item['total'] == $highestCount;
+    }
+);
 
 $illnessLabels = [];
 $illnessData = [];
 
 foreach ($allIllness as $illness) {
+
     $illnessLabels[] = $illness['illness'];
     $illnessData[] = $illness['total'];
+
 }
 
 if (empty($illnessLabels)) {
+
     $illnessLabels = ['No Data'];
     $illnessData = [0];
-}
 
+}
 
 /* =========================
    MOST ACTIVE MONTH
 ========================= */
+
 $activeMonthQuery = $conn->query("
     SELECT
         DATE_FORMAT(ts.slotDate, '%b') AS monthName,
@@ -150,10 +180,10 @@ $activeMonthRow = $activeMonthQuery->fetch_assoc();
 $mostActiveMonth = $activeMonthRow['monthName'] ?? '-';
 $mostActiveCount = $activeMonthRow['total'] ?? 0;
 
-
 /* =========================
    GROWTH
 ========================= */
+
 $currentMonthQuery = $conn->query("
     SELECT COUNT(*) AS total
     FROM appointment a
@@ -179,27 +209,31 @@ $previousMonthQuery = $conn->query("
 $previousMonthAppointments = $previousMonthQuery->fetch_assoc()['total'] ?? 0;
 
 if ($previousMonthAppointments > 0) {
+
     $growth = (($currentMonthAppointments - $previousMonthAppointments) / $previousMonthAppointments) * 100;
     $growthText = ($growth >= 0 ? '+' : '') . number_format($growth, 0) . '%';
-} else {
-    $growthText = 'N/A';
-}
 
+} else {
+
+    $growthText = 'N/A';
+
+}
 
 /* =========================
    INSIGHT
 ========================= */
+
 if ($topIllness !== 'No Data') {
-    $insightText =
-        "$topIllness is the most common illness in $monthLabel with $topIllnessCases case(s).";
+
+    $insightText = "$topIllness is the most common illness in $monthLabel with $topIllnessCases case(s).";
+
 } else {
-    $insightText =
-        "No illness data recorded for $monthLabel.";
+
+    $insightText = "No illness data recorded for $monthLabel.";
+
 }
+
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -217,43 +251,61 @@ if ($topIllness !== 'No Data') {
 
 <section class="drReportPage">
 
-    <!-- HEADER -->
-
     <div class="report-wrapper">
 
-    <!-- TITLE SECTION -->
-    <div class="report-header">
-        <div>
-            <h2>Doctor Dashboard Overview</h2>
-            <p>Overview of patient visits and illness trends.</p>
-        </div>
+        <!-- TITLE SECTION -->
+        <div class="report-header">
 
-        <div class="date-box">
+            <div>
+                <h2>Doctor Dashboard Overview</h2>
+                <p>Overview of patient visits and illness trends.</p>
+            </div>
+
+            <div class="date-box">
+
                 <form method="GET" style="display:flex; gap:10px; align-items:center; margin:0;">
-                    
+
                     📅
 
                     <select name="month" onchange="this.form.submit()">
+
                         <?php
+
                         $months = [
-                            1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',
-                            5=>'May',6=>'Jun',7=>'Jul',8=>'Aug',
-                            9=>'Sep',10=>'Oct',11=>'Nov',12=>'Dec'
+                            1 => 'Jan',
+                            2 => 'Feb',
+                            3 => 'Mar',
+                            4 => 'Apr',
+                            5 => 'May',
+                            6 => 'Jun',
+                            7 => 'Jul',
+                            8 => 'Aug',
+                            9 => 'Sep',
+                            10 => 'Oct',
+                            11 => 'Nov',
+                            12 => 'Dec'
                         ];
 
-                        for ($m=1; $m<=12; $m++) {
+                        for ($m = 1; $m <= 12; $m++) {
+
                             $selected = ($m == $selectedMonth) ? 'selected' : '';
                             echo "<option value='$m' $selected>{$months[$m]}</option>";
+
                         }
+
                         ?>
+
                     </select>
 
                     <input type="hidden" name="year" value="<?= $selectedYear ?>">
-                </form>
-        </div>
-</div>
 
-    <!-- KPI CARDS -->
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- KPI CARDS -->
         <div class="kpi-row">
 
             <div class="kpi-card green">
@@ -288,29 +340,28 @@ if ($topIllness !== 'No Data') {
 
         </div>
 
-            <div class="insight-box">
-                💡 <b>Insight:</b> <?= htmlspecialchars($insightText) ?>
+        <div class="insight-box">
+            💡 <b>Insight:</b> <?= htmlspecialchars($insightText) ?>
+        </div>
+
+        <!-- CHART SECTION -->
+        <div class="chart-row">
+
+            <div class="chart-card">
+                <h3>Illness Distribution</h3>
+                <p>Top illnesses this month</p>
+                <canvas id="pieChart"></canvas>
             </div>
 
-    </div>
+            <div class="chart-card">
+                <h3>Monthly Appointment Trend</h3>
+                <p>Patient visit trend</p>
+                <canvas id="lineChart"></canvas>
+            </div>
 
-    <!-- CHART SECTION -->
-    <div class="chart-row">
-
-        <div class="chart-card">
-            <h3>Illness Distribution</h3>
-            <p>Top illnesses this month</p>
-            <canvas id="pieChart"></canvas>
-        </div>
-
-        <div class="chart-card">
-            <h3>Monthly Appointment Trend</h3>
-            <p>Patient visit trend</p>
-            <canvas id="lineChart"></canvas>
         </div>
 
     </div>
-</div>
 
 </section>
 
@@ -322,6 +373,7 @@ const reportData = {
     monthlyData: <?= json_encode($monthlyData, JSON_NUMERIC_CHECK) ?>
 };
 </script>
+
 <script src="doctorReport.js"></script>
 
 </body>

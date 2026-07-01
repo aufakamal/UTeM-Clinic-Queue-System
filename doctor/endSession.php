@@ -7,7 +7,6 @@ header("Content-Type: application/json");
 
 try {
 
-    // FIX 1: prevent double decode + ensure safe JSON
     $data = json_decode(file_get_contents("php://input"), true);
 
     if (!$data) {
@@ -17,16 +16,15 @@ try {
     $doctorUserID = $_SESSION["userID"] ?? null;
 
     if (!$doctorUserID) {
+
         echo json_encode([
             "success" => false,
             "message" => "Session userID not found",
             "session" => $_SESSION
         ]);
-        exit;
-    }
 
-    if (!$doctorUserID) {
-        throw new Exception("Session expired. Please login again.");
+        exit();
+
     }
 
     $queueID = $data["queueID"];
@@ -34,100 +32,84 @@ try {
     $findings = $data["findings"];
     $diagnosis = $data["diagnosis"];
     $treatment = $data["treatment"];
-
-    // FIX 2: SAFE prescription handling
     $prescription = $data["prescription"] ?? [];
-        if (!empty($prescription)) {
-        // save prescription
-    }
 
     $conn->begin_transaction();
 
     try {
 
-    /* -----------------------------
-    Update Consultation
-    ----------------------------- */
+        $sql = "
+            UPDATE consultation
+            SET
+                endTime = NOW(),
+                reasonForVisit = ?,
+                clinicalFindings = ?,
+                diagnosis = ?,
+                treatmentPlan = ?
+            WHERE queueID = ?
+        ";
 
-    $sql = "
-    UPDATE consultation
-    SET
-        endTime = NOW(),
-        reasonForVisit = ?,
-        clinicalFindings = ?,
-        diagnosis = ?,
-        treatmentPlan = ?
-    WHERE queueID = ?
-    ";
+        $stmt = $conn->prepare($sql);
 
-    $stmt = $conn->prepare($sql);
+        $stmt->bind_param(
+            "ssssi",
+            $reason,
+            $findings,
+            $diagnosis,
+            $treatment,
+            $queueID
+        );
 
-    $stmt->bind_param(
-        "ssssi",
-        $reason,
-        $findings,
-        $diagnosis,
-        $treatment,
-        $queueID
-    );
+        if (!$stmt->execute()) {
+            throw new Exception($stmt->error);
+        }
 
-    if (!$stmt->execute()) {
-        throw new Exception($stmt->error);
-    }
+        $sql = "
+            SELECT consultationID
+            FROM consultation
+            WHERE queueID = ?
+        ";
 
-    /* -----------------------------
-    Get Consultation ID
-    ----------------------------- */
+        $stmt = $conn->prepare($sql);
 
-    $sql = "
-    SELECT consultationID
-    FROM consultation
-    WHERE queueID = ?
-    ";
+        $stmt->bind_param("i", $queueID);
+        $stmt->execute();
 
-    $stmt = $conn->prepare($sql);
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
 
-    $stmt->bind_param("i", $queueID);
+        if (!$row) {
+            throw new Exception("Consultation record not found.");
+        }
 
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-
-    $row = $result->fetch_assoc();
-
-    if (!$row) {
-        throw new Exception("Consultation record not found.");
-    }
-
-    $consultationID = $row["consultationID"];
-    
-        /* -----------------------------
-           Prescription (SAFE OPTIONAL)
-        ----------------------------- */
-
+        $consultationID = $row["consultationID"];
         $prescriptionID = null;
 
         if (!empty($prescription)) {
 
             $sql = "
-            INSERT INTO prescription
-            (
-                consultationID,
-                prescriptionDate,
-                status,
-                note
-            )
-            VALUES
-            (
-                ?,
-                NOW(),
-                'Pending',
-                ''
-            )
+                INSERT INTO prescription
+                (
+                    consultationID,
+                    prescriptionDate,
+                    status,
+                    note
+                )
+                VALUES
+                (
+                    ?,
+                    NOW(),
+                    'Pending',
+                    ''
+                )
             ";
 
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $consultationID);
+
+            $stmt->bind_param(
+                "i",
+                $consultationID
+            );
 
             if (!$stmt->execute()) {
 
@@ -139,15 +121,13 @@ try {
                     "consultationID" => $consultationID
                 ]);
 
-                exit;
+                exit();
+
             }
 
             $prescriptionID = $conn->insert_id;
-        }
 
-        /* -----------------------------
-           Prescription Items
-        ----------------------------- */
+        }
 
         if (!empty($prescriptionID)) {
 
@@ -161,26 +141,26 @@ try {
                 $instruction = $item["instruction"];
 
                 $sql = "
-                INSERT INTO prescription_item
-                (
-                    prescriptionID,
-                    medicineID,
-                    quantity,
-                    dosage,
-                    frequency,
-                    duration,
-                    instructions
-                )
-                VALUES
-                (
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?
-                )
+                    INSERT INTO prescription_item
+                    (
+                        prescriptionID,
+                        medicineID,
+                        quantity,
+                        dosage,
+                        frequency,
+                        duration,
+                        instructions
+                    )
+                    VALUES
+                    (
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?
+                    )
                 ";
 
                 $stmt = $conn->prepare($sql);
@@ -196,67 +176,68 @@ try {
                     $instruction
                 );
 
-                /*if (!$stmt->execute()) {
-                    throw new Exception($stmt->error);
-                }*/
-
                 if (!$stmt->execute()) {
 
-                echo json_encode([
-                    "success" => false,
-                    "step" => "prescription_item",
-                    "error" => $stmt->error,
-                    "errno" => $stmt->errno,
-                    "medicineID" => $medicineID,
-                    "quantity" => $quantity,
-                    "dosage" => $dosage,
-                    "frequency" => $frequency,
-                    "duration" => $duration,
-                    "instruction" => $instruction
-                ]);
+                    echo json_encode([
+                        "success" => false,
+                        "step" => "prescription_item",
+                        "error" => $stmt->error,
+                        "errno" => $stmt->errno,
+                        "medicineID" => $medicineID,
+                        "quantity" => $quantity,
+                        "dosage" => $dosage,
+                        "frequency" => $frequency,
+                        "duration" => $duration,
+                        "instruction" => $instruction
+                    ]);
 
-                exit;
-            }
+                    exit();
 
+                }
 
-
-                /* -----------------------------
-                   Deduct Stock
-                ----------------------------- */
-
-                $sql = "SELECT stockQuantity
-                        FROM medicine
-                        WHERE medicineID=?";
+                $sql = "
+                    SELECT stockQuantity
+                    FROM medicine
+                    WHERE medicineID = ?
+                ";
 
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i",$medicineID);
+
+                $stmt->bind_param(
+                    "i",
+                    $medicineID
+                );
+
                 $stmt->execute();
 
-                $currentStock = $stmt->get_result()->fetch_assoc()['stockQuantity'];
+                $currentStock = $stmt
+                    ->get_result()
+                    ->fetch_assoc()["stockQuantity"];
 
-                if($currentStock < $quantity){
+                if ($currentStock < $quantity) {
                     throw new Exception("Not enough stock.");
                 }
+
             }
+
         }
 
-        /* -----------------------------
-           Complete Queue
-        ----------------------------- */
-
         $sql = "
-        UPDATE queue
-        SET queueStatus='Completed'
-        WHERE queueID=?
+            UPDATE queue
+            SET queueStatus = 'Completed'
+            WHERE queueID = ?
         ";
 
         $stmt = $conn->prepare($sql);
 
-        $stmt->bind_param("i", $queueID);
+        $stmt->bind_param(
+            "i",
+            $queueID
+        );
 
         if (!$stmt->execute()) {
-                throw new Exception($stmt->error);
-            }
+            throw new Exception($stmt->error);
+        }
 
         $conn->commit();
 
@@ -265,8 +246,10 @@ try {
         ]);
 
     } catch (Exception $e) {
+
         $conn->rollback();
         throw $e;
+
     }
 
 } catch (Exception $e) {
@@ -275,6 +258,7 @@ try {
         "success" => false,
         "message" => $e->getMessage()
     ]);
+
 }
 
 ?>
