@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include("../dbconnect.php");
 
@@ -9,23 +10,26 @@ if (!isset($_SESSION['userID'])) {
 
 $userID = $_SESSION['userID'];
 
-$sql = "SELECT
-            u.userID,
-            u.fullName,
-            u.gender,
-            u.dateOfBirth,
-            u.address,
-            u.email,
-            u.phoneNo,
-            d.docLicenseNo,
-            d.specialization,
-            d.roomNo
-        FROM user u
-        JOIN doctor_profile d
-        ON u.userID = d.userID
-        WHERE u.userID = ?";
+$sql = "
+    SELECT
+        u.userID,
+        u.fullName,
+        u.gender,
+        u.dateOfBirth,
+        u.address,
+        u.email,
+        u.phoneNo,
+        d.docLicenseNo,
+        d.specialization,
+        d.roomNo
+    FROM user u
+    JOIN doctor_profile d
+    ON u.userID = d.userID
+    WHERE u.userID = ?
+";
 
 $stmt = $conn->prepare($sql);
+
 $stmt->bind_param("s", $userID);
 $stmt->execute();
 
@@ -33,17 +37,24 @@ $result = $stmt->get_result();
 $doctor = $result->fetch_assoc();
 
 if (!$doctor) {
-    echo "<script>
+
+    echo "
+        <script>
             alert('Doctor profile not found.');
-            window.location.href='profileDoctor.php';
-          </script>";
+            window.location.href = 'profileDoctor.php';
+        </script>
+    ";
+
     exit();
+
 }
 
 $dobDisplay = "";
+
 if (!empty($doctor['dateOfBirth'])) {
     $dobDisplay = date("d/m/Y", strtotime($doctor['dateOfBirth']));
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -53,9 +64,12 @@ if (!empty($doctor['dateOfBirth'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Doctor Profile</title>
     <link rel="stylesheet" href="../shared/profile.css">
+    <link rel="stylesheet" href="doctor.css">
 </head>
 
 <body>
+
+<?php include('inc/doctor_header.php'); ?>
 
 <div class="profilePage">
 

@@ -57,6 +57,11 @@ if (!$patient) {
     exit();
 }
 
+<<<<<<< HEAD
+$allergyArray = explode(", ", $patient['allergy'] ?? "");
+$chronicArray = explode(", ", $patient['chronicCondition'] ?? "");
+$medArray = explode(", ", $patient['currentMed'] ?? "");
+=======
 $dobDisplay = "";
 if (!empty($patient['dateOfBirth'])) {
     $dobDisplay = date("d/m/Y", strtotime($patient['dateOfBirth']));
@@ -73,6 +78,7 @@ $fixedMed = ["None", "Amlodipine", "Ventolin", "Painkiller", "Metformin"];
 $allergyOther = getOtherValue($allergyArray, $fixedAllergy);
 $chronicOther = getOtherValue($chronicArray, $fixedChronic);
 $medOther = getOtherValue($medArray, $fixedMed);
+>>>>>>> origin/master
 ?>
 
 <!DOCTYPE html>
@@ -112,6 +118,8 @@ $medOther = getOtherValue($medArray, $fixedMed);
                     <label>Full Name</label>
                     <input type="text" name="fullName" value="<?php echo htmlspecialchars($patient['fullName']); ?>" required>
 
+<<<<<<< HEAD
+=======
                     <label>Gender</label>
                     <select name="gender" required>
                         <option value="">Select gender</option>
@@ -122,6 +130,7 @@ $medOther = getOtherValue($medArray, $fixedMed);
                     <label>Date of Birth</label>
                     <input type="text" name="dateOfBirth" value="<?php echo htmlspecialchars($dobDisplay); ?>" placeholder="dd/mm/yyyy" required>
 
+>>>>>>> origin/master
                     <label>Email</label>
                     <input type="email" name="email" value="<?php echo htmlspecialchars($patient['email']); ?>" required>
 
@@ -138,7 +147,11 @@ $medOther = getOtherValue($medArray, $fixedMed);
                     <input type="password" value="********" readonly>
 
                     <div class="changePasswordWrapper">
+<<<<<<< HEAD
+                        <a href="changePassword.php" class="changePasswordLink">Change Password</a>
+=======
                         <a href="../shared/changePassword.php" class="changePasswordLink">Change Password</a>
+>>>>>>> origin/master
                     </div>
 
                     <div class="sectionDivider"></div>
@@ -177,11 +190,15 @@ $medOther = getOtherValue($medArray, $fixedMed);
                         <label><input type="checkbox" name="allergy[]" value="Peanuts" <?php if (in_array("Peanuts", $allergyArray)) echo "checked"; ?>> Peanuts</label>
                         <label><input type="checkbox" name="allergy[]" value="Penicillin" <?php if (in_array("Penicillin", $allergyArray)) echo "checked"; ?>> Penicillin</label>
                         <label><input type="checkbox" name="allergy[]" value="Seafood" <?php if (in_array("Seafood", $allergyArray)) echo "checked"; ?>> Seafood</label>
+<<<<<<< HEAD
+                        <label><input type="checkbox" name="allergy[]" value="Others" <?php if (in_array("Others", $allergyArray)) echo "checked"; ?>> Others</label>
+=======
                         <label><input type="checkbox" name="allergy[]" value="Others" class="other-checkbox" data-target="allergyOtherBox" <?php if ($allergyOther != "") echo "checked"; ?>> Others</label>
                     </div>
 
                     <div class="other-box" id="allergyOtherBox" style="<?php echo ($allergyOther != '') ? 'display:block;' : 'display:none;'; ?>">
                         <input type="text" name="allergyOther" value="<?php echo htmlspecialchars($allergyOther); ?>" placeholder="Please specify allergy">
+>>>>>>> origin/master
                     </div>
 
                     <div class="miniDivider"></div>
@@ -193,11 +210,15 @@ $medOther = getOtherValue($medArray, $fixedMed);
                         <label><input type="checkbox" name="chronicCondition[]" value="Asthma" <?php if (in_array("Asthma", $chronicArray)) echo "checked"; ?>> Asthma</label>
                         <label><input type="checkbox" name="chronicCondition[]" value="Heart Disease" <?php if (in_array("Heart Disease", $chronicArray)) echo "checked"; ?>> Heart Disease</label>
                         <label><input type="checkbox" name="chronicCondition[]" value="Diabetes" <?php if (in_array("Diabetes", $chronicArray)) echo "checked"; ?>> Diabetes</label>
+<<<<<<< HEAD
+                        <label><input type="checkbox" name="chronicCondition[]" value="Others" <?php if (in_array("Others", $chronicArray)) echo "checked"; ?>> Others</label>
+=======
                         <label><input type="checkbox" name="chronicCondition[]" value="Others" class="other-checkbox" data-target="chronicOtherBox" <?php if ($chronicOther != "") echo "checked"; ?>> Others</label>
                     </div>
 
                     <div class="other-box" id="chronicOtherBox" style="<?php echo ($chronicOther != '') ? 'display:block;' : 'display:none;'; ?>">
                         <input type="text" name="chronicConditionOther" value="<?php echo htmlspecialchars($chronicOther); ?>" placeholder="Please specify chronic disease">
+>>>>>>> origin/master
                     </div>
 
                     <div class="miniDivider"></div>
@@ -209,11 +230,15 @@ $medOther = getOtherValue($medArray, $fixedMed);
                         <label><input type="checkbox" name="currentMed[]" value="Ventolin" <?php if (in_array("Ventolin", $medArray)) echo "checked"; ?>> Ventolin</label>
                         <label><input type="checkbox" name="currentMed[]" value="Painkiller" <?php if (in_array("Painkiller", $medArray)) echo "checked"; ?>> Painkiller</label>
                         <label><input type="checkbox" name="currentMed[]" value="Metformin" <?php if (in_array("Metformin", $medArray)) echo "checked"; ?>> Metformin</label>
+<<<<<<< HEAD
+                        <label><input type="checkbox" name="currentMed[]" value="Others" <?php if (in_array("Others", $medArray)) echo "checked"; ?>> Others</label>
+=======
                         <label><input type="checkbox" name="currentMed[]" value="Others" class="other-checkbox" data-target="medOtherBox" <?php if ($medOther != "") echo "checked"; ?>> Others</label>
                     </div>
 
                     <div class="other-box" id="medOtherBox" style="<?php echo ($medOther != '') ? 'display:block;' : 'display:none;'; ?>">
                         <input type="text" name="currentMedOther" value="<?php echo htmlspecialchars($medOther); ?>" placeholder="Please specify medication">
+>>>>>>> origin/master
                     </div>
 
                 </div>
@@ -233,6 +258,8 @@ $medOther = getOtherValue($medArray, $fixedMed);
 
 <?php include('inc/patient_footer.php'); ?>
 
+<<<<<<< HEAD
+=======
 <script>
 document.querySelectorAll(".other-checkbox").forEach(function(checkbox) {
     const box = document.getElementById(checkbox.dataset.target);
@@ -256,5 +283,6 @@ document.querySelectorAll(".other-checkbox").forEach(function(checkbox) {
 });
 </script>
 
+>>>>>>> origin/master
 </body>
 </html>
