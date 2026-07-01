@@ -1,11 +1,13 @@
 <div id="header">
     <div id="leftSection">
-        <!-- <button class="iconBtn" onclick="history.back()">
-            ←
-        </button> -->
 
-        <h1>UTeM Clinic Queue System</h1>
+    <div class="logoBox">
+        <img src="../login_register/loginRegisterImage/utemLogo.png" alt="UTeM Logo">
     </div>
+
+    <h1>UTeM Clinic Queue System</h1>
+
+</div>
 
     <nav>
         <ul>

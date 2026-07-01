@@ -1,4 +1,7 @@
-// login validation
+// ==============================
+// LOGIN VALIDATION
+// ==============================
+
 let loginForm = document.querySelector("#loginForm");
 
 if (loginForm) {
@@ -17,7 +20,11 @@ if (loginForm) {
 }
 
 
-// register validation
+
+// ==============================
+// REGISTER VALIDATION
+// ==============================
+
 let registerForm = document.querySelector("#registerForm");
 
 if (registerForm) {
@@ -98,3 +105,6 @@ if (registerForm) {
         }
     });
 }
+
+
+
