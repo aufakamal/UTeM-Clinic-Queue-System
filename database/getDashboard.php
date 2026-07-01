@@ -5,7 +5,15 @@ include "database.php";
 $data = [];
 
 /* Total appointments */
-$result = $conn->query("SELECT COUNT(*) AS total FROM appointment");
+/* Total appointments today */
+$result = $conn->query("
+SELECT COUNT(*) AS total
+FROM appointment a
+JOIN time_slot t
+ON a.slotID = t.slotID
+WHERE t.slotDate = CURDATE()
+");
+
 $data["totalAppointments"] = $result->fetch_assoc()["total"];
 
 /* Waiting patients */
