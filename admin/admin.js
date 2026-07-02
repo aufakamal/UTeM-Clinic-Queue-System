@@ -509,18 +509,17 @@ document.addEventListener("DOMContentLoaded", () => {
 function filterQueue() {
     const search = document.getElementById("queueSearch").value.toLowerCase();
     const status = document.getElementById("queueStatusFilter").value;
-    const room = document.getElementById("queueRoomFilter").value;
 
     const filtered = queueList.filter(item => {
-        const matchSearch =
-            item.patient.toLowerCase().includes(search) ||
-            item.userID.toLowerCase().includes(search) ||
-            item.queueNo.toLowerCase().includes(search);
+        const matchesSearch =
+            item.queueNo.toString().includes(search) ||
+            item.fullName.toLowerCase().includes(search) ||
+            item.userID.toLowerCase().includes(search);
 
-        const matchStatus = status === "All" || item.status === status;
-        const matchRoom = room === "All" || item.room === room;
+        const matchesStatus =
+            status === "All" || item.queueStatus === status;
 
-        return matchSearch && matchStatus && matchRoom;
+        return matchesSearch && matchesStatus;
     });
 
     renderQueueTable(filtered);
@@ -593,7 +592,7 @@ function renderQueueTable(list = queueList) {
                 <td>Q${item.queueNo.toString().padStart(3, "0")}</td>
                 <td>${item.fullName}</td>
                 <td>${item.userID}</td>
-                <td class="room-cell">-</td>
+                <td class="room-cell">${item.roomNo || "-"}</td>
                 <td>${item.appointmentType}</td>
                 <td>${item.slotDate}</td>
                 <td>${item.startTime} - ${item.endTime}</td>

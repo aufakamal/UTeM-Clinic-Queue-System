@@ -13,10 +13,11 @@
 <section id="queue" class="page active">
     <h2>Queue Management</h2>
     <p>View and filter today’s clinic queue.</p>
-<div id="roomDashboard" class="room-dashboard"></div>
+
+    <div id="roomDashboard" class="room-dashboard"></div>
+
     <div class="filter-bar">
-        <input type="text"
-               id="queueSearch"
+        <input type="text" id="queueSearch"
                placeholder="Search queue no, patient, or user ID..."
                onkeyup="filterQueue()">
 
@@ -33,29 +34,20 @@
             <thead>
                 <tr>
                     <th>Queue No</th>
-<th>Patient</th>
-<th>User ID</th>
-<th>Room</th>
-<th>Type</th>
-<th>Date</th>
-<th>Time Slot</th>
-<th>Status</th>
+                    <th>Patient</th>
+                    <th>User ID</th>
+                    <th>Room</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Time Slot</th>
+                    <th>Status</th>
                 </tr>
             </thead>
 
-            <tbody id="queueTableBody">
-            </tbody>
+            <tbody id="queueTableBody"></tbody>
         </table>
     </div>
 </section>
-
-<div id="confirmBox" class="modal hidden">
-    <div class="modal-card">
-        <b id="confirmText">Are you sure?</b>
-        <button class="green" onclick="confirmYes()">Confirm</button>
-        <button class="red" onclick="closeConfirm()">Cancel</button>
-    </div>
-</div>
 
 <script src="admin.js"></script>
 </body>

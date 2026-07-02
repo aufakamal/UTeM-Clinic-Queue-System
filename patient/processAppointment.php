@@ -1,134 +1,127 @@
 <?php
 
-    session_start();
-    include('../dbconnect.php');
+session_start();
+include("../dbconnect.php");
 
-    $userID = $_SESSION['userID'];
+function showPopupAndReturn($message) {
+    $_SESSION["popupMessage"] = $message;
+    header("Location: bookAppointment.php");
+    exit;
+}
 
-    $slotID = $_POST['slotID'] ?? null;
+if ($_SERVER["REQUEST_METHOD"] != "POST") {
+    showPopupAndReturn("Invalid request.");
+}
 
-    $appointmentDate = $_POST['appointmentDate'];
-    $appointmentType = $_POST['appointmentType'];
-    $sessionType = $_POST['session'];
+$userID = $_SESSION["userID"] ?? null;
 
-    $appointmentFor = $_POST['appointmentFor'];
+if (!$userID) {
+    showPopupAndReturn("Session expired. Please login again.");
+}
 
-    // use left side if exist, right side if not
-    $dependantName = $_POST['dependantName'] ?? null;
+$slotID = $_POST["slotID"] ?? null;
+$appointmentDate = $_POST["appointmentDate"] ?? null;
+$appointmentType = $_POST["appointmentType"] ?? null;
+$session = $_POST["session"] ?? null;
+$timeSlot = $_POST["timeSlot"] ?? null;
+$appointmentFor = $_POST["appointmentFor"] ?? "Self";
 
-    $dependantRelationship = $_POST['dependantRelationship'] ?? null;
+$dependantName = $_POST["dependantName"] ?? null;
+$dependantRelationship = $_POST["dependantRelationship"] ?? null;
 
-    /* Self booking */
-    if ($appointmentFor == 'Self') {
-        $dependantName = null;
-        $dependantRelationship = null;
+if (empty($appointmentType)) {
+    showPopupAndReturn("Please select an appointment type.");
+}
+
+if (empty($appointmentDate)) {
+    showPopupAndReturn("Please select an appointment date.");
+}
+
+if ($appointmentType == "Scheduled Consultation" && empty($slotID)) {
+    showPopupAndReturn("Please select a time slot.");
+}
+
+if ($appointmentFor == "Dependant") {
+    if (empty($dependantName) || empty($dependantRelationship)) {
+        showPopupAndReturn("Please fill in dependant information.");
+    }
+}
+
+if ($appointmentType == "Same-Day Consultation") {
+
+    $sqlSlot = "
+        SELECT slotID
+        FROM time_slot
+        WHERE slotDate = CURDATE()
+        AND slotType = 'Same-Day'
+        AND session = ?
+        AND capacity > 0
+        LIMIT 1
+    ";
+
+    $stmtSlot = $conn->prepare($sqlSlot);
+    $stmtSlot->bind_param("s", $session);
+    $stmtSlot->execute();
+
+    $resultSlot = $stmtSlot->get_result();
+
+    if ($resultSlot->num_rows == 0) {
+        showPopupAndReturn("No available same-day slot for this session.");
     }
 
-    /* Dependant validation */
-    if ($appointmentFor == 'Dependant' && (empty($dependantName) || empty($dependantRelationship))) {
-        die("Please complete dependant information.");
-    }
+    $slot = $resultSlot->fetch_assoc();
+    $slotID = $slot["slotID"];
+    $appointmentDate = date("Y-m-d");
+}
 
-    /* Scheduled validation */
-    if ($appointmentType == 'Scheduled' && empty($slotID)) {
-        die("Please select a time slot.");
-    }
+$sqlAppointment = "
+    INSERT INTO appointment
+    (
+        userID,
+        slotID,
+        appointmentType,
+        appointmentFor,
+        dependantName,
+        dependantRelationship,
+        appointmentStatus
+    )
+    VALUES
+    (?, ?, ?, ?, ?, ?, 'Booked')
+";
 
-    /* Same-Day slot lookup */
-    if ($appointmentType == 'Same-Day') {
-        if ($sessionType == 'Morning Session') {
-            $slotType = 'Same-Day Morning';
-        }
-        else {
-            $slotType = 'Same-Day Afternoon';
-        }
+$stmtAppointment = $conn->prepare($sqlAppointment);
+$stmtAppointment->bind_param(
+    "sissss",
+    $userID,
+    $slotID,
+    $appointmentType,
+    $appointmentFor,
+    $dependantName,
+    $dependantRelationship
+);
 
-        $sqlSlot = "SELECT slotID
-                    FROM time_slot
-                    WHERE slotDate = '$appointmentDate'
-                    AND slotType = '$slotType'";
+if (!$stmtAppointment->execute()) {
+    showPopupAndReturn("Failed to book appointment.");
+}
 
-        // insert data into $resultSlot
-        $resultSlot = mysqli_query($conn, $sqlSlot);
+$appointmentID = $stmtAppointment->insert_id;
 
-        if (!$resultSlot) {
-            die(mysqli_error($conn));
-        }
+$sqlUpdateSlot = "
+    UPDATE time_slot
+    SET capacity = capacity - 1
+    WHERE slotID = ?
+    AND capacity > 0
+";
 
-        // jadikan $rowSlot cam array untuk data yang ada dalam $resultSlot
-        $rowSlot = mysqli_fetch_assoc($resultSlot);
+$stmtUpdateSlot = $conn->prepare($sqlUpdateSlot);
+$stmtUpdateSlot->bind_param("i", $slotID);
 
-        // if db returns nothing
-        if (!$rowSlot) {
-            die("No matching slot found.");
-        }
+if (!$stmtUpdateSlot->execute()) {
+    showPopupAndReturn("Failed to update slot capacity.");
+}
 
-        // to obtain slotID
-        $slotID = $rowSlot['slotID'];
-    }
-
-    /* Check capacity */
-    $sqlCapacity = "SELECT capacity
-                    FROM time_slot
-                    WHERE slotID = '$slotID'";
-
-    $resultCapacity = mysqli_query($conn, $sqlCapacity);
-
-    if (!$resultCapacity) {
-        die(mysqli_error($conn));
-    }
-
-    $rowCapacity = mysqli_fetch_assoc($resultCapacity);
-
-    if (!$rowCapacity) {
-        die("Slot not found.");
-    }
-
-    if ($rowCapacity['capacity'] <= 0) {
-        die("This slot is already full.");
-    }
-
-    /* Create appointment */
-    $sqlInsert = "INSERT INTO appointment (userID, slotID, appointmentType, appointmentStatus, appointmentFor, dependantName, dependantRelationship)
-                VALUES ('$userID', '$slotID', '$appointmentType', 'Booked', '$appointmentFor', " . ($dependantName ? "'$dependantName'" : "NULL") . ", " . ($dependantRelationship ? "'$dependantRelationship'" : "NULL") . ")";
-
-    $resultInsert = mysqli_query($conn, $sqlInsert);
-
-    if (!$resultInsert) {
-        die(mysqli_error($conn));
-    }
-
-    /* Get appointment ID */
-    // obtain the latest id that mysql inserted
-    $appointmentID = mysqli_insert_id($conn);
-
-    /* Create attendance */
-    $sqlAttendance = " INSERT INTO attendance (appointmentID, attendanceStatus, checkInTime)
-                    VALUES ('$appointmentID', 'Pending', NULL)";
-
-    $resultAttendance = mysqli_query($conn, $sqlAttendance);
-
-    if (!$resultAttendance) {
-        die(mysqli_error($conn));
-    }
-
-    /* Deduct capacity in time slot */
-    $sqlUpdateCapacity = "UPDATE time_slot
-                        SET capacity = capacity - 1
-                        WHERE slotID = '$slotID'";
-
-    $resultUpdateCapacity = mysqli_query($conn, $sqlUpdateCapacity);
-
-    if (!$resultUpdateCapacity) {
-        die(mysqli_error($conn));
-    }
-
-    /* Success Message and Redirect */
-    echo "<script>
-            alert('Appointment booked successfully!\\n\\nGo to Appointment > Appointment Record to view your appointment details and status.');
-            window.location.href='bookAppointment.php';
-        </script>";
-
-    exit();
+$_SESSION["popupMessage"] = "Appointment booked successfully.";
+header("Location: bookAppointment.php");
+exit;
 
 ?>

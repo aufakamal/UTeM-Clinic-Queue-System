@@ -1,6 +1,15 @@
 <?php
 
     session_start();
+
+    if (isset($_SESSION["popupMessage"])) {
+        echo "<script>
+            alert('" . addslashes($_SESSION["popupMessage"]) . "');
+        </script>";
+
+        unset($_SESSION["popupMessage"]);
+    }
+
     include('../dbconnect.php');
 
     $userID = $_SESSION['userID'];

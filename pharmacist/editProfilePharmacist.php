@@ -54,7 +54,7 @@ if (!empty($pharmacist['dateOfBirth'])) {
 </head>
 
 <body>
-
+<?php include('inc/pharmacist_header.php'); ?>
 <div class="profilePage">
 
     <section class="profileTitle">

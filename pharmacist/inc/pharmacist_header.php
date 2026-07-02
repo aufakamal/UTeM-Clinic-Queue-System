@@ -29,3 +29,5 @@
         </div>
     </div>
 </div>
+
+<script src="js/pharmacist.js"></script>

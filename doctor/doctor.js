@@ -208,6 +208,8 @@ function viewPatientRecord(userID) {
     document.querySelector("#vAllergy").textContent = patient.allergy || "-";
     document.querySelector("#vChronic").textContent = patient.chronicCondition || "-";
     document.querySelector("#vMed").textContent = patient.currentMed || "-";
+
+    loadVisitHistory(userID);
 }
 
 function formatDate(dateValue) {
@@ -673,4 +675,77 @@ function renderEditableList(containerId, items){
         container.appendChild(div);
     });
 
+}
+
+function loadVisitHistory(userID) {
+    const box = document.querySelector("#viewVisitsSection");
+
+    if (!box) return;
+
+    box.innerHTML = `<p style="text-align:center;">Loading visit history...</p>`;
+
+    fetch("getVisitHistory.php?patient_id=" + encodeURIComponent(userID))
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                box.innerHTML = `<p style="text-align:center;">${data.message}</p>`;
+                return;
+            }
+
+            if (data.visits.length === 0) {
+                box.innerHTML = `<p style="text-align:center;">No visit history found.</p>`;
+                return;
+            }
+
+            let html = "";
+
+            data.visits.forEach(visit => {
+                html += `
+                    <div class="visitCard">
+                        <h2 class="visitTitle">
+                            ${new Date(visit.visitDate).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric"
+                            })}
+                        </h2>
+
+                        <div class="visitDetail">
+
+                            <div class="detailRow">
+                                <div class="detailLabel">Doctor</div>
+                                <div class="detailValue">${visit.doctor_name || "-"}</div>
+                            </div>
+
+                            <div class="detailRow">
+                                <div class="detailLabel">Reason</div>
+                                <div class="detailValue">${visit.reason || "-"}</div>
+                            </div>
+
+                            <div class="detailRow">
+                                <div class="detailLabel">Diagnosis</div>
+                                <div class="detailValue">${visit.diagnosis || "-"}</div>
+                            </div>
+
+                            <div class="detailRow">
+                                <div class="detailLabel">Treatment</div>
+                                <div class="detailValue">${visit.treatment || "-"}</div>
+                            </div>
+
+                            <div class="detailRow">
+                                <div class="detailLabel">Prescription</div>
+                                <div class="detailValue">${visit.prescription_text || "No medication"}</div>
+                            </div>
+
+                        </div>
+                    </div>
+                `;
+            });
+
+            box.innerHTML = html;
+        })
+        .catch(error => {
+            console.error(error);
+            box.innerHTML = `<p style="text-align:center;">Failed to load visit history.</p>`;
+        });
 }
