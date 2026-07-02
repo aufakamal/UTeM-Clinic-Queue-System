@@ -22,7 +22,7 @@ function sendVerificationEmail($receiverEmail, $receiverName, $token) {
         $mail->setFrom(MAIL_USERNAME, "UTeM Clinic Queue");
         $mail->addAddress($receiverEmail, $receiverName);
 
-        $verifyLink = "http://localhost:8080/Project_Development_Workshop_Fixed/login_register/verifyEmail.php?token=" . $token;
+        $verifyLink = "http://localhost:8080/Project_Development_Workshop/login_register/verifyEmail.php?token=" . $token;
 
         $mail->isHTML(false);
         $mail->Subject = "Verify Account";
@@ -60,7 +60,7 @@ function sendChangePasswordEmail($receiverEmail, $receiverName, $token) {
         $mail->setFrom(MAIL_USERNAME, "UTeM Clinic Queue");
         $mail->addAddress($receiverEmail, $receiverName);
 
-        $verifyLink = "http://localhost:8080/Project_Development_Workshop_Fixed/shared/verifyChangePassword.php?token=" . $token;
+        $verifyLink = "http://localhost:8080/Project_Development_Workshop/shared/verifyChangePassword.php?token=" . $token;
 
         $mail->isHTML(false);
         $mail->Subject = "Verify Password Change";
@@ -103,7 +103,7 @@ function sendForgotPasswordEmail($receiverEmail, $receiverName, $token) {
         $mail->setFrom(MAIL_USERNAME, "UTeM Clinic Queue");
         $mail->addAddress($receiverEmail, $receiverName);
 
-        $resetLink = "http://localhost:8080/Project_Development_Workshop_Fixed/login_register/resetPassword.php?token=" . $token;
+        $resetLink = "http://localhost:8080/Project_Development_Workshop/login_register/resetPassword.php?token=" . $token;
 
         $mail->isHTML(false);
         $mail->Subject = "Reset Password";

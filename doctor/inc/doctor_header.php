@@ -5,7 +5,7 @@
             <img src="../login_register/loginRegisterImage/utemLogo.png" alt="UTeM Logo">
         </div>
 
-        <h1>UTeM Clinic Queue System</h1>
+        <h1>PKUTeM Clinic Queue System</h1>
     </div>
 
     <nav>

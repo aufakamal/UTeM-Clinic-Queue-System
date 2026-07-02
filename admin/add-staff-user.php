@@ -231,8 +231,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 
 </main>
-
-</body>
-
 <script src="admin.js"></script>
+</body>
 </html>
