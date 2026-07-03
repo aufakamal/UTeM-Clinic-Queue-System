@@ -25,6 +25,10 @@ LEFT JOIN user u ON a.userID = u.userID
 LEFT JOIN time_slot t ON a.slotID = t.slotID
 LEFT JOIN consultation c ON q.queueID = c.queueID
 LEFT JOIN doctor_profile dp ON c.doctorUserID = dp.userID
+
+WHERE t.slotDate = CURDATE()
+AND q.queueStatus IN ('Waiting','Called')
+
 ORDER BY q.queueNo ASC
 ";
 
@@ -42,4 +46,5 @@ while ($row = $result->fetch_assoc()) {
 }
 
 echo json_encode($data);
+
 ?>

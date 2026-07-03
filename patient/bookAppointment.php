@@ -12,6 +12,59 @@
 
     include('../dbconnect.php');
 
+    include('../database/bookingStatus.php');
+
+if (!$bookingActive) {
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Booking Unavailable</title>
+        <link rel="stylesheet" href="inc/patient.css">
+    </head>
+    <body>
+
+    <?php include('inc/patient_header.php'); ?>
+
+    <div class="bookAppointmentPage">
+
+        <div style="
+            max-width:700px;
+            margin:120px auto;
+            background:white;
+            padding:40px;
+            border-radius:16px;
+            text-align:center;
+            box-shadow:0 10px 25px rgba(0,0,0,.08);
+        ">
+
+            <h1 style="color:#dc2626;font-size:34px;">
+                Booking Temporarily Closed
+            </h1>
+
+            <p style="margin-top:20px;font-size:18px;color:#475569;">
+                Online appointment booking is currently unavailable.
+            </p>
+
+            <p style="font-size:16px;color:#64748B;">
+                The clinic is temporarily closed for a programme, maintenance, or staff activity.
+                Please try again later or visit the clinic counter for further assistance.
+            </p>
+
+        </div>
+
+    </div>
+
+    <?php include('inc/patient_footer.php'); ?>
+
+    </body>
+    </html>
+
+    <?php
+    exit;
+}
+
     $userID = $_SESSION['userID'];
 
     $sql = "SELECT patientType

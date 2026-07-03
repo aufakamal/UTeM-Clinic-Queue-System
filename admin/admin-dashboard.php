@@ -14,32 +14,61 @@
     <h2>Admin Dashboard</h2>
     <p>Overview of clinic appointments, queue, consultations, and doctors.</p>
 
-    <div class="stats">
-        <div class="stat">
-            <b>Total<br>appointments<br>today</b>
-            <span id="totalToday">6</span>
-        </div>
+    <div class="dashboard-overview">
 
-        <div class="stat">
-            <b>Number of<br>waiting<br>patients</b>
-            <span id="waitingPatients">7</span>
+    <div class="overview-card">
+        <span>📅</span>
+        <div>
+            <h3>Appointments Today</h3>
+            <p id="totalToday">0</p>
         </div>
-
-        <div class="stat">
-            <b>Number of<br>active<br>consultations</b>
-            <span id="activeConsult">6</span>
-        </div>
-
-        <div class="stat">
-    <b>Completed<br>consultations<br>today</b>
-    <span id="completedToday">0</span>
-</div>
     </div>
 
+    <div class="overview-card">
+        <span>⏳</span>
+        <div>
+            <h3>Waiting Patients</h3>
+            <p id="waitingPatients">0</p>
+        </div>
+    </div>
+
+    <div class="overview-card">
+        <span>👨‍⚕️</span>
+        <div>
+            <h3>Active Consultations</h3>
+            <p id="activeConsult">0</p>
+        </div>
+    </div>
+
+    <div class="overview-card booking-overview">
+        <span id="bookingIcon">🟢</span>
+        <div>
+            <h3>Booking System</h3>
+            <p id="bookingStatusText">Checking...</p>
+        </div>
+
+        <button id="toggleBookingBtn" onclick="toggleBookingStatus()">
+            Loading...
+        </button>
+    </div>
+
+</div>
+
+
+
     <article class="chart">
-        <h2>Monthly Appointments</h2>
-<div id="monthlyChart" class="weekly-chart"></div>
-    </article>
+
+    <h2>Today's Clinic Activity</h2>
+
+    <p class="chart-subtitle">
+        Real-time overview of today's clinic operations.
+    </p>
+
+    <div id="activityContainer" class="activity-container">
+        Loading...
+    </div>
+
+</article>
 </section>
 
 <div id="confirmBox" class="modal hidden">

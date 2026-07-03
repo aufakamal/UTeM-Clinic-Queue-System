@@ -496,7 +496,8 @@ async function markArrived(id) {
 document.addEventListener("DOMContentLoaded", () => {
     loadAppointments();
     setMinimumSlotDate();
-
+    loadBookingStatus();
+loadTodayActivity();
     loadSlots();
 });
 
@@ -814,7 +815,6 @@ function resetSlotFilter() {
 ========================================= */
 
 async function loadDashboard() {
-    
     try {
         const response = await fetch("../database/getDashboard.php");
         const data = await response.json();
@@ -822,10 +822,47 @@ async function loadDashboard() {
         document.getElementById("totalToday").textContent = data.totalAppointments;
         document.getElementById("waitingPatients").textContent = data.waitingPatients;
         document.getElementById("activeConsult").textContent = data.activeConsultations;
-        document.getElementById("completedToday").textContent = data.completedToday;
 
     } catch (err) {
         console.error("Dashboard error:", err);
+    }
+}
+
+
+async function loadBookingStatus() {
+    const response = await fetch("../database/getBookingStatus.php");
+    const data = await response.json();
+const bookingIcon = document.getElementById("bookingIcon");
+    const statusText = document.getElementById("bookingStatusText");
+    const toggleBtn = document.getElementById("toggleBookingBtn");
+
+    if (!statusText || !toggleBtn) return;
+
+    if (data.bookingActive) {
+    statusText.textContent = "ACTIVE";
+    if (bookingIcon) bookingIcon.textContent = "🟢";
+    toggleBtn.textContent = "Disable Booking";
+    toggleBtn.className = "disable-booking-btn";
+} else {
+    statusText.textContent = "INACTIVE";
+    if (bookingIcon) bookingIcon.textContent = "🔴";
+    toggleBtn.textContent = "Enable Booking";
+    toggleBtn.className = "enable-booking-btn";
+}
+}
+
+async function toggleBookingStatus() {
+    if (!confirm("Are you sure you want to change the booking status?")) {
+        return;
+    }
+
+    const response = await fetch("../database/toggleBookingStatus.php");
+    const data = await response.json();
+
+    if (data.success) {
+        loadBookingStatus();
+    } else {
+        alert(data.message || "Failed to update booking status.");
     }
 }
 
@@ -881,7 +918,7 @@ if (document.getElementById("totalToday")) {
 }
 
 if (document.getElementById("monthlyChart")) {
-    loadMonthlyAppointments();
+    loadAppointmentStatusOverview();
 }
 
 if (document.getElementById("profileName")) {
@@ -898,74 +935,109 @@ let historyList = [];
 
 async function loadHistory() {
     try {
-        const response = await fetch("../database/getHistory.php");
+        const type = document.getElementById("historyTypeFilter").value;
+
+        let url = "../database/getHistory.php";
+
+        if (type === "appointment") {
+            url = "../database/getAppointmentHistory.php";
+        }
+
+        if (type === "queue") {
+            url = "../database/getQueueHistory.php";
+        }
+
+        const response = await fetch(url);
         historyList = await response.json();
+
         renderHistoryTable();
+
     } catch (err) {
+        console.log("History error:", err);
     }
 }
 
 function renderHistoryTable(list = historyList) {
+
     const table = document.getElementById("historyTableBody");
     if (!table) return;
 
     table.innerHTML = "";
 
     list.forEach(item => {
-        const statusClass = item.queueStatus
+
+        const statusClass = item.status
             .toLowerCase()
             .replaceAll(" ", "");
 
         table.innerHTML += `
-            <tr>
-                <td>${item.consultationID}</td>
-                <td>Q${item.queueNo.toString().padStart(3, "0")}</td>
-                <td>${item.patientName}</td>
-                <td>${item.doctorName}</td>
-                <td>${item.startTime}</td>
-                <td>${item.endTime}</td>
-                <td>
-                    <span class="status-badge status-${statusClass}">
-                        ${item.queueStatus}
-                    </span>
-                </td>
-            </tr>
+        <tr>
+
+            <td>${item.recordType}</td>
+
+            <td>${item.recordID}</td>
+
+            <td>${item.patientName}</td>
+
+            <td>${item.recordDateTime}</td>
+
+            <td>${item.extraInfo}</td>
+
+            <td>
+                <span class="status-badge status-${statusClass}">
+                    ${item.status}
+                </span>
+            </td>
+
+        </tr>
         `;
     });
+
 }
 
 function filterHistory() {
     const search = document.getElementById("historySearch").value.toLowerCase();
+    const type = document.getElementById("historyTypeFilter").value;
     const status = document.getElementById("historyStatusFilter").value;
     const fromDate = document.getElementById("historyFromDate").value;
     const toDate = document.getElementById("historyToDate").value;
 
     const filtered = historyList.filter(item => {
-        const startDate = item.startTime ? item.startTime.substring(0, 10) : "";
-
         const matchesSearch =
-            item.consultationID.toString().toLowerCase().includes(search) ||
-            item.queueNo.toString().toLowerCase().includes(search) ||
+            item.recordType.toLowerCase().includes(search) ||
+            item.recordID.toString().toLowerCase().includes(search) ||
             item.patientName.toLowerCase().includes(search) ||
-            item.doctorName.toLowerCase().includes(search);
+            item.extraInfo.toLowerCase().includes(search) ||
+            item.status.toLowerCase().includes(search);
+
+        const matchesType =
+            type === "All" || item.recordType === type;
 
         const matchesStatus =
-            status === "All" || item.queueStatus === status;
+            status === "All" || item.status === status;
 
-        const matchesFromDate =
-            !fromDate || startDate >= fromDate;
+        const recordDate = item.recordDateTime.substring(0, 10);
 
-        const matchesToDate =
-            !toDate || startDate <= toDate;
+        const matchesFrom =
+            !fromDate || recordDate >= fromDate;
 
-        return matchesSearch && matchesStatus && matchesFromDate && matchesToDate;
+        const matchesTo =
+            !toDate || recordDate <= toDate;
+
+        return (
+            matchesSearch &&
+            matchesType &&
+            matchesStatus &&
+            matchesFrom &&
+            matchesTo
+        );
     });
 
     renderHistoryTable(filtered);
 }
-
 function resetHistoryFilter() {
     document.getElementById("historySearch").value = "";
+    document.getElementById("historyTypeFilter").value = "All";
     document.getElementById("historyStatusFilter").value = "All";
     document.getElementById("historyFromDate").value = "";
     document.getElementById("historyToDate").value = "";
@@ -1032,6 +1104,50 @@ function renderUsers(data) {
         `;
     });
 }
+
+async function loadTodayActivity() {
+
+    const response = await fetch("../database/getTodayActivity.php");
+    const data = await response.json();
+
+    const container = document.getElementById("activityContainer");
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="activity-item">
+            <span>✅</span>
+            <div>
+                <b>Arrived Today</b>
+                <p>${data.arrivedToday}</p>
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <span>⚠️</span>
+            <div>
+                <b>No Show Today</b>
+                <p>${data.noShowToday}</p>
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <span>📌</span>
+            <div>
+                <b>Booked Today</b>
+                <p>${data.bookedToday}</p>
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <span>❌</span>
+            <div>
+                <b>Cancelled Today</b>
+                <p>${data.cancelledToday}</p>
+            </div>
+        </div>
+    `;
+}
+
 
 async function viewUserDetails(userID, roleName) {
     try {
@@ -1278,7 +1394,35 @@ async function editUser(userID, fullName, gender, email, phoneNo) {
     }
 }
 
+async function loadAppointmentStatusOverview() {
+    const response = await fetch("../database/getAppointmentStatusOverview.php");
+    const data = await response.json();
 
+    const chart = document.getElementById("statusChart");
+    if (!chart) return;
+
+    chart.innerHTML = "";
+
+    const values = Object.values(data);
+    const maxValue = Math.max(...values, 1);
+
+    Object.keys(data).forEach(status => {
+        const value = data[status];
+        const width = value === 0 ? 2 : (value / maxValue) * 100;
+
+        chart.innerHTML += `
+            <div class="status-chart-row">
+                <div class="status-chart-label">${status}</div>
+
+                <div class="status-chart-bar-wrap">
+                    <div class="status-chart-bar" style="width:${width}%"></div>
+                </div>
+
+                <div class="status-chart-value">${value}</div>
+            </div>
+        `;
+    });
+}
 
 async function loadAdminProfile() {
 

@@ -6,22 +6,48 @@ header("Content-Type: application/json");
 
 $sql = "
 SELECT
-    c.consultationID,
-    q.queueNo,
+    'Appointment' AS recordType,
+    a.appointmentID AS recordID,
+    u.fullName AS patientName,
+    CONCAT(t.slotDate, ' ', t.startTime) AS recordDateTime,
+    a.appointmentStatus AS status,
+    a.appointmentType AS extraInfo
+FROM appointment a
+JOIN user u ON a.userID = u.userID
+JOIN time_slot t ON a.slotID = t.slotID
+
+UNION ALL
+
+SELECT
+    'Queue' AS recordType,
+    q.queueNo AS recordID,
+    u.fullName AS patientName,
+    COALESCE(att.checkInTime, CONCAT(t.slotDate, ' ', t.startTime)) AS recordDateTime,
+    q.queueStatus AS status,
+    a.appointmentType AS extraInfo
+FROM queue q
+JOIN attendance att ON q.attendanceID = att.attendanceID
+JOIN appointment a ON att.appointmentID = a.appointmentID
+JOIN user u ON a.userID = u.userID
+JOIN time_slot t ON a.slotID = t.slotID
+
+UNION ALL
+
+SELECT
+    'Consultation' AS recordType,
+    c.consultationID AS recordID,
     patient.fullName AS patientName,
-    doctor.fullName AS doctorName,
-    c.startTime,
-    c.endTime,
-    q.queueStatus
+    c.startTime AS recordDateTime,
+    q.queueStatus AS status,
+    doctor.fullName AS extraInfo
 FROM consultation c
 JOIN queue q ON c.queueID = q.queueID
 JOIN attendance att ON q.attendanceID = att.attendanceID
-JOIN appointment ap ON att.appointmentID = ap.appointmentID
-JOIN user patient ON ap.userID = patient.userID
+JOIN appointment a ON att.appointmentID = a.appointmentID
+JOIN user patient ON a.userID = patient.userID
 JOIN user doctor ON c.doctorUserID = doctor.userID
-WHERE q.queueStatus = 'Completed'
-AND c.endTime <= NOW()
-ORDER BY c.startTime DESC
+
+ORDER BY recordDateTime DESC
 ";
 
 $result = $conn->query($sql);

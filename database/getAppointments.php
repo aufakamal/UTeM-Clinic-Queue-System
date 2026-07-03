@@ -2,6 +2,8 @@
 
 include "database.php";
 
+header("Content-Type: application/json");
+
 $sql = "
 SELECT 
     a.appointmentID,
@@ -27,6 +29,7 @@ LEFT JOIN attendance att ON att.attendanceID = (
     FROM attendance att2
     WHERE att2.appointmentID = a.appointmentID
 )
+WHERE a.appointmentStatus = 'Booked'
 ORDER BY t.slotDate ASC, t.startTime ASC
 ";
 
