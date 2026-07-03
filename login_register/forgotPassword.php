@@ -77,10 +77,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="main">
 
-        <a href="login.php" class="back">
-            <img src="loginRegisterImage/backIconDark.png" alt="">
-        </a>
-
         <div class="forgotCard">
 
             <img src="loginRegisterImage/forgotPasswordIcon.png" alt="Forgot Password" class="forgotIcon">
@@ -90,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p>Enter your email address and we will send a password reset link.</p>
 
             <?php if (!empty($message)) { ?>
-                <p style="color:red; font-weight:bold;">
+                <p class="message">
                     <?php echo htmlspecialchars($message); ?>
                 </p>
             <?php } ?>
@@ -106,7 +102,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     required
                 >
 
-                <button type="submit" class="submitBtn">SUBMIT</button>
+                <div class="buttonRow">
+
+                    <a href="login.php" class="backBtn">
+                        BACK
+                    </a>
+
+                    <button type="submit" class="submitBtn">
+                        SUBMIT
+                    </button>
+
+                </div>
 
             </form>
 

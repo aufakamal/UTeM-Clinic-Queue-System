@@ -5,6 +5,18 @@ if (!isset($_SESSION['userID'])) {
     header("Location: ../login_register/login.php");
     exit();
 }
+
+$roleID = $_SESSION['roleID'] ?? "";
+
+if ($roleID == 1) {
+    $backLink = "../admin/profileAdmin.php";
+} else if ($roleID == 2) {
+    $backLink = "../doctor/profileDoctor.php";
+} else if ($roleID == 3) {
+    $backLink = "../pharmacist/profilePharmacist.php";
+} else {
+    $backLink = "../patient/editProfilePatient.php";
+}
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +49,10 @@ if (!isset($_SESSION['userID'])) {
             <label>Confirm New Password</label>
             <input type="password" name="confirmPassword" required>
 
-            <button type="submit" class="saveBtn">SEND VERIFICATION</button>
+            <div class="buttonGroup">
+                <a href="<?php echo $backLink; ?>" class="backBtn">BACK</a>
+                <button type="submit" class="saveBtn">SEND VERIFICATION</button>
+            </div>
 
         </form>
 

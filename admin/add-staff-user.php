@@ -20,111 +20,129 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $roleID = $_POST["roleID"];
 
     if (
-        $fullName == "" ||
-        $gender == "" ||
         $userID == "" ||
-        $dobInput == "" ||
-        $email == "" ||
-        $phoneNo == "" ||
-        $address == "" ||
-        $password == "" ||
-        $confirmPassword == "" ||
         $roleID == ""
     ) {
-        $message = "Please fill in all fields.";
-    } 
-    else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $message = "Please enter a valid email address.";
+        $message = "Please fill in User ID and Role.";
     }
-    else if (!preg_match("/^[0-9]+$/", $phoneNo)) {
-        $message = "Phone number must contain numbers only.";
-    } 
-    else if (strlen($password) < 8) {
-        $message = "Password must be at least 8 characters.";
-    } 
-    else if ($password !== $confirmPassword) {
-        $message = "Password and confirm password do not match.";
-    } 
     else if (!in_array($roleID, ["1", "2", "3"])) {
         $message = "Invalid role selected.";
-    } 
-
+    }
     else {
 
-        $dobObject = DateTime::createFromFormat("d/m/Y", $dobInput);
+        $checkUser = $conn->prepare("SELECT * FROM user WHERE userID = ?");
+        $checkUser->bind_param("s", $userID);
+        $checkUser->execute();
+        $userResult = $checkUser->get_result();
 
-        if ($dobObject == false) {
-            $message = "Invalid date format. Please use dd/mm/yyyy.";
-        } 
-        else {
-            $dateOfBirth = $dobObject->format("Y-m-d");
+        $conn->begin_transaction();
 
-            $check = $conn->prepare("SELECT userID FROM user WHERE userID = ? OR email = ?");
-            $check->bind_param("ss", $userID, $email);
-            $check->execute();
-            $result = $check->get_result();
+        try {
 
-            if ($result->num_rows > 0) {
-                $message = "User ID or email already exists.";
-            } 
-            else {
+            if ($userResult->num_rows == 0) {
+
+                if (
+                    $fullName == "" ||
+                    $gender == "" ||
+                    $dobInput == "" ||
+                    $email == "" ||
+                    $phoneNo == "" ||
+                    $address == "" ||
+                    $password == "" ||
+                    $confirmPassword == ""
+                ) {
+                    throw new Exception("Please fill in all fields for new user.");
+                }
+
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    throw new Exception("Please enter a valid email address.");
+                }
+
+                if (!preg_match("/^[0-9]+$/", $phoneNo)) {
+                    throw new Exception("Phone number must contain numbers only.");
+                }
+
+                if (strlen($password) < 8) {
+                    throw new Exception("Password must be at least 8 characters.");
+                }
+
+                if ($password !== $confirmPassword) {
+                    throw new Exception("Password and confirm password do not match.");
+                }
+
+                $dobObject = DateTime::createFromFormat("d/m/Y", $dobInput);
+
+                if ($dobObject == false) {
+                    throw new Exception("Invalid date format. Please use dd/mm/yyyy.");
+                }
+
+                $dateOfBirth = $dobObject->format("Y-m-d");
+
+                $checkEmail = $conn->prepare("SELECT userID FROM user WHERE email = ?");
+                $checkEmail->bind_param("s", $email);
+                $checkEmail->execute();
+                $emailResult = $checkEmail->get_result();
+
+                if ($emailResult->num_rows > 0) {
+                    throw new Exception("Email already exists.");
+                }
+
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $emailVerified = 0;
                 $verificationToken = bin2hex(random_bytes(32));
 
-                $conn->begin_transaction();
+                $sqlUser = "INSERT INTO user 
+                (userID, fullName, gender, dateOfBirth, address, email, phoneNo, password, email_verified, verification_token)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-                try {
-                    $sqlUser = "INSERT INTO user 
-                    (userID, fullName, gender, dateOfBirth, address, email, phoneNo, password, email_verified, verification_token)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $stmtUser = $conn->prepare($sqlUser);
+                $stmtUser->bind_param(
+                    "ssssssssis",
+                    $userID,
+                    $fullName,
+                    $gender,
+                    $dateOfBirth,
+                    $address,
+                    $email,
+                    $phoneNo,
+                    $hashedPassword,
+                    $emailVerified,
+                    $verificationToken
+                );
+                $stmtUser->execute();
 
-                    $stmtUser = $conn->prepare($sqlUser);
-                    $stmtUser->bind_param(
-                        "ssssssssis",
-                        $userID,
-                        $fullName,
-                        $gender,
-                        $dateOfBirth,
-                        $address,
-                        $email,
-                        $phoneNo,
-                        $hashedPassword,
-                        $emailVerified,
-                        $verificationToken
-                    );
-                    $stmtUser->execute();
+                $emailSent = sendVerificationEmail($email, $fullName, $verificationToken);
 
-                    $sqlRole = "INSERT INTO user_role (userID, roleID) VALUES (?, ?)";
-                    $stmtRole = $conn->prepare($sqlRole);
-                    $stmtRole->bind_param("si", $userID, $roleID);
-                    $stmtRole->execute();
-
-                    $emailSent = sendVerificationEmail($email, $fullName, $verificationToken);
-
-                if ($emailSent) {
-                    $conn->commit();
-
-                    echo "<script>
-                        alert('Clinic staff user added successfully! Verification email has been sent.');
-                        window.location.href='admin-staff.php';
-                    </script>";
-                    exit();
-                } else {
-                    $conn->rollback();
-
-                    echo "<script>
-                        alert('Verification email failed to send. User was not added.');
-                        window.location.href='add-staff-user.php';
-                    </script>";
-                    exit();
-                }
-
-                } catch (Exception $e) {
-                    $conn->rollback();
-                    $message = "Failed to add clinic staff user.";
+                if (!$emailSent) {
+                    throw new Exception("Verification email failed to send. User was not added.");
                 }
             }
+
+            $checkRole = $conn->prepare("SELECT * FROM user_role WHERE userID = ? AND roleID = ?");
+            $checkRole->bind_param("si", $userID, $roleID);
+            $checkRole->execute();
+            $roleResult = $checkRole->get_result();
+
+            if ($roleResult->num_rows > 0) {
+                throw new Exception("This user already has this role.");
+            }
+
+            $sqlRole = "INSERT INTO user_role (userID, roleID) VALUES (?, ?)";
+            $stmtRole = $conn->prepare($sqlRole);
+            $stmtRole->bind_param("si", $userID, $roleID);
+            $stmtRole->execute();
+
+            $conn->commit();
+
+            echo "<script>
+                alert('Clinic staff role added successfully.');
+                window.location.href='admin-staff.php';
+            </script>";
+            exit();
+
+        } catch (Exception $e) {
+            $conn->rollback();
+            $message = $e->getMessage();
         }
     }
 }
@@ -145,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <section class="page-title">
         <h1>Add Clinic Staff User</h1>
-        <p>Register a new clinic staff account.</p>
+        <p>Register a new clinic staff account or add another role to existing user.</p>
     </section>
 
     <section class="form-card">
@@ -162,12 +180,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="input-group">
                     <label>Full Name</label>
-                    <input type="text" name="fullName" placeholder="Enter full name" required>
+                    <input type="text" name="fullName" placeholder="Enter full name">
                 </div>
 
                 <div class="input-group">
                     <label>Gender</label>
-                    <select name="gender" required>
+                    <select name="gender">
                         <option value="">Select gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -181,32 +199,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="input-group">
                     <label>Date of Birth</label>
-                    <input type="text" name="dateOfBirth" placeholder="dd/mm/yyyy" required>
+                    <input type="text" name="dateOfBirth" placeholder="dd/mm/yyyy">
                 </div>
 
                 <div class="input-group">
                     <label>Email</label>
-                    <input type="email" name="email" placeholder="Enter email" required>
+                    <input type="email" name="email" placeholder="Enter email">
                 </div>
 
                 <div class="input-group">
                     <label>Phone Number</label>
-                    <input type="text" name="phoneNo" placeholder="Enter phone number" required>
+                    <input type="text" name="phoneNo" placeholder="Enter phone number">
                 </div>
 
                 <div class="input-group full">
                     <label>Address</label>
-                    <textarea name="address" placeholder="Enter full address" required></textarea>
+                    <textarea name="address" placeholder="Enter full address"></textarea>
                 </div>
 
                 <div class="input-group">
                     <label>Create Password</label>
-                    <input type="password" name="password" placeholder="Enter password" required>
+                    <input type="password" name="password" placeholder="Enter password">
                 </div>
 
                 <div class="input-group">
                     <label>Confirm Password</label>
-                    <input type="password" name="confirmPassword" placeholder="Confirm password" required>
+                    <input type="password" name="confirmPassword" placeholder="Confirm password">
                 </div>
 
                 <div class="input-group full">
@@ -223,7 +241,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="button-group">
                 <a href="admin-staff.php" class="back-btn">Back</a>
-                <button type="submit" class="add-btn">Add User</button>
+                <button type="submit" class="add-btn">Add User / Role</button>
             </div>
 
         </form>
@@ -231,6 +249,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 
 </main>
+
 <script src="admin.js"></script>
 </body>
 </html>
