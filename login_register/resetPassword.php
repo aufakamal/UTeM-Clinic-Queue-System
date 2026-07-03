@@ -83,11 +83,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
 <div class="container">
+
     <?php include('inc/login_register_header.php'); ?>
 
     <div class="main">
+
         <form method="POST" class="reset-form">
-            <h2>Reset Password</h2>
+
+            <h2>RESET PASSWORD</h2>
 
             <label>New Password</label>
             <input type="password" name="newPassword" required>
@@ -95,11 +98,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label>Confirm New Password</label>
             <input type="password" name="confirmPassword" required>
 
-            <button type="submit">RESET PASSWORD</button>
+            <div class="buttonRow">
+                <a href="login.php" class="backBtn">BACK</a>
+                <button type="submit" class="resetBtn">RESET</button>
+            </div>
 
-            <p><a href="login.php">Back to Login</a></p>
         </form>
+
     </div>
+
 </div>
 
 </body>

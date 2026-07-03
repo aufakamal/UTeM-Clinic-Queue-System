@@ -118,6 +118,7 @@ if (!empty($admin['dateOfBirth'])) {
     </section>
 
 </div>
+<script src="admin.js"></script>
 
 </body>
 </html>

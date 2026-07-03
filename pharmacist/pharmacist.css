@@ -918,10 +918,9 @@ section {
     gap: 22px;
 }
 
-.medicineMain {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
+.medicineMain .reportBox{
+    min-height:auto;
+    height:fit-content;
 }
 
 .medicineSummary {

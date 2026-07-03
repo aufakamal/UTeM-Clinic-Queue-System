@@ -172,7 +172,7 @@ slotButtons.forEach(function(button) {
 
         let endTime = this.dataset.end;
 
-        if(slotIDHidden) {
+       if(slotIDHidden) {
             slotIDHidden.value = slotID;
         }
 
@@ -182,6 +182,10 @@ slotButtons.forEach(function(button) {
 
         if(appointmentTypeHidden) {
             appointmentTypeHidden.value = "Scheduled";
+        }
+
+        if(sessionHidden) {
+            sessionHidden.value = "Scheduled Session";
         }
 
         if(timeSlotHidden) {

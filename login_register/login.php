@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "SELECT u.userID,
                        u.fullName,
                        u.password,
+                       u.email_verified,
                        ur.roleID
                 FROM user u
                 JOIN user_role ur
@@ -36,6 +37,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "<script>alert('Incorrect role selected.');</script>";
             }
             else if (password_verify($password, $row['password'])) {
+
+                if ($row['email_verified'] != 1) {
+                    echo "<script>
+                            alert('Please verify your email first before logging in.');
+                            window.location.href='login.php';
+                          </script>";
+                    exit();
+                }
 
                 $_SESSION['userID'] = $row['userID'];
                 $_SESSION['fullName'] = $row['fullName'];

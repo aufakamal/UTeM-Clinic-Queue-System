@@ -51,6 +51,7 @@ if (!empty($pharmacist['dateOfBirth'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Pharmacist Profile</title>
     <link rel="stylesheet" href="../shared/profile.css">
+    <link rel="stylesheet" href="pharmacist.css">
 </head>
 
 <body>
