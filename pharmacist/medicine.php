@@ -8,11 +8,19 @@ if (isset($_POST['addMedicine'])) {
     $genericName = $_POST['genericName'];
     $description = $_POST['description'];
     $stockQuantity = $_POST['stockQuantity'];
+    $lowStockThreshold = $_POST['lowStockThreshold'];
 
-    if ($medicineName != "" && $genericName != "" && $description != "" && $stockQuantity >= 0) {
-        $insertSql = "INSERT INTO medicine (medicineName, genericName, description, stockQuantity)
-                      VALUES ('$medicineName', '$genericName', '$description', $stockQuantity)";
-
+    if (
+        $medicineName != "" &&
+        $genericName != "" &&
+        $description != "" &&
+        $stockQuantity >= 0 &&
+        $lowStockThreshold > 0
+    ) {
+        $insertSql = "INSERT INTO medicine 
+                    (medicineName, genericName, description, stockQuantity, lowStockThreshold)
+                    VALUES 
+                    ('$medicineName', '$genericName', '$description', $stockQuantity, $lowStockThreshold)";
         $conn->query($insertSql);
     }
 
@@ -63,21 +71,23 @@ $stockSql = "SELECT SUM(stockQuantity) AS totalStock FROM medicine";
 $stockResult = $conn->query($stockSql);
 $stockRow = $stockResult->fetch_assoc();
 
-$lowStockSql = "SELECT COUNT(*) AS lowStock FROM medicine WHERE stockQuantity < 60";
+$lowStockSql = "SELECT COUNT(*) AS lowStock FROM medicine WHERE stockQuantity < lowStockThreshold";
 $lowStockResult = $conn->query($lowStockSql);
 $lowStockRow = $lowStockResult->fetch_assoc();
 
-$lowAlertSql = "SELECT * FROM medicine WHERE stockQuantity < 60 ORDER BY stockQuantity ASC LIMIT 4";
+$lowAlertSql = "SELECT * FROM medicine WHERE stockQuantity < lowStockThreshold ORDER BY stockQuantity ASC LIMIT 4";
 $lowAlertResult = $conn->query($lowAlertSql);
 
 $sql = "SELECT * FROM medicine 
         WHERE (medicineName LIKE '%$search%' OR genericName LIKE '%$search%')";
 
-if ($filter == "available") {
-    $sql .= " AND stockQuantity >= 60";
+if ($filter == "available")
+{
+    $sql .= " AND stockQuantity >= lowStockThreshold";
 }
-else if ($filter == "low") {
-    $sql .= " AND stockQuantity < 60";
+else if ($filter == "low")
+{
+    $sql .= " AND stockQuantity < lowStockThreshold";
 }
 
 $sql .= " ORDER BY medicineID ASC";
@@ -118,12 +128,6 @@ $result = $conn->query($sql);
                         <h3>Total Medicines</h3>
                         <p><?php echo $totalRow['totalMedicine']; ?></p>
                         <span>Medicine records</span>
-                    </article>
-
-                    <article class="reportCard">
-                        <h3>Total Stock Quantity</h3>
-                        <p><?php echo $stockRow['totalStock']; ?></p>
-                        <span>Available quantity</span>
                     </article>
 
                     <article class="reportCard">
@@ -230,7 +234,7 @@ $result = $conn->query($sql);
                         echo "<td>" . $row['description'] . "</td>";
                         echo "<td>" . $row['stockQuantity'] . "</td>";
 
-                        if ($row['stockQuantity'] < 60) {
+                        if ($row['stockQuantity'] < $row['lowStockThreshold']) {
                             echo "<td><span class='waitingStatus'>Low Stock</span></td>";
                         }
                         else {
@@ -328,10 +332,12 @@ $result = $conn->query($sql);
 
                 <label>Description</label>
                 <input type="text" name="description" required>
-
+                
                 <label>Stock Quantity</label>
                 <input type="number" name="stockQuantity" min="0" required>
 
+                <label>Low Stock Threshold</label>
+                <input type="number" name="lowStockThreshold" min="1" value="60" required>
                 <button class="saveStockBtn" type="submit" name="addMedicine">
                     Save
                 </button>
